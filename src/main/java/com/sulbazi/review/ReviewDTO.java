@@ -1,5 +1,5 @@
 package com.sulbazi.review;
 
-public interface ReviewDTO {
+public class ReviewDTO {
 
 }
