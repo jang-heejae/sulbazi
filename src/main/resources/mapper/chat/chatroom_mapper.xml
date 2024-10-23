@@ -2,6 +2,56 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
+
 <mapper namespace="com.sulbazi.chat.ChatRoomDAO">
 
+	<!-- 개인 채팅방 리스트 -->
+	<select id="chatlist" resultType="com.sulbazi.chat.UserChatroomDTO">
+		SELECT 
+			userchat_idx,
+			user_id,
+			userchat_subject,
+			userchat_date,
+			userchat_state,
+			current_people,
+			max_people,
+			notice 
+		FROM userchat ORDER BY userchat_date DESC
+	</select>
+	
+<!-- 	<select id="chatlist" resultType="com.sulbazi.chat.UserChatroomDTO">
+		SELECT * FROM userchat ORDER BY userchat_date DESC
+	</select> -->
+
+	<!-- <select id="chatlist" resultType="com.sulbazi.chat.UserChatroomDTO">
+		SELECT 
+			userchat_idx,
+			user_id,
+			userchat_subject,
+			userchat_date,
+			userchat_state,
+			current_people,
+			max_people,
+			notice 
+		FROM userchat ORDER BY userchat_date DESC LIMIT #{param1} OFFSET #{param2}
+	</select> -->
+	
+	<!-- 개인 채팅방 생성 -->
+	<insert id="chatcreate" 
+		useGeneratedKeys="true"
+		keyColumn="userchat_idx"
+		keyProperty="userchat_idx"
+		parameterType="com.sulbazi.chat.UserChatroomDTO">
+		INSERT INTO userchat(userchat_subject, current_people)
+			VALUES(#{userchat_subject}, #{current_people})
+	</insert> 
+
+	<!-- 지역 채팅방 리스트 -->
+	<select id="localchatlist" resultType="com.sulbazi.chat.LocalChatroomDTO">
+		SELECT 
+			localchat_idx,
+			local_category 
+		FROM localchat ORDER BY localchat_idx
+	</select>
+	
 </mapper>

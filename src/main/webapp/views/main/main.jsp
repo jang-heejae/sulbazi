@@ -154,8 +154,8 @@
         <div class="fullbox">
             <div class="full">
                 <ul class="list1">
-                    <li><a href="localChatRoom.go">지역 대화방</a></li>
-                    <li><a href="./userchatlist.go">개인 대화방</a></li>
+                    <li><a href="localchatlist.go">지역 대화방</a></li>
+                    <li><a href="userchatlist.go">개인 대화방</a></li>
                     <li><a href="storeList.go">매장 리스트</a></li>
                     <li><a href="boardList.go">게시판</a></li>
                 </ul>
