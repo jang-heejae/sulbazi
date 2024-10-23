@@ -13,7 +13,7 @@
     *{
         margin: 0;
         padding: 0;
-    }
+    } 
     ol, ul, li{
         list-style: none;
     }
@@ -119,34 +119,37 @@
         justify-content: space-around;
         border-radius: 10px;
     }
+    .chatBox{
+      display: flex;
+         justify-content: space-around;
+         align-items: center;
+      width : 100%;
+      height: 100%;
+   }
+   .chatitems{
+      position: absolute;
+      top: 20%;
+       width: 940px;
+       height: 650px;
+       display: flex;
+       flex-wrap: wrap;
+       justify-content: center;
+       align-items: center;
+       align-content: center;
+       background-color: rgb(255, 140, 9);
+       border-radius: 20px;
+   }
 </style>
 <body>
     <header>
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
             <div class="logo_text">
-                <a href="#">SULBAZI</a>
+                <a href="./">SULBAZI</a>
             </div>
             <div>
                 <ul class="icon">
-                    <li><a href="login.go">로그인</a></li>
-                    <li>
-                        <i class="fa-regular fa-message"></i>
-                        <div class="sub_1">
-                            <div class="sub_txt1">대화중인 대화방</div>
-                            <div class="sub1">알림1</div>
-                            <div class="sub1">알림2</div>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fa-regular fa-bell"></i>
-                        <div class="sub_">
-                            <div class="sub_txt">3개 알림</div>
-                            <div class="sub">알림1</div>
-                            <div class="sub">알림2</div>
-                            <div class="sub">알림3</div>
-                        </div>
-                    </li>
+                    <li><a href="">로그인</a></li>
                     <li class="mypage"><i class="fa-regular fa-user"></i></li>
                 </ul>
             </div>
@@ -154,26 +157,31 @@
         <div class="fullbox">
             <div class="full">
                 <ul class="list1">
-                    <li><a href="localChatRoom.go">지역 대화방</a></li>
-                    <li><a href="./userchatlist.go">개인 대화방</a></li>
-                    <li><a href="storeList.go">매장 리스트</a></li>
-                    <li><a href="boardList.go">게시판</a></li>
+                    <li><a href="">지역 대화방</a></li>
+                    <li><a href="">개인 대화방</a></li>
+                    <li><a href="">매장 리스트</a></li>
+                    <li><a href="">게시판</a></li>
                 </ul>
             </div>
             <div class="full2">
                 <ul class="list2">
-                    <li><a href="userMyPage.go">나의 정보</a></li>
-                    <li><a href="userReview.go">나의 리뷰</a></li>
-                    <li><a href="userMyChat.go">나의 대화방</a></li>
-                    <li><a href="MyBookmark.go">즐겨찾기 매장</a></li>
-                    <li><a href="userAlarm.go">알림 리스트</a></li>
+                    <li><a href="">신고 목록</a></li>
+                    <li><a href="">고객 센터</a></li>
+                    <li><a href="">일반 사용자 리스트</a></li>
+                    <li><a href="">매장 사용자 리스트</a></li>
+                    <li><a href="categoryUpdate.go">카테고리 관리</a></li>
+                    <li><a href="adminList.go">관리자 리스트</a></li>
                 </ul>
                 <div class="logout">
                     <i class="fas fa-sign-out-alt"></i>
                     <a href="logout.go">로그아웃</a>
                 </div>
             </div>
-        </div>  
+        </div>
+   	<section class="chatBox">
+        <div class="chatitems">
+        </div>
+   </section>
     </header>
 </body>
 <script>

@@ -3,5 +3,17 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.admin.AdminDAO">
-
+	<insert id="adminAdd" parameterType="com.sulbazi.admin.AdminDTO">
+		INSERT INTO admin(admin_id, admin_pw, admin_name)
+			VALUES(#{admin_id}, #{admin_pw}, #{admin_name})
+	</insert>
+	<select id="adminList" parameterType="com.sulbazi.admin.AdminDTO">
+		SELECT * FROM admin ORDER BY admin_doc ASC
+	</select>
+	<update id="adminUpdate" parameterType="map">
+		UPDATE admin SET admin_pw = #{new_password} WHERE admin_id = #{admin_id}
+	</update>
+	<select id="adminChange" parameterType="String">
+		SELECT * FROM admin WHERE admin_id = #{admin_id}
+	</select>
 </mapper>

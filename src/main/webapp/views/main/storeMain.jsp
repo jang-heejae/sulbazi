@@ -125,7 +125,7 @@
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
             <div class="logo_text">
-                <a href="#">SULBAZI</a>
+                <a href="./#">SULBAZI</a>
             </div>
             <div>
                 <ul class="icon">
@@ -162,11 +162,10 @@
             </div>
             <div class="full2">
                 <ul class="list2">
-                    <li><a href="userMyPage.go">나의 정보</a></li>
-                    <li><a href="userReview.go">나의 리뷰</a></li>
-                    <li><a href="userMyChat.go">나의 대화방</a></li>
-                    <li><a href="MyBookmark.go">즐겨찾기 매장</a></li>
-                    <li><a href="userAlarm.go">알림 리스트</a></li>
+                    <li><a href="storeMyPage.go">나의 정보</a></li>
+                    <li><a href="storeReview.go">나의 매장 리뷰</a></li>
+                    <li><a href="storeBoard.go">나의 게시글</a></li>
+                    <li><a href="storeMenu.go">매장 메뉴 등록</a></li>
                 </ul>
                 <div class="logout">
                     <i class="fas fa-sign-out-alt"></i>

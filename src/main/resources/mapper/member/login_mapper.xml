@@ -3,5 +3,15 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.member.LoginDAO">
-
+	<select id="login" parameterType="String">
+		<if test="opt == 'user_log'">
+			SELECT user_id FROM user WHERE user_id=#{id} AND user_pw=#{pw}
+		</if>
+		<if test="opt == 'store_log'">
+			SELECT store_id FROM store WHERE store_id=#{id} AND store_pw=#{pw}
+		</if>
+		<if test="opt == 'admin_log'">
+			SELECT admin_id FROM admin WHERE admin_id=#{id} AND admin_pw=#{pw}
+		</if>
+	</select>
 </mapper>

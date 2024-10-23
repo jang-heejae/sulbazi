@@ -3,5 +3,22 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.category.CategoryDAO">
-
+	<select id="categoryList" parameterType="com.sulbazi.category.CategoryOptDTO">
+		SELECT * FROM category_opt ORDER BY opt_idx ASC
+	</select>
+	<insert id="categoryAdd" parameterType="com.sulbazi.category.CategoryOptDTO">
+		INSERT INTO category_opt(category_idx, opt_name) VALUES
+			<if test="keyword != null and cate_opt == 'drink'">
+				('1',#{keyword})
+			</if>
+			<if test="keyword != null and cate_opt == 'menu'">
+				('2',#{keyword})
+			</if>
+			<if test="keyword != null and cate_opt == 'mood'">
+				('3',#{keyword})
+			</if>
+			<if test="keyword != null and cate_opt == 'visit'">
+				('4',#{keyword})
+			</if>
+	</insert>
 </mapper>
