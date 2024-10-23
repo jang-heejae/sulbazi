@@ -5,6 +5,8 @@ public class CategoryOptDTO {
 	private int category_idx;
 	private String opt_name;
 	private boolean category_state;
+	
+	
 	public int getOpt_idx() {
 		return opt_idx;
 	}
