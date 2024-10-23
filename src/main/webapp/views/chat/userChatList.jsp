@@ -7,72 +7,6 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
-
-<!-- <script>
-   $(document).ready(function() {
-       var showPage = 1; // 기본으로 보여줄 페이지
-       pageCall(showPage); // 페이지 호출
-
-       function pageCall(page) {
-           console.log('pageCall');
-       
-           $.ajax({
-               type: 'GET',
-               url: 'chatlist.ajax', 
-               data: {
-                   'page': page, // 몇 페이지 보여줄지
-                   'cnt': 100 // 페이지당 몇 개의 게시물을 보여줄지
-               },
-               dataType: 'JSON', 
-               success: function(data) {
-                   console.log(data);
-                   chatlistPrint(data.chatlist);
-                   
-                   // 페이징 플러그인 처리
-                   $('#pagination').twbsPagination({
-                       startPage: 1, // 현재 보여지는 페이지
-                       totalPages: data.totalPages, // 최대 페이지 수
-                       visiblePages: 5, // 보여줄 페이지의 수
-                       onPageClick: function(evt, page) {
-                           console.log("evt", evt); // 클릭 이벤트의 모든 내용
-                           console.log("page", page); // 클릭한 페이지 번호
-                           pageCall(page); // 페이지 정보 받아서 수행
-                       }
-                   });
-               },
-               error: function(e) {
-                   console.log("오류 발생", e);
-               }       
-           });
-       }
-   
-
-       function chatlistPrint(chatlist) {
-           var content = '';
-           
-           for (var item of chatlist) {
-               content += '<div class="chatroom">';
-               content += '    <div class="roomname">';
-               content += '        <ul>';
-               content += '            <li>' + item.userchat_subject + '</li>';
-               content += '            <li>' + item.user_id + '</li>';
-               content += '        </ul>';
-               content += '    </div>';
-               content += '    <div class="roominfo">';
-               content += '        <div>';
-               content += '            <ul>';
-               content += '                <li>' + item.current_people + '/' + item.max_people + '</li>';
-               content += '                <li>' + item.userchat_date + '</li>';
-               content += '            </ul>';
-               content += '        </div>';
-               content += '        <div class="gobtn" onclick="location.href=\'/sulbazi/userchatroom.do\'">참여</div>';
-               content += '    </div>';
-               content += '</div>';
-           }
-           $('.chatitems').html(content);
-       }
-   });
-</script> -->
 <style>
     *{
         margin: 0;
@@ -103,7 +37,6 @@
 	    border-radius: 20px;
 	    overflow-y: auto; /* 수직 스크롤 활성화 */
 	}
-	
 	.chatroom{
         display: flex;
         flex-direction: column;
@@ -226,13 +159,6 @@
             </div>
        	</c:forEach>
       </div>
-	<!-- <div>
-       	<div class="container">
-		    <nav aria-label="Page navigation">
-		        <ul id="pagination" class="pagination"></ul>
-		    </nav>
-		</div>
-	</div> -->
 	</section>
 </body>
 <script>
@@ -246,116 +172,6 @@
 	            $('.createroom').hide();
 	        }
 	    });
-		
-/*     $(document).ready(function() {
-    	
-    	pageCall();; // 채팅 리스트 불러오기
 
-        function pageCall() {
-            console.log('loadChatList');
-
-            $.ajax({
-                type: 'GET',
-                url: 'chatlist.ajax',
-                dataType: 'JSON',
-                success: function(data) {
-                    console.log(data);
-                    chatlistPrint(data.chatlist);
-                },
-                error: function(e) {
-                    console.log("오류 발생", e);
-                }
-            });
-        }
-
-        function chatlistPrint(chatlist) {
-            var content = '';
-
-            for (var item of chatlist) {
-                content += '<div class="chatroom">';
-                content += '    <div class="roomname">';
-                content += '        <ul>';
-                content += '            <li>' + item.userchat_subject + '</li>';
-                content += '            <li>' + item.user_id + '</li>';
-                content += '        </ul>';
-                content += '    </div>';
-                content += '    <div class="roominfo">';
-                content += '        <div>';
-                content += '            <ul>';
-                content += '                <li>' + item.current_people + '/' + item.max_people + '</li>';
-                content += '                <li>' + item.userchat_date + '</li>';
-                content += '            </ul>';
-                content += '        </div>';
-                content += '        <div class="gobtn" onclick="location.href=\'/sulbazi/userchatroom.do\'">참여</div>';
-                content += '    </div>';
-                content += '</div>';
-            }
-            $('.chatitems').html(content);
-        }
-    }); */
-	
-    // 페이징 
-   /*  var showPage = 1; // 기본으로 보여줄 페이지
-
-	pageCall(showPage);
-
-	function pageCall(page){
-		console.log('pageCall');
-	
-		$.ajax({
-		    type: 'GET',
-		    url: 'chatlist.ajax', 
-		    data:{
-		    	'page':page, // 몇페이지 보여줘?
-		    	'cnt':6 // 페이지당 몇개의 게시물을 보여줘?
-		    },
-		    dataType: 'JSON', 
-		    success: function(data) {
-		        console.log(data);
-		        chatlistPrint(data.chatlist);
-		        
-		        // 페이징 플러그인 처리
-		        $('#pagination').twbsPagination({
-		        	startPage:1, // 현재 보여지는 페이지
-		        	totalPages:data.totalPages, // 최대 페이지 수
-		        	visiblePages:5, // 보여줄 페이지의 수
-		        	onPageClick:function(evt, page){
-		        		console.log("evt",evt); // 클릭 이벤트의 모든 내용
-		        		console.log("page",page); // 클릭한 페이지 번호
-		        		pageCall(page); // 페이지 정보 받아서 수행
-		        	}
-		        });
-		    },
-		    error: function(e) {
-		        console.log("오류 발생", e);
-		    }       
-		});
-	}
-
-	function chatlistPrint(chatlist){
-		var content = '';
-		
-		for(var item of chatlist){
-			content += '<div class="chatroom">';
-	        content += '    <div class="roomname">';
-	        content += '        <ul>';
-	        content += '            <li>' + item.userchat_subject + '</li>';
-	        content += '            <li>' + item.user_id + '</li>';
-	        content += '        </ul>';
-	        content += '    </div>';
-	        content += '    <div class="roominfo">';
-	        content += '        <div>';
-	        content += '            <ul>';
-	        content += '                <li>' + item.current_people + '/' + item.max_people + '</li>';
-	        content += '                <li>' + item.userchat_date + '</li>';
-	        content += '            </ul>';
-	        content += '        </div>';
-	        content += '        <div class="gobtn" onclick="location.href=\'/sulbazi/userchatroom.do\'">참여</div>';
-	        content += '    </div>';
-	        content += '</div>';
-		}
-		$('.chatitems').html(content);
-	} */
-    
 </script>
 </html>
