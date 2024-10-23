@@ -10,4 +10,6 @@ public interface CategoryDAO {
 	List<CategoryOptDTO> categoryList();
 
 	int categoryAdd(Map<String, String> param);
+
+	int categoryState(String category, String state);
 }

@@ -10,7 +10,7 @@
 </style>
 </head>
 <body>
-	
+	<c:import url="../main/adminMain.jsp"/>
 </body>
 <script>
 

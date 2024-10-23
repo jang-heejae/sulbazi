@@ -1,5 +1,6 @@
 package com.sulbazi.category;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +35,15 @@ public class CategoryController {
 		model.addAttribute("list", msg); 
 		return "admin/categoryAdd";
 	 }
+	@PostMapping(value="categoryState.ajax")
+	@ResponseBody
+	public Map<String, Object>categoryState(@RequestParam Map<String, Object>param){
+		Map<String, Object> response = new HashMap<String, Object>();
+		String category = (String) param.get("category");
+		String state = (String) param.get("state");
+		boolean success = category_ser.categoryState(category, state);
+		response.put("success", success);
+		response.put("success", false);
+		return response;
+	}
 }

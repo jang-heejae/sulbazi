@@ -23,4 +23,7 @@ public class CategoryService {
 			 msg = "성공"; 
 		 return msg;
 	  }
+	public boolean categoryState(String category, String state) {
+		return category_dao.categoryState(category, state) > 0;
+	}
 }

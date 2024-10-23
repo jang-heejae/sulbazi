@@ -5,12 +5,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
 <style>
 	body{
 		color: white;
 		background-color: #20290E;
 	} 
-	#newCate{
+	#newPW{
 		background-color: #E98D1C;
 		position: absolute;
 		top: 30px;
@@ -33,36 +34,18 @@
 		top: 350px;
 		left: 500px;
 	}
-	#opt_bar{
-		width: 100%;
-	}
 </style>
-</head>
 <body>
-	<form action="categoryAdd.do" method="post" onsubmit="refresh();">
-	<div id="newCate">
-	<h3>카테고리 추가</h3>
+	<form action="report.do" method="post">
+	<div id="report">
+	<i class="far fa-siren-on"></i>
+	<h3>신고하기</h3>
 	<hr/>
-	<table>
-		<tr>
-			<th>카테고리 분류</th>
-			<td>
-				<select id="opt_bar" name="cate_opt">
-					<option value="drink">주종</option>
-					<option value="menu">안주</option>
-					<option value="mood">분위기</option>
-					<option value="visit">방문목적</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<th>카테고리 선택사항</th>
-			<td><input type="text" name="keyword" id="new_categoryOpt" value=""/></td>
-		</tr>
-	</table>
-	<br/>
+		<div>
+			<input type="text" name="reportContent" placeholder="20자 이내로 신고내용을 입력해주세요." value=""/>
+		</div>
 	<div id="acp">
-		<button type="submit">카테고리 추가</button>
+		<button onclick="report()">신고</button>
 	</div>
 	<br/>
 	</div>
@@ -72,8 +55,6 @@
 	</form>
 </body>
 <script>
-function refresh() {
-       window.opener.location.reload();
-}
+
 </script>
 </html>

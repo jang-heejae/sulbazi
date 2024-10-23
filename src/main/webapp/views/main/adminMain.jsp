@@ -165,10 +165,10 @@
             </div>
             <div class="full2">
                 <ul class="list2">
-                    <li><a href="">신고 목록</a></li>
-                    <li><a href="">고객 센터</a></li>
-                    <li><a href="">일반 사용자 리스트</a></li>
-                    <li><a href="">매장 사용자 리스트</a></li>
+                    <li><a href="reportList.go">신고 목록</a></li>
+                    <li><a href="inqueryList.go">고객 센터</a></li>
+                    <li><a href="adminUserList.go">일반 사용자 리스트</a></li>
+                    <li><a href="adminStoreList.go">매장 사용자 리스트</a></li>
                     <li><a href="categoryUpdate.go">카테고리 관리</a></li>
                     <li><a href="adminList.go">관리자 리스트</a></li>
                 </ul>

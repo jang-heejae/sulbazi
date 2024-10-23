@@ -21,4 +21,9 @@
 				('4',#{keyword})
 			</if>
 	</insert>
+	<update id="categoryState" parameterType="map">
+        UPDATE category_opt
+        SET category_state = #{state}
+        WHERE opt_name = #{category}
+    </update>
 </mapper>

@@ -229,5 +229,57 @@ function optList(list){
 		$('#cateOptMoodDel').html(contentMoodDel);
 		$('#cateOptVisitDel').html(contentVisitDel);
 }
+$(document).ready(function(){
+	$('#btn button').eq(0).on('click', function(){
+		var selCate = $('input[name="category"]:checked').val();
+		if(selCate){
+			upCate(selCate, 1);
+		}else{
+			alert('카테고리를 선택하세요.');
+		}
+	});
+	$('#btn button').eq(1).on('click', function(){
+		var selCate = $('input[name="category"]:checked').val();
+		if(selCate){
+			upCate(selCate, 0);
+		}else{
+			alert('카테고리를 선택하세요.');
+		}
+	});
+	function upCate(cateName, state){
+		$.ajax({
+			type: 'POST',
+			url: 'categoryState.ajax',
+			data:{category: cateName, state: state},
+			dataType:'JSON',
+			success: function(data){
+				if(data.success){
+					if(state == 1){
+						moveCategory(cateName);
+					}else{
+						moveCategory(cateName);
+					}
+				}
+				location.reload();
+			},
+			error: function(e){
+				console.log(e);
+			}
+		});
+		function moveCategory(cateName){
+			$('#cateOptDrinkDel, #cateOptMenuDel, #cateOptMoodDel, #cateOptVisitDel')
+			.find('input[value="${cateName}"]').parent().remove();
+			$('#cateOptDrink, #cateOptMenu, #cateOptMood, #cateOptVisit')
+			.append('<input type="radio" name="category" value="${cateName}"/> ${cateName}&nbsp;&nbsp;&nbsp;');
+		}
+		function moveCategory(cateName){
+			$('#cateOptDrink, #cateOptMenu, #cateOptMood #cateOptVisit')
+			.find('input[value="${cateName}"]').parent().remove();
+			$('#cateOptDrinkDel, #cateOptMenuDel, #cateOptMoodDel, #cateOptVisitDel')
+			.append('<input type="radio" name="category" value="${cateName}"/> ${cateName}&nbsp;&nbsp;&nbsp;');
+		}
+	}
+});
+
 </script>
 </html>
