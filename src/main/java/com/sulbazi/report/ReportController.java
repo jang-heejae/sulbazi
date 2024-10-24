@@ -24,14 +24,15 @@ public class ReportController {
 		return "admin/reportList";
 	}
 
-	/*
-	 * @GetMapping(value="/reportList.ajax")
-	 * 
-	 * @ResponseBody public Map<String, Object> reportList(String page, String cnt){
-	 * int page_ = Integer.parseInt(page); int cnt_ = Integer.parseInt(cnt); return
-	 * report_ser.reportList(page_, cnt_); }
-	 */
-	/*
+	
+	 @GetMapping(value="/reportList.ajax")  
+	 @ResponseBody
+	 public Map<String, Object> reportList(String page, String cnt){
+		 int page_ = Integer.parseInt(page);
+		 int cnt_ = Integer.parseInt(cnt);
+		 return report_ser.reportList(page_, cnt_); 
+		 }
+	 /*
 	 * @GetMapping(value="/reportList.ajax")
 	 * 
 	 * @ResponseBody public Map<String, Object> reportList(String page, String cnt,
@@ -39,13 +40,13 @@ public class ReportController {
 	 * = Integer.parseInt(cnt); return report_ser.reportList(page_, cnt_, status,
 	 * category); }
 	 */
-	@RequestMapping(value="/reportDetail.go")
+	@GetMapping(value="/reportDetail.go")
 	public String reportDetail(Model model, String report_idx) {
 		ReportDTO report_dto = report_ser.reportDetail(report_idx);
 		model.addAttribute("info", report_dto);
 		return "admin/reportDetail";
 	}
-	@PostMapping(value="/reportWrite.ajax")
+	@GetMapping(value="/reportWrite.ajax")
 	@ResponseBody
 	public Map<String, Object> reportWrite(Map<String, String>param,
 			HttpSession session){

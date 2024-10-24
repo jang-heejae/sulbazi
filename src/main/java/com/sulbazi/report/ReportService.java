@@ -14,15 +14,16 @@ public class ReportService {
 	@Autowired ReportDAO report_dao;
 	@Autowired RevokeDAO revoke_dao;
 	
-	/*
-	 * public Map<String, Object> reportList(int page, int cnt, String status,
-	 * String category) { int limit = cnt; int offset = (page-1) * cnt; int
-	 * totalPages = report_dao.allCount(cnt);
-	 * 
-	 * Map<String, Object> map = new HashMap<String, Object>();
-	 * map.put("totalPages", totalPages); map.put("list",
-	 * report_dao.reportList(limit, offset)); return map; }
-	 */
+
+	 public Map<String, Object> reportList(int page, int cnt) { 
+		 int limit = cnt;
+		 int offset = (page-1) * cnt;
+		 int totalPages = report_dao.allCount(cnt);
+	  
+	 Map<String, Object> map = new HashMap<String, Object>();
+	 map.put("totalPages", totalPages); map.put("list",
+	 report_dao.reportList(limit, offset)); return map; }
+
 	/*
 	 * public Map<String, Object> reportList(int page, int cnt, String status,
 	 * String category) { int limit = cnt; int offset = (page - 1) * cnt;
