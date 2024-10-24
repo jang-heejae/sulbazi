@@ -1,10 +1,7 @@
 package com.sulbazi.member;
 
 public class StoreMenuDTO {
-<<<<<<< HEAD
-	
-=======
->>>>>>> 8c6a2ccfec909de7453ef1b0add472315e93d8a3
+
 	private int menu_idx;
 	private int store_idx;
 	private String menu_name;
@@ -40,9 +37,5 @@ public class StoreMenuDTO {
 	public void setMenu_category(String menu_category) {
 		this.menu_category = menu_category;
 	}
-<<<<<<< HEAD
 
-	
-=======
->>>>>>> 8c6a2ccfec909de7453ef1b0add472315e93d8a3
 }
