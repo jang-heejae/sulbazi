@@ -46,9 +46,15 @@
 	<select id="bookmarkCheckCount" parameterType="map" resultType="int">
 		select count(user_id) from bookmark where store_idx=#{store_idx}
 	</select>
+	<select id="storeBookmarkCheck" parameterType="map" resultType="int">
+		select count(store_idx) from bookmark where store_idx=#{store_idx}
+	</select>
 	<delete id="delBookmark" parameterType="map">
 		DELETE FROM bookmark WHERE user_id = #{user_id} and store_idx = #{store_idx};
 	</delete>
+	<update id="updateStoreFavoriteCount" parameterType="int">
+		UPDATE store SET bookmark_user = #{bookmark_user} WHERE store_idx = #{store_idx};
+	</update>
 	
 
 

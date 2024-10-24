@@ -41,6 +41,13 @@ public interface StoreDAO {
 
 	List<PhotoDTO> getStorePhotos(int idx);
 
+	int storeBookmarkCheck(int store_idx);
+
+	void updateStoreFavoriteCount(int store_idx, int bookmark_user);
+
+
+
+
 	
 
 }

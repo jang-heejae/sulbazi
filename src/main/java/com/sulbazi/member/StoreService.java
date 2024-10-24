@@ -138,12 +138,16 @@ public class StoreService {
 		int store_idx = storeidx;
 		String user_id= loginId;
 		Map<String, Object> map = new HashMap<String, Object>();
-		if (store_dao.bookmarkCheckCount(user_id,store_idx)>1) {
-			int del = store_dao.delBookmark(user_id,store_idx);
-		}else {
+		if (store_dao.bookmarkCheckCount(user_id,store_idx) == 0) {
 			map.put("bookmark",store_dao.bookmarkCheck(user_id,store_idx));
+		}else {
+			int del = store_dao.delBookmark(user_id,store_idx);
 		}
-
+		
+		int bookmark_user = store_dao.storeBookmarkCheck(store_idx);
+		if ( bookmark_user >= 0) {
+			store_dao.updateStoreFavoriteCount(store_idx,bookmark_user);
+		}
 		
 		return map;
 	}
