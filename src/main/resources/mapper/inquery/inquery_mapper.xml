@@ -4,4 +4,27 @@
 >
 <mapper namespace="com.sulbazi.inquery.InqueryDAO">
 
+	<insert id="userinquerywrite" 
+		useGeneratedKeys="true"
+		keyColumn="inquery_idx"
+		keyProperty="inquery_idx"
+		parameterType="com.sulbazi.inquery.InqueryDTO">
+		INSERT INTO inquery(inquery_subject, inquery_content, id_category, id_write)
+			VALUES(#{inquery_subject},#{inquery_content},#{id_category},#{id_write})
+	</insert>
+	
+	<insert id="inqueryfileWrite" >
+		INSERT INTO photo(photo_category_idx,new_filename,photo_folder_idx)
+			VALUES(#{param1}, #{param2},#{param3})
+	</insert>
+	
+	<select id="" resultType="com.sulbazi.inquery.InqueryDTO">
+		SELECT inquery_content, inquery_subject,inquery_state, inquery_date 
+			FROM inquery WHERE id_write=#{param1}	
+	</select>
+	
+	
+	
+	<select id=""></select>
+	
 </mapper>

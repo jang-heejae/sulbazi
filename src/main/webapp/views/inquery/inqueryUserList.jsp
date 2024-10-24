@@ -68,7 +68,7 @@
         .actions {
             margin-top: 20px;
         }
-        .actions button {
+        button {
             padding: 10px 20px;
             border: none;
             border-radius: 4px;
@@ -110,28 +110,27 @@
 </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">고객센터</div>
-        <div class="back">
-            <div class="customer-service">
-                <div class="title">내 문의 사항</div>
-                <div class="form-group">
-                    <label>제목</label>
-                    <input type="text" placeholder="제목을 입력하세요" value="">
-                </div>
-                <div class="form-group">
-                    <textarea id="inquiryContent" name="inquiryContent" rows="4" placeholder="내용을 입력하세요" value=""></textarea>
-                    <form>
-                        <!-- 여러개의 파일을 보내고 싶다면 multiple옵션을 사용해야 함 -->
-                        <input type="file" name="image" multiple/>
-                        <input type="submit" value="파일 등록"/>
-                    </form>
-                </div>
-                <div class="actions">
-                    <button class="register" type="button">등록</button>
-                </div>
-            </div>
-        </div>
+	<form action="userinquerywrite.do" method="post" enctype="multipart/form-data">
+    	<div class="container">
+        	<div class="header">고객센터</div>
+        	<div class="back">
+            	<div class="customer-service">
+                	<div class="title">내 문의 사항</div>
+                	<div class="form-group">
+                    	<label>제목</label>
+                    	<input type="text" placeholder="제목을 입력하세요" name="inquerysubject" value="">
+                	</div>
+                	<div class="form-group">
+                    	<textarea id="inquiryContent" name="inquerycontent" rows="4" placeholder="내용을 입력하세요" value=""></textarea>
+						<input type="file" name="inqueryfiles" multiple="multiple"/>
+                	</div>
+                	<div>
+                    	<button type="button">등록</button>
+                	</div>
+            	</div>
+        	</div>
+    	</div>
+	</form>
         <div class="table-container">
             <table>
                 <thead>
@@ -149,7 +148,6 @@
             </table>
         </div>
         <div class="pagination"></div>
-    </div>
 </body>
 <script>
     var btn = document.getElementsByTagName('button');
@@ -158,29 +156,30 @@
         console.log(result);
         if (result == true){
             alert('등록되었습니다');
-            function addquiry();
+            $('button').prop("type", "submit");
         } else {
             alert('등록이 취소되었습니다');
         }
     });
 	
-    function addquiry() {
+    function addquery() {
         $.ajax({
             type:'POST',  //method
-            url: 'userlistinquiry.ajax',  //요청 주소
+            url: 'userlistinquery.ajax',  //요청 주소
             data:{},   //파라메터
             dataType:'JSON',  //받을 데이터 타입
             success:function(data) {   //성공했을 경우(받을 데이터)
                 console.log(data);
     			if(data.login) {
     				drawList(data.list);
+    			 }
             },
             error:function(e) {  //실패했을 경우(실패 내용)
                 console.log(e)
             }
         });
     }
-    	function drawList(list) {
+function drawList(list) {
     		var content = '';
     		list.forEach(function(item,idx) {
     			content+='<tr>';
@@ -193,7 +192,7 @@
     		});
     		$('#list').html(content);
     		
-    	}
+    	} 
 </script>
 </body>
 </html>
