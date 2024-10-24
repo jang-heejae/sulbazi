@@ -125,7 +125,7 @@
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
             <div class="logo_text">
-                <a href="#">SULBAZI</a>
+                <a href="./">SULBAZI</a>
             </div>
             <div>
                 <ul class="icon">

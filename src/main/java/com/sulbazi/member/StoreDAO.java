@@ -16,5 +16,13 @@ public interface StoreDAO {
 	List<StoreMenuDTO> getStoreMenuById(int idx);
 
 
+	List<Integer> storenamesearch(String keyword);
+
+	List<Integer> storemenusearch(String keyword);
+
+	List<Integer> storeaddrsearch(String keyword);
+
+	List<StoreDTO> storesearch(Integer storeidx);
+	
 
 }
