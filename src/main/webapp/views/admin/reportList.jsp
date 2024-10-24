@@ -41,12 +41,12 @@
 	<div id="reportList">
 		<h3>신고 목록</h3>
 		<hr/>
-		<input type="radio" value=""/>처리중&nbsp;&nbsp;
-		<input type="radio" value=""/>처리 완료&nbsp;&nbsp;
-		<input type="radio" value=""/>전체 보기
+		<input type="radio" name="status" value=""/>처리중&nbsp;&nbsp;
+		<input type="radio" name="status" value=""/>처리 완료&nbsp;&nbsp;
+		<input type="radio" name="status" value=""/>전체 보기
 		<br/>
-		<input type="radio" value=""/>리뷰&nbsp;&nbsp;
-		<input type="radio" value=""/>메시지
+		<input type="radio" name="category" value=""/>리뷰&nbsp;&nbsp;
+		<input type="radio" name="category" value=""/>메시지
 	</div>
 	<div id="reportDiv">
 	<table>
@@ -77,13 +77,20 @@
 <script>
 var showPage = 1;
 pageCall(showPage);
+$('input[name="status"], input[name="category"]').on('change', function() {
+    pageCall(1);  // 페이지를 1로 설정하고 호출
+});
 function pageCall(page){
+	var status = $('input[name="status"]:checked').val();
+    var category = $('input[name="category"]:checked').val();
 	$.ajax({
 		type:'GET',
 		url:'reportList.ajax',
 		data:{
-			'page' : page, 
-			'cnt' : 10
+			page : page, 
+			cnt : 10,
+			status : status,
+			category : category
 		},
 		dataType:'JSON',
 		success:function(data){
@@ -111,7 +118,7 @@ function listPrint(list){
 		content+='<td>'+item.reporting_id+'</td>';
 		content+='<td>'+item.reported_id+'</td>';
 		content+='<td>'+item.report_category+'</td>';
-		content+='<td><a href="reportDetail.go?id='+item.id+'">'+item.report_content+'</a></td>';
+		content+='<td><a href="reportDetail.go?report_idx='+item.report_idx+'">'+item.report_content+'</a></td>';
 		content+='<td>'+item.report_date+'</td>';
 		content+='<td>'+item.report_state+'</td>';
 		content+='</tr>';

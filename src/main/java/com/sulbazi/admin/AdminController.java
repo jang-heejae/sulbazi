@@ -54,4 +54,12 @@ public class AdminController {
             }
         return response; 
     }
+	@RequestMapping(value="/adminUserList.go")
+	public String adminUserList() {
+		return "admin/adminUserList";
+	}
+	@RequestMapping(value="/adminStoreList.go")
+	public String adminStoreList() {
+		return "admin/adminStoreList";
+	}
 }
