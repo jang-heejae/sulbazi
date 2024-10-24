@@ -1,8 +1,10 @@
 package com.sulbazi.category;
 
 public class CategoryDTO {
+	
 	private int category_idx;
 	private String category_type;
+	
 	public int getCategory_idx() {
 		return category_idx;
 	}

@@ -3,9 +3,11 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.category.CategoryDAO">
+
 	<select id="categoryList" parameterType="com.sulbazi.category.CategoryOptDTO">
 		SELECT * FROM category_opt ORDER BY opt_idx ASC
 	</select>
+	
 	<insert id="categoryAdd" parameterType="com.sulbazi.category.CategoryOptDTO">
 		INSERT INTO category_opt(category_idx, opt_name) VALUES
 			<if test="keyword != null and cate_opt == 'drink'">
@@ -21,9 +23,21 @@
 				('4',#{keyword})
 			</if>
 	</insert>
+	
 	<update id="categoryState" parameterType="map">
         UPDATE category_opt
         SET category_state = #{state}
         WHERE opt_name = #{category}
     </update>
+    
+    
+    <!-- 매장 리스트 필터링 -->
+    <select id="storefiltering" resultType="int">
+		SELECT store_idx FROM store_category WHERE opt_idx=#{param1} 
+			OR opt_idx=#{param2} OR opt_idx=#{param3} 
+			OR opt_idx=#{param4} GROUP BY store_idx
+	</select>
+	
+	
+	
 </mapper>

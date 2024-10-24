@@ -4,4 +4,27 @@
 >
 <mapper namespace="com.sulbazi.member.StoreDAO">
 
+	<!-- 매장 이름 검색 후 store_idx 추출-->
+	<select id="storenamesearch" resultType="int">
+		SELECT store_idx FROM store 
+			WHERE store_name LIKE CONCAT('%', #{param1}, '%')
+	</select>
+
+	<!-- 매장 메뉴 검색 후 store_idx 추출-->
+	<select id="storemenusearch" resultType="int">
+		SELECT store_idx FROM store_menu 
+			WHERE menu_name LIKE CONCAT('%', #{param1}, '%') GROUP BY store_idx
+	</select>
+
+	<!-- 매장 주소 검색 후 store_idx 추출-->
+	<select id="storeaddrsearch" resultType="int">
+		SELECT store_idx FROM store WHERE store_address LIKE CONCAT('%', #{param1}, '%')
+	</select>
+
+	<select id="storesearch" 
+		resultType="com.sulbazi.member.StoreDTO">
+		SELECT store_name,star_average,review_total,store_address FROM store WHERE store_idx=#{param1}
+	</select>
+	
+	
 </mapper>
