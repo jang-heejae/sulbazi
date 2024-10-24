@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -69,6 +71,15 @@ public class InqueryService {
 		
 	
 	}
+
+	public List<HashMap<String, Object>> userlistinquery(String id) {
+		/* inquery_dao.inqueryprocess(id); */
+		return inquery_dao.userlistinquery(id);
+		
+
+			
+	}
+		
 	
 	
 	

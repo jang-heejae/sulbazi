@@ -150,13 +150,16 @@
         <div class="pagination"></div>
 </body>
 <script>
+	var loginId = '${sessionScope.loginId}';
     var btn = document.getElementsByTagName('button');
     btn[0].addEventListener('click',function() {
+    	event.preventDefault();
         var result = confirm('등록하시겠습니까?');
         console.log(result);
         if (result == true){
             alert('등록되었습니다');
             $('button').prop("type", "submit");
+            addquery();
         } else {
             alert('등록이 취소되었습니다');
         }
@@ -164,35 +167,38 @@
 	
     function addquery() {
         $.ajax({
-            type:'POST',  //method
-            url: 'userlistinquery.ajax',  //요청 주소
-            data:{},   //파라메터
-            dataType:'JSON',  //받을 데이터 타입
-            success:function(data) {   //성공했을 경우(받을 데이터)
-                console.log(data);
-    			if(data.login) {
-    				drawList(data.list);
-    			 }
+            type: 'GET',
+            url: 'userlistinquery.ajax',
+            data: {},
+            dataType: 'JSON',
+            success: function(data) {
+                console.log("데이터 수신 성공:", data);
+                if (data && data.list && Array.isArray(data.list)) {
+                    drawList(data.list);
+                } else {
+                    console.log("유효한 리스트가 없습니다.");
+                }
             },
-            error:function(e) {  //실패했을 경우(실패 내용)
-                console.log(e)
+            error: function(e) {
+                console.log("AJAX 요청 실패:", e);
             }
         });
     }
-function drawList(list) {
-    		var content = '';
-    		list.forEach(function(item,idx) {
-    			content+='<tr>';
-    			content+='<td>'+item.+'</td>';
-    			content+='<td>'+item.+'</td>';
-    			content+='<td>'+item.+'</td>';
-    			content+='<td>'+item.+'</td>';
-    			content+='<td>'+item.+'</td>';
-    			content+='</tr>';
-    		});
-    		$('#list').html(content);
-    		
-    	} 
+
+        function drawList(list) {
+            var content = '';
+            list.forEach(function(item, idx) {
+                content += '<tr>';
+                content += '<td>' + loginId + '</td>';
+                content += '<td>' + item.inquery_subject + '</td>';
+                content += '<td>' + item.inquery_date + '</td>';
+                content += '<td>' + item.inquery_state + '</td>';
+                content += '<td>' + item.inquery_state + '</td>';
+                content += '</tr>';
+            });
+            console.log("갱신된 테이블 내용:", content);
+            $('#list').html(content); // 테이블 업데이트
+        }
 </script>
 </body>
 </html>

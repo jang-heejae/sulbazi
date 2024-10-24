@@ -18,13 +18,14 @@
 			VALUES(#{param1}, #{param2},#{param3})
 	</insert>
 	
-	<select id="" resultType="com.sulbazi.inquery.InqueryDTO">
-		SELECT inquery_content, inquery_subject,inquery_state, inquery_date 
+	<select id="userlistinquery" resultType="map">
+		SELECT inquery_idx,inquery_subject,inquery_state, inquery_date 
 			FROM inquery WHERE id_write=#{param1}	
 	</select>
-	
-	
-	
-	<select id=""></select>
-	
+
+	<!-- 문의 처리자 -->
+	<select id="inqueryprocess" resultType="map">
+		SELECT inquery_idx,admin_id FROM answer WHERE 
+			(SELECT inquery_idx FROM inquery WHERE id_write=#{param1})
+	</select>
 </mapper>

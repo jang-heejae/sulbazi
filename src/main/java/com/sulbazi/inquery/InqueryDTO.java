@@ -37,7 +37,7 @@ public class InqueryDTO {
 	public void setInquery_date(Date inquery_date) {
 		this.inquery_date = inquery_date;
 	}
-	public boolean isInquery_state() {
+	public boolean getInquery_state() {
 		return inquery_state;
 	}
 	public void setInquery_state(boolean inquery_state) {
