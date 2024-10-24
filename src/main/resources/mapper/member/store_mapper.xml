@@ -21,10 +21,10 @@
 		SELECT store_idx FROM store WHERE store_address LIKE CONCAT('%', #{param1}, '%')
 	</select>
 
-<!-- 	<select id="storesearch" 
+	<select id="storesearch" 
 		resultType="com.sulbazi.member.StoreDTO">
 		SELECT store_name,star_average,review_total,store_address FROM store WHERE store_idx=#{param1}
-	</select> -->
+	</select>
 	
 	
 </mapper>

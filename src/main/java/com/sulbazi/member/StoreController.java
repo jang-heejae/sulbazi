@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,31 +26,31 @@ public class StoreController {
 	
 	@GetMapping(value="/namesearch.ajax")
 	@ResponseBody
-	public Map<String, Object> storenamesearch(String keyword) {
+	public Map<String, Object> storenamesearch(String keyword, Model model) {
 		logger.info("매장이름키워드 컨트롤러");
 		logger.info(keyword);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("searchresult",store_ser.storenamesearch(keyword));
+		map.put("searchresult",store_ser.storenamesearch(keyword, model));
 		return map;
 	}
 	
 	@GetMapping(value="/menusearch.ajax")
 	@ResponseBody
-	public Map<String, Object> storemenusearch(String keyword) {
+	public Map<String, Object> storemenusearch(String keyword,Model model) {
 		logger.info("메뉴키워드 컨트롤러");
 		logger.info(keyword);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("searchresult",store_ser.storemenusearch(keyword));
+		map.put("searchresult",store_ser.storemenusearch(keyword, model));
 		return map;
 	}
 	
 	@GetMapping(value="/addrsearch.ajax")
 	@ResponseBody
-	public Map<String, Object> storeaddrsearch(String keyword) {
+	public Map<String, Object> storeaddrsearch(String keyword, Model model) {
 		logger.info("주소키워드 컨트롤러");
 		logger.info(keyword);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("searchresult",store_ser.storeaddrsearch(keyword));
+		map.put("searchresult",store_ser.storeaddrsearch(keyword, model));
 		return map;
 	}
 	
