@@ -16,6 +16,5 @@ public class PhotoCategoryDTO {
 	public void setPhoto_category(String photo_category) {
 		this.photo_category = photo_category;
 	}
-	
-	
+
 }

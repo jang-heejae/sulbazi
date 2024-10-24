@@ -3,19 +3,19 @@ package com.sulbazi.member;
 
 public class StoreDTO {
 
-	private int store_idx;
-	private String store_id;
-	private String store_pw;
-	private String store_number;
-	private String store_name;
-	private String store_phone;
-	private String store_address;
-	private String store_time;
-	private double store_latitude;
-	private double store_longitude;
-	private int review_total;
-	private float star_average;
-	private int bookmark_user;
+	   private int store_idx;
+	   private String store_id;
+	   private String store_pw;
+	   private String store_number;
+	   private String store_name;
+	   private String store_phone;
+	   private String store_time;
+	   private String store_address;
+	   private double store_latitude;
+	   private double store_longitude;
+	   private int review_total;
+	   private float star_average;
+	   private int bookmark_user;
 
 
 	public int getStore_idx() {
