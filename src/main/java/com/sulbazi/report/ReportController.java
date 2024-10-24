@@ -23,14 +23,14 @@ public class ReportController {
 	public String report() {
 		return "admin/reportList";
 	}
-	@GetMapping(value="/reportList.ajax")
-	@ResponseBody
-	public Map<String, Object> reportList(String page, String cnt){
-		int page_ = Integer.parseInt(page);
-		int cnt_ = Integer.parseInt(cnt);
-		return report_ser.reportList(page_, cnt_);
-	}
 
+	/*
+	 * @GetMapping(value="/reportList.ajax")
+	 * 
+	 * @ResponseBody public Map<String, Object> reportList(String page, String cnt){
+	 * int page_ = Integer.parseInt(page); int cnt_ = Integer.parseInt(cnt); return
+	 * report_ser.reportList(page_, cnt_); }
+	 */
 	/*
 	 * @GetMapping(value="/reportList.ajax")
 	 * 

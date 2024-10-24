@@ -77,20 +77,29 @@
 <script>
 var showPage = 1;
 pageCall(showPage);
+<<<<<<< HEAD
 $('input[name="status"], input[name="category"]').on('change', function() {
     pageCall(1);  // 페이지를 1로 설정하고 호출
 });
 function pageCall(page){
 	var status = $('input[name="status"]:checked').val();
     var category = $('input[name="category"]:checked').val();
+=======
+function pageCall(page){
+>>>>>>> parent of f666e84 (리포트 페이지네이션)
 	$.ajax({
 		type:'GET',
 		url:'reportList.ajax',
 		data:{
+<<<<<<< HEAD
 			page : page, 
 			cnt : 10,
 			status : status,
 			category : category
+=======
+			'page' : page, 
+			'cnt' : 10
+>>>>>>> parent of f666e84 (리포트 페이지네이션)
 		},
 		dataType:'JSON',
 		success:function(data){
@@ -118,7 +127,11 @@ function listPrint(list){
 		content+='<td>'+item.reporting_id+'</td>';
 		content+='<td>'+item.reported_id+'</td>';
 		content+='<td>'+item.report_category+'</td>';
+<<<<<<< HEAD
 		content+='<td><a href="reportDetail.go?report_idx='+item.report_idx+'">'+item.report_content+'</a></td>';
+=======
+		content+='<td><a href="reportDetail.go?id='+item.id+'">'+item.report_content+'</a></td>';
+>>>>>>> parent of f666e84 (리포트 페이지네이션)
 		content+='<td>'+item.report_date+'</td>';
 		content+='<td>'+item.report_state+'</td>';
 		content+='</tr>';
