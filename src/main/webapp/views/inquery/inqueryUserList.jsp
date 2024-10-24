@@ -150,21 +150,20 @@
         <div class="pagination"></div>
 </body>
 <script>
-	var loginId = '${sessionScope.loginId}';
-    var btn = document.getElementsByTagName('button');
-    btn[0].addEventListener('click',function() {
-    	event.preventDefault();
-        var result = confirm('등록하시겠습니까?');
-        console.log(result);
-        if (result == true){
-            alert('등록되었습니다');
-            $('button').prop("type", "submit");
-            addquery();
-        } else {
-            alert('등록이 취소되었습니다');
-        }
-    });
+var loginId = '${sessionScope.loginId}';
+var btn = document.getElementsByTagName('button');
+btn[0].addEventListener('click', function(event) {
+    var result = confirm('등록하시겠습니까?');
+    console.log(result);
+    if (result == true) {
+        alert('등록되었습니다');
+        $('form')[0].submit();// 폼을 수동으로 제출합니다.
+    } else {
+    	addquery();
+    }
+});
 	
+addquery(); // 리스트 업데이트 함수 호출
     function addquery() {
         $.ajax({
             type: 'GET',
@@ -188,12 +187,16 @@
         function drawList(list) {
             var content = '';
             list.forEach(function(item, idx) {
+            	var state ='처리중';
+            	if(item.inquery_state == true) {
+            		state = '처리 완료';
+            	}
                 content += '<tr>';
                 content += '<td>' + loginId + '</td>';
                 content += '<td>' + item.inquery_subject + '</td>';
                 content += '<td>' + item.inquery_date + '</td>';
-                content += '<td>' + item.inquery_state + '</td>';
-                content += '<td>' + item.inquery_state + '</td>';
+                content += '<td>' + state + '</td>';
+                content += '<td>' + '관리자' + '</td>';
                 content += '</tr>';
             });
             console.log("갱신된 테이블 내용:", content);

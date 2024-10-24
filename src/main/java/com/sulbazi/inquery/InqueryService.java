@@ -27,10 +27,14 @@ public class InqueryService {
 	public int userinquerywrite(MultipartFile[] inqueryfiles, Map<String, String> params, HttpSession session) {
 		InqueryDTO inquery_dto = new InqueryDTO();
 		String loginId = (String) session.getAttribute("loginId");
-		if(loginId != null) {	
+		String opt = (String) session.getAttribute("opt");
+		if(loginId != null && opt.equals("user_log")) {	
 			inquery_dto.setId_write(loginId);//문의자
+			inquery_dto.setId_category("사용자");//문의자 분류
+		} else if(loginId != null && opt.equals("store_log")){
+			inquery_dto.setId_write(loginId);//문의자
+			inquery_dto.setId_category("매장");//문의자 분류
 		}
-		inquery_dto.setId_category("사용자");//문의자 분류
 		inquery_dto.setInquery_subject(params.get("inquerysubject"));//문의제목
 		inquery_dto.setInquery_content(params.get("inquerycontent"));//문의 내용
 	
@@ -78,6 +82,11 @@ public class InqueryService {
 		
 
 			
+	}
+
+	public List<InqueryDTO> admininquerylist() {
+		return inquery_dao.admininquerylist();
+		
 	}
 		
 	

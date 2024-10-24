@@ -15,4 +15,6 @@ public interface InqueryDAO {
 	List<HashMap<String, Object>> userlistinquery(String id);
 	
 	List<HashMap<String, Object>> inqueryprocess(String id);
+
+	List<InqueryDTO> admininquerylist();
 }

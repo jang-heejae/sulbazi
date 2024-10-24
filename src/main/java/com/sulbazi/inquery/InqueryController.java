@@ -31,7 +31,7 @@ public class InqueryController {
 		return "inquery/inqueryUserList";
 	}
 	
-	@PostMapping(value="/userinquerywrite.do")
+	@PostMapping(value="/userinquerywsrite.do")
 	public String userinquerywrite(MultipartFile[] inqueryfiles, @RequestParam Map<String, String> params, 
 											Model model, HttpSession session) {
 		logger.info("params: {}", params);
@@ -50,4 +50,20 @@ public class InqueryController {
 		map.put("list", list);
 		return map;
 	}
+	
+	@RequestMapping(value="/inqueryList.go")
+	public String admininquerylist(Model model, HttpSession session) {
+		logger.info("문의리스트 관리자컨트롤러");
+		String page="main/main";
+		if(!session.getAttribute("opt").equals("admin_log")) {
+			model.addAttribute("result", "로그인이 필요한 서비스 입니다");
+		}else {
+			List<InqueryDTO> inquerylist = inquery_ser.admininquerylist();
+			logger.info("list: {}",inquerylist);
+			model.addAttribute("inquerylist", inquerylist);
+			page="inquery/inqueryList";
+		}
+		return page;
+	}
+	
 }

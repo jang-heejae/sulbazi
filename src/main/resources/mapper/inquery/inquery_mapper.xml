@@ -28,4 +28,12 @@
 		SELECT inquery_idx,admin_id FROM answer WHERE 
 			(SELECT inquery_idx FROM inquery WHERE id_write=#{param1})
 	</select>
+	
+
+	<select id="admininquerylist" resultType="com.sulbazi.inquery.InqueryDTO">
+    	SELECT id_write, inquery_subject,inquery_date, inquery_state FROM inquery
+	</select>
+	
+
+	
 </mapper>
