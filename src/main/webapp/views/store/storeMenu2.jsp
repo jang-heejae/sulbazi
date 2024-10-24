@@ -3,32 +3,48 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>메뉴 목록</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+<script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
 <style>
-
+    table {
+        border-collapse: collapse;
+    }
+    table, th, td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: left;
+    }
+    #imgview {
+        width: 150px;
+        height: 150px;
+    }
 </style>
 </head>
 <body>
     <h1>메뉴 목록</h1>
     <table>
         <tbody>
-	    	<tr>
-	            <c:if test="${files.size()>0}">
-	            	<c:forEach items="${files}" var="file">
-	                	<td><img id="imgview" src="/photo/${file.new_filename}"></td>
-	                </c:forEach>
-	                <c:forEach items="${store_menu}" var="menu">
-	                	<th>${menu.menu_name}</th>
-	                	<td>${menu.menu_price}</td>
-	                </c:forEach>
-	         	</c:if>
-	         </tr>
+            <c:if test="${files.size() > 0 && storeAlcohol.size() > 0}">
+                <!-- 두 리스트가 같은 크기일 때만 처리 -->
+				<c:forEach var="file" items="${files}" varStatus="status">
+				    <!-- 같은 인덱스의 storeMenu 항목을 사용 -->
+					<tr>
+					    <!-- 이미지 표시 -->
+					    <td><img src="/photo/${file.new_filename}" alt="Store Photo" id="imgview" /></td>
+					    <!-- 메뉴 이름 및 가격 -->
+					    <td>${storeAlcohol[status.index].menu_name}</td>
+					    <td>${storeAlcohol[status.index].menu_price}</td>
+					</tr>
+				</c:forEach>
+            </c:if>
         </tbody>
     </table>
-    <a href="detail.go?idx=${store.idx}">상세보기로 돌아가기</a>
+    <button onclick="location.href='storeDetail.do?idx=${store}'">상세보기로 돌아가기</button>
 </body>
-<jsp:include page="storeMenuHub.jsp"/>
+
 <script>
 
 </script>

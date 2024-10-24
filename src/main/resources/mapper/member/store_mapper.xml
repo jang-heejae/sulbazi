@@ -6,11 +6,35 @@
 	<select id="getStoreDetail" parameterType="int" resultType="com.sulbazi.member.StoreDTO">
 		select * from store where store_idx = #{idx}
 	</select>
+	<select id="getStorePhoto" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
+		select new_filename from photo where photo_folder_idx=#{idx} and photo_category_idx=1
+	</select>
 	<select id="fileList" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
-		select * from photo where photo_folder_idx=#{idx} and photo_category_idx=2
+		SELECT p.new_filename
+		FROM photo p
+		JOIN store_menu m ON m.menu_idx = p.photo_folder_idx
+		WHERE m.store_idx = 1
+		AND m.menu_category = '안주'
+		AND p.photo_category_idx = 2
+		ORDER BY p.photo_folder_idx ASC;
+	</select>
+	<select id="alcoholFileList" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
+		SELECT p.new_filename
+		FROM photo p
+		JOIN store_menu m ON m.menu_idx = p.photo_folder_idx
+		WHERE m.store_idx = 1
+		AND m.menu_category = '술'
+		AND p.photo_category_idx = 6
+		ORDER BY p.photo_folder_idx ASC;
 	</select>
 	<select id="getStoreMenuById" parameterType="int" resultType="com.sulbazi.member.StoreMenuDTO">
-		select menu_name,menu_price from store_menu where store_idx=#{idx} and menu_category='안주'
+		select menu_name,menu_price from store_menu where store_idx=#{idx} and menu_category='안주' ORDER BY menu_idx ASC
+	</select>
+	<select id="getStoreAlcohol" parameterType="int" resultType="com.sulbazi.member.StoreMenuDTO">
+		select menu_name,menu_price from store_menu where store_idx=#{idx} and menu_category='술' ORDER BY menu_idx ASC
+	</select>
+	<select id="getBoard" parameterType="int" resultType="com.sulbazi.board.BoardDTO">
+		select * from board where store_idx=#{idx} ORDER BY board_date DESC LIMIT 1
 	</select>
 	
 

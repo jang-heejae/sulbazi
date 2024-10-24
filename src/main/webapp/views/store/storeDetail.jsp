@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -88,15 +89,37 @@
                 height: 500px;
                 margin: 10px;
             }
-/*             table,tr,td,th{
+             table,tr,td,th{
                 border:1px solid black;
                 border-collapse: collapse;
                 padding: 5px 10px;
             }
             #imgview {
-                width: 200px;
-                height: 150px;
-            } */
+                width: 100%;
+                height: auto;
+            }
+            #mainimg{
+            	width: 100%;
+            	height: 100%;
+            }
+			fieldset table {
+			    width: 100%; /* 테이블 너비를 부모 너비에 맞춤 */
+			    table-layout: fixed; /* 고정 레이아웃으로 설정 */
+			}
+			
+			fieldset td {
+			    width: 20%; /* 각 <td>의 너비를 적절히 설정 */
+			    text-align: center; /* 이미지 중앙 정렬 */
+			    word-wrap: break-word; /* 내용이 너무 길 경우 줄 바꿈 */
+			}
+			img.icon{
+				width:25px;
+				display:inline ;
+			}
+			table.somw{
+				width: 95%;
+				margin: 0 20px;
+			}
 
             
         </style>
@@ -106,10 +129,16 @@
     <jsp:include page="../main/main.jsp"/>
         <main>
             <div class="bodysize">
-                <div class="ativeimage"></div>
+            <c:forEach var="file" items="${files}" varStatus="status">
+            	<c:if test="${status.index == 0}">
+               		<div class="ativeimage">
+               			<img src="/photo/${file.new_filename}" alt="Store Photo" id="mainimg" />
+               		</div>
+                </c:if>
+            </c:forEach>
                 <br/>
                 <p class="left-align"><strong>${store.store_name}</strong></p>
-                <button class="favorite-btn">즐겨찾기</button>
+                <button class="favorite-btn" onclick="bookmark(${store})">즐겨찾기</button>
                 <div class="linetag"></div>
                 <br/>
                 <ul class="title-container">
@@ -122,10 +151,17 @@
                     <p>${store.store_phone}</p>
                 </div>
                 <div class="promotion-list">
-                	<fieldset>
 	                    <p class="promotionfont"><strong>홍보</strong></p>
-	                    <p>홍보 게시판 영역</p>
-                    </fieldset>
+	                    <table class="somw">
+	                    	<tr>
+	                    		<td>${board.board_category}</td>
+	                    		<td>
+	                    			<img class="icon" src="img/img.png"/>
+	                    			<a href="#" style="display: inline-block; color: black;">${board.board_subject}</a>
+	                    		</td>
+	                    		<td>${board.board_date}</td>
+	                    	</tr>
+	                    </table>    
                 </div>
                 <!-- 영업시간 영역-->
                 <div class="operating">
@@ -137,13 +173,21 @@
                 <!-- 메뉴정보 페이징 처리-->
                 <fieldset>
                     <legend>메뉴</legend>
-				    <button onclick="location.href='menu.go?idx=$<%-- ${store.idx} --%>'">안주</button>
-				    <button onclick="location.href='menu2.go?idx=<%-- ${store.idx} --%>'">술종류</button>
+				    <button onclick="location.href='menu.do?idx=${store.store_idx}'">안주</button>
+				    <button onclick="location.href='menu2.do?idx=${store.store_idx}'">술종류</button>
                 </fieldset>			
                 <!-- 사진 내외부 사진-->
                 <fieldset>
                     <legend>사진 내외부</legend>
-
+					<table>
+						<tr>
+	                    	<c:forEach var="file" items="${files}" varStatus="status">
+	                    		<c:if test="${status.index >= 1 && status.index <= 5}">
+									<td><img src="/photo/${file.new_filename}" alt="Store Photo" id="imgview" /></td>
+								</c:if>
+							</c:forEach>
+						</tr>
+					</table>
                 </fieldset>
                 <!-- 리뷰  사용자 일경우 신고 수정 삭제 
                  매장일 경우 신고 답글
@@ -163,6 +207,24 @@
 
     </body>
     <script>
-        
+    	var loginId = '${sessionScope.loginId}';    
+    	function bookmark(storeidx){
+    	    $.ajax({
+    	        type: 'POST',
+    	        url: 'bookmark.ajax',
+    	        data: {'loginId':loginId , 'storeidx':storeidx},
+    	        dataType:'JSON',
+    	        success: function(data) {
+    	            if (data.bookmark>0) {
+    	            	alert('즐겨찾기가 추가되었습니다.');
+					}else{
+						alert('즐겨찾기가 취소되었습니다.')
+					}
+    	        },
+    	        error: function(error) {
+    	            console.error('Error:', error);
+    	        }
+    	    });
+    	}
     </script>
 </html>

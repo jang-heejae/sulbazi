@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,10 +20,13 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.sulbazi.board.BoardDTO;
+import com.sulbazi.board.BoardService;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
@@ -33,18 +37,26 @@ public class StoreController {
 	@Autowired StoreService store_ser;
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired PhotoService photo_ser;
-
-	@RequestMapping(value="/storeDetail.go")
+	@Autowired BoardService board_ser;
+	
+	@RequestMapping(value="/storeDetail.do")
     public String getStoreDetail(int idx, Model model, HttpSession session) {
         StoreDTO storeDetail = store_ser.getStoreDetail(idx);
+        List<PhotoDTO> files= store_ser.getStorePhoto(idx);
+        BoardDTO boardList = store_ser.getBoard(idx);
+
+
         model.addAttribute("store", storeDetail);
+        model.addAttribute("files", files);
+        model.addAttribute("board", boardList);
+        model.addAttribute("store",idx);
         logger.info("storeDetail: " + storeDetail);
         return "store/storeDetail";
   
     }
 	
 	
-	@RequestMapping(value="/menu.go")
+	@RequestMapping(value="/menu.do")
     public String storeMenu1(int idx, Model model, HttpSession session) {
         List<PhotoDTO> files= store_ser.fileList(idx);
         logger.info("files list size: {}", files.size());
@@ -59,6 +71,32 @@ public class StoreController {
         return "store/storeMenu";
   
     }
+	
+	@RequestMapping(value="/menu2.do")
+    public String storeMenu2(int idx, Model model, HttpSession session) {
+        List<PhotoDTO> files= store_ser.alcoholFileList(idx);
+        logger.info("files list size: {}", files.size());
+        for (PhotoDTO f : files) {
+            logger.info("PhotoDTO: {}", f);
+            System.out.println(f.getNew_filename());
+        }
+        List<StoreMenuDTO> storeAlcohol = store_ser.getStoreAlcohol(idx);
+		model.addAttribute("files",files);
+		model.addAttribute("storeAlcohol",storeAlcohol);
+		model.addAttribute("store",idx);
+        return "store/storeMenu2";
+  
+    }
+	
+	@PostMapping(value="/bookmark.ajax")
+	@ResponseBody
+	public Map<String, Object> bookmarkCheck(String loginId,String storeidx ){
+		int storeidx_ = Integer.parseInt(storeidx);
+		
+		return store_ser.bookmarkCheck(loginId,storeidx_);
+	}
+
+	
 	/*
 	 * @RequestMapping(value="/menu2.go") public String storeMenu2(int idx, Model
 	 * model, HttpSession session) { = store_ser.(idx);

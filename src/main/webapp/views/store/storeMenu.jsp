@@ -20,7 +20,6 @@
     #imgview {
         width: 150px;
         height: 150px;
-        back
     }
 </style>
 </head>
@@ -43,7 +42,7 @@
             </c:if>
         </tbody>
     </table>
-    <button onclick="location.href='storeDetail.go?idx=${store}'">상세보기로 돌아가기</button>
+    <button onclick="location.href='storeDetail.do?idx=${store}'">상세보기로 돌아가기</button>
 </body>
 
 <script>

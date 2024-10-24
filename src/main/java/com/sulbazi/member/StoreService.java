@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.sulbazi.board.BoardDTO;
 import com.sulbazi.photo.PhotoDTO;
 
 
@@ -112,4 +113,37 @@ public class StoreService {
 		 }		 
 		 return map;
 	}
+
+
+	public List<PhotoDTO> getStorePhoto(int idx) {
+		return store_dao.getStorePhoto(idx);
+	}
+
+
+	public BoardDTO getBoard(int idx) {
+		return store_dao.getBoard(idx);
+	}
+
+
+	public List<PhotoDTO> alcoholFileList(int idx) {
+		return store_dao.alcoholFileList(idx);
+	}
+
+
+	public List<StoreMenuDTO> getStoreAlcohol(int idx) {
+		return store_dao.getStoreAlcohol(idx);
+	}
+
+
+	public Map<String, Object> bookmarkCheck(String loginId, int storeidx_) {
+		int storeidx = storeidx_;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("bookmark",store_dao.bookmarkCheck(loginId,storeidx));
+		
+		
+		return map;
+	}
+
+
+
 }
