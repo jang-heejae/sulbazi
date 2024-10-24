@@ -3,5 +3,12 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.member.JoinDAO">
-
+	<insert
+      useGeneratedKeys="true"
+      keyColumn="store_idx"
+      keyProperty="store_idx"
+      id="storeJoin" parameterType="com.sulbazi.member.StoreDTO">
+         INSERT INTO store(store_id, store_pw, store_number, store_name, store_phone, store_address, store_time)
+         	VALUES(#{store_id}, #{store_pw}, #{store_number}, #{store_name}, #{store_phone}, #{store_address}, #{store_time})
+   </insert>
 </mapper>
