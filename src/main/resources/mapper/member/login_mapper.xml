@@ -14,4 +14,28 @@
 			SELECT admin_id FROM admin WHERE admin_id=#{id} AND admin_pw=#{pw}
 		</if>
 	</select>
+	
+	<select id="userfindpw" resultType="String">
+		SELECT user_pw FROM user WHERE user_id=#{id} AND user_email=#{email}
+	</select>
+	
+	<select id="storefindpwdo" resultType="String">
+		SELECT store_pw FROM store WHERE store_number=#{store_number}
+	</select>
+	
+	<update id="changeuserpw">
+		UPDATE user SET user_pw = #{newPassword} WHERE user_id = #{id}
+	</update>
+	
+	<update id="changestorepw">
+		UPDATE store SET store_pw = #{newPassword} WHERE store_number = #{store_number}
+	</update>
+	
+	<select id="userfindiddo" resultType="String">
+		SELECT user_id FROM user WHERE user_email=#{email}
+	</select>
+	
+	<select id="storefindiddo" resultType="String">
+		SELECT store_id FROM store WHERE store_number = #{store_number}
+	</select>
 </mapper>
