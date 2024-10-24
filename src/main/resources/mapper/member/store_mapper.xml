@@ -3,5 +3,14 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.member.StoreDAO">
-
+	<select id="getStoreDetail" parameterType="int" resultType="com.sulbazi.member.StoreDTO">
+		select * from store where store_idx = #{idx}
+	</select>
+	<select id="fileList" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
+		select * from photo where photo_folder_idx=#{idx} and photo_category_idx=2
+	</select>
+	<select id="getStoreMenuById" parameterType="int" resultType="com.sulbazi.member.StoreMenuDTO">
+		select menu_name,menu_price from store_menu where store_idx=#{idx} and menu_category='안주'
+	</select>
+	
 </mapper>

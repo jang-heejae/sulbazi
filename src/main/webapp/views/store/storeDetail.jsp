@@ -5,14 +5,164 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+<script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
+        <style>
+            body{
+                background-color: #20290E;
+            }
+            .bodysize{
+                background-color: white;
+                position: absolute;
+                top: 202px
+                left: 626px;
+                width: 788px;
+                height: 5000px;
+                border-radius: 8px;
+                
+                display: flex;
+                flex-direction: column;
+                align-items: center;       
+            }
+            .ativeimage{
+                background-color: aqua;
+                width: 748px;
+                height: 320px;
+                margin-top: 20px;
+            }
+            /* p 태그를 왼쪽 정렬하는 스타일 */
+            .left-align {
+                font-size: 35px;
+                align-self: flex-start; /* Flexbox에서 왼쪽 정렬 */
+                margin:0 30px;
+                width: auto; /* 텍스트 너비를 부모에 맞추지 않고 자동으로 설정 */
+            }
+            .favorite-btn {
+                background-color: #FFA91F;
+                align-self: flex-start;
+                border: none;
+                border-radius: 5px;
+                padding: 5px 10px;
+                color: white;
+                cursor: pointer;
+                margin: 10px 30px;
+            }
+            .linetag{
+                background-color: rgb(0, 0, 0);
+                width: 95%;
+                height: 1px;
+            }
+            .title-container {
+                list-style-type: none;
+                display: flex;
+                /* justify-content: flex-start; */
+                align-items: center;
+                width: 100%; /* 부모 요소의 전체 너비 사용 */
+                padding: 0 20px; /* 좌우 여백 추가 */
+            }
+            .starfront{
+                font-size: 35px;
+                margin:0 0 0 30px;
+            }
+            .staravg{
+                font-size:35px;
+            }
+            .promotionfont{
+                font-size: 20px;
+            }
+            .promotion-list{
+                margin:0 30px;
+                width:95%;
+                align-self: flex-start;
+            }
+            .operating{
+                background-color: #FFA91F;
+                width: 95%;
+                height: 500px;
+            }
+            fieldset{
+            	border:1px solid black;
+                background-color: rgba(255, 255, 255, 0);
+                width: 95%;
+                height: 500px;
+                margin: 10px;
+            }
+/*             table,tr,td,th{
+                border:1px solid black;
+                border-collapse: collapse;
+                padding: 5px 10px;
+            }
+            #imgview {
+                width: 200px;
+                height: 150px;
+            } */
 
-</style>
-</head>
-<body>
-	
-</body>
-<script>
+            
+        </style>
+    </head>
+    
+    <body>
+    <jsp:include page="../main/main.jsp"/>
+        <main>
+            <div class="bodysize">
+                <div class="ativeimage"></div>
+                <br/>
+                <p class="left-align"><strong>${store.store_name}</strong></p>
+                <button class="favorite-btn">즐겨찾기</button>
+                <div class="linetag"></div>
+                <br/>
+                <ul class="title-container">
+                    <li class="starfront">평균 별점⭐</li>
+                    <li class="staravg">${store.star_average}</li>
+                </ul>
+                <div class="address">
+                    <p>주소,전화번호,분위기,방문목적,주종,안주 영역</p>
+                    <p>${store.store_address}</p>
+                    <p>${store.store_phone}</p>
+                </div>
+                <div class="promotion-list">
+                	<fieldset>
+	                    <p class="promotionfont"><strong>홍보</strong></p>
+	                    <p>홍보 게시판 영역</p>
+                    </fieldset>
+                </div>
+                <!-- 영업시간 영역-->
+                <div class="operating">
+                    <fieldset>
+                        <legend>영업시간</legend>
+                        <p>${store.store_time}</p>
+                    </fieldset>
+                </div>
+                <!-- 메뉴정보 페이징 처리-->
+                <fieldset>
+                    <legend>메뉴</legend>
+				    <button onclick="location.href='menu.go?idx=$<%-- ${store.idx} --%>'">안주</button>
+				    <button onclick="location.href='menu2.go?idx=<%-- ${store.idx} --%>'">술종류</button>
+                </fieldset>			
+                <!-- 사진 내외부 사진-->
+                <fieldset>
+                    <legend>사진 내외부</legend>
 
-</script>
+                </fieldset>
+                <!-- 리뷰  사용자 일경우 신고 수정 삭제 
+                 매장일 경우 신고 답글
+                 페이징 처리 -->
+                 <fieldset>
+                    <legend>리뷰</legend>
+
+                </fieldset>
+                <!-- 리뷰 작성-->
+                <fieldset>
+                    <legend>리뷰 작성</legend>
+                    
+                </fieldset>
+            </div>
+
+        </main>
+
+    </body>
+    <script>
+        
+    </script>
 </html>
