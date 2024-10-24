@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>SULBAZI</title>
     <script src="https://kit.fontawesome.com/6282a8ba62.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
@@ -184,85 +185,42 @@
     </header>
 </body>
 <script>
-document.querySelectorAll('.main_menu').forEach(function(menu) {
-    menu.addEventListener('click', function() {
-        var fullElement = document.querySelector('.full');
-        var displayfull = window.getComputedStyle(fullElement).display;
-
-        if (displayfull === 'none') {
-            // .full2, .sub_, .sub_1 숨기기
-            document.querySelectorAll('.full2, .sub_, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .full 클래스 요소를 flex로 설정
-            fullElement.style.display = 'flex';
-        } else {
-            // .full 클래스 요소 숨기기
-            fullElement.style.display = 'none';
+    $('.main_menu').click(function(){      
+        var displayfull = $('.full').css('display');
+        if (displayfull == 'none'){
+            $('.full2, .sub_, .sub_1').hide();
+            $('.full').css('display','flex');
+        }else{
+            $('.full').hide();
         }
     });
-});
-
-// mypage 클릭 이벤트
-document.querySelectorAll('.mypage').forEach(function(mypage) {
-    mypage.addEventListener('click', function() {
-        var full2Element = document.querySelector('.full2');
-        var displayfull2 = window.getComputedStyle(full2Element).display;
-
-        if (displayfull2 === 'none') {
-            // .full, .sub_, .sub_1 숨기기
-            document.querySelectorAll('.full, .sub_, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .full2 클래스 요소를 flex로 설정
-            full2Element.style.display = 'flex';
-        } else {
-            // .full2 클래스 요소 숨기기
-            full2Element.style.display = 'none';
+    $('.mypage').click(function(){      
+        var displayfull2 = $('.full2').css('display');
+        if (displayfull2 == 'none'){
+            $('.full, .sub_, .sub_1').hide();
+            $('.full2').css('display','flex');
+        }else{
+            $('.full2').hide();
         }
     });
-});
-
-// fa-message 클릭 이벤트
-document.querySelectorAll('.fa-message').forEach(function(message) {
-    message.addEventListener('click', function() {
-        var sub1Element = document.querySelector('.sub_1');
-        var displaysub_1 = window.getComputedStyle(sub1Element).display;
-
-        if (displaysub_1 === 'none') {
-            // .full, .full2, .sub_ 숨기기
-            document.querySelectorAll('.full, .full2, .sub_').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .sub_1 클래스 요소 보이기
-            sub1Element.style.display = 'block';
-        } else {
-            // .sub_1 클래스 요소 숨기기
-            sub1Element.style.display = 'none';
+    $('.fa-message').click(function(){      
+        var displaysub_1 = $('.sub_1').css('display');
+        if (displaysub_1 == 'none'){
+            $('.full, .full2, .sub_').hide();
+            $('.sub_1').show();
+        }else{
+            $('.sub_1').hide();
         }
     });
-});
-
-// fa-bell 클릭 이벤트
-document.querySelectorAll('.fa-bell').forEach(function(bell) {
-    bell.addEventListener('click', function() {
-        var subElement = document.querySelector('.sub_');
-        var displaysub = window.getComputedStyle(subElement).display;
-
-        if (displaysub === 'none') {
-            // .full, .full2, .sub_1 숨기기
-            document.querySelectorAll('.full, .full2, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .sub_ 클래스 요소 보이기
-            subElement.style.display = 'block';
-        } else {
-            // .sub_ 클래스 요소 숨기기
-            subElement.style.display = 'none';
+    $('.fa-bell').click(function(){      
+        var displaysub1 = $('.sub_').css('display');
+        if (displaysub1 == 'none'){
+            $('.full, .full2, .sub_1').hide();
+            $('.sub_').show();
+        }else{
+            $('.sub_').hide();
         }
     });
-});
-
 </script>
 
 </html>
