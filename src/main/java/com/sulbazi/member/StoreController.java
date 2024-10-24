@@ -42,14 +42,16 @@ public class StoreController {
 	@RequestMapping(value="/storeDetail.do")
     public String getStoreDetail(int idx, Model model, HttpSession session) {
         StoreDTO storeDetail = store_ser.getStoreDetail(idx);
-        List<PhotoDTO> files= store_ser.getStorePhoto(idx);
+        PhotoDTO file= store_ser.getStorePhoto(idx);
+        List<PhotoDTO> files= store_ser.getStorePhotos(idx);
         BoardDTO boardList = store_ser.getBoard(idx);
 
 
         model.addAttribute("store", storeDetail);
         model.addAttribute("files", files);
+        model.addAttribute("file", file);
         model.addAttribute("board", boardList);
-        model.addAttribute("store",idx);
+        model.addAttribute("storeidx",idx);
         logger.info("storeDetail: " + storeDetail);
         return "store/storeDetail";
   
@@ -90,10 +92,9 @@ public class StoreController {
 	
 	@PostMapping(value="/bookmark.ajax")
 	@ResponseBody
-	public Map<String, Object> bookmarkCheck(String loginId,String storeidx ){
-		int storeidx_ = Integer.parseInt(storeidx);
+	public Map<String, Object> bookmarkCheck(String loginId,int storeidx ){
 		
-		return store_ser.bookmarkCheck(loginId,storeidx_);
+		return store_ser.bookmarkCheck(loginId,storeidx);
 	}
 
 	

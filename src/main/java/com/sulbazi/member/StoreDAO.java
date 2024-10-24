@@ -25,7 +25,7 @@ public interface StoreDAO {
 
 	List<StoreDTO> storesearch(Integer storeidx);
 
-	List<PhotoDTO> getStorePhoto(int idx);
+	PhotoDTO getStorePhoto(int idx);
 
 	BoardDTO getBoard(int idx);
 
@@ -33,7 +33,14 @@ public interface StoreDAO {
 
 	List<StoreMenuDTO> getStoreAlcohol(int idx);
 
-	Object bookmarkCheck(String loginId, int storeidx);
+	int bookmarkCheck(String user_id, int store_idx);
+
+	int bookmarkCheckCount(String user_id, int store_idx);
+
+	int delBookmark(String user_id, int store_idx);
+
+	List<PhotoDTO> getStorePhotos(int idx);
+
 	
 
 }

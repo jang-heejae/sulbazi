@@ -9,6 +9,9 @@
 	<select id="getStorePhoto" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
 		select new_filename from photo where photo_folder_idx=#{idx} and photo_category_idx=1
 	</select>
+	<select id="getStorePhotos" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
+		select new_filename from photo where photo_folder_idx=#{idx} and photo_category_idx=7 ORDER BY photo_idx ASC
+	</select>
 	<select id="fileList" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
 		SELECT p.new_filename
 		FROM photo p
@@ -36,6 +39,16 @@
 	<select id="getBoard" parameterType="int" resultType="com.sulbazi.board.BoardDTO">
 		select * from board where store_idx=#{idx} ORDER BY board_date DESC LIMIT 1
 	</select>
+	<insert id="bookmarkCheck" parameterType="map">
+		insert into bookmark (user_id,store_idx)
+			values(#{user_id},#{store_idx})
+	</insert>
+	<select id="bookmarkCheckCount" parameterType="map" resultType="int">
+		select count(user_id) from bookmark where store_idx=#{store_idx}
+	</select>
+	<delete id="delBookmark" parameterType="map">
+		DELETE FROM bookmark WHERE user_id = #{user_id} and store_idx = #{store_idx};
+	</delete>
 	
 
 

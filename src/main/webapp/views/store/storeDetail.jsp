@@ -129,16 +129,12 @@
     <jsp:include page="../main/main.jsp"/>
         <main>
             <div class="bodysize">
-            <c:forEach var="file" items="${files}" varStatus="status">
-            	<c:if test="${status.index == 0}">
-               		<div class="ativeimage">
-               			<img src="/photo/${file.new_filename}" alt="Store Photo" id="mainimg" />
-               		</div>
-                </c:if>
-            </c:forEach>
+               	<div class="ativeimage">
+               		<img src="/photo/${file.new_filename}" alt="Store Photo" id="mainimg" />
+               	</div>
                 <br/>
                 <p class="left-align"><strong>${store.store_name}</strong></p>
-                <button class="favorite-btn" onclick="bookmark(${store})">즐겨찾기</button>
+                <button class="favorite-btn" onclick="bookmark(${storeidx})">즐겨찾기</button>
                 <div class="linetag"></div>
                 <br/>
                 <ul class="title-container">
@@ -182,9 +178,7 @@
 					<table>
 						<tr>
 	                    	<c:forEach var="file" items="${files}" varStatus="status">
-	                    		<c:if test="${status.index >= 1 && status.index <= 5}">
-									<td><img src="/photo/${file.new_filename}" alt="Store Photo" id="imgview" /></td>
-								</c:if>
+								<td><img src="/photo/${file.new_filename}" alt="Store Photo" id="imgview" /></td>
 							</c:forEach>
 						</tr>
 					</table>
@@ -216,10 +210,15 @@
     	        dataType:'JSON',
     	        success: function(data) {
     	            if (data.bookmark>0) {
-    	            	alert('즐겨찾기가 추가되었습니다.');
+    	            	$('.favorite-btn').css('background-color', '#28256C');
+    	            	$('.favorite-btn').text('즐겨찾기 완료'); 
 					}else{
-						alert('즐겨찾기가 취소되었습니다.')
+						
+						$('.favorite-btn').css('background-color', '#FFA91F');
+						$('.favorite-btn').text('즐겨찾기');
 					}
+
+
     	        },
     	        error: function(error) {
     	            console.error('Error:', error);

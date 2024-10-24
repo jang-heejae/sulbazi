@@ -115,7 +115,7 @@ public class StoreService {
 	}
 
 
-	public List<PhotoDTO> getStorePhoto(int idx) {
+	public PhotoDTO getStorePhoto(int idx) {
 		return store_dao.getStorePhoto(idx);
 	}
 
@@ -134,14 +134,23 @@ public class StoreService {
 		return store_dao.getStoreAlcohol(idx);
 	}
 
-
-	public Map<String, Object> bookmarkCheck(String loginId, int storeidx_) {
-		int storeidx = storeidx_;
+	public Map<String, Object> bookmarkCheck(String loginId, int storeidx) {
+		int store_idx = storeidx;
+		String user_id= loginId;
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("bookmark",store_dao.bookmarkCheck(loginId,storeidx));
-		
+		if (store_dao.bookmarkCheckCount(user_id,store_idx)>1) {
+			int del = store_dao.delBookmark(user_id,store_idx);
+		}else {
+			map.put("bookmark",store_dao.bookmarkCheck(user_id,store_idx));
+		}
+
 		
 		return map;
+	}
+
+
+	public List<PhotoDTO> getStorePhotos(int idx) {
+		return store_dao.getStorePhotos(idx);
 	}
 
 
