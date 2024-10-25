@@ -13,7 +13,7 @@
 }
 input{
     margin-left: 10;
-    width: 0;
+    margin: 0;
 }
 table{
     margin: auto;
@@ -32,16 +32,29 @@ label{
     width: 100;
     font-size: 16;
 }
-label.selected1{
+label.selected{
     background-color: rgb(255, 140, 9);
 }
 </style>
 </head>
 <body>
-    <div class="stateselect">
-        <label class="selected1"><input class="custom-radio" type="radio" name="inquerystate"  value="false"/> 처리 중<br/></label>
-        <label class="selected2"><input class="custom-radio" type="radio" name="inquerystate"  value="true"/> 처리 완료<br/></label>
-    </div>
+        <form>
+			<form>
+    			<div class="stateselect">
+                	<fieldset>
+                    	<input type="radio" name="inquerystate" value="false"/> 처리중<br/>
+                    	<input type="radio" name="inquerystate" value="true"/>처리완료<br/>
+                	</fieldset>
+                	<button type ="button" id="inqueryfiltering">필터 적용</button>
+            	</div>
+        	</form>
+    		<div class="search-container">
+        		<div class="search-wrapper">
+            		<input type="text" class="search-input" id="searchinquery" placeholder="검색어를 입력하세요" value=""/>
+            		<button class="search-button" type="button" id="inquerysearch"><div class="searchicon">⌕</div></button>
+        		</div>
+    		</div>
+		</form>
 	<table>
 		<thead>
 			<tr>
@@ -52,20 +65,100 @@ label.selected1{
 				<th>처리자</th>
 			</tr>
 		</thead>
-		<tbody>
-		<c:forEach items="${inquerylist}" var="inquery">
-			<tr>
-				<td>${inquery.id_write}</td>
-				<td><a href="inquerydetail.go?idx=${inquery.inquery_idx}">${inquery.inquery_subject}</a></td>
-				<td>${inquery.inquery_date}</td>
-				<td>${inquery.inquery_state}</td>
-				<td><%-- ${inquery.reg_date} --%>관리자</td>
-			</tr>
-		</c:forEach>
+		<tbody id="list">
+
 		</tbody>
 	</table>
 </body>
 <script>
+$.ajax({
+	type:'GET',
+	url:'inqueryList.do',
+	data:{},
+	dataType:'JSON',
+	success: function(data) {
+	    console.log(data);
+	    // data.inquerylist가 배열인지 확인 후 drawList 호출
+	    if (data && Array.isArray(data.inquerylist)) {
+	        drawList(data.inquerylist);
+	    } else {
+	        console.error('Unexpected response format:', data);
+	    }
+	},error:function(e){
+		console.log(e);
+	}	
+});
 
+
+/* 문의 리스트 필터링 */
+$('#inqueryfiltering').click(function() {
+	var inquerystate = $(':input:radio[name=inquerystate]:checked').val();
+	console.log(inquerystate);
+    $.ajax({
+        type:'GET',  //method
+        url:'inqueryFiltering.ajax',  //요청 주소
+        data:{'inquerystate': inquerystate},   //파라메터
+        dataType:'JSON',  //받을 데이터 타입
+    	success: function(data) {
+    	    console.log(data);
+    	    // data.inquerylist가 배열인지 확인 후 drawList 호출
+    	    if (data && Array.isArray(data.inquerylist)) {
+    	        drawList(data.inquerylist);
+    	    } else {
+    	        console.error('Unexpected response format:', data);
+    	    }
+    	},
+        error:function(e) {  //실패했을 경우(실패 내용)
+            console.log(e)
+        }
+    });
+})
+
+//문의자 id 검색
+$('#inquerysearch').click(function() {
+	var inquery_state = $(':input:radio[name=inquerystate]:checked').val();
+	var id_write = document.getElementById("searchinquery").value;
+	console.log(inquery_state);
+	console.log(id_write);
+    $.ajax({
+        type:'POST',  //method
+        url: 'inquerySearch.ajax',  //요청 주소
+        data:{'id_write' :id_write,
+        		'inquery_state':inquery_state},   //파라메터
+        dataType:'JSON',  //받을 데이터 타입
+    	success: function(data) {
+    	    console.log(data);
+    	    // data.inquerylist가 배열인지 확인 후 drawList 호출
+    	    if (data && Array.isArray(data.inquerylist)) {
+    	        drawList(data.inquerylist);
+    	    } else {
+    	        console.error('Unexpected response format:', data);
+    	    }
+    	},
+        error:function(e) {  //실패했을 경우(실패 내용)
+            console.log(e)
+        }
+    });
+})
+
+
+function drawList(list) {
+    if (!Array.isArray(list)) {
+        console.error('The provided list is not an array:',list);
+        return;
+    }
+	var content = '';
+	list.forEach(function(item,idx) {
+		content+='<tr>';
+		content+='<td>'+item.id_write+'</td>';
+		content+='<td>'+item.inquery_subject+'</td>';
+		content+='<td>'+item.inquery_date+'</td>';
+		content+='<td>'+item.inquery_state+'</td>';
+		content+='<td>'+"관리자"+'</td>';
+		content+='</tr>';
+	});
+	$('#list').html(content);
+		
+}
 </script>
 </html>

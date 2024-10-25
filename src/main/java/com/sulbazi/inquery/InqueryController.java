@@ -31,7 +31,7 @@ public class InqueryController {
 		return "inquery/inqueryUserList";
 	}
 	
-	@PostMapping(value="/userinquerywsrite.do")
+	@PostMapping(value="/userinqueryWrite.do")
 	public String userinquerywrite(MultipartFile[] inqueryfiles, @RequestParam Map<String, String> params, 
 											Model model, HttpSession session) {
 		logger.info("params: {}", params);
@@ -40,7 +40,7 @@ public class InqueryController {
 		return "inquery/inqueryUserList";
 	}
 	
-	@GetMapping(value="userlistinquery.ajax")
+	@GetMapping(value="/inqueryuserList.ajax")
 	@ResponseBody
 	public Map<String, Object> userlistinquery(HttpSession session) {
 		String id = (String) session.getAttribute("loginId");
@@ -52,18 +52,73 @@ public class InqueryController {
 	}
 	
 	@RequestMapping(value="/inqueryList.go")
-	public String admininquerylist(Model model, HttpSession session) {
-		logger.info("문의리스트 관리자컨트롤러");
+	public String admininquerylistgo(Model model,HttpSession session) {
+		logger.info("문의리스트가기 관리자컨트롤러");
 		String page="main/main";
 		if(!session.getAttribute("opt").equals("admin_log")) {
 			model.addAttribute("result", "로그인이 필요한 서비스 입니다");
 		}else {
-			List<InqueryDTO> inquerylist = inquery_ser.admininquerylist();
-			logger.info("list: {}",inquerylist);
-			model.addAttribute("inquerylist", inquerylist);
 			page="inquery/inqueryList";
 		}
 		return page;
 	}
 	
+	
+	@GetMapping(value="/inqueryList.do")
+	@ResponseBody
+	public Map<String, Object> admininquerylist(Model model, HttpSession session) {
+		logger.info("문의리스트 관리자컨트롤러");
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<HashMap<String, Object>>  inquerylist = inquery_ser.admininquerylist();
+		map.put("inquerylist", inquerylist);
+		return map;
+	}
+	
+	@GetMapping(value="/inqueryFiltering.ajax")
+	@ResponseBody
+	public Map<String, Object> inqueryfiltering(String inquerystate) {
+		boolean bool=false;
+		if(inquerystate.equals("false")) {
+			bool = false;
+		} else {
+			bool = true;
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<HashMap<String, Object>>  inquerylist = inquery_ser.inqueryfiltering(bool);
+		map.put("inquerylist", inquerylist);
+		return map;
+	}
+	
+	
+	@PostMapping(value="/inquerySearch.ajax")
+	@ResponseBody
+	public Map<String, Object> inquerysearch(@RequestParam Map<String, String> params) {
+		logger.info("params: {}",params);
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<HashMap<String, Object>>  inquerylist = inquery_ser.inquerysearch(params);
+		map.put("inquerylist", inquerylist);
+		return map;
+	}
+	
+	
+	@GetMapping(value="/inqueryuserDetail.go")
+    public String userinquerydetail(@RequestParam("idx") int inqueryIdx, Model model, HttpSession session) {
+		String page= "login";
+		if(session.getAttribute("loginId") == null) {
+			model.addAttribute("result", "로그인이 필요한 서비스");
+		}else {
+			InqueryDTO userinquerydetail = null;
+			InqueryDTO userinquerydetailadmin = null;
+			page="redirect:/inquery/inqueryUserList";
+			userinquerydetail = inquery_ser.userinquerydetail(inqueryIdx);
+			userinquerydetailadmin = inquery_ser.userinquerydetailadmin(inqueryIdx);
+			if(userinquerydetail != null) {
+				page="inquery/inqueryUserDetail";
+				model.addAttribute("userinquerydetail",userinquerydetail);
+				model.addAttribute("userinquerydetailadmin", userinquerydetailadmin);
+			}
+		}
+		return page;
+    }
+
 }

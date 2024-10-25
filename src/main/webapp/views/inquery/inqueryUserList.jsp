@@ -110,7 +110,7 @@
 </style>
 </head>
 <body>
-	<form action="userinquerywrite.do" method="post" enctype="multipart/form-data">
+	<form action="userinqueryWrite.do" method="post" enctype="multipart/form-data">
     	<div class="container">
         	<div class="header">고객센터</div>
         	<div class="back">
@@ -167,7 +167,7 @@ addquery(); // 리스트 업데이트 함수 호출
     function addquery() {
         $.ajax({
             type: 'GET',
-            url: 'userlistinquery.ajax',
+            url: 'inqueryuserList.ajax',
             data: {},
             dataType: 'JSON',
             success: function(data) {
@@ -193,7 +193,7 @@ addquery(); // 리스트 업데이트 함수 호출
             	}
                 content += '<tr>';
                 content += '<td>' + loginId + '</td>';
-                content += '<td>' + item.inquery_subject + '</td>';
+                content += '<td><a href="inqueryuserDetail.go?inquery_idx=' + item.inquery_idx + '">' + item.inquery_subject + '</a></td>'; // 상세보기 링크 추가
                 content += '<td>' + item.inquery_date + '</td>';
                 content += '<td>' + state + '</td>';
                 content += '<td>' + '관리자' + '</td>';

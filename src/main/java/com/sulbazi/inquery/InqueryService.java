@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -57,8 +58,7 @@ public class InqueryService {
 				int pos = ori_filename.lastIndexOf(".");
 				
 				if(pos>=0) {
-					String ext = "";
-					// ori_filename.lastIndexOf(".") 수행시 -1이 나오는데 이걸로 서브스트링이 되나?					
+					String ext = "";				
 					ext = ori_filename.substring(pos);						
 					String newFileName = UUID.randomUUID().toString()+ext;		
 					byte[] userinqueryarr = userinqueryfile.getBytes();
@@ -77,16 +77,41 @@ public class InqueryService {
 	}
 
 	public List<HashMap<String, Object>> userlistinquery(String id) {
+		//처리자
 		/* inquery_dao.inqueryprocess(id); */
 		return inquery_dao.userlistinquery(id);
-		
-
-			
+	
 	}
 
-	public List<InqueryDTO> admininquerylist() {
+	public List<HashMap<String, Object>> admininquerylist() {
 		return inquery_dao.admininquerylist();
-		
+	}
+
+	public List<HashMap<String, Object>> inqueryfiltering(boolean bool) {
+		return inquery_dao.inqueryfiltering(bool);
+	}
+
+	public List<HashMap<String, Object>> inquerysearch(Map<String, String> params) {
+		logger.info("params: {}",params);
+		InqueryDTO dto = new InqueryDTO();
+		dto.setId_write(params.get("id_write"));
+		boolean bool=false;
+		if(params.get("inquery_state").equals("false")) {
+			bool = false;
+			dto.setInquery_state(false);
+		} else {
+			bool = true;
+			dto.setInquery_state(true);
+		}
+		return inquery_dao.inquerysearch(dto);
+	}
+
+	public InqueryDTO userinquerydetail(int inqueryIdx) {
+		return inquery_dao.userinquerydetail(inqueryIdx);
+	}
+
+	public InqueryDTO userinquerydetailadmin(int inqueryIdx) {
+		return inquery_dao.userinquerydetailadmin(inqueryIdx);
 	}
 		
 	

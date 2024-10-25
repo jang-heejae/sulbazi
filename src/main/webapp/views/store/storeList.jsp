@@ -158,11 +158,14 @@
 <script>
 //필터링
 $('#filtering').click(function() {
-	var alchol = $('input[name="alchol"]').val();
-	var food = $('input[name="food"]').val();
-	var mood = $('input[name="mood"]').val();
-	var visit = $('input[name="visit"]').val();
+	var alchol = $(':input:radio[name=alchol]:checked').val();
+	var food = $(':input:radio[name=food]:checked').val();
+	var mood = $(':input:radio[name=mood]:checked').val();
+	var visit = $(':input:radio[name=visit]:checked').val();
 	console.log(alchol);
+	console.log(food);
+	console.log(mood);
+	console.log(visit);
     $.ajax({
         type:'POST',  //method
         url:'filtering.ajax',  //요청 주소
@@ -179,6 +182,7 @@ $('#filtering').click(function() {
         }
     });
 })
+
 
 
 
