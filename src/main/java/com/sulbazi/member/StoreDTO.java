@@ -1,7 +1,7 @@
 package com.sulbazi.member;
 
 public class StoreDTO {
-
+	
 	private int store_idx;
 	private String store_id;
 	private String store_pw;

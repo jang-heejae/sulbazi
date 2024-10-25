@@ -22,8 +22,8 @@
 	}
 	#adminDetail{
 		position: absolute;
-		top: 550px;
-		left: 550px;
+		top: 350px;
+		left: 1050px;
 	}
 </style>
 <body>
