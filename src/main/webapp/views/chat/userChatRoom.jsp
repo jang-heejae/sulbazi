@@ -7,10 +7,13 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 	var loginId = '${sessionScope.loginId}';
-	var session = "${session}";
 	
-	if(session!=""){
-		alert(session);
+	var session = "${sessionScope.session}";
+	var msg = "${msg}";
+	
+	
+	if(msg!=""){
+		alert(msg);
 		location.replace('./userchatlist.go');
 	}
 </script>
@@ -83,16 +86,72 @@
         justify-content: flex-end;
         margin-right: 10px;
     }
+    
+    /* 채팅방 */
     .chatroom{
         width: 780px;
-        height: 650px;;
-        background-color: lightseagreen;
+        height: 650px;
+    }
+    .roomtitle{
+        width: 780px;
+        height: 50px;
+        background-color: bisque;
+    }
+    .cont2{
+        display: flex;
+        width: 780px;
+        height: 600px;
+        background-color: darkkhaki;
+    }
+    .userlist{
+        width: 200px;
+        height: 600px;
+        background-color: darkcyan;
+    }
+    .room2{
+        left: 10px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        margin: 10px;
+        width: 180px;
+        height: 50px;
+        background-color: aliceblue;
+        border-radius: 10px;
+    }
+    .msgform{
+        width: 580px;
+        height: 600px;
+        background-color: darkolivegreen;
+    }
+    .chatlist{
+        background-color: thistle;
+        width: 100%;
+        height: 550px;
+    }
+    .textarea{
+        display: flex;
+        justify-content: space-between;
+        background-color: dimgray;
+        width: 100%;
+        height: 50px;
+    }
+    textarea{
+        border: none;
+        resize: none;
+        outline: none;
+        width: 85%;
+        height: 100%;
+        font-size: x-large;
+    }
+    .sendmsg{
+        width: 15%;
     }
 </style>
 </head>
 <body>
 	<jsp:include page="../main/main.jsp"/>
-	<h2>${loginId}님의 ${roomidx}번 채팅방</h2>
+	<h2>${userid}님의 ${idx} ${roomidx}번 채팅방</h2>
 	<a href="userchatlist.go">뒤로가기</a>
     <div class="main">
         <div class="section">
@@ -104,29 +163,55 @@
                             <c:forEach items="${list}" var="userchat">
 	                            <div class="room">
 	                                <div class="roominfo">${userchat.userchat_subject}</div>
-	                                <div class="roominfo">${userchat.current_people}</div>   
+	                                <div class="roominfo">${userchat.current_people}/${userchat.max_people}</div>   
 	                            </div>
                             </c:forEach>
-                            <!-- 
-                            
-                            <div class="room">
-                                <div class="roominfo">2번방 제목</div>
-                                <div class="roominfo">2번방 인원</div> 
-                            </div>
-                            <div class="room">
-                                <div class="roominfo">3번방 제목</div>
-                                <div class="roominfo">3번방 인원</div> 
-                            </div> -->
                         </div>
                     </div>
                 </div>
             </div>
             <div class="chatroom">
+                <div class="roomtitle">${subject}</div>
+                <div class="cont2">
+                    <div class="userlist">
+                        <div class="room2">
+                            <div class="user">쵹쵹시진핑</div>
+                            <div class="user">방장</div>   
+                        </div>
+                    </div>
+                    <div class="msgform">
+                        <div class="chatlist">
+                            <c:forEach items="${usermsg}" var = "msg">
+                            	<p>${userNicknames[msg.user_id]}</p>
+                                <p>${msg.usermsg_content}</p>
+                            </c:forEach>
+                        </div>
+                        <div class="textarea">
+                        	<input type="text" name="user_id" value="${sessionScope.loginId}" readonly>
+                            <textarea name="usermsgcontent" placeholder="메세지 입력"></textarea>
+                            <button type="button" class="sendmsg">전송</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </body>
 <script>
+	
+	$('.txtarea').on('focus', function() {
+	      $(this).attr('placeholder', '');  // 포커스되면 placeholder 제거
+	    });
 
+	    $('.txtarea').on('blur', function() {
+	      if ($(this).val() === '') {
+	        $(this).attr('placeholder', '메세지 입력');  // 텍스트가 없으면 placeholder 복구
+	      }
+	    });
+	    
+	$('.sendmsg').click(function(){
+	    var txt = $('textarea[name=usermsgcontent]').val();
+	    console.log(txt);
+	});
 </script>
 </html>

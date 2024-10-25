@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/6282a8ba62.js" crossorigin="anonymous"></script>
 <style>
     *{
         margin: 0;
@@ -115,13 +116,42 @@
         width: 50px;
         height: 30px;
     }
-    .hidden{
-    	display: none;
+    .searchbox{
+	    position: absolute;
+	    top: 80px;
+   	    left: 803px;
     }
+    .search{
+        position: relative;
+        width: 300px; /* 원하는 너비 설정 */
+        margin: 50px auto; /* 가운데 정렬 */
+    }
+    .search input{
+    	outline: none;
+        padding-left: 40px; /* 아이콘의 너비 만큼 여백 추가 */
+        width: 100%; /* 부모 요소의 너비에 맞추기 */
+        height: 40px; /* 원하는 높이 설정 */
+        border: 1px solid #ccc; /* 테두리 스타일 */
+        border-radius: 5px; /* 모서리 둥글게 */
+    }
+    .search i{
+        position: absolute;
+        left: 10px; /* 아이콘의 위치 설정 */
+        top: 50%; /* 수직 중앙 정렬 */
+        transform: translateY(-50%); /* 수직 중앙 정렬 */
+        color: #aaa; /* 아이콘 색상 */
+    }
+   
 </style>
 </head>
 <body>
 	<jsp:include page="../main/main.jsp"/>
+	<section class="searchbox">
+        <div class="search">
+        	<i class="fas fa-search"></i>
+            <input type="text" name="search" placeholder="채팅방 검색">
+        </div>
+    </section>
 	<section class="chatBox">
 		<form action="userchatroom.do" method="post">
 	        <div class="newroombtn">방 만들기</div>
@@ -134,8 +164,8 @@
 	                     제한 인원:<input type="range" name="current_people" min="1" max="20" value="5" oninput="document.getElementById('value2').innerHTML=this.value;">
 	                     <p id="value2">5</p>
 	                </li>
-	                <li class="hidden">
-	                	<input type="text" name="user_id" value="${loginId}" readonly/>
+	                <li>
+	                	<input type="hidden" name="user_id" value="${loginId}" readonly/>
 	                </li>
 	            </ul>
 	            <div class="roombtn">
@@ -146,7 +176,7 @@
 	    </form>  
         <div class="chatitems">
           <c:forEach items="${list}" var="userchat">
-          <form action="userchatroom.go" method="get">
+          <form action="userchatroom.go?idx=${userchat.userchat_idx}" method="post">
             <div class="chatroom">
                 <div class="roomname">
                     <ul>
@@ -185,6 +215,15 @@
 		if(msg!=""){
 			alert(msg);
 		}
+		
+		var session = "${sessionScope.session}";
+		
+		console.log(session);
+		if(session!=""){
+			alert(session);
+			location.replace('./userchatlist.go');
+		}
+		
 		// 채팅방 취소 버튼
 	    $('.newroombtn, .cancel').click(function(){      
 	        var display = $('.createroom').css('display')

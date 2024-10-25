@@ -5,7 +5,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <style>
     *{
@@ -76,7 +75,8 @@
                 <div class="roomname">
                     <p>${localchat.local_category}</p>
                     <%-- <img src="${someImagePath}/${status.index + 1}.jpg" alt="Chat Image" /> --%>
-                    <img src="/src/main/resources/static/img/1.png" alt="Chat Image" />
+                    <img src="resources/img/${status.index + 1}.png" alt="Chat Image" />
+                    <!-- <img src="resources/img/1.png" alt="Chat Image" /> -->
                 </div>
                 <div class="chatgo">
                     <div class="gobtn" onclick="location.href='localchatroom.go'">참여</div>
