@@ -61,7 +61,7 @@
 	
 	
 	<select id="answer"
-		resultType="map">
+		resultType="com.sulbazi.inquery.AnswerDTO">
 		SELECT answer_date, answer_content FROM answer WHERE inquery_idx=#{param1}
 	</select>
 	

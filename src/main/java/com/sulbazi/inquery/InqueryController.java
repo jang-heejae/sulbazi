@@ -123,8 +123,8 @@ public class InqueryController {
 			if(userinquerydetail != null) {
 				page="inquery/inqueryUserDetail";
 				model.addAttribute("userinquerydetail",userinquerydetail);
-				model.addAttribute("userinquerydetailadmin", userinquerydetailadmin);
-				model.addAttribute("inquerydetailadmin", inquerydetailadmin);
+				model.addAttribute("answer", answer);
+				model.addAttribute("answeradmin",answeradmin);
 				model.addAttribute("userinquerydetailphoto", userinquerydetailphoto);
 			}
 		}
@@ -153,23 +153,6 @@ public class InqueryController {
 		}
 		return page;
     }
-	
-	@GetMapping(value="/answer.ajax")
-	@ResponseBody
-	public Map<String, Object> answer(HttpSession session) {
-		String id = (String) session.getAttribute("loginId");
-		logger.info(id);
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<HashMap<String, Object>> list = inquery_ser.answer(inqueryIdx);
-		map.put("list", list);
-		return map;
-	}
-	@Get
-	List<AnswerDTO> answer = null;
-	answer = inquery_ser.answer(inqueryIdx); //문의 처리 상세
-	List<String> inquerydetailadmin = inquery_ser.answeradmin(inqueryIdx); //문의 처리자
-	
-	
-	
+
 	
 }

@@ -98,11 +98,15 @@
                 <div class="form-group flex-group">
                     <div class="flex-item">
                         <label class="form-label">관리자</label>
-                        <input type="text" value="${inquerydetailadmin}" class="form-control" readonly>
+                        <c:forEach items="${answeradmin}" var="answerad">
+                        	<input type="text" value="${answerad.admin_name}" class="form-control" readonly>
+                        </c:forEach>
                     </div>
                     <div class="flex-item">
                         <label class="form-label" for="responseDate">답변 날짜</label>
-                        <input type="text" id="responseDate" name="responseDate" class="form-control" value="${userinquerydetailadmin.answer_date}" readonly>
+                        <c:forEach items="${answer}" var="inqueryanswer">
+                        	<input type="text" id="responseDate" name="responseDate" class="form-control" value="${inqueryanswer.answer_date}" readonly>
+                    	</c:forEach>
                     </div>
                 </div>
                 <div class="form-group">
