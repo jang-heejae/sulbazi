@@ -1,22 +1,54 @@
 package com.sulbazi.member;
 
+
+import java.util.List;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.sulbazi.board.BoardDTO;
+import com.sulbazi.category.CategoryDTO;
+import com.sulbazi.category.CategoryOptDTO;
+import com.sulbazi.category.StoreCategoryDTO;
+import com.sulbazi.photo.PhotoDTO;
+
+
 @Service
 public class StoreService {
-
-	Logger logger = LoggerFactory.getLogger(getClass());
 	
+	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired StoreDAO store_dao;
+	
+	public StoreDTO getStoreDetail(int idx) {
+		StoreDTO sd = store_dao.getStoreDetail(idx);
+		String storeTime = sd.getStore_time().replace("\n", "<br>");
+		sd.setStore_time(storeTime);
+		return sd;
+	}
+
+
+	public List<PhotoDTO> fileList(int idx) {
+		return store_dao.fileList(idx);
+	}
+
+
+	public List<StoreMenuDTO> getStoreMenuById(int idx) {
+		return store_dao.getStoreMenuById(idx);
+	}
+
+
+
 	
 	public Map<String, Object> storenamesearch(String keyword, Model model) {
 		logger.info("매장이름키워드서비스");
@@ -86,4 +118,63 @@ public class StoreService {
 		 }		 
 		 return map;
 	}
+
+
+	public PhotoDTO getStorePhoto(int idx) {
+		return store_dao.getStorePhoto(idx);
+	}
+
+
+	public BoardDTO getBoard(int idx) {
+		return store_dao.getBoard(idx);
+	}
+
+
+	public List<PhotoDTO> alcoholFileList(int idx) {
+		return store_dao.alcoholFileList(idx);
+	}
+
+
+	public List<StoreMenuDTO> getStoreAlcohol(int idx) {
+		return store_dao.getStoreAlcohol(idx);
+	}
+
+	public Map<String, Object> bookmarkCheck(String loginId, int storeidx) {
+		int store_idx = storeidx;
+		String user_id= loginId;
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (store_dao.bookmarkCheckCount(user_id,store_idx) == 0) {
+			map.put("bookmark",store_dao.bookmarkCheck(user_id,store_idx));
+		}else {
+			int del = store_dao.delBookmark(user_id,store_idx);
+		}
+		
+		int bookmark_user = store_dao.storeBookmarkCheck(store_idx);
+		if ( bookmark_user >= 0) {
+			store_dao.updateStoreFavoriteCount(store_idx,bookmark_user);
+		}
+		
+		return map;
+	}
+
+
+	public List<PhotoDTO> getStorePhotos(int idx) {
+		return store_dao.getStorePhotos(idx);
+	}
+
+	
+	public List<CategoryOptDTO> getStoreExplain(int idx) {
+		List<Integer> storeOptidxs = store_dao.stCategory(idx);
+		System.out.println(storeOptidxs);
+		List<CategoryOptDTO> storeExplain = new ArrayList<>();
+		for (Integer integer : storeOptidxs) {
+			CategoryOptDTO stwe = store_dao.storeByCategoryopt(integer);
+			storeExplain.add(stwe);
+		}
+
+		return storeExplain;
+	}
+
+
+
 }

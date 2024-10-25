@@ -1,6 +1,7 @@
 package com.sulbazi.photo;
 
 public class PhotoCategoryDTO {
+
 	private int photo_category_idx;
 	private String photo_category;
 	public int getPhoto_category_idx() {
@@ -15,5 +16,5 @@ public class PhotoCategoryDTO {
 	public void setPhoto_category(String photo_category) {
 		this.photo_category = photo_category;
 	}
-	
+
 }
