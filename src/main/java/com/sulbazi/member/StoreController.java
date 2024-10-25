@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sulbazi.board.BoardDTO;
 import com.sulbazi.board.BoardService;
+import com.sulbazi.category.CategoryDTO;
+import com.sulbazi.category.CategoryOptDTO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
 
@@ -45,6 +48,7 @@ public class StoreController {
         PhotoDTO file= store_ser.getStorePhoto(idx);
         List<PhotoDTO> files= store_ser.getStorePhotos(idx);
         BoardDTO boardList = store_ser.getBoard(idx);
+        List<CategoryOptDTO> storeOverviews = store_ser.getStoreExplain(idx);
 
 
         model.addAttribute("store", storeDetail);
@@ -52,6 +56,7 @@ public class StoreController {
         model.addAttribute("file", file);
         model.addAttribute("board", boardList);
         model.addAttribute("storeidx",idx);
+        model.addAttribute("storeOverviews",storeOverviews);
         logger.info("storeDetail: " + storeDetail);
         return "store/storeDetail";
   
@@ -67,6 +72,11 @@ public class StoreController {
             System.out.println(f.getNew_filename());
         }
         List<StoreMenuDTO> storeMenu = store_ser.getStoreMenuById(idx);
+        for (StoreMenuDTO storeMenuDTO : storeMenu) {
+        	Object som =  storeMenuDTO.getMenu_name();
+        	System.out.println(som);
+			
+		}
 		model.addAttribute("files",files);
 		model.addAttribute("storeMenu",storeMenu);
 		model.addAttribute("store",idx);
@@ -79,8 +89,8 @@ public class StoreController {
         List<PhotoDTO> files= store_ser.alcoholFileList(idx);
         logger.info("files list size: {}", files.size());
         for (PhotoDTO f : files) {
-            logger.info("PhotoDTO: {}", f);
-            System.out.println(f.getNew_filename());
+            //logger.info("PhotoDTO: {}", f);
+            //System.out.println(f.getNew_filename());
         }
         List<StoreMenuDTO> storeAlcohol = store_ser.getStoreAlcohol(idx);
 		model.addAttribute("files",files);

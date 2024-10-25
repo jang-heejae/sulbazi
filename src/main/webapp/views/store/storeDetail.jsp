@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"/>
         <style>
             body{
                 background-color: #20290E;
@@ -56,10 +56,10 @@
             .title-container {
                 list-style-type: none;
                 display: flex;
-                /* justify-content: flex-start; */
                 align-items: center;
                 width: 100%; /* 부모 요소의 전체 너비 사용 */
                 padding: 0 20px; /* 좌우 여백 추가 */
+                margin-bottom : 0px;
             }
             .starfront{
                 font-size: 35px;
@@ -84,9 +84,8 @@
             fieldset{
             	border:1px solid black;
                 background-color: rgba(255, 255, 255, 0);
-                width: 95%;
+                width: 100%;
                 height: 500px;
-                margin: 10px;
             }
              table,tr,td,th{
                 border:1px solid black;
@@ -120,7 +119,7 @@
 				margin: 0 20px;
 			}
 			.address{
-				margin: 30px 0;
+				margin: 0 0 30px 0;
 				width: 100%;
 			}
 			.address p{
@@ -158,33 +157,45 @@
                     <li class="staravg">${store.star_average}</li>
                 </ul>
                 <div class="address">
-                    <p>주소,전화번호,분위기,방문목적,주종,안주 영역</p>
-                    
-                    <p>${store.store_address}</p>
+                		<!-- 주소 -->
+                    <p>🚩${store.store_address}</p>
                     <br/>
                     <p></p>
                     <table class="address-table">
                     	<tbody>
                     		<tr>
+                    			<!-- 매장 연락처 -->
                     			<td colspan="2">${store.store_phone}</td>
                     		</tr>
-                    		<tr>
-                    			<td>분위기</td>
-                    			<td>:</td>
-                    		</tr>
-                    		<tr>
-                    			<td>방문목적</td>
-                    			<td>:방문목적</td>
-                    		</tr>
-                    		<tr>
-                    			<td>주종</td>
-                    			<td>:주종</td>
-                    		</tr>
-                    		<tr>
-                    			<td>안주</td>
-                    			<td>:안주</td>
-                    		</tr>
-								
+                    		<!-- 매장 주력 테마  -->
+                    		<c:forEach var="storeOverview" items="${storeOverviews}" varStatus="status">
+                    			<c:choose>
+                    				<c:when test="${storeOverview.category_idx == 3}">
+			                    		<tr>
+			                    			<td>💗분위기</td>
+			                    			<td>:&nbsp;${storeOverview.opt_name}</td>
+			                    		</tr>
+		                    		</c:when>
+                    				<c:when test="${storeOverview.category_idx == 4}">
+			                    		<tr>
+			                    			<td>💗방문목적</td>
+			                    			<td>:&nbsp;${storeOverview.opt_name}</td>
+			                    		</tr>
+		                    		</c:when>
+                    				<c:when test="${storeOverview.category_idx == 1}">
+			                    		<tr>
+			                    			<td>💗주종</td>
+			                    			<td>:&nbsp;${storeOverview.opt_name}</td>
+			                    		</tr>
+		                    		</c:when>
+                    				<c:when test="${storeOverview.category_idx == 2}">
+			                    		<tr>
+			                    			<td>💗안주</td>
+			                    			<td>:&nbsp;${storeOverview.opt_name}</td>
+			                    		</tr>
+		                    		</c:when>
+	                    		</c:choose>
+							</c:forEach>
                     	</tbody>
                     </table>
                 </div>
@@ -194,7 +205,7 @@
 	                    	<tr>
 	                    		<td>${board.board_category}</td>
 	                    		<td>
-	                    			<img class="icon" src="/img/img.png"/>
+	                    			<img class="icon" src="resources/img/img.png"/>
 	                    			<a href="#" style="display: inline-block; color: black;">${board.board_subject}</a>
 	                    		</td>
 	                    		<td>${board.board_date}</td>

@@ -6,6 +6,7 @@ import java.util.List;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.sulbazi.board.BoardDTO;
+import com.sulbazi.category.CategoryDTO;
+import com.sulbazi.category.CategoryOptDTO;
+import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.photo.PhotoDTO;
 
 
@@ -28,7 +32,8 @@ public class StoreService {
 	
 	public StoreDTO getStoreDetail(int idx) {
 		StoreDTO sd = store_dao.getStoreDetail(idx);
-		
+		String storeTime = sd.getStore_time().replace("\n", "<br>");
+		sd.setStore_time(storeTime);
 		return sd;
 	}
 
@@ -155,6 +160,19 @@ public class StoreService {
 
 	public List<PhotoDTO> getStorePhotos(int idx) {
 		return store_dao.getStorePhotos(idx);
+	}
+
+	
+	public List<CategoryOptDTO> getStoreExplain(int idx) {
+		List<Integer> storeOptidxs = store_dao.stCategory(idx);
+		System.out.println(storeOptidxs);
+		List<CategoryOptDTO> storeExplain = new ArrayList<>();
+		for (Integer integer : storeOptidxs) {
+			CategoryOptDTO stwe = store_dao.storeByCategoryopt(integer);
+			storeExplain.add(stwe);
+		}
+
+		return storeExplain;
 	}
 
 

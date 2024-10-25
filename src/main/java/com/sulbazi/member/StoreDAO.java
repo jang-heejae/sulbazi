@@ -3,8 +3,11 @@ package com.sulbazi.member;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.sulbazi.board.BoardDTO;
+import com.sulbazi.category.CategoryOptDTO;
+import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.photo.PhotoDTO;
 
 @Mapper
@@ -44,6 +47,11 @@ public interface StoreDAO {
 	int storeBookmarkCheck(int store_idx);
 
 	void updateStoreFavoriteCount(int store_idx, int bookmark_user);
+
+	List<Integer> stCategory(int idx);
+
+	CategoryOptDTO storeByCategoryopt(Integer integer);
+
 
 
 

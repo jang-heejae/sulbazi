@@ -55,7 +55,16 @@
 	<update id="updateStoreFavoriteCount" parameterType="int">
 		UPDATE store SET bookmark_user = #{bookmark_user} WHERE store_idx = #{store_idx};
 	</update>
-	
+	<select id="stCategory" parameterType="int" resultType="int">
+	    SELECT opt_idx 
+	    FROM store_category 
+	    WHERE store_idx = #{idx}
+	    ORDER BY opt_idx ASC	
+	</select>
+	<select id="storeByCategoryopt" resultType="com.sulbazi.category.CategoryOptDTO">
+		select * from category_opt where opt_idx=#{param1}
+	</select>
+
 
 
 	<!-- 매장 이름 검색 후 store_idx 추출-->
@@ -75,8 +84,7 @@
 		SELECT store_idx FROM store WHERE store_address LIKE CONCAT('%', #{param1}, '%')
 	</select>
 
-	<select id="storesearch" 
-		resultType="com.sulbazi.member.StoreDTO">
+	<select id="storesearch" resultType="com.sulbazi.member.StoreDTO">
 		SELECT store_name,star_average,review_total,store_address FROM store WHERE store_idx=#{param1}
 	</select>
 	
