@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <title>SULBAZI</title>
     <script src="https://kit.fontawesome.com/6282a8ba62.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
