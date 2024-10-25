@@ -4,6 +4,7 @@ package com.sulbazi.member;
 public class StoreDTO {
 
 
+
 	   private int store_idx;
 	   private String store_id;
 	   private String store_pw;
@@ -17,7 +18,6 @@ public class StoreDTO {
 	   private int review_total;
 	   private float star_average;
 	   private int bookmark_user;
-
 
 
 	public int getStore_idx() {

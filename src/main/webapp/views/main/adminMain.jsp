@@ -184,7 +184,9 @@
     </header>
 </body>
 <script>
+
 //main_menu 클릭 이벤트
+
 document.querySelectorAll('.main_menu').forEach(function(menu) {
     menu.addEventListener('click', function() {
         var fullElement = document.querySelector('.full');
