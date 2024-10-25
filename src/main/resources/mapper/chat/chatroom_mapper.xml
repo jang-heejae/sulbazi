@@ -6,6 +6,7 @@
 <mapper namespace="com.sulbazi.chat.ChatRoomDAO">
 
 	<!-- 개인 채팅방 리스트 -->
+	
 	<select id="chatlist" resultType="com.sulbazi.chat.UserChatroomDTO">
 		SELECT 
 			userchat_idx,
@@ -19,34 +20,31 @@
 		FROM userchat ORDER BY userchat_date DESC
 	</select>
 	
-<!-- 	<select id="chatlist" resultType="com.sulbazi.chat.UserChatroomDTO">
-		SELECT * FROM userchat ORDER BY userchat_date DESC
-	</select> -->
-
-	<!-- <select id="chatlist" resultType="com.sulbazi.chat.UserChatroomDTO">
-		SELECT 
-			userchat_idx,
-			user_id,
-			userchat_subject,
-			userchat_date,
-			userchat_state,
-			current_people,
-			max_people,
-			notice 
-		FROM userchat ORDER BY userchat_date DESC LIMIT #{param1} OFFSET #{param2}
-	</select> -->
-	
 	<!-- 개인 채팅방 생성 -->
+	
 	<insert id="chatcreate" 
 		useGeneratedKeys="true"
 		keyColumn="userchat_idx"
 		keyProperty="userchat_idx"
 		parameterType="com.sulbazi.chat.UserChatroomDTO">
-		INSERT INTO userchat(userchat_subject, current_people)
-			VALUES(#{userchat_subject}, #{current_people})
+		INSERT INTO userchat(user_id, userchat_subject, current_people)
+		SELECT #{user_id}, #{userchat_subject}, #{current_people} FROM DUAL
+		WHERE NOT EXISTS (
+	        SELECT 1
+	        FROM userchat
+	        WHERE user_id = #{user_id}
+    	)
 	</insert> 
 
+	<!--  개인 채팅방 참여 -->
+	
+	<select id="chatroom" parameterType="string" resultType="com.sulbazi.chat.UserChatroomDTO">
+	    SELECT * FROM userchat WHERE user_id = #{userId}  
+	    <!-- 세션에서 전달받은 user_id 값을 WHERE 조건으로 사용 -->
+	</select>
+	
 	<!-- 지역 채팅방 리스트 -->
+	
 	<select id="localchatlist" resultType="com.sulbazi.chat.LocalChatroomDTO">
 		SELECT 
 			localchat_idx,

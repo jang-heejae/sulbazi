@@ -16,6 +16,13 @@
         text-decoration: none;
         color: black;
     }
+    p{
+        font-size: 55px;
+    }
+    img{
+    	width: 100px;
+    	height: 100px;
+    }
 	.chatBox{
 		display: flex;
    		justify-content: space-around;
@@ -46,10 +53,9 @@
 		border-radius: 45px;
 	}
     .roomname{
+	    display: flex;
+	    justify-content: space-around;
         background-color: aquamarine;
-    }
-    p{
-        font-size: 55px;
     }
     .gobtn{
         width: 50px;
@@ -65,14 +71,15 @@
 	<jsp:include page="../main/main.jsp"/>
 	<section class="chatBox">
         <div class="chatitems">
-          <c:forEach items="${list}" var="localchat">
+          <c:forEach items="${list}" var="localchat" varStatus="status">
             <div class="chatroom">
                 <div class="roomname">
                     <p>${localchat.local_category}</p>
-                    <img>
+                    <%-- <img src="${someImagePath}/${status.index + 1}.jpg" alt="Chat Image" /> --%>
+                    <img src="/src/main/resources/static/img/1.png" alt="Chat Image" />
                 </div>
                 <div class="chatgo">
-                    <div class="gobtn" onclick="location.href='localchatroom.do'">참여</div>
+                    <div class="gobtn" onclick="location.href='localchatroom.go'">참여</div>
                 </div>
             </div>
        	</c:forEach>

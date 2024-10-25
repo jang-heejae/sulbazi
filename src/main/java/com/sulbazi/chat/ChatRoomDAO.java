@@ -11,10 +11,15 @@ public interface ChatRoomDAO {
 	List<UserChatroomDTO> chatlist();
 
 	/* 개인 채팅방 생성 */
-	int chatcreate(UserChatroomDTO dto);
-
+	int chatcreate(UserChatroomDTO userchatroomdto);
+	
+	/* 개인 채팅방 참여 */
+	List<UserChatroomDTO> chatroom(String userId);
+	
 	/* 지역 채팅방 리스트 */
 	List<UserChatroomDTO> localchatlist();
+
+
 
 
 
