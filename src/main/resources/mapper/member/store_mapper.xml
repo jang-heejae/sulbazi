@@ -16,7 +16,7 @@
 		SELECT p.new_filename
 		FROM photo p
 		JOIN store_menu m ON m.menu_idx = p.photo_folder_idx
-		WHERE m.store_idx = 1
+		WHERE m.store_idx = #{idx}
 		AND m.menu_category = '안주'
 		AND p.photo_category_idx = 2
 		ORDER BY p.photo_folder_idx ASC;
@@ -25,7 +25,7 @@
 		SELECT p.new_filename
 		FROM photo p
 		JOIN store_menu m ON m.menu_idx = p.photo_folder_idx
-		WHERE m.store_idx = 1
+		WHERE m.store_idx = #{idx}
 		AND m.menu_category = '술'
 		AND p.photo_category_idx = 6
 		ORDER BY p.photo_folder_idx ASC;
