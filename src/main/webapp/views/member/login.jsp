@@ -82,6 +82,7 @@
 	</table>
 	</div>
 	</form>
+	
 </body>
 <script>
 	var msg = '${msg}';

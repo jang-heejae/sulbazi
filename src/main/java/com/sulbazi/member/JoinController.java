@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,6 +63,33 @@ public class JoinController {
 		 * Map<String, Object> map = new HashMap<String, Object>(); map.put("success",
 		 * true); map.put("link", "redirect:/login.go"); return map; }
 		 */
-	   
+	@RequestMapping(value="/apu")
+	public String apu() {
+		return "member/test";
+	}
+		 
+	 @PostMapping("/kakaoapi")
+	    @ResponseBody
+	    public ResponseEntity<?> getCoordinates(@RequestParam("address") String address) {
+	        try {
+	            // 카카오 API로 주소에 해당하는 위도와 경도를 조회하는 로직
+	            // 예시: kakaoApiService.getCoordinates(address);
+
+	            // 결과 예시
+	            double latitude = 37.5665; // 조회된 위도
+	            double longitude = 126.9780; // 조회된 경도
+
+	            // 위도와 경도를 JSON으로 응답
+	            Map<String, Object> result = new HashMap<>();
+	            result.put("latitude", latitude);
+	            result.put("longitude", longitude);
+	            
+	            return ResponseEntity.ok(result);
+	            
+	        } catch (Exception e) {
+	            // 예외 발생 시 에러 응답 반환
+	            return ResponseEntity.status(500).body("주소 변환 중 오류가 발생했습니다.");
+	        }
+	    }
 
 }
