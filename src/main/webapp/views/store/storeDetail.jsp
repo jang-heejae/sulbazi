@@ -6,9 +6,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
-<script src="js/jquery.twbsPagination.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
         <style>
             body{
                 background-color: #20290E;
@@ -75,7 +74,7 @@
             .promotion-list{
                 margin:0 30px;
                 width:95%;
-                align-self: flex-start;
+                
             }
             .operating{
                 background-color: #FFA91F;
@@ -120,6 +119,23 @@
 				width: 95%;
 				margin: 0 20px;
 			}
+			.address{
+				margin: 30px 0;
+				width: 100%;
+			}
+			.address p{
+				margin:0 60px;
+			}
+			.address-table{
+				margin:0 60px;
+			}
+			.address-table *{
+				border:0px;
+			}
+			.address-table{
+				border:0px;
+			}
+			
 
             
         </style>
@@ -143,8 +159,34 @@
                 </ul>
                 <div class="address">
                     <p>주소,전화번호,분위기,방문목적,주종,안주 영역</p>
+                    
                     <p>${store.store_address}</p>
-                    <p>${store.store_phone}</p>
+                    <br/>
+                    <p></p>
+                    <table class="address-table">
+                    	<tbody>
+                    		<tr>
+                    			<td colspan="2">${store.store_phone}</td>
+                    		</tr>
+                    		<tr>
+                    			<td>분위기</td>
+                    			<td>:</td>
+                    		</tr>
+                    		<tr>
+                    			<td>방문목적</td>
+                    			<td>:방문목적</td>
+                    		</tr>
+                    		<tr>
+                    			<td>주종</td>
+                    			<td>:주종</td>
+                    		</tr>
+                    		<tr>
+                    			<td>안주</td>
+                    			<td>:안주</td>
+                    		</tr>
+								
+                    	</tbody>
+                    </table>
                 </div>
                 <div class="promotion-list">
 	                    <p class="promotionfont"><strong>홍보</strong></p>
@@ -152,7 +194,7 @@
 	                    	<tr>
 	                    		<td>${board.board_category}</td>
 	                    		<td>
-	                    			<img class="icon" src="img/img.png"/>
+	                    			<img class="icon" src="/img/img.png"/>
 	                    			<a href="#" style="display: inline-block; color: black;">${board.board_subject}</a>
 	                    		</td>
 	                    		<td>${board.board_date}</td>
