@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sulbazi.photo.PhotoDTO;
+import com.sulbazi.photo.PhotoService;
+
 
 @Controller
 public class InqueryController {
@@ -25,7 +28,9 @@ public class InqueryController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired InqueryService inquery_ser;
-
+	@Autowired PhotoService photo_ser;
+		
+	
 	@RequestMapping(value="/userinquery.go")
 	public String userinquery() {
 		return "inquery/inqueryUserList";
@@ -102,20 +107,25 @@ public class InqueryController {
 	
 	
 	@GetMapping(value="/inqueryuserDetail.go")
-    public String userinquerydetail(@RequestParam("idx") int inqueryIdx, Model model, HttpSession session) {
+    public String userinquerydetail(@RequestParam("inqueryIdx") int inqueryIdx, Model model, HttpSession session) {
 		String page= "login";
 		if(session.getAttribute("loginId") == null) {
 			model.addAttribute("result", "로그인이 필요한 서비스");
 		}else {
 			InqueryDTO userinquerydetail = null;
-			InqueryDTO userinquerydetailadmin = null;
+			AnswerDTO userinquerydetailadmin = null;
+			List<PhotoDTO> userinquerydetailphoto = null;
 			page="redirect:/inquery/inqueryUserList";
 			userinquerydetail = inquery_ser.userinquerydetail(inqueryIdx);
 			userinquerydetailadmin = inquery_ser.userinquerydetailadmin(inqueryIdx);
+			String inquerydetailadmin = inquery_ser.inquerydetailadmin(inqueryIdx);
+			userinquerydetailphoto = photo_ser.inqueryphoto(inqueryIdx);
 			if(userinquerydetail != null) {
 				page="inquery/inqueryUserDetail";
 				model.addAttribute("userinquerydetail",userinquerydetail);
 				model.addAttribute("userinquerydetailadmin", userinquerydetailadmin);
+				model.addAttribute("inquerydetailadmin", inquerydetailadmin);
+				model.addAttribute("userinquerydetailphoto", userinquerydetailphoto);
 			}
 		}
 		return page;

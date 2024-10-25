@@ -57,10 +57,11 @@
             border-radius: 5px;
             color: #000000;
         }
-        .attached-files img {
-            max-width: 100px;
-            margin-right: 10px;
-        }
+		img {
+    		max-width: 100%;
+    		height: auto;   
+    		max-height: 200px; 
+		}
     </style>
 </head>
 <body>
@@ -71,41 +72,42 @@
                 <div class="form-group flex-group">
                     <div class="flex-item">
                         <label class="form-label" for="inquiryId">문의 ID</label>
-                        <input type="text" id="inquiryId" name="inquiryId" class="form-control" value="{}" readonly>
+                        <input type="text" id="inquiryId" name="inquiryId" class="form-control" value="${userinquerydetail.id_write}" readonly>
                     </div>
                     <div class="flex-item">
                         <label class="form-label" for="inquiryDate">문의 일자</label>
-                        <input type="text" id="inquiryDate" name="inquiryDate" class="form-control" value="{}" readonly>
+                        <input type="text" id="inquiryDate" name="inquiryDate" class="form-control" value="${userinquerydetail.inquery_date}" readonly>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="inquiryTitle">문의 제목</label>
-                    <input type="text" id="inquiryTitle" name="inquiryTitle" class="form-control" value="{}" readonly>
+                    <input type="text" id="inquiryTitle" name="inquiryTitle" class="form-control" value="${userinquerydetail.inquery_subject}" readonly>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="inquiryContent">문의 내용</label>
-                    <textarea id="inquiryContent" name="inquiryContent" class="form-control" rows="4" readonly>{}</textarea>
+                    <textarea id="inquiryContent" name="inquiryContent" class="form-control" rows="4" readonly>${userinquerydetail.inquery_content}</textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label">첨부 파일</label>
-                    <div class="attached-files">
-                        <img src="file1.jpg" alt="첨부 파일 1">
-                        <img src="file2.jpg" alt="첨부 파일 2">
+                    <div>
+						<c:forEach items="${userinquerydetailphoto}" var="inqueryfile">
+							<img src="/photo/${inqueryfile.new_filename}"><br/>
+						</c:forEach>
                     </div>
                 </div>
                 <div class="form-group flex-group">
                     <div class="flex-item">
                         <label class="form-label">관리자</label>
-                        <input type="text" value="{}" class="form-control" readonly>
+                        <input type="text" value="${inquerydetailadmin}" class="form-control" readonly>
                     </div>
                     <div class="flex-item">
                         <label class="form-label" for="responseDate">답변 날짜</label>
-                        <input type="text" id="responseDate" name="responseDate" class="form-control" value="{}" readonly>
+                        <input type="text" id="responseDate" name="responseDate" class="form-control" value="${userinquerydetailadmin.answer_date}" readonly>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">답변 내용</label>
-                    <div class="admin-response">{}</div>
+                    <div class="admin-response">${userinquerydetailadmin.answer_content}</div>
                 </div>
             </form>
         </div>

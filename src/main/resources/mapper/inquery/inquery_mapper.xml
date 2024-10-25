@@ -61,8 +61,14 @@
 	
 	
 	<select id="userinquerydetailadmin"
-		resultType="com.sulbazi.inquery.InqueryDTO">
+		resultType="com.sulbazi.inquery.AnswerDTO">
 		SELECT answer_date, answer_content FROM answer WHERE inquery_idx=#{param1}
 	</select>
+	
+	
+	<select id="inquerydetailadmin" resultType="String">
+		SELECT admin_name FROM admin WHERE admin_id=(SELECT admin_id FROM answer WHERE inquery_idx = #{param1})
+	</select>
+	
 	
 </mapper>

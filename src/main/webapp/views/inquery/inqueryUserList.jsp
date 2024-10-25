@@ -193,7 +193,7 @@ addquery(); // 리스트 업데이트 함수 호출
             	}
                 content += '<tr>';
                 content += '<td>' + loginId + '</td>';
-                content += '<td><a href="inqueryuserDetail.go?inquery_idx=' + item.inquery_idx + '">' + item.inquery_subject + '</a></td>'; // 상세보기 링크 추가
+                content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '">' + item.inquery_subject + '</a></td>'; // 상세보기 링크 추가
                 content += '<td>' + item.inquery_date + '</td>';
                 content += '<td>' + state + '</td>';
                 content += '<td>' + '관리자' + '</td>';

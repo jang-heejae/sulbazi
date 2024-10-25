@@ -110,11 +110,13 @@ public class InqueryService {
 		return inquery_dao.userinquerydetail(inqueryIdx);
 	}
 
-	public InqueryDTO userinquerydetailadmin(int inqueryIdx) {
+	public AnswerDTO userinquerydetailadmin(int inqueryIdx) {
 		return inquery_dao.userinquerydetailadmin(inqueryIdx);
 	}
 		
-	
+	public String inquerydetailadmin(int inqueryIdx) {
+		return inquery_dao.inquerydetailadmin(inqueryIdx);
+	}
 	
 	
 	
