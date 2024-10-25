@@ -27,7 +27,7 @@
     <h1>메뉴 목록</h1>
     <table>
         <tbody>
-            <c:if test="${files.size() > 0 && storeMenu.size() > 0}">
+            <c:if test="${files.size() > 0 && storeAlcohol.size() > 0}">
                 <!-- 두 리스트가 같은 크기일 때만 처리 -->
 				<c:forEach var="file" items="${files}" varStatus="status">
 				    <!-- 같은 인덱스의 storeMenu 항목을 사용 -->
@@ -35,8 +35,8 @@
 					    <!-- 이미지 표시 -->
 					    <td><img src="/photo/${file.new_filename}" alt="Store Photo" id="imgview" /></td>
 					    <!-- 메뉴 이름 및 가격 -->
-					    <td>${storeMenu[status.index].menu_name}</td>
-					    <td>${storeMenu[status.index].menu_price}</td>
+					    <td>${storeAlcohol[status.index].menu_name}</td>
+					    <td>${storeAlcohol[status.index].menu_price}</td>
 					</tr>
 				</c:forEach>
             </c:if>
