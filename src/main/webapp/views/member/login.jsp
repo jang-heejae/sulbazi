@@ -71,6 +71,14 @@
 		<tr>
 			<td><button type="submit">로그인</button></td>
 		</tr>
+		<tr>
+			<td><a href="#">아이디 찾기</a></td>
+			<td><a href="#">비밀번호 찾기</a></td>
+		</tr>
+		<tr>
+			<td><a href="#">일반 회원가입</a></td>
+			<td><a href="storeJoin.go">사업자 회원가입</a></td>
+		</tr>
 	</table>
 	</div>
 	</form>
