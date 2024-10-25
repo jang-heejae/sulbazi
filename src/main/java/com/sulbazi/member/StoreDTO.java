@@ -1,21 +1,25 @@
 package com.sulbazi.member;
 
+
 public class StoreDTO {
-	
-	private int store_idx;
-	private String store_id;
-	private String store_pw;
-	private String store_name;
-	private String store_number;
-	private String store_phone;
-	private String store_address;
-	private String store_time;
-	private double store_latitude;
-	private double store_longitude;
-	private int review_total;
-	private float star_average;
-	private int bookmark_user;
-	
+
+
+
+	   private int store_idx;
+	   private String store_id;
+	   private String store_pw;
+	   private String store_number;
+	   private String store_name;
+	   private String store_phone;
+	   private String store_time;
+	   private String store_address;
+	   private double store_latitude;
+	   private double store_longitude;
+	   private int review_total;
+	   private float star_average;
+	   private int bookmark_user;
+
+
 	public int getStore_idx() {
 		return store_idx;
 	}
@@ -34,18 +38,22 @@ public class StoreDTO {
 	public void setStore_pw(String store_pw) {
 		this.store_pw = store_pw;
 	}
-	public String getStore_name() {
-		return store_name;
-	}
-	public void setStore_name(String store_name) {
-		this.store_name = store_name;
-	}
+
 	public String getStore_number() {
 		return store_number;
 	}
 	public void setStore_number(String store_number) {
 		this.store_number = store_number;
 	}
+
+	public String getStore_name() {
+		return store_name;
+	}
+	public void setStore_name(String store_name) {
+		this.store_name = store_name;
+	}
+
+
 	public String getStore_phone() {
 		return store_phone;
 	}
@@ -96,3 +104,4 @@ public class StoreDTO {
 	}
 
 }
+
