@@ -4,26 +4,31 @@
 >
 <mapper namespace="com.sulbazi.report.ReportDAO">
 	<select id="reportList">
-		SELECT reported_id, reporting_id, report_category, report_content, report_date, report_state
+		SELECT report_idx, reported_id, reporting_id, report_category, report_content, report_date, report_state
 		FROM report ORDER BY report_idx DESC LIMIT #{param1} OFFSET #{param2}
 	</select>
 	<select id="allCount" resultType="int">
 		SELECT CEIL(COUNT(report_idx)/#{param1}) FROM report
 	</select>
-	<!-- <select id="reportList" resultType="com.sulbazi.report.ReportDTO">
-    SELECT * FROM report WHERE (#{status} = 'all' OR report_state = #{status})
-    	AND (#{category} IS NULL OR report_category = #{category})
-    	ORDER BY report_idx DESC LIMIT #{limit} OFFSET #{offset}
-</select>
-<select id="allCount" resultType="int">
-    SELECT COUNT(*) FROM report WHERE (#{status} = 'all' OR report_state = #{status})
-    	AND (#{category} IS NULL OR report_category = #{category})
-</select> -->
-	<select id="reportDetail" resultType="com.sulbazi.report.ReportDTO">
+	<select id="reportDetail" parameterType="String">
 		SELECT * FROM report WHERE report_idx = #{report_idx}
 	</select>
-	<insert id="reportWrite" parameterType="com.sulbazi.report.ProcessDTO">
-		INSERT INTO process(report_idx, admin_id, process_content, process_result)
-			VALUES(#{report_idx},#{admin_id},#{process_content},#{process_result})
+	<insert
+		useGeneratedKeys="true"
+      	keyColumn="process_idx"
+      	keyProperty="process_idx" 
+		id="processWrite" parameterType="com.sulbazi.report.ProcessDTO">
+		INSERT INTO process(report_idx, admin_id, process_content, process_result) VALUES
+		<choose>
+				<when test="process_result.equals('revoke')">
+					(#{report_idx},#{admin_id},#{process_content},'이용 제한')
+				</when>
+				<otherwise>
+					(#{report_idx},#{admin_id},#{process_content},'반려')		
+				</otherwise>
+			</choose>
 	</insert>
+	<select id="process" parameterType="com.sulbazi.report.ProcessDTO">
+		SELECT * FROM report WHERE process_idx = #{process_idx}
+	</select>
 </mapper>

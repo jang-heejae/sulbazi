@@ -1,10 +1,11 @@
 package com.sulbazi.report;
 
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ReportService {
 	@Autowired ReportDAO report_dao;
+	@Autowired RevokeService revoke_ser;
 	@Autowired RevokeDAO revoke_dao;
+	Logger log = LoggerFactory.getLogger(getClass());
 	
 
 	 public Map<String, Object> reportList(int page, int cnt) { 
@@ -20,55 +23,45 @@ public class ReportService {
 		 int offset = (page-1) * cnt;
 		 int totalPages = report_dao.allCount(cnt);
 	  
-	 Map<String, Object> map = new HashMap<String, Object>();
-	 map.put("totalPages", totalPages); map.put("list",
-	 report_dao.reportList(limit, offset)); return map; }
-
-	/*
-	 * public Map<String, Object> reportList(int page, int cnt, String status,
-	 * String category) { int limit = cnt; int offset = (page - 1) * cnt;
-	 * 
-	 * List<ReportDTO> list = report_dao.reportList(limit, offset, status,
-	 * category); int totalPages = (int) Math.ceil((double)
-	 * report_dao.allCount(status, category) / cnt);
-	 * 
-	 * Map<String, Object> map = new HashMap<>(); map.put("totalPages", totalPages);
-	 * map.put("list", list); return map; }
-	 */
-	
+		 Map<String, Object> map = new HashMap<String, Object>();
+		 map.put("totalPages", totalPages);
+		 map.put("list", report_dao.reportList(limit, offset));
+		 return map;
+	 }
 
 	public ReportDTO reportDetail(String report_idx) {
 		return report_dao.reportDetail(report_idx);
 	}
 	
 	@Transactional
-	public int reportWrite(Map<String, String> param) {
+	public int processWrite(Map<String, String> param, int report_idx, String reported_id) {
 		ProcessDTO pro_dto = new ProcessDTO();
-		ReportDTO report_dto = new ReportDTO();
 		pro_dto.setAdmin_id(param.get("admin_id"));
 		pro_dto.setProcess_content(param.get(("process_content")));
-		pro_dto.setProcess_result(param.get("process_result"));
-		int report_idx = report_dto.getReport_idx();
-		String reported_id = report_dto.getReported_id();
+		pro_dto.setProcess_result(param.get("cate_opt"));
+		log.info("pro_write ser param : "+param);
+		log.info("pro_write ser report_idx : "+report_idx);
 		pro_dto.setReport_idx(report_idx);
+		int pro_idx = pro_dto.getProcess_idx();
 		if("revoke".equals(param.get("process_result")) && "revoke" != null) {
-			revoke(reported_id, param);
+			revoke_ser.revoke(reported_id, param);
 		}
-		int row = report_dao.reportWrite(pro_dto);
-		return row;
+		log.info("pro_write ser report_idx : "+pro_dto.getReport_idx());
+		log.info("pro_write ser admin_id : "+pro_dto.getAdmin_id());		
+		log.info("pro_write pro_dtp : "+pro_dto);
+		/* return report_dao.processWrite(pro_dto, pro_idx, report_idx); */
+		return report_dao.processWrite(pro_dto);
 	}
 
-	private void revoke(String reported_id, Map<String, String> param) {
-		RevokeDTO revoke_dto = new RevokeDTO();
-		String revoke_start = param.get("revoke_start");
-		String revoke_stop = param.get("revoke_stop");
-		Date startDate = Date.valueOf(revoke_start);
-		Date stopDate = Date.valueOf(revoke_stop);
-		revoke_dto.setAdmin_id(param.get("admin_id"));
-		revoke_dto.setRevoke_start(startDate);
-		revoke_dto.setRevoke_stop(stopDate);
-		revoke_dto.setUser_id(reported_id);
-		revoke_dao.revoke(revoke_dto);
+	public Map<String, Object> process() {
+		List<ProcessDTO> list = report_dao.process();
+		List<RevokeDTO> list2 = revoke_dao.process();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("list", list2);
+		log.info("pro ser list : "+list);
+		log.info("pro ser list2 : "+list);
+		return map;
 	}
 
 }

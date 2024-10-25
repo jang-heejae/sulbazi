@@ -119,11 +119,12 @@ function listPrint(list) {
         content += '<td>' + item.reporting_id + '</td>';
         content += '<td>' + item.reported_id + '</td>';
         content += '<td>' + item.report_category + '</td>';
-        content += '<td><a href="reportDetail.go?repor_idx=' + item.report_idx + '">' + item.report_content + '</a></td>';
+        content += '<td><a href="reportDetail.go?report_idx=' + item.report_idx + '">' + item.report_content + '</a></td>';
         content += '<td>' + item.report_date + '</td>';
         content += '<td>' + item.report_state + '</td>';
         content += '</tr>';
     }
+    console.log(item);
     $('#list').html(content); 
 }
 </script>
