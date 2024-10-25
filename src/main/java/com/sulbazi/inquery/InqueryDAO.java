@@ -25,7 +25,7 @@ public interface InqueryDAO {
 
 	InqueryDTO userinquerydetail(int inqueryIdx);
 
-	AnswerDTO userinquerydetailadmin(int inqueryIdx);
+	List<AnswerDTO> answer(int inqueryIdx);
 	
-	String inquerydetailadmin(int inqueryIdx);
+	List<String> answeradmin(int inqueryIdx);
 }

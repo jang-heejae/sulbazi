@@ -58,7 +58,7 @@
             color: #000000;
         }
 		img {
-    		max-width: 100%;
+    		max-width: 100%; /* 이미지의 최대 너비를 부모 요소의 100%로 설정 */
     		height: auto;   
     		max-height: 200px; 
 		}

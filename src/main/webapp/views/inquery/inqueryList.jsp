@@ -151,7 +151,7 @@ function drawList(list) {
 	list.forEach(function(item,idx) {
 		content+='<tr>';
 		content+='<td>'+item.id_write+'</td>';
-		content+='<td>'+item.inquery_subject+'</td>';
+		content+='<td>'<a href="inqueryDetail.go?inqueryIdx=' + item.inquery_idx + '">' + item.inquery_subject + '</a>'</td>';
 		content+='<td>'+item.inquery_date+'</td>';
 		content+='<td>'+item.inquery_state+'</td>';
 		content+='<td>'+"관리자"+'</td>';

@@ -68,7 +68,7 @@
     <div class="container">
         <div class="header">고객센터</div>
         <div class="section">
-            <form action="submitInquiry.jsp" method="post">
+            <form>
                 <div class="form-group flex-group">
                     <div class="flex-item">
                         <label class="form-label" for="inquiryId">문의 ID</label>
@@ -95,7 +95,7 @@
 						</c:forEach>
                     </div>
                 </div>
-                <div class="form-group flex-group">
+<%--                 <div class="form-group flex-group">
                     <div class="flex-item">
                         <label class="form-label">관리자</label>
                         <input type="text" value="${inquerydetailadmin}" class="form-control" readonly>
@@ -108,9 +108,102 @@
                 <div class="form-group">
                     <label class="form-label">답변 내용</label>
                     <div class="admin-response">${userinquerydetailadmin.answer_content}</div>
-                </div>
+                </div> --%>
+                <div id="answerList">
+    				<!-- 기존의 답변 목록이 여기에 추가될 것입니다. -->
+				</div>
+				<form id="answerForm">
+    				<div class="admin-response">
+        				<textarea id="answer" rows="3"></textarea>
+    				</div>
+    				<button type="button" id="submitAnswer">답변 등록</button>
+				</form>
             </form>
         </div>
     </div>
 </body>
+<script>
+var loginId = '${sessionScope.loginId}';
+var btn = document.getElementsByTagName('button');
+btn[0].addEventListener('click', function(event) {
+    var result = confirm('등록하시겠습니까?');
+    console.log(result);
+    if (result == true) {
+        alert('등록되었습니다');
+        $('form')[1].submit();// 폼을 수동으로 제출합니다.
+        $('#answer').val('');
+    } else {
+    	addquery();
+    }
+});
+
+addquery(); // 리스트 업데이트 함수 호출
+    function addquery() {
+        $.ajax({
+            type: 'POST',
+            url: 'answer.ajax',
+            data: {},
+            dataType: 'JSON',
+            success: function(data) {
+                console.log("데이터 수신 성공:", data);
+                if (data && data.list && Array.isArray(data.list)) {
+                    answer(data.list);
+                } else {
+                    console.log("유효한 리스트가 없습니다.");
+                }
+            },
+            error: function(e) {
+                console.log("AJAX 요청 실패:", e);
+            }
+        });
+        $.ajax({
+            type: 'GET',
+            url: 'answeradmin.ajax',
+            data: {},
+            dataType: 'JSON',
+            success: function(data) {
+                console.log("데이터 수신 성공:", data);
+                if (data && data.list && Array.isArray(data.list)) {
+                    answeradmin(data.list);
+                } else {
+                    console.log("유효한 리스트가 없습니다.");
+                }
+            },
+            error: function(e) {
+                console.log("AJAX 요청 실패:", e);
+            }
+        });
+    }
+
+var newAnswerHtml = '';
+function answer(list) {
+	list.forEach(function(item, idx)) {
+		newAnswerHtml += '<div class="form-group flex-group">';
+		newAnswerHtml += '<div class="flex-item">';
+		newAnswerHtml += '<label class="form-label">관리자</label>';
+		newAnswerHtml += '<input type="text" value='+item.+' class="form-control" readonly>';
+		newAnswerHtml += '</div>';
+		newAnswerHtml += '<div class="flex-item">';
+		newAnswerHtml += '<label class="form-label">답변 날짜</label>'
+		newAnswerHtml += '<input type="text" name="responseDate" class="form-control" value='+item.+' readonly>'
+		newAnswerHtml += '</div>';
+		newAnswerHtml += '</div>';
+		newAnswerHtml += '<div class="form-group">';
+		newAnswerHtml += '<label class="form-label">답변 내용</label>';
+	}
+}
+		
+function answeradmin(list) {
+	list.forEach(function(item, idx)) {
+		newAnswerHtml += '<div class="admin-response">'+${}+'</div>';
+		newAnswerHtml += '</div>';
+		$('#answerList').append(newAnswerHtml);
+	}
+}
+   
+    
+
+
+	
+</script>
 </html>

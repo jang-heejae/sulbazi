@@ -113,12 +113,12 @@ public class InqueryController {
 			model.addAttribute("result", "로그인이 필요한 서비스");
 		}else {
 			InqueryDTO userinquerydetail = null;
-			AnswerDTO userinquerydetailadmin = null;
+			List<AnswerDTO> answer = null;
 			List<PhotoDTO> userinquerydetailphoto = null;
 			page="redirect:/inquery/inqueryUserList";
 			userinquerydetail = inquery_ser.userinquerydetail(inqueryIdx);
-			userinquerydetailadmin = inquery_ser.userinquerydetailadmin(inqueryIdx);
-			String inquerydetailadmin = inquery_ser.inquerydetailadmin(inqueryIdx);
+			answer = inquery_ser.answer(inqueryIdx);
+			List<String> answeradmin = inquery_ser.answeradmin(inqueryIdx);
 			userinquerydetailphoto = photo_ser.inqueryphoto(inqueryIdx);
 			if(userinquerydetail != null) {
 				page="inquery/inqueryUserDetail";
@@ -131,4 +131,45 @@ public class InqueryController {
 		return page;
     }
 
+	
+	@GetMapping(value="/inqueryDetail.go")
+    public String admininquerydetail(@RequestParam("inqueryIdx") int inqueryIdx, Model model, HttpSession session) {
+		String page= "login";
+		if(session.getAttribute("loginId") == null) {
+			model.addAttribute("result", "로그인이 필요한 서비스");
+		}else {
+			InqueryDTO userinquerydetail = null;
+			List<PhotoDTO> userinquerydetailphoto = null;
+			page="redirect:/inquery/inqueryList";
+			userinquerydetail = inquery_ser.userinquerydetail(inqueryIdx); //문의 상세
+			userinquerydetailphoto = photo_ser.inqueryphoto(inqueryIdx); //문의 사진
+			if(userinquerydetail != null) {
+				page="inquery/inqueryUserDetail";
+				model.addAttribute("userinquerydetail",userinquerydetail);
+				model.addAttribute("userinquerydetailadmin", userinquerydetailadmin);
+				model.addAttribute("inquerydetailadmin", inquerydetailadmin);
+				model.addAttribute("userinquerydetailphoto", userinquerydetailphoto);
+			}
+		}
+		return page;
+    }
+	
+	@GetMapping(value="/answer.ajax")
+	@ResponseBody
+	public Map<String, Object> answer(HttpSession session) {
+		String id = (String) session.getAttribute("loginId");
+		logger.info(id);
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<HashMap<String, Object>> list = inquery_ser.answer(inqueryIdx);
+		map.put("list", list);
+		return map;
+	}
+	@Get
+	List<AnswerDTO> answer = null;
+	answer = inquery_ser.answer(inqueryIdx); //문의 처리 상세
+	List<String> inquerydetailadmin = inquery_ser.answeradmin(inqueryIdx); //문의 처리자
+	
+	
+	
+	
 }
