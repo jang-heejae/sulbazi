@@ -3,5 +3,21 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.report.RevokeDAO">
-
+	<insert id="revoke" parameterType="com.sulbazi.report.RevokeDTO">
+		INSERT INTO revokes(user_id, admin_id, revoke_start, revoke_stop)
+			VALUES(#{reported_id},#{admin_id},#{startDate},#{stopDate})
+	</insert>
+	<update id="revokeUpdate" parameterType="map">
+    	UPDATE user
+    	<set>
+        	user_revoke = CASE 
+            WHEN #{startDate} &lt;= #{today} AND #{today} &lt;= #{stopDate} THEN '1'
+            ELSE '0'
+        	END
+    	</set>
+    	WHERE user_id = #{reported_id}
+	</update>
+	<select id="process" parameterType="com.sulbazi.report.RevokeDTO">
+		SELECT * FROM revokes WHERE revoke_idx = #{revoke_idx}
+	</select>
 </mapper>

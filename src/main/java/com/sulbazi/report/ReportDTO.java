@@ -11,6 +11,7 @@ public class ReportDTO {
 	private String report_content;
 	private Date report_date;
 	private int report_state;
+	
 	public int getReport_idx() {
 		return report_idx;
 	}

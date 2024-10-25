@@ -38,6 +38,8 @@
 			OR opt_idx=#{param4} GROUP BY store_idx
 	</select>
 	
-	
-	
+	<select id="joincategory" resultType="com.sulbazi.category.CategoryOptDTO">
+		SELECT * FROM category_opt
+	</select>
+
 </mapper>

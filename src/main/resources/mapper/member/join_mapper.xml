@@ -11,4 +11,13 @@
          INSERT INTO store(store_id, store_pw, store_number, store_name, store_phone, store_address, store_time)
          	VALUES(#{store_id}, #{store_pw}, #{store_number}, #{store_name}, #{store_phone}, #{store_address}, #{store_time})
    </insert>
+   
+   <insert 
+   	useGeneratedKeys="true"
+   	keyColumn="user_id"
+   	keyProperty="user_id"
+   	id="userJoindo" parameterType="com.sulbazi.member.UserDTO">
+   		INSERT INTO user(user_id, user_pw, user_email, user_nickname, user_name, user_birth, user_phone, user_photo, user_gender)
+   			VALUES(#{user_id}, #{user_pw}, #{user_email}, #{user_nickname}, #{user_name}, #{user_birth}, #{user_phone}, #{user_photo}, #{user_gender})
+   </insert>
 </mapper>

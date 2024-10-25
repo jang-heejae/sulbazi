@@ -1,6 +1,7 @@
 package com.sulbazi.member;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -8,42 +9,91 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.sulbazi.category.CategoryDAO;
+import com.sulbazi.category.CategoryOptDTO;
+import com.sulbazi.category.CategoryService;
 import com.sulbazi.photo.PhotoService;
 @Controller
 public class JoinController {
 	@Autowired JoinService join_ser;
 	@Autowired PhotoService photo_ser;
+	@Autowired CategoryService category_ser;
+	@Autowired CategoryDAO category_dao;
 	
-	   Logger logger = LoggerFactory.getLogger(getClass());
+  	Logger logger = LoggerFactory.getLogger(getClass());
 
-	   @RequestMapping(value="/storeJoin.go")
-	   public String storejoin() {
-	      return "member/storeJoin";
-	   }
+   @RequestMapping(value="/storeJoin.go")
+   public String storejoin() {
+      return "member/storeJoin";
+   }
 
 
-		 @PostMapping(value="/storeJoin.ajax")
-		 @ResponseBody
-		 public Map<String, Object> storeJoin(MultipartFile[] files, @RequestParam Map<String, String> param) { 
-			 Map<String, Object> map = new HashMap<String, Object>();
-			 try {
-				 join_ser.storeJoin(files, param); 		
-				 map.put("success", true); 
-				 map.put("link", "./login.go");
-			} catch (Exception e) {
-				map.put("success", false);
-	            map.put("message", "오류가 발생했습니다: " + e.getMessage());
-			}
-			 return map; 
-		 }
+	@PostMapping(value="/storeJoin.ajax")
+	@ResponseBody
+	 public Map<String, Object> storeJoin(MultipartFile[] files, @RequestParam Map<String, String> param) { 
+		 Map<String, Object> map = new HashMap<String, Object>();
+		 try {
+			 join_ser.storeJoin(files, param); 		
+			 map.put("success", true); 
+			 map.put("link", "./login.go");
+		} catch (Exception e) {
+			map.put("success", false);
+            map.put("message", "오류가 발생했습니다: " + e.getMessage());
+		}
+		 return map; 
+	 }
+	
 
+	
+	@RequestMapping(value="/userjoin.go")
+    public String userJoin(Model model) {
+		List<CategoryOptDTO> categoryOptList = category_ser.joincategory();
+	    model.addAttribute("category", categoryOptList);
+        return "member/userJoin";
+	}
+	
+	@PostMapping(value="/userJoin.do")
+	public String userJoindo(
+			MultipartFile files,
+			@RequestParam Map<String, String> params) {
+		logger.info("params : {}", params);
+		join_ser.userJoindo(files, params);
+		return "";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		/*
 		 * @PostMapping(value="/storeJoin.ajax")
 		 * 
@@ -63,33 +113,5 @@ public class JoinController {
 		 * Map<String, Object> map = new HashMap<String, Object>(); map.put("success",
 		 * true); map.put("link", "redirect:/login.go"); return map; }
 		 */
-	@RequestMapping(value="/apu")
-	public String apu() {
-		return "member/test";
-	}
-		 
-	 @PostMapping("/kakaoapi")
-	    @ResponseBody
-	    public ResponseEntity<?> getCoordinates(@RequestParam("address") String address) {
-	        try {
-	            // 카카오 API로 주소에 해당하는 위도와 경도를 조회하는 로직
-	            // 예시: kakaoApiService.getCoordinates(address);
-
-	            // 결과 예시
-	            double latitude = 37.5665; // 조회된 위도
-	            double longitude = 126.9780; // 조회된 경도
-
-	            // 위도와 경도를 JSON으로 응답
-	            Map<String, Object> result = new HashMap<>();
-	            result.put("latitude", latitude);
-	            result.put("longitude", longitude);
-	            
-	            return ResponseEntity.ok(result);
-	            
-	        } catch (Exception e) {
-	            // 예외 발생 시 에러 응답 반환
-	            return ResponseEntity.status(500).body("주소 변환 중 오류가 발생했습니다.");
-	        }
-	    }
-
+	
 }

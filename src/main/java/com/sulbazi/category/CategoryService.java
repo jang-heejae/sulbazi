@@ -46,4 +46,12 @@ public class CategoryService {
 		logger.info(""+filteringstoreidx);
 		return filteringstoreidx;
 	}
+	
+	public List<CategoryOptDTO> joincategory() {
+		return category_dao.joincategory();
+	}
+	public void userJoindo(String user_id) {
+		logger.info("넘어온 user_id : " + user_id);
+	}
 }
+
