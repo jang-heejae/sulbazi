@@ -7,9 +7,15 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ReportDAO {
+	
+	 int allCount(int cnt_);
+	 
+	 List<HashMap<String, Object>> reportList(int limit, int offset);
 
-	int allCount(int cnt_);
+	ReportDTO reportDetail(String report_idx);
 
-	List<HashMap<String, Object>> reportList(int limit, int offset);
+	int processWrite(ProcessDTO pro_dto);
+
+	List<ProcessDTO> process();
 
 }
