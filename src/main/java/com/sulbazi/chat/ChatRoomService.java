@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.sulbazi.message.UserMsgDTO;
+
 @Service
 public class ChatRoomService {
 
@@ -50,6 +52,12 @@ public class ChatRoomService {
 	public List<UserChatroomDTO> localchatlist() {
 		return chatroom_dao.localchatlist();
 	}
+
+	public List<LocalChatroomDTO> localroom() {
+		return chatroom_dao.localroom();
+	}
+
+
 
 
 

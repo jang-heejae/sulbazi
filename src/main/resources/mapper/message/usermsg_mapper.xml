@@ -4,4 +4,14 @@
 >
 <mapper namespace="com.sulbazi.message.UserMsgDAO">
 
+	<!-- 개인 채팅방 입장시 해당 방 메세지 -->
+	<select id="msg" resultType="com.sulbazi.message.UserMsgDTO">
+		SELECT * FROM usermsg WHERE userchat_idx = #{idx}
+	</select>
+	
+	<!-- 개인 채팅방 메세지들의 주인 닉네임 찾기 -->
+	<select id="getUserById" resultType="com.sulbazi.member.UserDTO">
+	 	SELECT user_nickname FROM user WHERE user_id = #{messageUserId}
+	</select>
+	
 </mapper>
