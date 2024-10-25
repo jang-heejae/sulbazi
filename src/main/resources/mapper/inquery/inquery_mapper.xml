@@ -2,6 +2,73 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
+
+
+
 <mapper namespace="com.sulbazi.inquery.InqueryDAO">
 
+	<insert id="userinquerywrite" 
+		useGeneratedKeys="true"
+		keyColumn="inquery_idx"
+		keyProperty="inquery_idx"
+		parameterType="com.sulbazi.inquery.InqueryDTO">
+		INSERT INTO inquery(inquery_subject, inquery_content, id_category, id_write)
+			VALUES(#{inquery_subject},#{inquery_content},#{id_category},#{id_write})
+	</insert>
+	
+	<insert id="inqueryfileWrite" >
+		INSERT INTO photo(photo_category_idx,new_filename,photo_folder_idx)
+			VALUES(#{param1}, #{param2},#{param3})
+	</insert>
+	
+	<select id="userlistinquery" resultType="map">
+		SELECT inquery_idx,inquery_subject,inquery_state, inquery_date 
+			FROM inquery WHERE id_write=#{param1}	
+	</select>
+
+	<!-- 문의 처리자 -->
+	<select id="inqueryprocessadmin" resultType="map">
+		SELECT inquery_idx,admin_id FROM answer WHERE 
+			(SELECT inquery_idx FROM inquery WHERE id_write=#{param1})
+	</select>
+	
+	<!-- 문의 리스트 -->
+	<select id="admininquerylist" resultType="com.sulbazi.inquery.InqueryDTO">
+    	SELECT id_write, inquery_subject,inquery_date, inquery_state FROM inquery
+	</select>
+	
+    <!-- 문의 리스트 필터링 -->
+    <select id="inqueryfiltering" resultType="com.sulbazi.inquery.InqueryDTO">
+		SELECT id_write, inquery_subject,inquery_date, inquery_state FROM inquery WHERE inquery_state=#{param1}
+	</select>
+	
+	<!-- 문의 필터링 & 아이디 검색 -->
+ 	<select id="inquerysearch" 
+		parameterType="com.sulbazi.inquery.InqueryDTO"
+		resultType="com.sulbazi.inquery.InqueryDTO"
+		flushCache="true">
+    	SELECT id_write, inquery_subject, inquery_date, inquery_state 
+    		FROM inquery 
+    		WHERE inquery_state = #{inquery_state} 
+    		AND id_write LIKE CONCAT('%', #{id_write}, '%')
+	</select> 
+	
+	<select id="userinquerydetail"
+		resultType="com.sulbazi.inquery.InqueryDTO">
+		SELECT id_write, inquery_subject, inquery_date, inquery_content 
+			FROM inquery WHERE inquery_idx=#{param1}
+	</select>
+	
+	
+	<select id="answer"
+		resultType="com.sulbazi.inquery.AnswerDTO">
+		SELECT answer_date, answer_content FROM answer WHERE inquery_idx=#{param1}
+	</select>
+	
+	
+	<select id="answeradmin" resultType="String">
+		SELECT admin_name FROM admin WHERE admin_id=(SELECT admin_id FROM answer WHERE inquery_idx = #{param1})
+	</select>
+	
+	
 </mapper>

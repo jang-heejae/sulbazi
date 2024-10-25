@@ -41,7 +41,7 @@ Logger logger = LoggerFactory.getLogger(getClass());
 		model.addAttribute("list", msg); 
 		return "admin/categoryAdd";
 	 }
-	@PostMapping(value="categoryState.ajax")
+	@PostMapping(value="/categoryState.ajax")
 	@ResponseBody
 	public Map<String, Object>categoryState(@RequestParam Map<String, Object>param){
 		Map<String, Object> response = new HashMap<String, Object>();

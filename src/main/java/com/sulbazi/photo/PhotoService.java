@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -15,8 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class PhotoService {
+	
 	@Autowired PhotoDAO photo_dao;
+	
 	@Value("${upload.path}") private String bpath;
+	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	/*
@@ -60,4 +64,8 @@ public class PhotoService {
     	logger.info("{newfile}:"+newfile);
         return newfile; 
     }
+
+	public List<PhotoDTO> inqueryphoto(int inqueryIdx) {
+		return photo_dao.inqueryphoto(inqueryIdx);
+	}
 }
