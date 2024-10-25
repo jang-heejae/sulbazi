@@ -18,6 +18,4 @@ public interface CategoryDAO {
 
 	List<CategoryOptDTO> joincategory();
 
-	void userjoindo(String user_id);
-
 }
