@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sulbazi.category.CategoryDAO;
 import com.sulbazi.category.CategoryOptDTO;
 import com.sulbazi.category.CategoryService;
+import com.sulbazi.category.UserCategoryDTO;
 import com.sulbazi.photo.PhotoService;
 
 @Service
@@ -84,7 +85,11 @@ public class JoinService {
 			logger.info("성공한 row 값 : " + row + "가져온 user_id : " + user_id);
 			logger.info("파일 이름 : " + photo);
 			if(user_id != null && row > 0) {
+				UserCategoryDTO usercategorydto = new UserCategoryDTO();
+				usercategorydto.setUser_id(user_id);
+				usercategorydto.setOpt_idx(params.get(1));
 				category_ser.userJoindo(user_id);
+				
 			}
 			return 0;
 		}

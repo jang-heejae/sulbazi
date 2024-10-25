@@ -132,7 +132,7 @@
 				    <legend>Category 1</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 1}">
-				            <input type="radio" id="category_${category.category_idx}" name="sul" value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=1 value="${category.opt_idx}" />
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -142,7 +142,7 @@
 				    <legend>Category 2</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 2}">
-				            <input type="radio" id="category_${category.category_idx}" name="anzu" value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=2 value="${category.opt_idx}" />
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -152,7 +152,7 @@
 				    <legend>Category 3</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 3}">
-				            <input type="radio" id="category_${category.category_idx}" name="style" value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=3 value="${category.opt_idx}" />
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -162,7 +162,7 @@
 				    <legend>Category 4</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 4}">
-				            <input type="radio" id="category_${category.category_idx}" name="why" value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=4 value="${category.opt_idx}" />
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
