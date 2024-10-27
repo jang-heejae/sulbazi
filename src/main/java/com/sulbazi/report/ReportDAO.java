@@ -14,8 +14,18 @@ public interface ReportDAO {
 
 	ReportDTO reportDetail(String report_idx);
 
-	int processWrite(ProcessDTO pro_dto);
+	int processWrite(ProcessDTO processDTO);
 
-	List<ProcessDTO> process();
+	List<ProcessDTO> process(String process_idx);
+
+	ReportDTO getReportedIdByReportIdx(int report_idx);
+
+	List<ProcessDTO> getProcessesByReportIdx(int report_idx);
+
+	void updateReportResult(int report_idx, boolean result);
+
+	List<ReportDTO> getAllReports();
+
+	List<ReportDTO> getReportsByState(int state);
 
 }

@@ -7,4 +7,6 @@ public interface LoginDAO {
 
 	String login(String id, String pw, String opt);
 
+	boolean userRevoke(String id, String opt);
+
 }

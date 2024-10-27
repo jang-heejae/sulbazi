@@ -14,6 +14,7 @@ public class MessageService {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired UserMsgDAO usermsg_dao;
+	@Autowired LocalMsgDAO localmsg_dao;
 	
 	/* 개인 채팅방 입장 시 해당 방 메세지들 출력 */
 	public List<UserMsgDTO> msg(int idx) {
@@ -26,6 +27,16 @@ public class MessageService {
 	public UserDTO getUserById(String messageUserId) {
 		return usermsg_dao.getUserById(messageUserId);
 	}
+
+
+	public String userreportedIdx(int reported_idx) {
+		return usermsg_dao.userreportedIdx(reported_idx);
+	}
+
+	public String localreportedIdx(int reported_idx) {
+		return localmsg_dao.localreportedIdx(reported_idx);
+	}
+
 	
 
 }
