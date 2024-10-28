@@ -12,22 +12,22 @@
 
 
 	<select id="getStoreDetail" parameterType="int" resultType="com.sulbazi.member.StoreDTO">
-		select * from store where store_idx = #{idx}
+		select * from store where store_idx = #{param1}
 	</select>
 	
 	<select id="getStorePhoto" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
-		select new_filename from photo where photo_folder_idx=#{idx} and photo_category_idx=1
+		select new_filename from photo where photo_folder_idx=#{param1} and photo_category_idx=1
 	</select>
 	
 	<select id="getStorePhotos" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
-		select new_filename from photo where photo_folder_idx=#{idx} and photo_category_idx=7 ORDER BY photo_idx ASC
+		select new_filename from photo where photo_folder_idx=#{param1} and photo_category_idx=7 ORDER BY photo_idx ASC
 	</select>
 	
 	<select id="fileList" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
 		SELECT p.new_filename
 		FROM photo p
 		JOIN store_menu m ON m.menu_idx = p.photo_folder_idx
-		WHERE m.store_idx = #{idx}
+		WHERE m.store_idx = #{param1}
 		AND m.menu_category = '안주'
 		AND p.photo_category_idx = 2
 		ORDER BY p.photo_folder_idx ASC;
@@ -37,22 +37,22 @@
 		SELECT p.new_filename
 		FROM photo p
 		JOIN store_menu m ON m.menu_idx = p.photo_folder_idx
-		WHERE m.store_idx = #{idx}
+		WHERE m.store_idx = #{param1}
 		AND m.menu_category = '술'
 		AND p.photo_category_idx = 6
 		ORDER BY p.photo_folder_idx ASC;
 	</select>
 	
 	<select id="getStoreMenuById" parameterType="int" resultType="com.sulbazi.member.StoreMenuDTO">
-		select menu_name,menu_price from store_menu where store_idx=#{idx} and menu_category='안주' ORDER BY menu_idx ASC
+		select menu_name,menu_price from store_menu where store_idx=#{param1} and menu_category='안주' ORDER BY menu_idx ASC
 	</select>
 	
 	<select id="getStoreAlcohol" parameterType="int" resultType="com.sulbazi.member.StoreMenuDTO">
-		select menu_name,menu_price from store_menu where store_idx=#{idx} and menu_category='술' ORDER BY menu_idx ASC
+		select menu_name,menu_price from store_menu where store_idx=#{param1} and menu_category='술' ORDER BY menu_idx ASC
 	</select>
 	
 	<select id="getBoard" parameterType="int" resultType="com.sulbazi.board.BoardDTO">
-		select * from board where store_idx=#{idx} ORDER BY board_date DESC LIMIT 1
+		select * from board where store_idx=#{param1} ORDER BY board_date DESC LIMIT 1
 	</select>
 	
 	<insert id="bookmarkCheck" parameterType="map">
@@ -61,11 +61,11 @@
 	</insert>
 	
 	<select id="bookmarkCheckCount" parameterType="map" resultType="int">
-		select count(user_id) from bookmark where store_idx=#{store_idx}
+		select count(user_id) from bookmark where store_idx=#{store_idx} and user_id=#{user_id}
 	</select>
 	
-	<select id="storeBookmarkCheck" parameterType="map" resultType="int">
-		select count(store_idx) from bookmark where store_idx=#{store_idx}
+	<select id="storeBookmarkCheck" parameterType="int" resultType="int">
+		select count(store_idx) from bookmark where store_idx=#{param1}
 	</select>
 	
 	<delete id="delBookmark" parameterType="map">
@@ -73,21 +73,64 @@
 	</delete>
 	
 	<update id="updateStoreFavoriteCount" parameterType="int">
-		UPDATE store SET bookmark_user = #{bookmark_user} WHERE store_idx = #{store_idx};
+		UPDATE store SET bookmark_user = #{param2} WHERE store_idx = #{param1};
 	</update>
 	
 	<select id="stCategory" parameterType="int" resultType="int">
 	    SELECT opt_idx 
 	    FROM store_category 
-	    WHERE store_idx = #{idx}
+	    WHERE store_idx = #{param1}
 	    ORDER BY opt_idx ASC	
 	</select>
 	
-	<select id="storeByCategoryopt" resultType="com.sulbazi.category.CategoryOptDTO">
+	<select id="storeByCategoryopt" parameterType="java.lang.Integer" resultType="com.sulbazi.category.CategoryOptDTO">
 		select * from category_opt where opt_idx=#{param1}
 	</select>
-
-
+	
+	<!-- 매장 리스트  -->
+	<select id="findStoresInArea" parameterType="map" resultType="com.sulbazi.member.StoreDTO">
+        SELECT * 
+        FROM store 
+        WHERE store_latitude BETWEEN #{minLat} AND #{maxLat}
+          AND store_longitude BETWEEN #{minLng} AND #{maxLng}
+        ORDER BY star_average DESC, review_total DESC, store_idx ASC
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 토탈페이지 계산 -->
+	<select id="countStoresInArea" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM store 
+        WHERE store_latitude BETWEEN #{minLat} AND #{maxLat}
+          AND store_longitude BETWEEN #{minLng} AND #{maxLng}
+    </select>
+    <!-- 매장리스트들 대표사진들 -->
+	<select id="findPhotosForStores" parameterType="list" resultType="com.sulbazi.photo.PhotoDTO">
+	    SELECT * FROM photo 
+	    WHERE photo_category_idx = 1
+	    AND photo_folder_idx IN
+	    <foreach item="store" collection="list" open="(" separator="," close=")">
+	        #{store.store_idx}
+	    </foreach>
+	</select>
+	
+	<!-- 매장리스트 카테고리 -->
+	<select id="findStoreCategorys" parameterType="list" resultType="com.sulbazi.category.StoreCategoryDTO">
+	    SELECT * FROM store_category 
+	    WHERE store_idx IN
+	    <foreach item="store" collection="list" open="(" separator="," close=")">
+	        #{store.store_idx}
+	    </foreach>
+	</select>
+	
+	
+	<!-- 매장리스트 1~4 매칭 카테고리 -->
+	<select id="findCategotyOpts" parameterType="list" resultType="com.sulbazi.category.CategoryOptDTO">
+	    SELECT * FROM category_opt 
+	    WHERE opt_idx IN
+	    <foreach item="storeCategory" collection="list" open="(" separator="," close=")">
+	        #{storeCategory.opt_idx}
+	    </foreach>
+	</select>
 
 	<!-- 매장 이름 검색 후 store_idx 추출-->
 	<select id="storenamesearch" resultType="int">
@@ -125,17 +168,7 @@
 	</select>
 	
 	
-	<!-- 매장 마이페이지  정보 수정 -->
-	<!-- <update id="" parameterType="com.sulbazi.member.StoreDTO">
-		SELECT store SET store_id=#{store_id}, store_pw=#{store_pw}, store_name=#{store_name}, 
-			store_number=#{store_number}, store_phone=#{store_phone}, 
-			store_address=#{store_address}, store_time=#{store_time}
-			WHERE store_idx=#{store_idx}
-	</update>
-	
-	<update id="" parameterType="com.sulbazi.category.StoreCategoryDTO">
-		UPDATE  store_category SET opt_idx=#{opt_idx} WHERE store_idx=#{store_idx}
-	</update> -->
+
 	
 	<!-- 매장 마이페이지  내 댓글 보기 -->
 	
