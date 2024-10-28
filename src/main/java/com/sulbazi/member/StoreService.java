@@ -224,14 +224,6 @@ public class StoreService {
 	}
 
 
-	public List<StoreCategoryDTO> findStoreCategorys(List<StoreDTO> stores) {
-		return store_dao.findStoreCategorys(stores);
-	}
-
-
-	public List<CategoryOptDTO> findCategotyOpts(List<StoreCategoryDTO> storeCategorys) {
-		return store_dao.findCategotyOpts(storeCategorys);
-	}
 
 
 	public List<CategoryOptDTO> OptionsCategoryState(int categorystate) {
@@ -257,6 +249,16 @@ public class StoreService {
     public List<Integer> mystoreopt(int storeIdx) {
         return store_dao.mystoreopt(storeIdx);
     }
+
+
+	public List<CategoryOptDTO> findStoreCategorys(List<StoreDTO> stores) {
+		return store_dao.findStoreCategorys(stores);
+	}
+
+
+	public List<StoreCategoryDTO> storeHelpMeIdx(List<StoreDTO> stores) {
+		return  store_dao.storeHelpMeIdx(stores);
+	}
 
 
 
