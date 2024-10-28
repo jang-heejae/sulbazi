@@ -234,6 +234,29 @@ public class StoreService {
 	}
 
 
+	public List<CategoryOptDTO> OptionsCategoryState(int categorystate) {
+		return store_dao.OptionsCategoryState(categorystate);
+	}
+
+	//매장 나의 게시물
+	public List<BoardDTO> storemyboard(int store_idx) {
+		return store_dao.storemyboard(store_idx);
+	}
+
+
+	public int storeidx(String attribute) {
+		return store_dao.storeidx(attribute);
+	}
+
+
+	public StoreDTO mystore(int store_idx) {
+		return store_dao.mystore(store_idx);
+	}
+
+
+    public List<Integer> mystoreopt(int storeIdx) {
+        return store_dao.mystoreopt(storeIdx);
+    }
 
 
 

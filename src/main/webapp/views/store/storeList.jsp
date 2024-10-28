@@ -163,49 +163,47 @@
 <body>
 	<jsp:include page="../main/main.jsp"/>
     <div class="back">
-        <form>
-            <div class="filter">
-                <fieldset class="filedA">
-                    <legend>주종</legend>
-                    <input type="radio" name="alchol" value="1"/> 소주<br/>
-                    <input type="radio" name="alchol" value="2"/> 맥주<br/>
-                    <input type="radio" name="alchol" value="3"/> 양주<br/>
-                    <input type="radio" name="alchol" value="5"/> 와인<br/>
-                    <input type="radio" name="alchol" value="4"/> 막걸리<br/>
-                    <input type="radio" name="alchol" value="6"/> 하이볼<br/>
-                    <input type="radio" name="alchol" value="8"/> 기타
-                </fieldset>
-        
-                <fieldset class="filedB">
-                    <legend>안주</legend>
-                    <input type="radio" name="food" value="7"/> 한식<br/>
-                    <input type="radio" name="food" value="9"/> 양식<br/>
-                    <input type="radio" name="food" value="10"/> 중식<br/>
-                    <input type="radio" name="food" value="11"/> 일식<br/>
-                    <input type="radio" name="food" value="12"/> 기타<br/>
-                </fieldset>
-        
-                <fieldset class="filedC">
-                    <legend>분위기</legend>
-                    <input type="radio" name="mood" value="13"/> 조용한<br/>
-                    <input type="radio" name="mood" value="14"/> 시끌벅적한<br/>
-                    <input type="radio" name="mood" value="15"/> 고급스러운<br/>
-                    <input type="radio" name="mood" value="16"/> 이색적인<br/>
-                    <input type="radio" name="mood" value="17"/> 가성비좋은<br/>
-                    <input type="radio" name="mood" value="18"/> 기타<br/>
-                </fieldset>
-        
-                <fieldset>
-                    <legend>방문목적</legend>
-                    <input type="radio" name="visit" value="19"/> 혼술<br/>
-                    <input type="radio" name="visit" value="20"/> 데이트<br/>
-                    <input type="radio" name="visit" value="21"/> 회식<br/>
-                    <input type="radio" name="visit" value="22"/> 모임<br/>
-                    <input type="radio" name="visit" value="23"/> 기타<br/>
-                </fieldset>
-                <button type ="button" id="filtering">필터 적용</button>
-            </div>
-        </form>
+
+<form>
+    <div class="filter">
+        <fieldset>
+            <legend>주종</legend>
+            <c:forEach var="option" items="${options}">
+                <c:if test="${option.category_idx == 1}">
+                    <input type="radio" name="alchol" value="${option.opt_idx}" /> ${option.opt_name} <br/>
+                </c:if>
+            </c:forEach>
+        </fieldset>
+
+        <fieldset>
+            <legend>안주</legend>
+            <c:forEach var="option" items="${options}">
+                <c:if test="${option.category_idx == 2}">
+                    <input type="radio" name="food" value="${option.opt_idx}" /> ${option.opt_name} <br/>
+                </c:if>
+            </c:forEach>
+        </fieldset>
+
+        <fieldset>
+            <legend>분위기</legend>
+            <c:forEach var="option" items="${options}">
+                <c:if test="${option.category_idx == 3}">
+                    <input type="radio" name="mood" value="${option.opt_idx}" /> ${option.opt_name} <br/>
+                </c:if>
+            </c:forEach>
+        </fieldset>
+
+        <fieldset>
+            <legend>방문목적</legend>
+            <c:forEach var="option" items="${options}">
+                <c:if test="${option.category_idx == 4}">
+                    <input type="radio" name="visit" value="${option.opt_idx}" /> ${option.opt_name} <br/>
+                </c:if>
+            </c:forEach>
+        </fieldset>
+        <button type="button" id="filtering">필터 적용</button>
+    </div>
+</form>
     </div>
     
 	<form>

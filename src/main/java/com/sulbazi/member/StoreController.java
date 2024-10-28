@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -45,6 +46,13 @@ public class StoreController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired PhotoService photo_ser;
 	@Autowired BoardService board_ser;
+	
+	@RequestMapping(value="/storeMain.go")
+	public String storeMain() {
+		return "main/storeMain";
+	}
+	
+	
 	
 	@RequestMapping(value="/storeDetail.do")
     public String getStoreDetail(int storeidx, Model model, HttpSession session) {
@@ -164,8 +172,9 @@ public class StoreController {
 	 */
 
 	@RequestMapping(value="/storeList.go")
-	public String storelist() {
-		
+	public String storelist(Model model) {
+	    List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1); // category_state가 1인 옵션만 가져오기
+	    model.addAttribute("options", options);
 		return "store/storeList";
 	}
 	
@@ -197,6 +206,48 @@ public class StoreController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("searchresult",store_ser.storeaddrsearch(keyword, model));
 		return map;
+	}
+	
+	
+	//매장 마이페이지
+	@RequestMapping(value="/storeMyPage.go")
+	public String storemypage(Model model, HttpSession session) {
+		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
+		logger.info("store_idx:{}",store_idx);
+		List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);
+		logger.info("options: {}",options);
+		model.addAttribute("options", options);
+		StoreDTO storedto = store_ser.mystore(store_idx); 
+		logger.info("storedto: {}", storedto);
+	    List<Integer> selectedValues = store_ser.mystoreopt(store_idx);
+	    PhotoDTO mystorebestphoto = photo_ser.mystorebestphoto(store_idx);
+	    List<PhotoDTO> mystorephoto = photo_ser.mystorephoto(store_idx);
+	    logger.info("selectedValues:{}",selectedValues);
+	    model.addAttribute("mystorebestphoto", mystorebestphoto);
+	    model.addAttribute("mystorephoto", mystorephoto);
+	    model.addAttribute("selectedValues", selectedValues);
+	    model.addAttribute("storedto", storedto);
+		return "store/storeMyPage";
+	}
+	
+	
+	@RequestMapping(value="/storeMyReview.go")
+	public String storemyreview() {
+		return "store/storeReview";
+	}
+	
+	@RequestMapping(value="/storeMyBoard.go")
+	public String storemyboard(Model model, HttpSession session) {
+		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
+		List<BoardDTO> myboard =store_ser.storemyboard(store_idx);
+		model.addAttribute("myboard", myboard);
+		return "store/storeBoard";
+	}
+	
+
+	@RequestMapping(value="/storeMyMenu.go")
+	public String storemymenu() {
+		return "store/storeMyMenu";
 	}
 	
 }

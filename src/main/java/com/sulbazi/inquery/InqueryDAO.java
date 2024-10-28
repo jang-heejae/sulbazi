@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.sulbazi.admin.AdminDTO;
+
 @Mapper
 public interface InqueryDAO {
 
@@ -14,8 +16,6 @@ public interface InqueryDAO {
 	int inqueryfileWrite(int photocategory, String newFileName,int photofolderidx);
 
 	List<HashMap<String, Object>> userlistinquery(String id);
-	
-	List<HashMap<String, Object>> inqueryprocessadmin(String id);
 
 	List<HashMap<String, Object>> admininquerylist();
 
@@ -27,5 +27,7 @@ public interface InqueryDAO {
 
 	List<AnswerDTO> answer(int inqueryIdx);
 	
-	List<String> answeradmin(int inqueryIdx);
+	List<AdminDTO> answeradmin(int inqueryIdx);
+
+	int adminanswerdo( int inqueryIdx,String loginId, String answer);
 }
