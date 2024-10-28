@@ -46,4 +46,35 @@ public class CategoryService {
 		logger.info(""+filteringstoreidx);
 		return filteringstoreidx;
 	}
+	
+	public List<CategoryOptDTO> joincategory() {
+		return category_dao.joincategory();
+	}
+	public void userJoindo(String user_id, int category1, int category2, int category3, int category4) {
+		logger.info("넘어온 user_id : " + user_id  + ", c1 : " + category1 + ", c2 : " + category2 + ", c3: " + category3 + ", c4: " + category4);
+		UserCategoryDTO usercategorydto = new UserCategoryDTO();
+		usercategorydto.setUser_id(user_id);
+		usercategorydto.setOpt_idx(category1);
+	    category_dao.userJoindo(usercategorydto);
+	    usercategorydto.setOpt_idx(category2);
+	    category_dao.userJoindo(usercategorydto);
+	    usercategorydto.setOpt_idx(category3);
+	    category_dao.userJoindo(usercategorydto);
+	    usercategorydto.setOpt_idx(category4);
+	    category_dao.userJoindo(usercategorydto);
+	}
+	public void storejoin(int store_idx, int category1, int category2, int category3, int category4) {
+		logger.info("넘어온 store_idx : " + store_idx   + ", c1 : " + category1 + ", c2 : " + category2 + ", c3: " + category3 + ", c4: " + category4);
+		StoreCategoryDTO storecategorydto = new StoreCategoryDTO();
+		storecategorydto.setStore_idx(store_idx);
+		storecategorydto.setOpt_idx(category1);
+		category_dao.storejoin(storecategorydto);
+		storecategorydto.setOpt_idx(category2);
+		category_dao.storejoin(storecategorydto);
+		storecategorydto.setOpt_idx(category3);
+		category_dao.storejoin(storecategorydto);
+		storecategorydto.setOpt_idx(category4);
+		category_dao.storejoin(storecategorydto);
+	}
 }
+
