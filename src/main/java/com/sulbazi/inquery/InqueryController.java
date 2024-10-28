@@ -140,7 +140,6 @@ public class InqueryController {
     }
 
 
-
 	//관리자 문의 글 상세페이지 이동
 	@GetMapping(value="/inqueryDetail.go")
     public String admininquerydetail(@RequestParam("inqueryIdx") int inqueryIdx, Model model, HttpSession session) {
@@ -167,7 +166,6 @@ public class InqueryController {
 		}
 		return page;
     }
-
 
 	
 
