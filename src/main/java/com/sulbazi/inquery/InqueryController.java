@@ -132,6 +132,7 @@ public class InqueryController {
     }
 
 	
+
 	@GetMapping(value="/inqueryDetail.go")
     public String admininquerydetail(@RequestParam("inqueryIdx") int inqueryIdx, Model model, HttpSession session) {
 		String page= "login";

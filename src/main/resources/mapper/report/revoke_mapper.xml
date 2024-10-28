@@ -4,20 +4,47 @@
 >
 <mapper namespace="com.sulbazi.report.RevokeDAO">
 	<insert id="revoke" parameterType="com.sulbazi.report.RevokeDTO">
-		INSERT INTO revokes(user_id, admin_id, revoke_start, revoke_stop)
-			VALUES(#{reported_id},#{admin_id},#{startDate},#{stopDate})
-	</insert>
-	<update id="revokeUpdate" parameterType="map">
-    	UPDATE user
-    	<set>
-        	user_revoke = CASE 
+        INSERT INTO revokes(user_id, admin_id, revoke_start, revoke_stop)
+        VALUES(#{user_id}, #{admin_id}, #{revoke_start}, #{revoke_stop})
+    </insert>
+    <update id="revokeUpdate" parameterType="map">
+        UPDATE user
+        <set>
+            user_revoke = CASE 
+            WHEN #{startDate} = #{today} AND #{today} = #{stopDate} THEN '0'
             WHEN #{startDate} &lt;= #{today} AND #{today} &lt;= #{stopDate} THEN '1'
             ELSE '0'
-        	END
-    	</set>
-    	WHERE user_id = #{reported_id}
-	</update>
-	<select id="process" parameterType="com.sulbazi.report.RevokeDTO">
-		SELECT * FROM revokes WHERE revoke_idx = #{revoke_idx}
+            END
+        </set>
+        WHERE user_id = #{reported_id}  <!-- user_id와 reported_id 매핑 -->
+    </update>
+    <select id="userIds" resultType="String">
+        SELECT user_id FROM user; <!-- 모든 user_id 가져오기 -->
+    </select>
+    <update id="revokeSchedule" parameterType="map">
+        UPDATE user 
+        SET user_revoke = CASE 
+            WHEN start_date = #{today} AND stop_date = #{today} THEN '0' 
+            WHEN #{startDate} &lt;= #{today} AND #{today} &lt;= #{stopDate} THEN '1'
+            ELSE '0' 
+        END 
+        WHERE user_id = #{userId};
+    </update>
+    <select id="process" parameterType="String" resultType="com.sulbazi.report.ProcessDTO">
+        SELECT 
+            p.process_idx,
+            p.report_idx,
+            p.admin_id,
+            p.process_content,
+            p.process_date,
+            p.process_result,
+            r.revoke_start,
+            r.revoke_stop
+        FROM process p
+        LEFT JOIN revokes r ON p.report_idx = (SELECT report_idx FROM report WHERE reported_id = r.user_id)
+        WHERE p.process_idx = #{process_idx};
+    </select>
+    <select id="getRevokeByUserId" parameterType="String" resultType="com.sulbazi.report.RevokeDTO">
+    	SELECT * FROM revokes WHERE user_id = #{reported_id}
 	</select>
 </mapper>

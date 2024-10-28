@@ -13,22 +13,26 @@
 	<select id="reportDetail" parameterType="String">
 		SELECT * FROM report WHERE report_idx = #{report_idx}
 	</select>
-	<insert
-		useGeneratedKeys="true"
-      	keyColumn="process_idx"
-      	keyProperty="process_idx" 
-		id="processWrite" parameterType="com.sulbazi.report.ProcessDTO">
-		INSERT INTO process(report_idx, admin_id, process_content, process_result) VALUES
-		<choose>
-				<when test="process_result.equals('revoke')">
-					(#{report_idx},#{admin_id},#{process_content},'이용 제한')
-				</when>
-				<otherwise>
-					(#{report_idx},#{admin_id},#{process_content},'반려')		
-				</otherwise>
-			</choose>
-	</insert>
-	<select id="process" parameterType="com.sulbazi.report.ProcessDTO">
-		SELECT * FROM report WHERE process_idx = #{process_idx}
+	<insert id="processWrite" parameterType="com.sulbazi.report.ProcessDTO"
+        useGeneratedKeys="true" keyProperty="process_idx" keyColumn="process_idx">
+        INSERT INTO process (report_idx, admin_id, process_content, process_result)
+        VALUES (#{report_idx}, #{admin_id}, #{process_content}, #{process_result})
+    </insert>
+    <update id="updateReportResult" parameterType="map">
+    	UPDATE report
+    	SET report_state = #{result, jdbcType=INTEGER}
+    	WHERE report_idx = #{report_idx}
+	</update>
+    <select id="getProcessesByReportIdx" parameterType="int" resultType="com.sulbazi.report.ProcessDTO">
+    	SELECT * FROM process WHERE report_idx = #{report_idx} ORDER BY process_idx DESC
 	</select>
+	<select id="getReportedIdByReportIdx" parameterType="int" resultType="com.sulbazi.report.ReportDTO">
+    	SELECT * FROM report WHERE report_idx = #{report_idx}
+	</select>
+	<select id="getAllReports" resultType="com.sulbazi.report.ReportDTO">
+        SELECT * FROM report
+    </select>
+    <select id="getReportsByState" parameterType="int" resultType="com.sulbazi.report.ReportDTO">
+        SELECT * FROM report WHERE report_state = #{state}
+    </select>
 </mapper>
