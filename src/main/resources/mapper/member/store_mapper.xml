@@ -113,24 +113,44 @@
 	    </foreach>
 	</select>
 	
-	<!-- 매장리스트 카테고리 -->
-	<select id="findStoreCategorys" parameterType="list" resultType="com.sulbazi.category.StoreCategoryDTO">
-	    SELECT * FROM store_category 
-	    WHERE store_idx IN
-	    <foreach item="store" collection="list" open="(" separator="," close=")">
-	        #{store.store_idx}
-	    </foreach>
-	</select>
-	
-	
 	<!-- 매장리스트 1~4 매칭 카테고리 -->
-	<select id="findCategotyOpts" parameterType="list" resultType="com.sulbazi.category.CategoryOptDTO">
-	    SELECT * FROM category_opt 
-	    WHERE opt_idx IN
-	    <foreach item="storeCategory" collection="list" open="(" separator="," close=")">
-	        #{storeCategory.opt_idx}
-	    </foreach>
+	<select id="findStoreCategorys" parameterType="java.util.List" resultType="com.sulbazi.category.CategoryOptDTO">
+	    SELECT 
+	        sc.store_idx,
+	        co.*
+	    FROM 
+	        store_category sc
+	    JOIN 
+	        category_opt co ON sc.opt_idx = co.opt_idx
+	    WHERE 
+	        sc.store_idx IN
+	        <foreach item="store" collection="list" open="(" separator="," close=")">
+	            #{store.store_idx}
+	        </foreach>
+	    ORDER BY 
+	        FIELD(sc.store_idx,
+	        <foreach item="store" collection="list" open="" separator="," close="">
+	            #{store.store_idx}
+	        </foreach>
+	        )
 	</select>
+	
+<!-- 매장리스트 카테고리 -->
+<select id="storeHelpMeIdx" parameterType="list" resultType="com.sulbazi.category.StoreCategoryDTO">
+    SELECT * FROM store_category 
+    <where>
+        store_idx IN
+        <foreach item="store" collection="list" open="(" separator="," close=")">
+            #{store.store_idx}
+        </foreach>
+    </where>
+    ORDER BY CASE store_idx
+        <foreach item="store" index="index" collection="list">
+            WHEN #{store.store_idx} THEN #{index}
+        </foreach>
+    END
+</select>
+
 
 	<!-- 매장 이름 검색 후 store_idx 추출-->
 	<select id="storenamesearch" resultType="int">
@@ -169,6 +189,7 @@
 	
 
 	
+<<<<<<< HEAD
  	<!-- 매장 마이페이지  정보 수정 -->
 <!-- 	<update id="" parameterType="com.sulbazi.member.StoreDTO">
 
@@ -183,6 +204,8 @@
 
 	</update> -->
 
+=======
+>>>>>>> origin/master
 
 	
 	<!-- 매장 마이페이지  내 댓글 보기 -->
