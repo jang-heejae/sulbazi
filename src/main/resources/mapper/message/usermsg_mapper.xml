@@ -6,13 +6,40 @@
 
 	<!-- 개인 채팅방 입장시 해당 방 메세지 -->
 	<select id="usermsg" resultType="com.sulbazi.message.UserMsgDTO">
-		SELECT * FROM usermsg WHERE userchat_idx = #{idx}
+		SELECT * FROM usermsg WHERE userchat_idx = #{idx} ORDER BY usermsg_time
 	</select>
 	
 	<!-- 개인 채팅방 메세지들의 주인 닉네임 찾기 -->
 	<select id="getUserById" resultType="com.sulbazi.member.UserDTO">
-	 	SELECT user_nickname FROM user WHERE user_id = #{messageUserId}
+	 	SELECT user_nickname, user_photo FROM user WHERE user_id = #{messageUserId}
 	</select>
+	
+	<!-- 메세지 전송 -->
+	<insert id="sendmsg"
+		useGeneratedKeys="true"
+		keyColumn="usermsg_idx"
+		keyProperty="usermsg_idx"
+		parameterType="com.sulbazi.message.UserMsgDTO">
+		INSERT INTO usermsg( userchat_idx, user_id, usermsg_content)
+    			VALUES(#{userchat_idx}, #{user_id}, #{usermsg_content})
+	</insert>
+	
+	<!-- 메세지 로드 -->
+<!-- 	<select id="getmsg" parameterType="int" resultType="com.sulbazi.message.UserMsgDTO">
+	    SELECT * FROM usermsg WHERE userchat_idx = #{userchat_idx} ORDER BY usermsg_time
+	</select> -->
+	<select id="getmsg" parameterType="int" resultType="map">
+	    SELECT um.*, u.user_nickname, u.user_photo 
+	    FROM usermsg um
+	    JOIN user u ON um.user_id = u.user_id
+	    WHERE um.userchat_idx = #{userchat_idx} 
+	    ORDER BY um.usermsg_time
+	</select>
+	
+	
+	
+	
+	
 	<!-- 신고 당한 개인 메시지 내용뽑아오기 -->
 	<select id="userreportedIdx" parameterType="int" resultType="String">
     	SELECT usermsg_content FROM usermsg WHERE usermsg_idx = #{reported_idx}
