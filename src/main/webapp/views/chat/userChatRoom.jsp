@@ -174,8 +174,6 @@
     .setting{
     	display: none;
     	position: absolute;
-   	    top: 25px;
-   	    left: 106px;
    	    width: 95px;
    		height: 65px;
    		background-color: aliceblue;
@@ -186,8 +184,8 @@
     }
     .notice{
     	display: none;
-        position: absolute;
-    	top: -200px;
+        position: absolute;    
+        top: 390px;
 	    flex-direction: column;
 	    justify-content: center;
 	    align-items: center;
@@ -203,7 +201,7 @@
     .roomedit{
     	display: none;
    	    position: absolute;
-	    top: -117px;
+	    top: 460px;
 	    background-color: rgb(106, 106, 219);
 	    width: 300px;
         height: 120px;
