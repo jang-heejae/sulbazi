@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import com.sulbazi.board.BoardDTO;
 import com.sulbazi.board.BoardService;
 import com.sulbazi.category.CategoryDTO;
 import com.sulbazi.category.CategoryOptDTO;
+import com.sulbazi.category.CategoryService;
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
@@ -36,6 +38,7 @@ import com.sulbazi.photo.PhotoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -46,6 +49,7 @@ public class StoreController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired PhotoService photo_ser;
 	@Autowired BoardService board_ser;
+	@Autowired CategoryService category_ser;
 	
 	@RequestMapping(value="/storeMain.go")
 	public String storeMain() {
@@ -160,16 +164,6 @@ public class StoreController {
     }
 
 	
-	/*
-	 * @RequestMapping(value="/menu2.go") public String storeMenu2(int idx, Model
-	 * model, HttpSession session) { = store_ser.(idx);
-	 * 
-	 * model.addAttribute("store", storeDetail);
-	 * model.addAttribute("file",storeDetail); logger.info("storeDetail: " +
-	 * storeDetail); return "store/storeMenu2";
-	 * 
-	 * }
-	 */
 
 	@RequestMapping(value="/storeList.go")
 	public String storelist(Model model) {
@@ -214,7 +208,8 @@ public class StoreController {
 	public String storemypage(Model model, HttpSession session) {
 		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
 		logger.info("store_idx:{}",store_idx);
-		List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);
+		model.addAttribute("store_idx", store_idx);
+		List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);//활성화된 카테고리
 		logger.info("options: {}",options);
 		model.addAttribute("options", options);
 		StoreDTO storedto = store_ser.mystore(store_idx); 
@@ -231,11 +226,56 @@ public class StoreController {
 	}
 	
 	
+	//매장 마이페이지 수정
+	@RequestMapping(value="/mystoreUpdate.go")
+	public String mystoreupdatego(Model model, String idx, HttpSession session) {
+		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
+		logger.info("store_idx:{}",store_idx);
+		model.addAttribute("store_idx", store_idx);
+		List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);//활성화된 카테고리
+		logger.info("options: {}",options);
+		model.addAttribute("options", options);
+		StoreDTO storedto = store_ser.mystore(store_idx); 
+		logger.info("storedto: {}", storedto);
+	    List<Integer> selectedValues = store_ser.mystoreopt(store_idx);
+	    PhotoDTO mystorebestphoto = photo_ser.mystorebestphoto(store_idx);
+	    List<PhotoDTO> mystorephoto = photo_ser.mystorephoto(store_idx);
+	    logger.info("selectedValues:{}",selectedValues);
+	    model.addAttribute("mystorebestphoto", mystorebestphoto);
+	    model.addAttribute("mystorephoto", mystorephoto);
+	    model.addAttribute("selectedValues", selectedValues);
+	    model.addAttribute("storedto", storedto);
+		return "store/storeMyPageUpdate";	
+	}
+	
+	@PostMapping(value="/mystoreUpdate.do")
+	public String mystoreupdatedo(MultipartFile[] newmystoreinout,MultipartFile[] bestmystore, @RequestParam Map<String, String> params,Model model, HttpSession session) throws IOException {
+		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
+		logger.info("store_idx:{}",store_idx);
+		logger.info("params:{}",params);
+		store_ser.mystoreupdate(params, store_idx);
+		category_ser.mystoreoptupdate(params, store_idx);
+		photo_ser.mystorebestphotoupdate(bestmystore, store_idx);
+		photo_ser.mystoreinoutUpdate(newmystoreinout, store_idx);
+		return "redirect:/storeMyPage.go";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	//나의 매장 리뷰 댓글
 	@RequestMapping(value="/storeMyReview.go")
 	public String storemyreview() {
 		return "store/storeReview";
 	}
 	
+	
+	
+	//매장 나의 홍보글
 	@RequestMapping(value="/storeMyBoard.go")
 	public String storemyboard(Model model, HttpSession session) {
 		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
@@ -245,10 +285,26 @@ public class StoreController {
 	}
 	
 
+	
+	//매장 나의 메뉴 가기
 	@RequestMapping(value="/storeMyMenu.go")
 	public String storemymenu() {
 		return "store/storeMyMenu";
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
 

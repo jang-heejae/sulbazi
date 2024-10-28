@@ -4,8 +4,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.sulbazi.category.StoreCategoryDTO;
+import com.sulbazi.inquery.InqueryDTO;
 
 @Service
 public class PhotoService {
@@ -88,4 +96,20 @@ public class PhotoService {
 		return photo_dao.mystorephoto(store_idx);
 
 	}
+
+	public void mystorebestphotoupdate(MultipartFile[] files, int store_idx) {
+		int i = 1;
+		storeupdatephoto(files, store_idx, i);
+				
+	}
+
+	public void mystoreinoutUpdate(MultipartFile[] files, int store_idx) throws IOException {
+		int cti = 7;
+		storeupdatephoto(files, store_idx, cti);
+		
+	}
+
+
+
+
 }

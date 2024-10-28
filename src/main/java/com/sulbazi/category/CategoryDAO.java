@@ -22,4 +22,8 @@ public interface CategoryDAO {
 
 	void storejoin(StoreCategoryDTO storecategorydto);
 
+	int deletemystoreopt(int idx);
+
+	int updatemystoreopt(int opt_idx, int store_idx);
+
 }

@@ -73,6 +73,8 @@ public interface StoreDAO {
 
 	List<Integer> mystoreopt(int storeIdx);
 
+	int mystoreupdate(StoreDTO storedto);
+
 
 
 

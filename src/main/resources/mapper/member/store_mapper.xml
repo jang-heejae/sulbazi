@@ -171,7 +171,10 @@
 
 
 	<!-- 매장 마이페이지  정보 수정 -->
-
+	<update id="mystoreupdate" parameterType="com.sulbazi.member.StoreDTO">
+		UPDATE store SET store_pw=#{store_pw},store_name=#{store_name}, store_phone=#{store_phone}, 
+			store_address=#{store_address}, store_time=#{store_time} WHERE store_idx=#{store_idx}
+	</update>
 
 
 	<!-- 매장 마이페이지  내 댓글 보기 -->

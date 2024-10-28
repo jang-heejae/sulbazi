@@ -3,6 +3,7 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.photo.PhotoDAO">
+
 	<insert id="fileSave" parameterType="com.sulbazi.photo.PhotoDTO">
 		INSERT INTO photo(photo_folder_idx, new_filename, photo_category_idx)
 			VALUES(#{photo_folder_idx},#{new_filename}, #{photo_category_idx})
@@ -18,9 +19,12 @@
 	<!-- 매장 대표사진 -->
 	<select id="mystorebestphoto" 
 		resultType="com.sulbazi.photo.PhotoDTO">
-		SELECT new_filename FROM photo 
-			WHERE photo_category_idx=1 
-			AND photo_folder_idx=#{param1};
+    		SELECT new_filename 
+    			FROM photo 
+    			WHERE photo_category_idx = 1 
+    			AND photo_folder_idx = #{param1} 
+   			 	ORDER BY photo_idx DESC  <!-- index를 내림차순으로 정렬 -->
+    			LIMIT 1
 	</select>
 	
 	<!-- 매장 내외부사진 -->
@@ -28,8 +32,28 @@
 		resultType="com.sulbazi.photo.PhotoDTO">
 		SELECT new_filename FROM photo 
 			WHERE photo_category_idx=7 
-			AND photo_folder_idx=#{param1};
+			AND photo_folder_idx=#{param1}
+			ORDER BY photo_idx DESC  <!-- index를 내림차순으로 정렬 -->
+    		LIMIT 5
 	</select>
 	
+	
+ 	<!-- 매장 대표사진 업데이트 -->
+	<!--<update id="mystorebestphotoupdate">
+		UPDATE photo SET new_filename = #{new_filename} 
+			WHERE photo_folder_idx = #{photo_folder_idx} AND photo_category_idx = 1
+ 	</update> -->
+	
+ 	<!-- 매장 내외부사진 업데이트 -->
+	<!-- <update id="mystoreinoutUpdate" parameterType="map">
+    	<foreach collection="photos" item="photo" separator=";">
+        	UPDATE photo
+        	SET new_filename = #{photo.newmystoreinout}
+        	WHERE photo_folder_idx = #{photo.photoFolderIdx}
+        	AND photo_category_idx = 7
+        	AND new_filename = #{photo.oldmystoreinout}
+    	</foreach>
+	</update> -->
+
 	
 </mapper>

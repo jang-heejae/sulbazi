@@ -259,6 +259,25 @@ public class StoreService {
     }
 
 
+	public boolean mystoreupdate(Map<String, String> params, int idx) {
+		StoreDTO storedto = new StoreDTO();
+		storedto.setStore_idx(idx);
+		storedto.setStore_pw(params.get("store_pw"));
+		storedto.setStore_name(params.get("store_name"));
+		storedto.setStore_phone(params.get("store_phone"));
+		storedto.setStore_address(params.get("store_address"));
+		storedto.setStore_time(params.get("store_time"));
+		int row = store_dao.mystoreupdate(storedto);
+		boolean success = false;
+		if(row != 0) {
+			success = true;
+		}
+		return success;
+	}
+
+
+
+
 
 
 }

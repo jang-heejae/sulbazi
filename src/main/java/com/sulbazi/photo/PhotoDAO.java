@@ -1,6 +1,7 @@
 package com.sulbazi.photo;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,5 +18,8 @@ public interface PhotoDAO {
 
 	List<PhotoDTO> mystorephoto(int store_idx);
 
+	int mystoreinoutUpdate(List<Map<String, Object>> photos);
+
+	int mystorebestphotoupdate(String new_filename, int idx);
 }
  
