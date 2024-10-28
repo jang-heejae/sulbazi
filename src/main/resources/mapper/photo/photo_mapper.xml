@@ -15,4 +15,23 @@
 			AND photo_folder_idx=#{param1};
 	</select>
 
+<<<<<<< HEAD
 </mapper> 
+=======
+	<!-- 매장 대표사진 -->
+	<select id="mystorebestphoto" 
+		resultType="com.sulbazi.photo.PhotoDTO">
+		SELECT new_filename FROM photo 
+			WHERE photo_category_idx=1 
+			AND photo_folder_idx=#{param1};
+	</select>
+	
+	<!-- 매장 내외부사진 -->
+	<select id="mystorephoto" 
+		resultType="com.sulbazi.photo.PhotoDTO">
+		SELECT new_filename FROM photo 
+			WHERE photo_category_idx=7 
+			AND photo_folder_idx=#{param1};
+	</select>
+</mapper>
+>>>>>>> origin/master

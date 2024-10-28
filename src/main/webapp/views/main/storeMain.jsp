@@ -158,13 +158,14 @@
                     <li><a href="storeList.go">매장 리스트</a></li>
                     <li><a href="boardList.go">게시판</a></li>
                 </ul>
+                <a href="userinquery.go">고객센터</a>
             </div>
             <div class="full2">
                 <ul class="list2">
                     <li><a href="storeMyPage.go">나의 정보</a></li>
-                    <li><a href="storeReview.go">나의 매장 리뷰</a></li>
-                    <li><a href="storeBoard.go">나의 게시글</a></li>
-                    <li><a href="storeMenu.go">매장 메뉴 등록</a></li>
+                    <li><a href="storeMyReview.go">나의 매장 리뷰</a></li>
+                    <li><a href="storeMyBoard.go">나의 게시글</a></li>
+                    <li><a href="storeMyMenu.go">매장 메뉴 등록</a></li>
                 </ul>
                 <div class="logout">
                     <i class="fas fa-sign-out-alt"></i>
@@ -256,5 +257,4 @@ document.querySelectorAll('.fa-bell').forEach(function(bell) {
 });
 
 </script>
-
 </html>

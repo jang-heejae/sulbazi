@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sulbazi.admin.AdminDTO;
+
 @Service
 public class InqueryService {
 
@@ -77,11 +79,16 @@ public class InqueryService {
 	}
 
 	public List<HashMap<String, Object>> userlistinquery(String id) {
-		//처리자
-		/* inquery_dao.inqueryprocess(id); */
-		return inquery_dao.userlistinquery(id);
-	
+	    List<HashMap<String, Object>> userinquerylist = inquery_dao.userlistinquery(id);
+	    for (HashMap<String, Object> inquery : userinquerylist) {
+	        int inqueryidx = (int) inquery.get("inquery_idx");
+	        List<AdminDTO> answeradmin = inquery_dao.answeradmin(inqueryidx);
+	        // answeradmin 정보를 inquery에 추가
+	        inquery.put("answeradmin", answeradmin);
+	    }
+	    return userinquerylist;
 	}
+	
 
 	public List<HashMap<String, Object>> admininquerylist() {
 		return inquery_dao.admininquerylist();
@@ -114,8 +121,19 @@ public class InqueryService {
 		return inquery_dao.answer(inqueryIdx);
 	}
 		
-	public List<String> answeradmin(int inqueryIdx) {
+	public List<AdminDTO> answeradmin(int inqueryIdx) {
 		return inquery_dao.answeradmin(inqueryIdx);
+	}
+
+	public boolean adminanswerdo(int inqueryIdx,String loginId, String answer) {
+		int row = inquery_dao.adminanswerdo(inqueryIdx,loginId,answer);
+		boolean successanswer = false;
+		if(row != 0) {
+			successanswer=true;
+		}
+		logger.info(""+successanswer);
+		return successanswer;
+		
 	}
 
 	

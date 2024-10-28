@@ -13,5 +13,9 @@ public interface PhotoDAO {
 
 	List<PhotoDTO> inqueryphoto(int inqueryIdx);
 
+	PhotoDTO mystorebestphoto(int store_idx);
+
+	List<PhotoDTO> mystorephoto(int store_idx);
+
 }
  

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,42 +37,38 @@ public class PhotoService {
 	 */
 	public void fileSave(MultipartFile[] files, int store_idx, int cti) throws IOException {
 		logger.info("받은 cti 값: " + cti);
-		List<String> newfiles = storeFile(files);
-		for(String newfile : newfiles) {
+		String filePath = storeFile(files);
         PhotoDTO photoDTO = new PhotoDTO();
         photoDTO.setPhoto_category_idx(cti);
         photoDTO.setPhoto_folder_idx(store_idx);
-        photoDTO.setNew_filename(newfile);
+        photoDTO.setNew_filename(filePath);
         photo_dao.fileSave(photoDTO);
         logger.info("{photoDTO}:"+photoDTO);
-		}
     }
 
-    private List<String> storeFile(MultipartFile[] files) throws IOException {
-    	List<String> newfiles = new ArrayList<>();
+    private String storeFile(MultipartFile[] files) throws IOException {
+    	String newfile = "";
     	try {
 			for (MultipartFile file : files) {
-				if (!file.isEmpty()) {
 				String ori = file.getOriginalFilename();
 				int ext = ori.lastIndexOf(".");
 				String extt = ori.substring(ext);
-				String newfile = UUID.randomUUID()+extt;
+				newfile = UUID.randomUUID()+extt;
 				Path path = Paths.get(bpath+newfile);
 				byte[] arr = file.getBytes();
 				Files.write(path, arr);
-				newfiles.add(newfile);
-				}
 			}
 		} catch (IOException e) {
 				e.printStackTrace();
 			}
-    	logger.info("{newfile}:"+newfiles);
-        return newfiles; 
+    	logger.info("{newfile}:"+newfile);
+        return newfile; 
     }
 
 	public List<PhotoDTO> inqueryphoto(int inqueryIdx) {
 		return photo_dao.inqueryphoto(inqueryIdx);
 	}
+<<<<<<< HEAD
  
 	public void filesaveone(MultipartFile fileone, int store_idx, int i) {
 		String photo = "";
@@ -95,5 +90,14 @@ public class PhotoService {
 		photodto.setPhoto_category_idx(i);
 		photo_dao.fileSave(photodto);
 		
+=======
+
+	public PhotoDTO mystorebestphoto(int store_idx) {
+		return photo_dao.mystorebestphoto(store_idx);
+	}
+
+	public List<PhotoDTO> mystorephoto(int store_idx) {
+		return photo_dao.mystorephoto(store_idx);
+>>>>>>> origin/master
 	}
 }
