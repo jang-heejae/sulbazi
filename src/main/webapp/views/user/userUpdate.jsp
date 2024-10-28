@@ -123,7 +123,8 @@
 </style>
 </head>
 <body>
-	<c:import url="../main/adminMain.jsp"/>
+<form action="userUpdate.do" method="post">
+	<c:import url="../main/main.jsp"/>
 	<div id="userProfile">
 		<div>
 			<c:if test="${files.size()>0}">
@@ -170,7 +171,7 @@
                         <!-- 주종 카테고리 옵션 출력 -->
                             <input type="radio" name="opt_name1" value="${category.opt_name}"
                                    <c:if test="${isChecked}">checked="checked"</c:if>/>
-                            ${category.opt_name}
+                            ${category.opt_name}&nbsp;&nbsp;
                     </c:if>
                 </c:forEach>
         </li>
@@ -190,7 +191,7 @@
                         <!-- 안주 카테고리 옵션 출력 -->
                             <input type="radio" name="opt_name2" value="${category.opt_name}"
                                    <c:if test="${isChecked}">checked="checked"</c:if>/>
-                            ${category.opt_name}
+                            ${category.opt_name}&nbsp;&nbsp;
                     </c:if>
                 </c:forEach>
         </li>
@@ -210,7 +211,7 @@
                         <!-- 분위기 카테고리 옵션 출력 -->
                             <input type="radio" name="opt_name3" value="${category.opt_name}"
                                    <c:if test="${isChecked}">checked="checked"</c:if>/>
-                            ${category.opt_name}
+                            ${category.opt_name}&nbsp;&nbsp;
                     </c:if>
                 </c:forEach>
         </li>
@@ -230,12 +231,13 @@
                         <!-- 방문목적 카테고리 옵션 출력 -->
                             <input type="radio" name="opt_name4" value="${category.opt_name}"
                                    <c:if test="${isChecked}">checked="checked"</c:if>/>
-                            ${category.opt_name}
+                            ${category.opt_name}&nbsp;&nbsp;
                     </c:if>
                 </c:forEach>
         </li>
     </ul>
 </div>
+</form>
 </body>
 <script>
 

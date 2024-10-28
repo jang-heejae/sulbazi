@@ -18,4 +18,7 @@ public interface UserDAO {
 
 	List<HashMap<String, Object>> getAllCategories();
 
+	boolean userUpdateCate(String user_id, String value);
+
+	int userUpdate(UserDTO userDto);
 }

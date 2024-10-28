@@ -19,4 +19,22 @@
     	FROM category_opt
     	WHERE category_state = 1
 	</select>
+	<update id="userUpdate" parameterType="com.sulbazi.member.UserDTO">
+    	UPDATE user
+    	<set>
+        	<if test="user_pw != null and user_pw != ''">
+            	user_pw = #{user_pw},
+        	</if>
+        	<if test="user_nickname != null and user_nickname != ''">
+            	user_nickname = #{user_nickname},
+        	</if>
+        	<if test="user_phone != null and user_phone != ''">
+            	user_phone = #{user_phone},
+        	</if>
+        	<if test="user_photo != null and user_photo != ''">
+            	user_photo = #{user_photo},
+        	</if>
+    	</set>
+    WHERE user_id = #{user_id}
+</update>
 </mapper>

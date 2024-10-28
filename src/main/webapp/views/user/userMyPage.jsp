@@ -123,7 +123,7 @@
 </style>
 </head>
 <body>
-	<c:import url="../main/adminMain.jsp"/>
+	<c:import url="../main/main.jsp"/>
 	<div id="userProfile">
 		<div>
 			<c:if test="${files.size()>0}">
