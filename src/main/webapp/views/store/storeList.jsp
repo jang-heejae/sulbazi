@@ -12,158 +12,170 @@
         body{
             background-color: #041d03;
         }
-        .back{
-        	display: flex;
-        	flex-direction: column;
-            align-items: center;  
-        	
-        	/* overflow-y: auto; */
-        	
-        }
-        div.filter{
-       		display: flex;
+		.back {
+		    display: flex;
 		    flex-direction: column;
 		    align-items: center;
-            background-color: white;
-            position: fixed;
-            width: 220px;
-            height: 700px;
-            left: 363px;
-            top: 200;
-            border-radius: 15px;
-        }
-        input{
-            font-size: 15px;
-            margin-top:-1px; 
-            vertical-align:middle;
-        }
-        legend{
-            font-size: 18px;
-            font-weight: 800;
-            margin: 0px;
-        }
-        fieldset{
-            border-color: white;
-            margin: 0px 20px 0px 20px;
-            width: 80%;
-            height: 22%;
-            border-bottom-color: rgb(255, 140, 9);
-        }
-        input[type="radio"] {
-		    width: 16px; /* 너비 */
-		    height: 16px; /* 높이 */
-		    margin: 2px; /* 간격 조절 */
-		    vertical-align: middle; /* 텍스트와 수직 중앙 정렬 */
+		    background-color: white;
+		    position: absolute;
+		    width: 242px;
+		    height: auto;
+		    left: 284px;
+		    top: 201px;
+		    border-radius: 15px;
+		    padding: 20px;
+		    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		}
+		
+		
+		div.filter {
+		    display: flex;
+		    flex-direction: column;
+		    width: 100%;
+		    gap: 20px;
+		}
+		        input{
+		            font-size: 15px;
+		            margin-top:-1px; 
+		            vertical-align:middle;
+		        }
+		legend {
+		    font-size: 16px;
+		    font-weight: bold;
+		    color: #333;
+		    padding: 0 5px;
+		}
+		fieldset {
+		    border: 1px solid #ddd;
+		    border-radius: 10px;
+		    padding: 10px;
+		    width: 100%;
+		}
+		input[type="radio"] {
+		    margin-right: 5px;
+		    cursor: pointer;
+		}
+		input {
+		    font-size: 14px;
+		}
+		
+		
+		#filtering {
+		    background-color: rgb(255, 140, 9);
+		    border: none;
+		    color: white;
+		    border-radius: 20px;
+		    font-weight: bold;
+		    padding: 10px 20px;
+		    cursor: pointer;
+		    margin-top: 10px;
+		    transition: background-color 0.3s ease;
+		    width: 100%;
+		}
+		#filtering:hover {
+		    background-color: rgb(255, 120, 0);
+		}
+		        	
+		
+					
+		.search-container {
+		    display: flex;
+		    align-items: center;
+		    width: 610px;
+		    margin: 20px auto;
+		    left: 630px;
+		    position: absolute;
+		    top: 100px;
+		}
+		.search-select {
+		    padding: 8px;
+		    font-size: 16px;
+		    border: 1px solid #ccc;
+		    border-radius: 15px;
+		}
+		.search-wrapper {
+		    margin-left: 10px;
+		}
+		.search-input {
+		    width: 450px;
+		    padding: 8px 40px 8px 8px;
+		    font-size: 16px;
+		    border: 1px solid #ccc;
+		    border-radius: 15px;
+		}
+		.search-button {
+		    position: absolute;
+		    background-color: rgb(255, 140, 9);
+		    border: none;
+		    border-radius: 20px;
+		    width: 54px;
+		    height: 42px;
+		    transition: background-color 0.3s ease;
+		    cursor: pointer;
+		    margin-left: 5px;
+		}
+		
+		.search-button:hover {
+		    background-color: rgb(255, 120, 0);
+		}
+		     
+		.searchicon {
+		    width: 25px;
+		}
+		.bodysize table, tr, td, th {
+		    border: 1px solid black;
+		    border-collapse: collapse;
+		    width: 100%;
+		    padding: 5px 10px;
+		}
+		main {
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		    position: absolute;
+		    top: 203px;
+		    left: 50%;
+		    transform: translateX(-50%);
+		}
+		.mapwhatname {
+		    margin: 0 0 20px 0;
+		    border-radius: 8px;
+		}
+		.bodysize {
+		    background-color: white;
+		    width: 788px;
+		    border-radius: 8px;
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
 		}
 
-        #filtering{
-            /* position: absolute; */
-            right: 10px;
-            background-color: rgb(255, 140, 9);
-            /* color: black; */
-            border-color: rgb(255, 140, 9);
-            border-radius: 15px;
-            font-weight: 800;
-            padding: 5px;
-            margin-top:-7px;
-        	}
-            .search-container {
-                display: flex;
-                align-items: center;
-                width: 610px;
-                margin: 20px auto;
-                left: 630px;
-    			position: absolute;
-    			top: 100px;
-            }
-            .search-select {
-                padding: 8px;
-                font-size: 16px;
-                border: 1px solid #ccc;
-                border-radius: 15px;
-            }
-            .search-wrapper {
-                /* position: relative; */
-                margin-left: 10px;
-            }
-            .search-input {
-                width: 450;
-                padding: 8px 40px 8px 8px; /* 오른쪽 여백을 추가해 아이콘과 겹치지 않도록 */
-                font-size: 16px;
-                border: 1px solid #ccc;
-                border-radius: 15px;
-            }
-            .search-button {
-                position: absolute;
-    			background-color : rgb(255, 140, 9);
-    			/* color: black; */
-    			border-color: rgb(255, 140, 9);
-    			border-radius: 20px;
-    			/* font-weight: 500; */
-    			/* padding: 5; */
-                width: 54px;
-                height: 37px;
-                cursor: pointer;
-                margin-left:5; 
-            }
-            .searchicon{
-            	width: 25px;
-            }
-			.bodysize table,tr,td,th{
-                border:1px solid black;
-                border-collapse: collapse;
-                width:100%;
-                padding: 5px 10px;
-            }
-			main{
-				display: flex;
-				flex-direction: column;
-                align-items: center;       
-			    position: absolute;
-			    top: 203px;
-			    left: 50%;
-			    transform: translateX(-50%);
-			}
-			.mapwhatname{
-				margin: 0 0 20px 0 ;
-				border-radius: 8px;
-			}
-			.bodysize{
-				background-color: white;
-				width: 788px;
-				border-radius: 8px;
-                display: flex;
-                flex-direction: column;
-                align-items: center; 
-			}
-			.filedA{
-				height: 194px;
-			}
-			.filedB{
-				height: 145px;
-			}
-			.filedC{
-				height: 168px;
-			}
-			.container{
-			    display: flex;
-			    justify-content: center; 
-			    align-items: center; 
-			    width: 100%; 
-    		}
-    		.store-img{
-    			width: 100px;
-    			
-    		}
-    		.categories{
-    			width: 100%;
-    			height:100%;
-    		}
-    		.categories p{
-    			display:inline-block;
-    			margin: 0 0;
-    			color: #BDBDBD;
-    		}
+		.container{
+		    display: flex;
+		    justify-content: center; 
+		    align-items: center; 
+		    width: 100%; 
+		}
+		.store-img{
+		    width: 100px;
+		    
+		}
+		.categories{
+		    width: 100%;
+		    height:100%;
+		}
+		.categories p{
+		    display:inline-block;
+		    margin: 0 0;
+		    color: #BDBDBD;
+		}
+		h3 {
+		    cursor: pointer;
+		}
+		
+		h3:hover {
+		    color: purple;
+		}
 			
 
 </style>
@@ -171,49 +183,48 @@
 
 <body>
 	<jsp:include page="../main/main.jsp"/>
-    <div class="back">
-
-<form>
-    <div class="filter">
-        <fieldset>
-            <legend>주종</legend>
-            <c:forEach var="option" items="${options}">
-                <c:if test="${option.category_idx == 1}">
-                    <input type="radio" name="alchol" value="${option.opt_idx}" /> ${option.opt_name} <br/>
-                </c:if>
-            </c:forEach>
-        </fieldset>
-
-        <fieldset>
-            <legend>안주</legend>
-            <c:forEach var="option" items="${options}">
-                <c:if test="${option.category_idx == 2}">
-                    <input type="radio" name="food" value="${option.opt_idx}" /> ${option.opt_name} <br/>
-                </c:if>
-            </c:forEach>
-        </fieldset>
-
-        <fieldset>
-            <legend>분위기</legend>
-            <c:forEach var="option" items="${options}">
-                <c:if test="${option.category_idx == 3}">
-                    <input type="radio" name="mood" value="${option.opt_idx}" /> ${option.opt_name} <br/>
-                </c:if>
-            </c:forEach>
-        </fieldset>
-
-        <fieldset>
-            <legend>방문목적</legend>
-            <c:forEach var="option" items="${options}">
-                <c:if test="${option.category_idx == 4}">
-                    <input type="radio" name="visit" value="${option.opt_idx}" /> ${option.opt_name} <br/>
-                </c:if>
-            </c:forEach>
-        </fieldset>
-        <button type="button" id="filtering">필터 적용</button>
-    </div>
-</form>
-    </div>
+<div class="back">
+	<form>
+	    <div class="filter">
+	        <fieldset class="filedA">
+	            <legend>주종</legend>
+	            <c:forEach var="option" items="${options}">
+	                <c:if test="${option.category_idx == 1}">
+	                    <input type="radio" name="alchol" value="${option.opt_idx}" /> ${option.opt_name} <br/>
+	                </c:if>
+	            </c:forEach>
+	        </fieldset>
+	
+	        <fieldset class="filedB">
+	            <legend>안주</legend>
+	            <c:forEach var="option" items="${options}">
+	                <c:if test="${option.category_idx == 2}">
+	                    <input type="radio" name="food" value="${option.opt_idx}" /> ${option.opt_name} <br/>
+	                </c:if>
+	            </c:forEach>
+	        </fieldset>
+	
+	        <fieldset class="filedC">
+	            <legend>분위기</legend>
+	            <c:forEach var="option" items="${options}">
+	                <c:if test="${option.category_idx == 3}">
+	                    <input type="radio" name="mood" value="${option.opt_idx}" /> ${option.opt_name} <br/>
+	                </c:if>
+	            </c:forEach>
+	        </fieldset>
+	
+	        <fieldset class="filedD">
+	            <legend>방문목적</legend>
+	            <c:forEach var="option" items="${options}">
+	                <c:if test="${option.category_idx == 4}">
+	                    <input type="radio" name="visit" value="${option.opt_idx}" /> ${option.opt_name} <br/>
+	                </c:if>
+	            </c:forEach>
+	        </fieldset>
+	        <button type="button" id="filtering">필터 적용</button>
+	    </div>
+	</form>
+</div>
     
 	<form>
     	<div class="search-container">
@@ -298,19 +309,19 @@
 			},
 			dataType:'JSON',
 			success:function(data){
-				console.log(data);
+				/* console.log(data); */
 				if (data.list && data.list.length) {
 					drawList(data.list , data.photos , data.categoryOpts , data.storeCategorys)
 					drawMarkers(data.list);
-					console.log(data.list)
-					console.log(data.list.length)
+					/* console.log(data.list)
+					console.log(data.list.length) */
 					$('#pagination').twbsPagination({ // 페이징 객체 만들기
 						startPage:1, 
 	            		totalPages:data.totalpages, 
 	            		visiblePages:5,
 	            		onPageClick:function(evt,page){
-	            			console.log('evt',evt); 
-	            			console.log('page',page); 
+	            			/* console.log('evt',evt); 
+	            			console.log('page',page);  */
 	            			pageCall(page);
 	            		}
 					});
@@ -352,7 +363,9 @@
 	            content +='<img src="/photo/'+photo.new_filename+'" alt="'+store.store_name+'" width="95px" height="95px">'
 	            content +='</td>'
 	            content +='<td>'
-	            content += '<h3 onclick="location.href=\'storeDetail.do?storeidx=' + store.store_idx + '\'">' + store.store_name + '</h3>';
+	            content += '<h3 class="store-name" data-store-idx="' + store.store_idx +'"  onclick="location.href=\'storeDetail.do?storeidx=' + store.store_idx + '\'">'+ store.store_name + '</h3>';
+	            
+	            
 	            content +='<div class="store-rating">'
 	            content +='<span>⭐'+ store.star_average +' ('+ store.review_total+')명</span>'
 	            content +='</div>'
@@ -373,6 +386,28 @@
 	        // 생성된 HTML을 리스트 컨테이너에 추가
 	        listContainer.innerHTML += content;
 	    });
+	    
+	    // h3 요소에 마우스 호버 이벤트 추가
+	    document.querySelectorAll('.store-name').forEach(function(element) {
+	        var storeIdx = element.getAttribute('data-store-idx');
+	        var markerObj = markers.find(function(marker) {
+	            return marker.storeIdx == storeIdx;
+	        });
+
+	        if (markerObj) {
+	            // 마우스 오버 시 인포윈도우 표시
+	            element.addEventListener('mouseover', function() {
+	                markerObj.infoWindow.open(map, markerObj.marker);
+	            });
+
+	            // 마우스 아웃 시 인포윈도우 닫기
+	            element.addEventListener('mouseout', function() {
+	                markerObj.infoWindow.close();
+	            });
+	        }
+	    });
+
+	    
 	}
 	
 	/* 노매장 */
@@ -387,22 +422,54 @@
 	    `;
 	}
 
-	// 지도에 마커를 표시하는 함수
 	function drawMarkers(storeList) {
 	    // 기존 마커 제거
-	    markers.forEach(function(marker) {
-	        marker.setMap(null);
+	    markers.forEach(function(markerObj) {
+	        markerObj.marker.setMap(null);
 	    });
 	    markers = [];
 
 	    storeList.forEach(function(store) {
-	        var markerPosition = new kakao.maps.LatLng(store.latitude, store.longitude);
+	        var markerPosition = new kakao.maps.LatLng(store.store_latitude, store.store_longitude);
+	        
+	        // 마커 생성 (일반 마커 사용)
 	        var marker = new kakao.maps.Marker({
-	            position: markerPosition
+	            position: markerPosition,
+	            map: map // 마커를 생성할 때 지도에 바로 추가
+	        });
+	        
+	        // 인포윈도우의 내용 생성
+			var windowText = '';
+			windowText += '<div style="padding:5px; font-size:14px; max-width: 150px; white-space: normal; word-wrap: break-word;">';
+			windowText += '<p>' + store.store_name + '</p>';
+			windowText += '</div>';
+
+			
+			
+	        // 인포윈도우 생성
+	        var infoWindow = new kakao.maps.InfoWindow({
+	            content: windowText,
+	            removable: true
+	        });
+			
+	        
+	        // 마커에 마우스 호버 시 인포윈도우 표시
+	        kakao.maps.event.addListener(marker, 'mouseover', function() {
+	            infoWindow.open(map, marker);
 	        });
 
-	        marker.setMap(map);
-	        markers.push(marker);
+	        // 마커에서 마우스 아웃 시 인포윈도우 닫기
+	        kakao.maps.event.addListener(marker, 'mouseout', function() {
+	            infoWindow.close();
+	        });
+
+	        // 마커 클릭 시 상세 페이지로 이동
+	        kakao.maps.event.addListener(marker, 'click', function() {
+	            location.href = 'storeDetail.do?storeidx=' + store.store_idx;
+	        });
+
+	        // 마커와 관련된 정보를 배열에 저장
+	        markers.push({ marker: marker, infoWindow: infoWindow, storeIdx: store.store_idx });
 	    });
 	}
 	
@@ -415,10 +482,10 @@ $('#filtering').click(function() {
 	var food = $(':input:radio[name=food]:checked').val();
 	var mood = $(':input:radio[name=mood]:checked').val();
 	var visit = $(':input:radio[name=visit]:checked').val();
-	console.log(alchol);
+ 	console.log(alchol);
 	console.log(food);
 	console.log(mood);
-	console.log(visit);
+	console.log(visit); 
     $.ajax({
         type:'POST',  //method
         url:'filtering.ajax',  //요청 주소
@@ -428,7 +495,7 @@ $('#filtering').click(function() {
         		 'visit' :visit},   //파라메터
         dataType:'JSON',  //받을 데이터 타입
         success:function(data) {   //성공했을 경우(받을 데이터)
-            console.log(data);
+            /* console.log(data); */
         },
         error:function(e) {  //실패했을 경우(실패 내용)
             console.log(e)

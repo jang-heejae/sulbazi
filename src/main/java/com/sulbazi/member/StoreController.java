@@ -204,6 +204,7 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while retrieving store data");
         }
     }
+    
 
 	
 	/*
