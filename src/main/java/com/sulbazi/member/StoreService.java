@@ -176,6 +176,47 @@ public class StoreService {
 	}
 
 
+<<<<<<< HEAD
+=======
+	public List<StoreDTO> getStoresInArea(double minLat, double maxLat, double minLng, double maxLng, int page,
+			int cnt) {
+		
+        Map<String, Object> params = new HashMap<>();
+        params.put("minLat", minLat);
+        params.put("maxLat", maxLat);
+        params.put("minLng", minLng);
+        params.put("maxLng", maxLng);
+        params.put("offset", (page - 1) * cnt);
+        params.put("limit", cnt);
+        List<StoreDTO> storeList = store_dao.findStoresInArea(params);
+        
+        
+        return storeList;
+	}
+
+
+	public int getTotalPages(double minLat, double maxLat, double minLng, double maxLng, int cnt) {
+		
+        Map<String, Object> params = new HashMap<>();
+        params.put("minLat", minLat);
+        params.put("maxLat", maxLat);
+        params.put("minLng", minLng);
+        params.put("maxLng", maxLng);
+        
+        int totalStores = store_dao.countStoresInArea(params);
+        return (int) Math.ceil((double) totalStores / cnt);  
+        
+	}
+
+
+	public List<PhotoDTO> findPhotosForStores(List<StoreDTO> stores) {
+		return store_dao.findPhotosForStores(stores);
+	}
+
+
+
+
+>>>>>>> origin/master
 	public List<CategoryOptDTO> OptionsCategoryState(int categorystate) {
 		return store_dao.OptionsCategoryState(categorystate);
 	}
@@ -199,6 +240,16 @@ public class StoreService {
     public List<Integer> mystoreopt(int storeIdx) {
         return store_dao.mystoreopt(storeIdx);
     }
+
+
+	public List<CategoryOptDTO> findStoreCategorys(List<StoreDTO> stores) {
+		return store_dao.findStoreCategorys(stores);
+	}
+
+
+	public List<StoreCategoryDTO> storeHelpMeIdx(List<StoreDTO> stores) {
+		return  store_dao.storeHelpMeIdx(stores);
+	}
 
 
 

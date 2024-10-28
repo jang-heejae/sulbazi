@@ -72,6 +72,7 @@ public class PhotoService {
 	public List<PhotoDTO> inqueryphoto(int inqueryIdx) {
 		return photo_dao.inqueryphoto(inqueryIdx);
 	}
+
  
 	public void filesaveone(MultipartFile fileone, int store_idx, int i) {
 		String photo = "";
@@ -92,6 +93,7 @@ public class PhotoService {
 		photodto.setPhoto_folder_idx(store_idx);
 		photodto.setPhoto_category_idx(i);
 		photo_dao.fileSave(photodto);
+
 	}
 
 	public PhotoDTO mystorebestphoto(int store_idx) {
@@ -115,4 +117,5 @@ public class PhotoService {
 		}
 		return new ResponseEntity<Resource>(reso, header, 200);
 	}
+
 }

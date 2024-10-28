@@ -88,6 +88,68 @@
                 cursor: pointer;
                 margin-left:5; 
             }
+<<<<<<< HEAD
+=======
+            .searchicon{
+            	width: 25px;
+            }
+			.bodysize table,tr,td,th{
+                border:1px solid black;
+                border-collapse: collapse;
+                width:100%;
+                padding: 5px 10px;
+            }
+			main{
+				display: flex;
+				flex-direction: column;
+                align-items: center;       
+			    position: absolute;
+			    top: 203px;
+			    left: 50%;
+			    transform: translateX(-50%);
+			}
+			.mapwhatname{
+				margin: 0 0 20px 0 ;
+				border-radius: 8px;
+			}
+			.bodysize{
+				background-color: white;
+				width: 788px;
+				border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                align-items: center; 
+			}
+			.filedA{
+				height: 194px;
+			}
+			.filedB{
+				height: 145px;
+			}
+			.filedC{
+				height: 168px;
+			}
+			.container{
+			    display: flex;
+			    justify-content: center; 
+			    align-items: center; 
+			    width: 100%; 
+    		}
+    		.store-img{
+    			width: 100px;
+    			
+    		}
+    		.categories{
+    			width: 100%;
+    			height:100%;
+    		}
+    		.categories p{
+    			display:inline-block;
+    			margin: 0 0;
+    			color: #BDBDBD;
+    		}
+			
+>>>>>>> origin/master
 
 </style>
 </head>
@@ -153,6 +215,161 @@
 
 </body>
 <script>
+<<<<<<< HEAD
+=======
+		var loginId = '${sessionScope.loginId}';
+		
+		/* 지도 영역 */
+		var container = document.getElementById('map');
+
+		    
+		var options = {
+		    center: new kakao.maps.LatLng(37.534779, 126.994553),
+		    level: 3
+		};
+		
+		var map = new kakao.maps.Map(container, options);
+		var markers = []; // 마커를 저장할 배열
+		
+		/* 리스트 페이징  */
+		var show = 1;
+		
+		pageCall(show);
+
+	function pageCall(page) {
+		
+	    var center = map.getCenter(); // 지도 중심 좌표 가져오기
+	    var centerLat = center.getLat();
+	    var centerLng = center.getLng();
+	    var latDiff = 0.0045;
+	    var lngDiff = 0.0045;
+	    
+	    
+		$.ajax({
+			type:'GET',
+			url:'list.ajax',
+			data:{
+				'page':page,
+				'cnt':5,
+	            'minLat': centerLat - latDiff,
+	            'maxLat': centerLat + latDiff,
+	            'minLng': centerLng - lngDiff,
+	            'maxLng': centerLng + lngDiff
+			},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				if (data.list && data.list.length) {
+					drawList(data.list , data.photos , data.categoryOpts , data.storeCategorys)
+					drawMarkers(data.list);
+					console.log(data.list)
+					console.log(data.list.length)
+					$('#pagination').twbsPagination({ // 페이징 객체 만들기
+						startPage:1, 
+	            		totalPages:data.totalpages, 
+	            		visiblePages:5,
+	            		onPageClick:function(evt,page){
+	            			console.log('evt',evt); 
+	            			console.log('page',page); 
+	            			pageCall(page);
+	            		}
+					});
+					
+				}else {
+					showNoStoresMessage();
+				}
+				
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	// 매장 리스트를 표시하는 함수
+	function drawList(storeList,photos,categoryOpts,storeCategorys) {
+	    var listContainer = document.getElementById('list');
+	    listContainer.innerHTML = '';
+	
+	    storeList.forEach(function(store, idx) {
+	        // 각 store에 대한 HTML 구조를 생성
+	        /* var photo = photos[idx]; */
+	        var photo = photos.find(function(p) {
+	        	/* p는 포토 리스트의 photo 들이다 */
+	            return p.photo_folder_idx === store.store_idx;
+	        });
+	        
+ 	        var relatedCategoryOpts = categoryOpts.filter(function(categoryOpt) {
+	            return storeCategorys.some(function(storeCategory) {
+	                return storeCategory.store_idx === store.store_idx && storeCategory.opt_idx === categoryOpt.opt_idx;
+	            });
+	        }); 
+	        
+
+	        
+	        var content ='<tr>'
+	            content +='<td class="store-img">'
+	            content +='<img src="/photo/'+photo.new_filename+'" alt="'+store.store_name+'" width="95px" height="95px">'
+	            content +='</td>'
+	            content +='<td>'
+	            content += '<h3 onclick="location.href=\'storeDetail.do?storeidx=' + store.store_idx + '\'">' + store.store_name + '</h3>';
+	            content +='<div class="store-rating">'
+	            content +='<span>⭐'+ store.star_average +' ('+ store.review_total+')명</span>'
+	            content +='</div>'
+	            content +='<div class="categories">'
+
+	                for (var i = 0; i < Math.min(relatedCategoryOpts.length, 4); i++) {
+	                    content += '<p>' + '&nbsp; #'+relatedCategoryOpts[i].opt_name + '</p>';
+	                }
+
+	            
+	            
+	            content +='</div>'
+	            content +='<p>'+store.store_address+'</p>'
+	            content +='</td>'
+	            content +='</tr>';
+	
+	
+	        // 생성된 HTML을 리스트 컨테이너에 추가
+	        listContainer.innerHTML += content;
+	    });
+	}
+	
+	/* 노매장 */
+	function showNoStoresMessage() {
+	    var listContainer = document.getElementById('list');
+	    listContainer.innerHTML = `
+	        <tr>
+	            <td colspan="2" style="text-align: center; padding: 20px;">
+	                매장 리스트가 없습니다.
+	            </td>
+	        </tr>
+	    `;
+	}
+
+	// 지도에 마커를 표시하는 함수
+	function drawMarkers(storeList) {
+	    // 기존 마커 제거
+	    markers.forEach(function(marker) {
+	        marker.setMap(null);
+	    });
+	    markers = [];
+
+	    storeList.forEach(function(store) {
+	        var markerPosition = new kakao.maps.LatLng(store.latitude, store.longitude);
+	        var marker = new kakao.maps.Marker({
+	            position: markerPosition
+	        });
+
+	        marker.setMap(map);
+	        markers.push(marker);
+	    });
+	}
+	
+
+
+
+>>>>>>> origin/master
 //필터링
 $('#filtering').click(function() {
 	var alchol = $(':input:radio[name=alchol]:checked').val();

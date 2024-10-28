@@ -86,7 +86,74 @@
 	<select id="storeByCategoryopt" resultType="com.sulbazi.category.CategoryOptDTO">
 		select * from category_opt where opt_idx=#{param1}
 	</select>
+<<<<<<< HEAD
 
+=======
+	
+	<!-- 매장 리스트  -->
+	<select id="findStoresInArea" parameterType="map" resultType="com.sulbazi.member.StoreDTO">
+        SELECT * 
+        FROM store 
+        WHERE store_latitude BETWEEN #{minLat} AND #{maxLat}
+          AND store_longitude BETWEEN #{minLng} AND #{maxLng}
+        ORDER BY star_average DESC, review_total DESC, store_idx ASC
+        LIMIT #{offset}, #{limit}
+    </select>
+    <!-- 토탈페이지 계산 -->
+	<select id="countStoresInArea" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM store 
+        WHERE store_latitude BETWEEN #{minLat} AND #{maxLat}
+          AND store_longitude BETWEEN #{minLng} AND #{maxLng}
+    </select>
+    <!-- 매장리스트들 대표사진들 -->
+	<select id="findPhotosForStores" parameterType="list" resultType="com.sulbazi.photo.PhotoDTO">
+	    SELECT * FROM photo 
+	    WHERE photo_category_idx = 1
+	    AND photo_folder_idx IN
+	    <foreach item="store" collection="list" open="(" separator="," close=")">
+	        #{store.store_idx}
+	    </foreach>
+	</select>
+	
+	<!-- 매장리스트 1~4 매칭 카테고리 -->
+	<select id="findStoreCategorys" parameterType="java.util.List" resultType="com.sulbazi.category.CategoryOptDTO">
+	    SELECT 
+	        sc.store_idx,
+	        co.*
+	    FROM 
+	        store_category sc
+	    JOIN 
+	        category_opt co ON sc.opt_idx = co.opt_idx
+	    WHERE 
+	        sc.store_idx IN
+	        <foreach item="store" collection="list" open="(" separator="," close=")">
+	            #{store.store_idx}
+	        </foreach>
+	    ORDER BY 
+	        FIELD(sc.store_idx,
+	        <foreach item="store" collection="list" open="" separator="," close="">
+	            #{store.store_idx}
+	        </foreach>
+	        )
+	</select>
+	
+<!-- 매장리스트 카테고리 -->
+<select id="storeHelpMeIdx" parameterType="list" resultType="com.sulbazi.category.StoreCategoryDTO">
+    SELECT * FROM store_category 
+    <where>
+        store_idx IN
+        <foreach item="store" collection="list" open="(" separator="," close=")">
+            #{store.store_idx}
+        </foreach>
+    </where>
+    ORDER BY CASE store_idx
+        <foreach item="store" index="index" collection="list">
+            WHEN #{store.store_idx} THEN #{index}
+        </foreach>
+    END
+</select>
+>>>>>>> origin/master
 
 
 	<!-- 매장 이름 검색 후 store_idx 추출-->
@@ -124,7 +191,18 @@
 		SELECT  opt_idx FROM store_category WHERE store_idx=#{param1} ;
 	</select>
 	
+
+
+ 	<!-- 매장 마이페이지  정보 수정 -->
+<!-- 	<update id="" parameterType="com.sulbazi.member.StoreDTO">
+
+		SELECT store SET store_id=#{store_id}, store_pw=#{store_pw}, store_name=#{store_name}, 
+			store_number=#{store_number}, store_phone=#{store_phone}, 
+			store_address=#{store_address}, store_time=#{store_time}
+			WHERE store_idx=#{store_idx}
+	</update>
 	
+<<<<<<< HEAD
 	<!-- 매장 마이페이지  정보 수정 -->
 	<!-- <update id="" parameterType="com.sulbazi.member.StoreDTO">
 		SELECT store SET store_id=#{store_id}, store_pw=#{store_pw}, store_name=#{store_name}, 
@@ -136,6 +214,13 @@
 	<update id="" parameterType="com.sulbazi.category.StoreCategoryDTO">
 		UPDATE  store_category SET opt_idx=#{opt_idx} WHERE store_idx=#{store_idx}
 	</update> -->
+=======
+	<update id="" parameterType="com.sulbazi.category.StoreCategoryDTO">
+		UPDATE  store_category SET opt_idx=#{opt_idx} WHERE store_idx=#{store_idx}
+
+	</update> -->
+
+>>>>>>> origin/master
 	
 	<!-- 매장 마이페이지  내 댓글 보기 -->
 	
