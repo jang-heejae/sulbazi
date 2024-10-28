@@ -1,9 +1,5 @@
 package com.sulbazi.admin;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,17 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.sulbazi.member.UserDAO;
 import com.sulbazi.member.UserDTO;
-import com.sulbazi.photo.PhotoDTO;
-import com.sulbazi.report.RevokeDTO;
 
 @Service
 public class AdminService {
