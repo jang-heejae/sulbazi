@@ -14,7 +14,6 @@
 			SELECT admin_id FROM admin WHERE admin_id=#{id} AND admin_pw=#{pw}
 		</if>
 	</select>
-<<<<<<< HEAD
 	<select id="userfindpw" resultType="String">
 		SELECT user_pw FROM user WHERE user_id=#{id} AND user_email=#{email}
 	</select>
@@ -38,9 +37,7 @@
 	<select id="storefindiddo" resultType="String">
 		SELECT store_id FROM store WHERE store_number = #{store_number}
 	</select>
-=======
 	<select id="userRevoke" parameterType="map" resultType="boolean">
             SELECT COUNT(*) FROM user WHERE user_id = #{id} AND user_revoke = 1
 </select>
->>>>>>> origin/master
 </mapper>
