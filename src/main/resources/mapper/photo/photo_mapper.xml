@@ -15,6 +15,9 @@
 			AND photo_folder_idx=#{param1};
 	</select>
 
+<<<<<<< HEAD
+</mapper> 
+=======
 	<!-- 매장 대표사진 -->
 	<select id="mystorebestphoto" 
 		resultType="com.sulbazi.photo.PhotoDTO">
@@ -31,3 +34,4 @@
 			AND photo_folder_idx=#{param1};
 	</select>
 </mapper>
+>>>>>>> origin/master

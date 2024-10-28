@@ -18,3 +18,4 @@ public interface PhotoDAO {
 	List<PhotoDTO> mystorephoto(int store_idx);
 
 }
+ 
