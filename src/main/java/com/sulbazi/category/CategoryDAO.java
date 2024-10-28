@@ -15,4 +15,11 @@ public interface CategoryDAO {
 	
 	//매장 리스트 필터링
 	List<Integer> storefiltering(int idx_1, int idx_2, int idx_3, int idx_4);
+
+	List<CategoryOptDTO> joincategory();
+
+	void userJoindo(UserCategoryDTO usercategorydto);
+
+	void storejoin(StoreCategoryDTO storecategorydto);
+
 }

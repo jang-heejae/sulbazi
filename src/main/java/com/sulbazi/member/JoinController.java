@@ -1,48 +1,140 @@
 package com.sulbazi.member;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.binding.MapperMethod.ParamMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.sulbazi.category.CategoryDAO;
+import com.sulbazi.category.CategoryOptDTO;
+import com.sulbazi.category.CategoryService;
 import com.sulbazi.photo.PhotoService;
 @Controller
 public class JoinController {
 	@Autowired JoinService join_ser;
 	@Autowired PhotoService photo_ser;
+	@Autowired CategoryService category_ser;
+	@Autowired CategoryDAO category_dao;
 	
-	   Logger logger = LoggerFactory.getLogger(getClass());
+  	Logger logger = LoggerFactory.getLogger(getClass());
 
-	   @RequestMapping(value="/storeJoin.go")
-	   public String storejoin() {
-	      return "member/storeJoin";
-	   }
+   @RequestMapping(value="/storeJoin.go")
+   public String storejoin(Model model) {
+	   List<CategoryOptDTO> categoryOptList = category_ser.joincategory();
+	   model.addAttribute("category", categoryOptList);
+      return "member/storeJoin";
+   }
 
 
-		 @PostMapping(value="/storeJoin.ajax")
-		 @ResponseBody
-		 public Map<String, Object> storeJoin(MultipartFile[] files, @RequestParam Map<String, String> param) { 
-			 Map<String, Object> map = new HashMap<String, Object>();
-			 try {
-				 join_ser.storeJoin(files, param); 		
-				 map.put("success", true); 
-				 map.put("link", "./login.go");
-			} catch (Exception e) {
-				map.put("success", false);
-	            map.put("message", "오류가 발생했습니다: " + e.getMessage());
-			}
-			 return map; 
-		 }
+	@PostMapping(value="/storeJoin.ajax")
+	@ResponseBody
+	 public Map<String, Object> storeJoin(
+			 MultipartFile[] files,
+			 MultipartFile fileone,
+			 @RequestParam Map<String, String> param) { 
+		logger.info("param : {}", param);
+		Map<String, Object> map = new HashMap<String, Object>();
+		 try {
+			 join_ser.storeJoin(files, fileone, param);
+			 map.put("success", true); 
+			 map.put("link", "/SULBAZI/menu.go");
+		} catch (Exception e) {
+			map.put("success", false);
+            map.put("message", "오류가 발생했습니다: " + e.getMessage());
+		}
+		 return map; 
+	 }
+	
 
+	
+	@RequestMapping(value="/userjoin.go")
+    public String userJoin(Model model) {
+		List<CategoryOptDTO> categoryOptList = category_ser.joincategory();
+	    model.addAttribute("category", categoryOptList);
+        return "member/userJoin";
+	}
+	
+	@PostMapping(value="/userJoin.do")
+	public String userJoindo(
+			MultipartFile files,
+			@RequestParam Map<String, String> params,
+			Model model) {
+		logger.info("params : {}", params);
+		String page = "";
+		if(join_ser.userJoindo(files, params) > 0) {
+			model.addAttribute("msg", "회원가입에 성공했습니다.");
+			page = "member/login";
+		}else {
+			model.addAttribute("msg", "회원가입에 실패했습니다.");
+			page = "member/userJoin";
+		}
+		return page;
+	}
+
+	@PostMapping(value="/checkid.ajax")
+	@ResponseBody
+	public Map<String, Object> checkid(@RequestParam("user_id") String userId) {
+		logger.info("checkid : " + userId);
+		boolean exists = join_ser.checkid(userId);
+		Map<String, Object> response = new HashMap<>();
+		response.put("exists", exists);
+		logger.info("checkid boolean : " + response);
+		return response;
+	}
+	
+	@PostMapping(value="/checkEmail.ajax")
+	@ResponseBody
+	public Map<String, Object> checkemail(@RequestParam("user_email") String userEmail) {
+		logger.info("checkemail : " + userEmail);
+		boolean exists = join_ser.checkEmail(userEmail);
+		Map<String, Object> response = new HashMap<>();
+		response.put("exists", exists);
+		logger.info("checkemail boolean : " + response);
+		return response;
+	}
+	
+	@PostMapping(value="/checknumber.ajax")
+	@ResponseBody
+	public Map<String, Object> checknumber(@RequestParam("store_number") String storenumber) {
+		logger.info("checknumber : " + storenumber);
+		boolean exists = join_ser.checknumber(storenumber);
+		Map<String, Object> response = new HashMap<>();
+		response.put("exists", exists);
+		logger.info("checknumber boolean : " + response);
+		return response;
+	}
+	
+	@RequestMapping(value="/menu.go")
+	public String menu() {
+		return "member/menu";
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		/*
 		 * @PostMapping(value="/storeJoin.ajax")
 		 * 
@@ -62,6 +154,5 @@ public class JoinController {
 		 * Map<String, Object> map = new HashMap<String, Object>(); map.put("success",
 		 * true); map.put("link", "redirect:/login.go"); return map; }
 		 */
-	   
-
+	
 }
