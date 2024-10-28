@@ -10,4 +10,8 @@
 	</select>
 
 
+	<select id="localreportedIdx" parameterType="int" resultType="String">
+       SELECT localmsg_content FROM localmsg WHERE localmsg_idx = #{reported_idx}
+   	</select>
+
 </mapper>

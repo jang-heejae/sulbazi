@@ -32,6 +32,16 @@ public class MessageService {
 		List<LocalMsgDTO> content = localmsg_dao.localmsg(idx);
 		return content;
 	}
+
+   public String userreportedIdx(int reported_idx) {
+	      return usermsg_dao.userreportedIdx(reported_idx);
+	   }
+
+   public String localreportedIdx(int reported_idx) {
+      return localmsg_dao.localreportedIdx(reported_idx);
+   }
+
+
 	
 
 }

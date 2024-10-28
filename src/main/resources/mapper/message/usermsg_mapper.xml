@@ -17,4 +17,7 @@
 	<select id="userreportedIdx" parameterType="int" resultType="String">
     	SELECT usermsg_content FROM usermsg WHERE usermsg_idx = #{reported_idx}
 	</select>
+	
+	
+	
 </mapper>
