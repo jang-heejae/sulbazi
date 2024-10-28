@@ -89,7 +89,7 @@ public class PhotoService {
 		photodto.setPhoto_folder_idx(store_idx);
 		photodto.setPhoto_category_idx(i);
 		photo_dao.fileSave(photodto);
-		
+
 	}
 
 	public PhotoDTO mystorebestphoto(int store_idx) {
