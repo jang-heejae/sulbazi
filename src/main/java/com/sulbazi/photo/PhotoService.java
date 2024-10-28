@@ -68,6 +68,29 @@ public class PhotoService {
 	public List<PhotoDTO> inqueryphoto(int inqueryIdx) {
 		return photo_dao.inqueryphoto(inqueryIdx);
 	}
+<<<<<<< HEAD
+ 
+	public void filesaveone(MultipartFile fileone, int store_idx, int i) {
+		String photo = "";
+		try {
+			String ori = fileone.getOriginalFilename();
+			int ext = ori.lastIndexOf(".");
+			String extt = ori.substring(ext);
+			photo = UUID.randomUUID()+extt;
+			Path path = Paths.get(bpath+photo);
+			byte[] arr;
+				arr = fileone.getBytes();
+			Files.write(path, arr);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		PhotoDTO photodto = new PhotoDTO();
+		photodto.setNew_filename(photo);
+		photodto.setPhoto_folder_idx(store_idx);
+		photodto.setPhoto_category_idx(i);
+		photo_dao.fileSave(photodto);
+		
+=======
 
 	public PhotoDTO mystorebestphoto(int store_idx) {
 		return photo_dao.mystorebestphoto(store_idx);
@@ -75,5 +98,6 @@ public class PhotoService {
 
 	public List<PhotoDTO> mystorephoto(int store_idx) {
 		return photo_dao.mystorephoto(store_idx);
+>>>>>>> origin/master
 	}
 }
