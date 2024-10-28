@@ -188,8 +188,7 @@
 	</select>
 	
 
-	
-<<<<<<< HEAD
+
  	<!-- 매장 마이페이지  정보 수정 -->
 <!-- 	<update id="" parameterType="com.sulbazi.member.StoreDTO">
 
@@ -203,9 +202,6 @@
 		UPDATE  store_category SET opt_idx=#{opt_idx} WHERE store_idx=#{store_idx}
 
 	</update> -->
-
-=======
->>>>>>> origin/master
 
 	
 	<!-- 매장 마이페이지  내 댓글 보기 -->

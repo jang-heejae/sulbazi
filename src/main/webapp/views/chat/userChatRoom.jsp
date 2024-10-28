@@ -72,7 +72,7 @@
 		
 	    // 5초마다 새 메세지를 불러오기
 	    var userchat_idx = ${idx};
-	    setInterval(loadMessages, 500000);
+	    setInterval(loadMessages, 1000);
 
 	    function loadMessages() {
 	        $.ajax({
@@ -244,6 +244,11 @@
         background-color: aliceblue;
         border-radius: 10px;
     }
+    .room2 img{
+    	width: 40px;
+	    height: 40px;
+	    border-radius: 25px;
+    }
     .roomout{
 	    display: flex;
 	    align-items: center;
@@ -262,7 +267,8 @@
    	    width: 95px;
    		height: 65px;
    		background-color: aliceblue;
-   		bottom: 30px;
+   		bottom: 25px;
+   		padding: 5px;
     }
     .setting div:hover{
     	cursor: pointer;
