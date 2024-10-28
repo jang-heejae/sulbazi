@@ -139,7 +139,7 @@ public class InqueryController {
 		return page;
     }
 
-<<<<<<< HEAD
+
 	//관리자 문의 글 상세페이지 이동
 	@GetMapping(value="/inqueryDetail.go")
     public String admininquerydetail(@RequestParam("inqueryIdx") int inqueryIdx, Model model, HttpSession session) {
@@ -166,25 +166,9 @@ public class InqueryController {
 		}
 		return page;
     }
-=======
+
 	
-	/*
-	 * @GetMapping(value="/inqueryDetail.go") public String
-	 * admininquerydetail(@RequestParam("inqueryIdx") int inqueryIdx, Model model,
-	 * HttpSession session) { String page= "login";
-	 * if(session.getAttribute("loginId") == null) { model.addAttribute("result",
-	 * "로그인이 필요한 서비스"); }else { InqueryDTO userinquerydetail = null; List<PhotoDTO>
-	 * userinquerydetailphoto = null; page="redirect:/inquery/inqueryList";
-	 * userinquerydetail = inquery_ser.userinquerydetail(inqueryIdx); //문의 상세
-	 * userinquerydetailphoto = photo_ser.inqueryphoto(inqueryIdx); //문의 사진
-	 * if(userinquerydetail != null) { page="inquery/inqueryUserDetail";
-	 * model.addAttribute("userinquerydetail",userinquerydetail);
-	 * model.addAttribute("userinquerydetailadmin", userinquerydetailadmin);
-	 * model.addAttribute("inquerydetailadmin", inquerydetailadmin);
-	 * model.addAttribute("userinquerydetailphoto", userinquerydetailphoto); } }
-	 * return page; }
-	 */
->>>>>>> origin/master
+
 
 	
 	@PostMapping(value="/adminanswer.do")
