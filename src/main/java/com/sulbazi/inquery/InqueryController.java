@@ -1,11 +1,9 @@
 package com.sulbazi.inquery;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -139,9 +137,6 @@ public class InqueryController {
 		return page;
     }
 
-
-
-	
 	@PostMapping(value="/adminanswer.do")
 	public String adminanswer(@RequestParam String answer, HttpSession session, @RequestParam int inqueryIdx) {
 	    logger.info("답변 등록 컨트롤러");
