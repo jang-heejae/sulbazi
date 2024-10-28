@@ -37,23 +37,11 @@
     		LIMIT 5
 	</select>
 	
-	
- 	<!-- 매장 대표사진 업데이트 -->
-	<!--<update id="mystorebestphotoupdate">
-		UPDATE photo SET new_filename = #{new_filename} 
-			WHERE photo_folder_idx = #{photo_folder_idx} AND photo_category_idx = 1
- 	</update> -->
-	
- 	<!-- 매장 내외부사진 업데이트 -->
-	<!-- <update id="mystoreinoutUpdate" parameterType="map">
-    	<foreach collection="photos" item="photo" separator=";">
-        	UPDATE photo
-        	SET new_filename = #{photo.newmystoreinout}
-        	WHERE photo_folder_idx = #{photo.photoFolderIdx}
-        	AND photo_category_idx = 7
-        	AND new_filename = #{photo.oldmystoreinout}
-    	</foreach>
-	</update> -->
+	<insert id="storephotoupdate">
+		INSERT INTO photo(photo_category_idx, new_filename, photo_folder_idx)
+			VALUES(#{param1},#{param2},#{param3})
+	</insert>
+
 
 	
 </mapper>

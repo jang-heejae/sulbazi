@@ -43,6 +43,7 @@ fieldset {
     flex-direction: column; /* 세로 방향으로 정렬 */
     align-items: center; /* 수평 중앙 정렬 */
     gap: 10px; /* 요소 간의 간격 설정 */
+    color: white;
 }
 
 table {
@@ -82,6 +83,12 @@ textarea {
     display: flex; /* flex 컨테이너로 설정 */
     gap: 10px; /* 요소 간 간격 설정 */
 }
+
+img {
+	width: 100;
+	height: 100;
+}
+
 </style>
 </head>
 <body>
@@ -92,7 +99,7 @@ textarea {
 	        <div>
 				<img src="/photo/${mystorebestphoto.new_filename}"><br/>
 	        </div>
-		<label class="form-label">첨부 파일</label>
+		<label class="form-label">매장 내외부 사진</label>
 			<div>
 				<c:forEach items="${mystorephoto}" var="mystoreinout">
 				<img src="/photo/${mystoreinout.new_filename}"><br/>

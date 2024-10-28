@@ -18,8 +18,7 @@ public interface PhotoDAO {
 
 	List<PhotoDTO> mystorephoto(int store_idx);
 
-	int mystoreinoutUpdate(List<Map<String, Object>> photos);
+	int storephotoupdate(int photocategory, String newFileName, int photofolderidx);
 
-	int mystorebestphotoupdate(String new_filename, int idx);
 }
  

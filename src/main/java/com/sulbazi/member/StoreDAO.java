@@ -60,8 +60,6 @@ public interface StoreDAO {
 
 	List<PhotoDTO> findPhotosForStores(List<StoreDTO> stores);
 
-
-	
 	List<CategoryOptDTO> OptionsCategoryState(int categorystate);
 
 	List<BoardDTO> storemyboard(int store_idx);

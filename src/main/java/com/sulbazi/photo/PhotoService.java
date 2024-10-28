@@ -109,7 +109,43 @@ public class PhotoService {
 		
 	}
 
-
+	public void storeupdatephoto(MultipartFile[] inqueryfiles,int store_idx,int photocategory) {
+//		PhotoDTO storephodo_dto = new PhotoDTO();
+//	
+//		int row = photo_dao.storeupdatephoto(storephodo_dto);
+//		if (store_idx>0 && row>0) {
+			savestoreupdate(inqueryfiles,store_idx, photocategory);
+//		}
+//		return store_idx;
+	}
+	
+	private void savestoreupdate(MultipartFile[] files, int photofolderidx, int photocategory) {
+		try {
+			logger.info("file length : {}",files.length);				
+			for (MultipartFile file : files) {
+				logger.info("file 비어있나? : "+file.isEmpty());					
+				String ori_filename = file.getOriginalFilename();
+				logger.info("파일명 : "+ori_filename);
+				
+				int pos = ori_filename.lastIndexOf(".");
+				
+				if(pos>=0) {
+					String ext = "";				
+					ext = ori_filename.substring(pos);						
+					String newFileName = UUID.randomUUID().toString()+ext;		
+					byte[] arr = file.getBytes();
+					Path path = Paths.get("C:/upload/"+newFileName);
+					Files.write(path,arr);
+					photo_dao.storephotoupdate(photocategory, newFileName,photofolderidx);						
+				}					
+				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	
+	}
 
 
 }
