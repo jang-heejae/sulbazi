@@ -58,8 +58,27 @@ public class AdminController {
 	public String adminUserList() {
 		return "admin/adminUserList";
 	}
+	@GetMapping(value="/adminUserList.ajax")  
+	@ResponseBody
+	public Map<String, Object> adminUserList(String page, String cnt){
+		int page_ = Integer.parseInt(page);
+		int cnt_ = Integer.parseInt(cnt);
+		return admin_ser.adminUserList(page_, cnt_); 
+	}
+	@RequestMapping(value="/adminUserDetail.go")
+	public String adminUserDetail(String user_id, Model model) {
+		admin_ser.adminUserDetail(user_id, model);
+		return "admin/adminUserDetail";
+	}
 	@RequestMapping(value="/adminStoreList.go")
 	public String adminStoreList() {
 		return "admin/adminStoreList";
+	}
+	@GetMapping(value="/adminStoreList.ajax")  
+	@ResponseBody
+	public Map<String, Object> adminStoreList(String page, String cnt){
+		int page_ = Integer.parseInt(page);
+		int cnt_ = Integer.parseInt(cnt);
+		return admin_ser.adminStoreList(page_, cnt_); 
 	}
 }

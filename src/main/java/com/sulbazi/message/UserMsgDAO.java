@@ -13,6 +13,8 @@ public interface UserMsgDAO {
 	List<UserMsgDTO> msg(int idx); 
 
 	/* 개인 채팅방에서 각 메세지 작성한 id가지고 닉네임 뽑기 */
-	UserDTO getUserById(String messageUserId); 
+	UserDTO getUserById(String messageUserId);
+
+	String userreportedIdx(int reported_idx); 
 	
 }
