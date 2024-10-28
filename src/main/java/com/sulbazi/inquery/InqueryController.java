@@ -138,8 +138,7 @@ public class InqueryController {
 		}
 		return page;
     }
-<<<<<<< HEAD
-=======
+
 
 
 	//관리자 문의 글 상세페이지 이동
@@ -169,7 +168,7 @@ public class InqueryController {
 		return page;
     }
 
->>>>>>> origin/master
+
 	
 
 

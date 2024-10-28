@@ -23,18 +23,6 @@ public class PhotoService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
-	/*
-	 * public void fileSave(MultipartFile[] files, int store_idx, int cti) {
-	 * try {
-	 * for (MultipartFile file : files) {
-	 * String ori = file.getOriginalFilename();
-	 * int ext = ori.lastIndexOf(".");
-	 * if(ext != -1) { String extt =
-	 * ori.substring(ext); String newfile = UUID.randomUUID()+extt; Path path =
-	 * Paths.get(bpath+newfile); byte[] arr = file.getBytes(); Files.write(path,
-	 * arr); photo_dao.fileSave(store_idx, newfile, cti); } } } catch (IOException
-	 * e) { e.printStackTrace(); } }
-	 */
 	public void fileSave(MultipartFile[] files, int store_idx, int cti) throws IOException {
 		logger.info("받은 cti 값: " + cti);
 		String filePath = storeFile(files);
@@ -68,7 +56,7 @@ public class PhotoService {
 	public List<PhotoDTO> inqueryphoto(int inqueryIdx) {
 		return photo_dao.inqueryphoto(inqueryIdx);
 	}
-<<<<<<< HEAD
+
  
 	public void filesaveone(MultipartFile fileone, int store_idx, int i) {
 		String photo = "";
@@ -89,8 +77,8 @@ public class PhotoService {
 		photodto.setPhoto_folder_idx(store_idx);
 		photodto.setPhoto_category_idx(i);
 		photo_dao.fileSave(photodto);
+	}
 		
-=======
 
 	public PhotoDTO mystorebestphoto(int store_idx) {
 		return photo_dao.mystorebestphoto(store_idx);
@@ -98,6 +86,6 @@ public class PhotoService {
 
 	public List<PhotoDTO> mystorephoto(int store_idx) {
 		return photo_dao.mystorephoto(store_idx);
->>>>>>> origin/master
+
 	}
 }
