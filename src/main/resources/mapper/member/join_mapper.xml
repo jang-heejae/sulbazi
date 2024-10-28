@@ -20,4 +20,16 @@
    		INSERT INTO user(user_id, user_pw, user_email, user_nickname, user_name, user_birth, user_phone, user_photo, user_gender)
    			VALUES(#{user_id}, #{user_pw}, #{user_email}, #{user_nickname}, #{user_name}, #{user_birth}, #{user_phone}, #{user_photo}, #{user_gender})
    </insert>
+   
+   <select id="checkid" resultType="boolean">
+   		SELECT COUNT(*) > 0 FROM user WHERE user_id = #{userId}
+   </select>
+   
+   <select id="checkEmail" resultType="boolean">
+   		SELECT COUNT(*) > 0 FROM user WHERE user_email = #{userEmail}
+   </select>
+   
+   <select id="checknumber" resultType="boolean">
+   		SELECT COUNT(*) > 0 FROM store WHERE store_number = #{storenumber}
+   </select>
 </mapper>

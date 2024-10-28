@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.binding.MapperMethod.ParamMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +34,25 @@ public class JoinController {
   	Logger logger = LoggerFactory.getLogger(getClass());
 
    @RequestMapping(value="/storeJoin.go")
-   public String storejoin() {
+   public String storejoin(Model model) {
+	   List<CategoryOptDTO> categoryOptList = category_ser.joincategory();
+	   model.addAttribute("category", categoryOptList);
       return "member/storeJoin";
    }
 
 
 	@PostMapping(value="/storeJoin.ajax")
 	@ResponseBody
-	 public Map<String, Object> storeJoin(MultipartFile[] files, @RequestParam Map<String, String> param) { 
-		 Map<String, Object> map = new HashMap<String, Object>();
+	 public Map<String, Object> storeJoin(
+			 MultipartFile[] files,
+			 MultipartFile fileone,
+			 @RequestParam Map<String, String> param) { 
+		logger.info("param : {}", param);
+		Map<String, Object> map = new HashMap<String, Object>();
 		 try {
-			 join_ser.storeJoin(files, param); 		
+			 join_ser.storeJoin(files, fileone, param);
 			 map.put("success", true); 
-			 map.put("link", "./login.go");
+			 map.put("link", "/SULBAZI/menu.go");
 		} catch (Exception e) {
 			map.put("success", false);
             map.put("message", "오류가 발생했습니다: " + e.getMessage());
@@ -65,24 +72,58 @@ public class JoinController {
 	@PostMapping(value="/userJoin.do")
 	public String userJoindo(
 			MultipartFile files,
-			@RequestParam Map<String, String> params) {
+			@RequestParam Map<String, String> params,
+			Model model) {
 		logger.info("params : {}", params);
-		join_ser.userJoindo(files, params);
-		return "";
+		String page = "";
+		if(join_ser.userJoindo(files, params) > 0) {
+			model.addAttribute("msg", "회원가입에 성공했습니다.");
+			page = "member/login";
+		}else {
+			model.addAttribute("msg", "회원가입에 실패했습니다.");
+			page = "member/userJoin";
+		}
+		return page;
+	}
+
+	@PostMapping(value="/checkid.ajax")
+	@ResponseBody
+	public Map<String, Object> checkid(@RequestParam("user_id") String userId) {
+		logger.info("checkid : " + userId);
+		boolean exists = join_ser.checkid(userId);
+		Map<String, Object> response = new HashMap<>();
+		response.put("exists", exists);
+		logger.info("checkid boolean : " + response);
+		return response;
 	}
 	
+	@PostMapping(value="/checkEmail.ajax")
+	@ResponseBody
+	public Map<String, Object> checkemail(@RequestParam("user_email") String userEmail) {
+		logger.info("checkemail : " + userEmail);
+		boolean exists = join_ser.checkEmail(userEmail);
+		Map<String, Object> response = new HashMap<>();
+		response.put("exists", exists);
+		logger.info("checkemail boolean : " + response);
+		return response;
+	}
 	
+	@PostMapping(value="/checknumber.ajax")
+	@ResponseBody
+	public Map<String, Object> checknumber(@RequestParam("store_number") String storenumber) {
+		logger.info("checknumber : " + storenumber);
+		boolean exists = join_ser.checknumber(storenumber);
+		Map<String, Object> response = new HashMap<>();
+		response.put("exists", exists);
+		logger.info("checknumber boolean : " + response);
+		return response;
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@RequestMapping(value="/menu.go")
+	public String menu() {
+		return "member/menu";
+	}
+
 	
 	
 	

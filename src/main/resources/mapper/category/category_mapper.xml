@@ -41,5 +41,14 @@
 	<select id="joincategory" resultType="com.sulbazi.category.CategoryOptDTO">
 		SELECT * FROM category_opt
 	</select>
+	
+	<insert id="userJoindo" parameterType="com.sulbazi.category.UserCategoryDTO">
+	    INSERT INTO user_category (user_id, opt_idx)
+	    	VALUES (#{user_id}, #{opt_idx})
+	</insert>
 
+	<insert id="storejoin" parameterType="com.sulbazi.category.StoreCategoryDTO">
+		INSERT INTO store_category (store_idx, opt_idx)
+			VALUES (#{store_idx}, #{opt_idx})
+	</insert>
 </mapper>

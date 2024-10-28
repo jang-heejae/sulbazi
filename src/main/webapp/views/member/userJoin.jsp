@@ -111,11 +111,15 @@
         <div class="container">
             <div class="wrapper">
                 <h2>사용자 회원가입</h2>
-                <input type="text" name="user_id" value="" placeholder="아이디(필수)"/>&nbsp;<button>중복확인</button><br>
+                <input type="text" name="user_id" value="" placeholder="아이디(필수)"/>&nbsp;<button type="button" id="checkIdBtn">중복확인</button>
+	            <span id="idCheckMessage" style="color: red;"></span>
+	            <span id="idAvailableMessage" style="color: blue;"></span><br> <!-- 사용 가능한 아이디 메시지 추가 -->
                 <input type="text" name="user_pw" value="" placeholder="비밀번호(필수)">
                 <input type="text" name="user_pwcheck" value="" placeholder="비밀번호 확인(필수)">
                 <h6>※ 비밀번호 8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해주세요.</h6>
-                <input type="text" name="user_email" value="" placeholder="이메일(필수)"/>&nbsp;<button>중복확인</button>
+                <input type="text" name="user_email" value="" placeholder="이메일(필수)"/>&nbsp;<button type="button" id="checkEmailBtn">중복확인</button>
+	            <span id="emailCheckMessage" style="color: red;"></span>
+	            <span id="emailAvailableMessage" style="color: blue;"></span><br> <!-- 사용 가능한 아이디 메시지 추가 -->
                 <br>
                 <input type="radio" name="user_gender" value="남">남
                 <input type="radio" name="user_gender" value="여">여
@@ -132,7 +136,7 @@
 				    <legend>Category 1</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 1}">
-				            <input type="radio" id="category_${category.category_idx}" name=1 value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=category1 value="${category.opt_idx}" />
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -142,7 +146,7 @@
 				    <legend>Category 2</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 2}">
-				            <input type="radio" id="category_${category.category_idx}" name=2 value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=category2 value="${category.opt_idx}" />
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -152,7 +156,7 @@
 				    <legend>Category 3</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 3}">
-				            <input type="radio" id="category_${category.category_idx}" name=3 value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=category3 value="${category.opt_idx}" />
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -162,7 +166,7 @@
 				    <legend>Category 4</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 4}">
-				            <input type="radio" id="category_${category.category_idx}" name=4 value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=category4 value="${category.opt_idx}" />
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -173,29 +177,63 @@
     </form>
 </body>
     <script>
-        function submitForm() {
-            var formData = new FormData($('#userJoinForm')[0]);
-            $.ajax({
-                type: 'POST',
-                url: 'userJoin.ajax',  // 서버에서 처리할 URL
-                data: formData,
-                contentType: false,
-                processData: false,
-                dataType: 'JSON',
-                success: function(data) {
-                    console.log(data);
-                    if (data.success) {
-                        alert("회원가입이 완료되었습니다.");
-                        location.href = data.link; // 회원가입 후 이동할 페이지
-                    } else {
-                        alert(data.message); // 오류 메시지 출력
-                    }
-                },
-                error: function(e) {
-                    console.error(e);
-                    alert("오류가 발생했습니다.");
-                }
-            });
-        }
+	    $(document).ready(function() {
+	        $('#checkIdBtn').click(function(event) {
+	        	event.preventDefault();
+	        	console.log("checkIdBtn 클릭됨");
+	            const userId = $('input[name="user_id"]').val();
+	            $.ajax({
+	                type: 'POST',
+	                url: 'checkid.ajax',
+	                data: { user_id: userId },
+	                success: function(response) {
+	                    if (response.exists) {
+	                        $('#idCheckMessage').text("이미 있는 아이디입니다.");
+	                        $('#idAvailableMessage').text(""); // 아이디 사용 가능 메시지 초기화
+	                    } else {
+	                        $('#idCheckMessage').text(""); // 중복 메시지 초기화
+	                        $('#idAvailableMessage').text("사용 가능한 아이디입니다."); // 사용 가능 메시지 출력
+	                    }
+	                }
+	            });
+	        });
+	     
+		        $('#checkEmailBtn').click(function(event) {
+		        	event.preventDefault();
+		        	console.log("checkEmailBtn 클릭됨");
+		            const userEmail = $('input[name="user_email"]').val();
+		            $.ajax({
+		                type: 'POST',
+		                url: 'checkEmail.ajax',
+		                data: { user_email: userEmail },
+		                success: function(response) {
+		                    if (response.exists) {
+		                        $('#emailCheckMessage').text("이미 있는 이메일입니다.");
+		                        $('#emailAvailableMessage').text(""); // 아이디 사용 가능 메시지 초기화
+		                    } else {
+		                        $('#emailCheckMessage').text(""); // 중복 메시지 초기화
+		                        $('#emailAvailableMessage').text("사용 가능한 이메일입니다."); // 사용 가능 메시지 출력
+		                    }
+		                }
+		            });
+		        });
+	    
+	
+	        $('#profileImageInput').change(function(event) {
+	            const file = event.target.files[0];
+	            if (file) {
+	                const reader = new FileReader();
+	                reader.onload = function(e) {
+	                    $('#previewImage').attr('src', e.target.result).show();
+	                };
+	                reader.readAsDataURL(file);
+	            }
+	        });
+	    });
+	    
+	    var msg = '${msg}';
+		if(msg != ''){
+			alert(msg);
+		}
     </script>
 </html>

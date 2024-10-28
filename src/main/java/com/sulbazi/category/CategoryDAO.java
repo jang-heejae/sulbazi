@@ -18,4 +18,8 @@ public interface CategoryDAO {
 
 	List<CategoryOptDTO> joincategory();
 
+	void userJoindo(UserCategoryDTO usercategorydto);
+
+	void storejoin(StoreCategoryDTO storecategorydto);
+
 }

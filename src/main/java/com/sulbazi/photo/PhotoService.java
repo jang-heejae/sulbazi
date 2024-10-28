@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,35 +38,62 @@ public class PhotoService {
 	 */
 	public void fileSave(MultipartFile[] files, int store_idx, int cti) throws IOException {
 		logger.info("받은 cti 값: " + cti);
-		String filePath = storeFile(files);
+		List<String> newfiles = storeFile(files);
+		for(String newfile : newfiles) {
         PhotoDTO photoDTO = new PhotoDTO();
         photoDTO.setPhoto_category_idx(cti);
         photoDTO.setPhoto_folder_idx(store_idx);
-        photoDTO.setNew_filename(filePath);
+        photoDTO.setNew_filename(newfile);
         photo_dao.fileSave(photoDTO);
         logger.info("{photoDTO}:"+photoDTO);
+		}
     }
 
-    private String storeFile(MultipartFile[] files) throws IOException {
-    	String newfile = "";
+    private List<String> storeFile(MultipartFile[] files) throws IOException {
+    	List<String> newfiles = new ArrayList<>();
     	try {
 			for (MultipartFile file : files) {
+				if (!file.isEmpty()) {
 				String ori = file.getOriginalFilename();
 				int ext = ori.lastIndexOf(".");
 				String extt = ori.substring(ext);
-				newfile = UUID.randomUUID()+extt;
+				String newfile = UUID.randomUUID()+extt;
 				Path path = Paths.get(bpath+newfile);
 				byte[] arr = file.getBytes();
 				Files.write(path, arr);
+				newfiles.add(newfile);
+				}
 			}
 		} catch (IOException e) {
 				e.printStackTrace();
 			}
-    	logger.info("{newfile}:"+newfile);
-        return newfile; 
+    	logger.info("{newfile}:"+newfiles);
+        return newfiles; 
     }
 
 	public List<PhotoDTO> inqueryphoto(int inqueryIdx) {
 		return photo_dao.inqueryphoto(inqueryIdx);
+	}
+
+	public void filesaveone(MultipartFile fileone, int store_idx, int i) {
+		String photo = "";
+		try {
+			String ori = fileone.getOriginalFilename();
+			int ext = ori.lastIndexOf(".");
+			String extt = ori.substring(ext);
+			photo = UUID.randomUUID()+extt;
+			Path path = Paths.get(bpath+photo);
+			byte[] arr;
+				arr = fileone.getBytes();
+			Files.write(path, arr);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		PhotoDTO photodto = new PhotoDTO();
+		photodto.setNew_filename(photo);
+		photodto.setPhoto_folder_idx(store_idx);
+		photodto.setPhoto_category_idx(i);
+		photo_dao.fileSave(photodto);
+		
 	}
 }
