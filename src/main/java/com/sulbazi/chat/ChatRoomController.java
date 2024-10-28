@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndViewDefiningException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sulbazi.member.UserDTO;
@@ -213,6 +212,7 @@ public class ChatRoomController {
 					}
 				}
 			}
+			
 			// 방에 해당하는 메세지 가져오기
 			List<UserMsgDTO> usermsg = message_ser.usermsg(idx);
 			
@@ -239,12 +239,12 @@ public class ChatRoomController {
 			model.addAttribute("list", userchat_list);
 			model.addAttribute("idx", idx);
 			model.addAttribute("userid", userChatroomdto.getUser_id());
-			model.addAttribute("subject", userChatroomdto.getUserchat_subject());
+			model.addAttribute("current", userChatroomdto.getCurrent_people());
 			model.addAttribute("usermsg", usermsg);
 			model.addAttribute("userNicknames", userNicknames);
-			model.addAttribute("roominfo",roominfo); 
+			model.addAttribute("roominfo",roominfo);
 			model.addAttribute("userlist",userlist); 
-			model.addAttribute("userNickname",userNickname); 
+			model.addAttribute("userPhotos",userPhotos);
 			page = "/chat/userChatRoom";
 		}
 		
