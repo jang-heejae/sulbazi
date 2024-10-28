@@ -517,13 +517,74 @@ $('#performSearch').click(function() {
         url: category+'search.ajax',  //요청 주소
         data:{'keyword' :keyword},   //파라메터
         dataType:'JSON',  //받을 데이터 타입
-        success:function(data) {   //성공했을 경우(받을 데이터)
+        success: function(data) {
             console.log(data);
+            if (data && data.searchresult && data.searchresult.length) {
+                drawSearchResults(data.searchresult);
+            } else {
+                showNoStoresMessage();
+            }
+
         },
         error:function(e) {  //실패했을 경우(실패 내용)
             console.log(e)
         }
     });
-})
+});
+
+function drawSearchResults(storeList){
+	
+	var listContainer = document.getElementById('list');
+	listContainer.innerHTML='';
+	
+	storeList.forEach(function(store,idx){
+		var content = '<tr>';
+        content += '<td class="store-img">';
+        content += '<img src="/photo/' + store.new_filename + '" alt="' + store.store_name + '" width="95px" height="95px">';
+        content += '</td>';
+        content += '<td>';
+        content += '<h3 class="store-name" data-store-idx="' + store.store_idx + '" onclick="location.href=\'storeDetail.do?storeidx=' + store.store_idx + '\'">' + store.store_name + '</h3>';
+        content += '<div class="store-rating">';
+        content += '<span>⭐' + store.star_average + ' (' + store.review_total + '명)</span>';
+        content += '</div>';
+        content += '<div class="categories">';
+	});
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 </html>

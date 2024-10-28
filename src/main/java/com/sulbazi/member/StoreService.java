@@ -74,7 +74,7 @@ public class StoreService {
 		 return map;
 	}
 
-	public Map<String, Object> storemenusearch(String keyword, Model model) {
+	public Map<String, Object> storemenusearch(String keyword) {
 		logger.info("매장메뉴키워드서비스");
 		logger.info(keyword);
 		List<Integer> menusearch = store_dao.storemenusearch(keyword);
@@ -91,12 +91,16 @@ public class StoreService {
 			 
 			 accumulatedFilteringStoreList.addAll(filteringstorelist);
 			 
-			 model.addAttribute("filteringstorelist", accumulatedFilteringStoreList);
-			 map.put("searchresult", accumulatedFilteringStoreList);
-		 }		 
+		 }	
+		 
+		 map.put("searchresult", accumulatedFilteringStoreList);
+		 logger.info("map 종원 {}:",map);
+		 
 		 return map;
 	}
 
+	
+	
 	public Map<String, Object> storeaddrsearch(String keyword, Model model) {
 		logger.info("매장메뉴키워드서비스");
 		logger.info(keyword);

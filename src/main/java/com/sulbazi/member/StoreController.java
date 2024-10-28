@@ -237,12 +237,11 @@ public class StoreController {
 	
 	@GetMapping(value="/menusearch.ajax")
 	@ResponseBody
-	public Map<String, Object> storemenusearch(String keyword,Model model) {
+	public Map<String, Object> storemenusearch(String keyword) {
 		logger.info("메뉴키워드 컨트롤러");
 		logger.info(keyword);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("searchresult",store_ser.storemenusearch(keyword, model));
-		return map;
+		return store_ser.storemenusearch(keyword);
 	}
 	
 	@GetMapping(value="/addrsearch.ajax")
