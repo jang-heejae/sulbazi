@@ -76,4 +76,5 @@ public class PhotoService {
 	public List<PhotoDTO> mystorephoto(int store_idx) {
 		return photo_dao.mystorephoto(store_idx);
 	}
+
 }
