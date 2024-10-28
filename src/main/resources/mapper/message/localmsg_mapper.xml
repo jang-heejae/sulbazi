@@ -4,4 +4,10 @@
 >
 <mapper namespace="com.sulbazi.message.LocalMsgDAO">
 
+	<!-- 지역 채팅방 입장 시 해당 방 메세지들 출력 -->
+	<select id="localmsg" resultType="com.sulbazi.message.LocalMsgDTO">
+		SELECT * FROM localmsg WHERE localchat_idx = #{idx}
+	</select>
+
+
 </mapper>

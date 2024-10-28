@@ -9,6 +9,21 @@
 	
 	<select id="chatlist" resultType="com.sulbazi.chat.UserChatroomDTO">
 		SELECT 
+		    userchat_idx,
+		    user_id,
+		    userchat_subject,
+		    userchat_date,
+		    userchat_state,
+		    current_people,
+		    max_people,
+		    notice
+		FROM userchat ORDER BY userchat_date DESC
+	</select>
+	
+	<!-- 개인 채팅방 리스트 - 검색결과 -->
+	
+	<select id="search" parameterType="String" resultType="com.sulbazi.chat.UserChatroomDTO">
+		SELECT 
 			userchat_idx,
 			user_id,
 			userchat_subject,
@@ -17,7 +32,9 @@
 			current_people,
 			max_people,
 			notice 
-		FROM userchat ORDER BY userchat_date DESC
+		FROM userchat 
+		WHERE userchat_subject LIKE CONCAT('%', #{query}, '%') 
+        AND userchat_state = 1
 	</select>
 	
 	<!-- 개인 채팅방 생성 -->
@@ -33,14 +50,49 @@
 	        SELECT 1
 	        FROM userchat
 	        WHERE user_id = #{user_id}
+	        AND userchat_state = 1
     	)
 	</insert> 
 
-	<!--  개인 채팅방 참여 -->
+	<!-- 생성한 채팅방 수정 -->
+	<update id="updatechatroom">
+		UPDATE userchat
+	    SET userchat_subject = #{userchat_subject}, 
+	        current_people = #{current_people}, 
+	        userchat_state = #{userchat_state}
+    	WHERE userchat_idx = #{userchat_idx}
+	</update>
+
+	<!-- 공지 등록, 수정 -->
+	<update id="updatenotice">
+		UPDATE userchat
+		SET notice = #{notice}
+		WHERE userchat_idx = #{userchat_idx}
+	</update>
 	
-	<select id="chatroom" parameterType="string" resultType="com.sulbazi.chat.UserChatroomDTO">
+	<!-- 개인 채팅방 삭제(비공개) -->
+	<update id="deletechatroom">
+		UPDATE userchat
+		SET userchat_state = 0
+		WHERE userchat_idx = #{userchat_idx}
+		AND NOT EXISTS (
+			SELECT 1
+		    FROM parti
+		    WHERE chatroom_idx = #{userchat_idx}
+		    AND user_id != #{userId}
+		    AND parti_state = 1
+		)
+	</update>
+	
+	<!-- 내가 참여중인 채팅방 목록 -->
+	
+	<select id="myroomlist" parameterType="string" resultType="com.sulbazi.chat.UserChatroomDTO">
 	    SELECT * FROM userchat WHERE user_id = #{userId}
-	    <!-- 세션에서 전달받은 user_id 값을 WHERE 조건으로 사용 -->
+	</select>
+	
+	<!-- 방 정보 가져오기 -->
+	<select id="roominfo" resultType="com.sulbazi.chat.UserChatroomDTO">
+		SELECT * FROM userchat WHERE userchat_idx = #{idx}
 	</select>
 	
 	<!-- 지역 채팅방 리스트 -->
