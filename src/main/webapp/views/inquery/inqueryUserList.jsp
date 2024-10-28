@@ -184,24 +184,32 @@ addquery(); // 리스트 업데이트 함수 호출
         });
     }
 
-        function drawList(list) {
-            var content = '';
-            list.forEach(function(item, idx) {
-            	var state ='처리중';
-            	if(item.inquery_state == true) {
-            		state = '처리 완료';
-            	}
-                content += '<tr>';
-                content += '<td>' + loginId + '</td>';
-                content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '">' + item.inquery_subject + '</a></td>'; // 상세보기 링크 추가
-                content += '<td>' + item.inquery_date + '</td>';
-                content += '<td>' + state + '</td>';
-                content += '<td>' + '관리자' + '</td>';
-                content += '</tr>';
-            });
-            console.log("갱신된 테이블 내용:", content);
-            $('#list').html(content); // 테이블 업데이트
-        }
+    function drawList(list) {
+        var content = '';
+        list.forEach(function(item, idx) {
+            var state = '처리중';
+            if (item.inquery_state == true) {
+                state = '처리 완료';
+            }
+
+            // answeradmin 배열이 있는 경우, 첫 번째 관리자 이름을 가져옵니다.
+            var adminName = '';
+            if (item.answeradmin && item.answeradmin.length > 0) {
+                adminName = item.answeradmin[0].admin_name;
+            }
+
+            console.log(adminName);
+            content += '<tr>';
+            content += '<td>' + loginId + '</td>';
+            content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '">' + item.inquery_subject + '</a></td>'; // 상세보기 링크 추가
+            content += '<td>' + item.inquery_date + '</td>';
+            content += '<td>' + state + '</td>';
+            content += '<td>' + adminName + '</td>'; // 관리자 이름 출력
+            content += '</tr>';
+        });
+        console.log("갱신된 테이블 내용:", content);
+        $('#list').html(content); // 테이블 업데이트
+    }
 </script>
 </body>
 </html>
