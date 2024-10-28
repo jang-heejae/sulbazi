@@ -126,7 +126,7 @@
 	
 	
 	<!-- 매장 마이페이지  정보 수정 -->
-<!-- 	<update id="" parameterType="com.sulbazi.member.StoreDTO">
+	<!-- <update id="" parameterType="com.sulbazi.member.StoreDTO">
 		SELECT store SET store_id=#{store_id}, store_pw=#{store_pw}, store_name=#{store_name}, 
 			store_number=#{store_number}, store_phone=#{store_phone}, 
 			store_address=#{store_address}, store_time=#{store_time}
