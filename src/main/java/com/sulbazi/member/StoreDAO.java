@@ -52,6 +52,16 @@ public interface StoreDAO {
 
 	CategoryOptDTO storeByCategoryopt(Integer integer);
 
+	List<CategoryOptDTO> OptionsCategoryState(int categorystate);
+
+	List<BoardDTO> storemyboard(int store_idx);
+
+	int storeidx(String attribute);
+
+	StoreDTO mystore(int store_idx);
+
+	List<Integer> mystoreopt(int storeIdx);
+
 
 
 
