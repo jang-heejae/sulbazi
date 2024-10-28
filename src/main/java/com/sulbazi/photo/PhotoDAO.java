@@ -14,3 +14,4 @@ public interface PhotoDAO {
 	List<PhotoDTO> inqueryphoto(int inqueryIdx);
 
 }
+ 

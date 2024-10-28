@@ -74,7 +74,7 @@ public class PhotoService {
 	public List<PhotoDTO> inqueryphoto(int inqueryIdx) {
 		return photo_dao.inqueryphoto(inqueryIdx);
 	}
-
+ 
 	public void filesaveone(MultipartFile fileone, int store_idx, int i) {
 		String photo = "";
 		try {
