@@ -5,7 +5,7 @@
 <mapper namespace="com.sulbazi.message.UserMsgDAO">
 
 	<!-- 개인 채팅방 입장시 해당 방 메세지 -->
-	<select id="msg" resultType="com.sulbazi.message.UserMsgDTO">
+	<select id="usermsg" resultType="com.sulbazi.message.UserMsgDTO">
 		SELECT * FROM usermsg WHERE userchat_idx = #{idx}
 	</select>
 	
@@ -13,5 +13,11 @@
 	<select id="getUserById" resultType="com.sulbazi.member.UserDTO">
 	 	SELECT user_nickname FROM user WHERE user_id = #{messageUserId}
 	</select>
+	<!-- 신고 당한 개인 메시지 내용뽑아오기 -->
+	<select id="userreportedIdx" parameterType="int" resultType="String">
+    	SELECT usermsg_content FROM usermsg WHERE usermsg_idx = #{reported_idx}
+	</select>
+	
+	
 	
 </mapper>

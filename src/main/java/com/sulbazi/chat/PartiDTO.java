@@ -1,6 +1,6 @@
 package com.sulbazi.chat;
 
-import java.sql.Date;
+import java.sql.Time;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,13 +9,13 @@ import javax.persistence.Id;
 
 @Entity
 public class PartiDTO {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int parti_idx;
 	private String user_id;
 	private int parti_state;
-	private Date parti_time;
+	private Time parti_time;
 	private String chatroom_category;
 	private int chatroom_idx;
 	
@@ -38,10 +38,10 @@ public class PartiDTO {
 	public void setParti_state(int parti_state) {
 		this.parti_state = parti_state;
 	}
-	public Date getParti_time() {
+	public Time getParti_time() {
 		return parti_time;
 	}
-	public void setParti_time(Date parti_time) {
+	public void setParti_time(Time parti_time) {
 		this.parti_time = parti_time;
 	}
 	public String getChatroom_category() {
@@ -56,5 +56,7 @@ public class PartiDTO {
 	public void setChatroom_idx(int chatroom_idx) {
 		this.chatroom_idx = chatroom_idx;
 	}
+	
+	
 	
 }

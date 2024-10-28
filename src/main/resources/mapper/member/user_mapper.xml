@@ -3,5 +3,7 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.member.UserDAO">
-
+	<select id="files" resultType="com.sulbazi.member.UserDTO">
+		SELECT * FROM user WHERE user_id = #{param1}
+	</select>
 </mapper>

@@ -146,8 +146,13 @@ public class InqueryController {
 			if(userinquerydetail != null) {
 				page="inquery/inqueryUserDetail";
 				model.addAttribute("userinquerydetail",userinquerydetail);
+<<<<<<< HEAD
 				// model.addAttribute("userinquerydetailadmin", userinquerydetailadmin);
 				// model.addAttribute("inquerydetailadmin", inquerydetailadmin);
+=======
+//				model.addAttribute("userinquerydetailadmin", userinquerydetailadmin);
+//				model.addAttribute("inquerydetailadmin", inquerydetailadmin);
+>>>>>>> origin/master
 				model.addAttribute("userinquerydetailphoto", userinquerydetailphoto);
 			}
 		}

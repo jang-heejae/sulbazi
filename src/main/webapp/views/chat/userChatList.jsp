@@ -52,7 +52,7 @@
         z-index: 999;
         position: absolute;
         top: 140px;
-        left: 1200px;
+        left: 1240px;
         width: 100px;
         height: 25px;
         background-color: 73734F;
@@ -112,19 +112,25 @@
         width: 200px;
         align-items: center;
     }
-    .gobtn{
-        width: 50px;
-        height: 30px;
-    }
     .searchbox{
+   		display: flex;
 	    position: absolute;
 	    top: 80px;
    	    left: 803px;
     }
     .search{
+        display: flex;
+    	align-items: center;
         position: relative;
         width: 300px; /* 원하는 너비 설정 */
         margin: 50px auto; /* 가운데 정렬 */
+    }
+    .search i{
+        position: absolute;
+        left: 10px; /* 아이콘의 위치 설정 */
+        top: 50%; /* 수직 중앙 정렬 */
+        transform: translateY(-50%); /* 수직 중앙 정렬 */
+        color: #aaa; /* 아이콘 색상 */
     }
     .search input{
     	outline: none;
@@ -134,14 +140,25 @@
         border: 1px solid #ccc; /* 테두리 스타일 */
         border-radius: 5px; /* 모서리 둥글게 */
     }
-    .search i{
-        position: absolute;
-        left: 10px; /* 아이콘의 위치 설정 */
-        top: 50%; /* 수직 중앙 정렬 */
-        transform: translateY(-50%); /* 수직 중앙 정렬 */
-        color: #aaa; /* 아이콘 색상 */
+    .search p{
+    	width: 50px;
+    	color: white;
+    	font-size: small;
     }
-   
+    .return{
+		width: 50px;
+    }
+    .return a{
+	    position: absolute;
+	    top: 66px;
+	    left: 308px;
+    	width: 70px;
+	    border-radius: 4px;
+    	font-size: small;
+    }
+    .return a:hover{
+    	font-weight: bold;
+    }
 </style>
 </head>
 <body>
@@ -149,7 +166,10 @@
 	<section class="searchbox">
         <div class="search">
         	<i class="fas fa-search"></i>
-            <input type="text" name="search" placeholder="채팅방 검색">
+            <input type="text" class="searchInput" name="search" placeholder="채팅방 제목 검색">
+        </div>
+        <div class="return">
+            <a href="userchatlist.go" class="returnbtn">결과 초기화</a>
         </div>
     </section>
 	<section class="chatBox">
@@ -195,11 +215,13 @@
                 <div class="roominfo">
                     <div>
                         <ul>
-                            <li>${userchat.current_people}/${userchat.max_people}</li>
+                            <%-- <li>${userchat.total_users}/${userchat.current_people}</li> --%>
                             <li>${userchat.userchat_date}</li>
                         </ul>
                     </div>
-                    <button type="submit" class="gobtn">참가</button>
+	                    <%-- <c:if test="${totaluser[userchat.userchat_idx] < userchat.current_people}"> --%>
+				            <button type="submit" class="join-button">참가</button>
+				        <%-- </c:if> --%>
                 </div>
             </div>
           </form>
@@ -208,34 +230,129 @@
 	</section>
 </body>
 <script>
+$(document).ready(function() {
+    
+    // 채팅방 취소 버튼
+    $('.newroombtn, .cancel').click(function(){      
+        var display = $('.createroom').css('display');
+        if (display == 'none'){
+            $('.createroom').show();
+        }else{
+            $('.createroom').hide();
+        }
+    });
+    
+    // 서버에서 보내온 model alert
+    var msg = "${msg}";
 
-		// alert
-		var msg = "${msg}";
+    if(msg!=""){
+        alert(msg);
+    }
+    
+    // 서버에서 보내온 session alert
+    var session = "${sessionScope.session}";
+    
+    console.log(session);
+    if(session!=""){
+        alert(session);
+        location.replace('./userchatlist.go');
+    }
+    
+    
+    // 참가 신청
+/*     $('.gobtn').on('click',function(event) {
+        event.preventDefault(); // 폼 제출 막기 (필요할 경우 사용)
+		if($(this).text() === "참가"){
+	        $(this).text('참가신청중');
+		}else if($(this).text() === "참가신청중"){
+			$(this).closest('form').submit();			
+		}
+    }); */
+
+    
+    // 페이지 로드 시 검색어가 있을 경우
+    var storedQuery = localStorage.getItem('searchQuery'); // 로컬 스토리지에서 검색어 가져오기
+    if (storedQuery) {
+        $('.searchInput').val(storedQuery); // 검색창에 검색어 설정
+        search(storedQuery); // 저장된 검색어로 검색 수행
+    }
+
+    // input 검색창 엔터치면 동작
+    $('.searchInput').keydown(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault(); // 기본 동작 방지
+            var query = $('.searchInput').val().trim(); // 입력값 공백 제거
+            search(query); // 검색 함수 호출
+        }
+    });
+
+    // 검색 함수
+    function search(query) {
+        console.log(query);
+
+        if (query) {
+            localStorage.setItem('searchQuery', query); // 검색어를 로컬 스토리지에 저장
+            // AJAX 요청으로 검색 결과 가져오기
+            $.ajax({
+                url: './search.ajax',
+                method: 'GET',
+                data: { query: query }, // 검색어 서버에 전달
+                success: function(response) {
+                    if (response.length > 0) {
+                        searchlist(response);
+                    } else {
+                        $('.chatitems').html('<p>검색 결과가 없습니다.</p>');
+                    }
+                },
+                error: function(error, status, xhr) {
+                    console.error("검색 실패:", error);
+                    $('.chatitems').html('<p>검색 중 오류가 발생했습니다.</p>');
+                }
+            });
+        } else {
+            $('.chatitems').html('<p>검색어를 입력하세요.</p>');
+        }
+    }
+    
+    function searchlist(response) {
+        var result= '';
+        
+        response.forEach(function(userchat) {
+            result += '<form action="userchatroom.go?idx=' + userchat.userchat_idx + '" method="post">';
+            result += '<div class="chatroom">';
+            result += '<div class="roomname">';
+            result += '<ul>';
+            result += '<li><input type="hidden" name="userchat_idx" value="' + userchat.userchat_idx + '" readonly/></li>'; 
+            result += '<li><input type="hidden" name="userchat_date" value="' + userchat.userchat_date + '" readonly/></li>';
+            result += '<li>' + userchat.userchat_subject + '<input type="hidden" name="userchat_subject" value="' + userchat.userchat_subject + '" readonly/></li>';
+            result += '<li>' + userchat.user_id + '</li>';
+            result += '</ul>';
+            result += '</div>';
+            result += '<div class="roominfo">';
+            result += '<div>';
+            result += '<ul>';
+            result += '<li>' + userchat.current_people + '/' + userchat.max_people + '</li>';
+            result += '<li>' + userchat.userchat_date + '</li>';
+            result += '</ul>';
+            result += '</div>';
+            result += '<button type="submit" class="gobtn">참가</button>';
+            result += '</div>';
+            result += '</div>';
+            result += '</form>';
+        });
+
+        $('.chatitems').html(result);
+    }
+    
+    
+    $('.returnbtn').click(function() {
+        // 다른 페이지로 이동 시 검색어 삭제
+        localStorage.removeItem('searchQuery'); // 검색어 삭제
+        location.href = "userchatlist.go"; // 리스트 페이지로 이동
+    });
+    
 	
-		if(msg!=""){
-			alert(msg);
-		}
-		
-		var session = "${sessionScope.session}";
-		
-		console.log(session);
-		if(session!=""){
-			alert(session);
-			location.replace('./userchatlist.go');
-		}
-		
-		// 채팅방 취소 버튼
-	    $('.newroombtn, .cancel').click(function(){      
-	        var display = $('.createroom').css('display')
-	        if (display == 'none'){
-	            $('.createroom').show();
-	        }else{
-	            $('.createroom').hide();
-	        }
-	    });
-
-		
-		
-		
+    
+});
 </script>
 </html>

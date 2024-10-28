@@ -20,29 +20,39 @@ public class LoginController {
 	public String login() {
 		return "member/login";
 	}
-	
 	@PostMapping(value="/login.do")
 	public String login(HttpServletRequest req, Model model, HttpSession session) {
-		String page = "";
-		String msg = "아이디, 비밀번호를 확인하세요.";
-		String id = req.getParameter("id");
-		String pw = req.getParameter("pw");
-		String opt = req.getParameter("option");
-		if(login_ser.login(id, pw, opt).equals("user")) {
-			session.setAttribute("loginId", id);
-			session.setAttribute("opt", opt);
-			page = "redirect:/main.go";
-		}else if(login_ser.login(id, pw, opt).equals("store")) {
-			session.setAttribute("loginId", id);
-			session.setAttribute("opt", opt);
-			page = "redirect:/storeMain.go";
-		}else if(login_ser.login(id, pw, opt).equals("admin")) {
-			session.setAttribute("loginId", id);
-			session.setAttribute("opt", opt);
-			page = "redirect:/adminMain.go";
-		}
-		model.addAttribute("msg", msg);
-		return page;
+	    String page = "";
+	    String msg = "아이디, 비밀번호를 확인하세요.";
+	    String id = req.getParameter("id");
+	    String pw = req.getParameter("pw");
+	    String opt = req.getParameter("option");
+	    String loginResult = login_ser.login(id, pw, opt);
+	    if (loginResult.equals("user") || loginResult.equals("store") || loginResult.equals("admin")) {
+	        if (userRevoke(id, opt)) { 
+	            msg = "이용이 제한되었습니다.";
+	            page = "redirect:/revokeLogin.go";
+	        } else {
+	            session.setAttribute("loginId", id);
+	            session.setAttribute("opt", opt);
+	            if (loginResult.equals("user")) {
+	                page = "redirect:/main.go";
+	            } else if (loginResult.equals("store")) {
+	                page = "redirect:/storeMain.go";
+	            } else if (loginResult.equals("admin")) {
+	                page = "redirect:/adminMain.go";
+	            }
+	        }
+	    }
+	    model.addAttribute("msg", msg);
+	    return page;
+	}
+	private boolean userRevoke(String id, String opt) {
+	    return login_ser.userRevoke(id, opt);
+	}
+	@RequestMapping(value="/revokeLogin.go")
+	public String revokeLogin() {
+		return "member/revokeLogin";
 	}
 	@RequestMapping(value="/logout.go")
 	public String logout(Model model, HttpSession session) {
