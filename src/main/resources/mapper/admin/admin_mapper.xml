@@ -31,21 +31,25 @@
 	<select id="storeCount" resultType="int">
 		SELECT CEIL(COUNT(store_idx)/#{param1}) FROM store
 	</select>
-	<select id="adminUserDetail" resultType="com.sulbazi.member.UserDTO">
+	<select id="getUserInfo" resultType="com.sulbazi.member.UserDTO">
+    	SELECT *
+    	FROM user
+    	WHERE user_id = #{user_id}
+	</select>
+	<select id="getRevokeInfo" resultType="hashMap">
+    	SELECT revoke_start, revoke_stop
+    	FROM revokes
+   		WHERE user_id = #{user_id}
+	</select>
+	<select id="getUserCategories" resultType="hashMap">
     	SELECT 
-        	u.*, 
-        	r.revoke_start, 
-        	r.revoke_stop,
-        	co.opt_name  -- category_opt에서 가져오는 option_name
+        	co.category_idx,
+        	co.opt_name
     	FROM 
-        	user u
+        	user_category uc
     	LEFT JOIN 
-        	revokes r ON u.user_id = r.user_id
-    	LEFT JOIN 
-        	user_category uc ON u.user_id = uc.user_id
-    	LEFT JOIN 
-        	category_opt co ON uc.opt_idx = co.opt_idx  -- option_idx로 category_opt와 연결
+        	category_opt co ON uc.opt_idx = co.opt_idx
     	WHERE 
-        	u.user_id = #{user_id}
-</select>
+        	uc.user_id = #{user_id}
+	</select>
 </mapper>
