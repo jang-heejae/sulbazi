@@ -143,8 +143,54 @@ public class StoreController {
             List<StoreDTO> stores = store_ser.getStoresInArea(minLat, maxLat, minLng, maxLng, page, cnt);
             int totalPages = store_ser.getTotalPages(minLat, maxLat, minLng, maxLng, cnt);
             List<PhotoDTO> photoList = store_ser.findPhotosForStores(stores);
-            List<StoreCategoryDTO> storeCategorys = store_ser.findStoreCategorys(stores);
-            List<CategoryOptDTO> categoryOpts = store_ser.findCategotyOpts(storeCategorys);
+            List<CategoryOptDTO> categoryOpts = store_ser.findStoreCategorys(stores);
+            List<StoreCategoryDTO> storeCategorys = store_ser.storeHelpMeIdx(stores);
+//            List<CategoryOptDTO> categoryOpts = store_ser.findCategotyOpts(storeCategorys);
+            
+
+            
+            
+            
+//            for (CategoryOptDTO categoryOptDTO : categoryOpts) {
+//            	int i = categoryOptDTO.getOpt_idx();
+//            	String c = categoryOptDTO.getOpt_name();
+//            	
+//            	System.out.println("카태고리"+i+':'+ c );
+//            			
+//			}
+
+//            List<Integer> storeIdxCategory = new ArrayList<>();
+//            
+//            for (StoreDTO  storedto : stores) {
+//				int c = storedto.getStore_idx();
+//				System.out.println(c);
+//				
+//				storeIdxCategory.add(c);
+//			}
+            
+        
+//            for (StoreCategoryDTO sc : storeCategorys) {
+//            	int asd = sc.getOpt_idx();
+//            	int dsa = sc.getStore_idx();
+//            	
+//            	System.out.println("카테고리 디폴트 store:"+dsa+" : "+asd);
+//			}
+            
+            
+            
+//            for (CategoryOptDTO categoryOptDTO : categoryOpts) {
+//					int a = categoryOptDTO.getOpt_idx();
+//					int b = categoryOptDTO.getCategory_idx();
+//					String c = categoryOptDTO.getOpt_name();
+//					
+//					//System.out.println("카테고리: " +a+" : "+b+" : "+c);
+//					logger.info("카테고리 :{}",categoryOptDTO);
+//			}
+            
+            
+            
+
+            
             
             // 응답 데이터 구성
             Map<String, Object> response = new HashMap<>();

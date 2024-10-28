@@ -224,14 +224,6 @@ public class StoreService {
 	}
 
 
-	public List<StoreCategoryDTO> findStoreCategorys(List<StoreDTO> stores) {
-		return store_dao.findStoreCategorys(stores);
-	}
-
-
-	public List<CategoryOptDTO> findCategotyOpts(List<StoreCategoryDTO> storeCategorys) {
-		return store_dao.findCategotyOpts(storeCategorys);
-	}
 
 
 	public List<CategoryOptDTO> OptionsCategoryState(int categorystate) {
@@ -259,6 +251,7 @@ public class StoreService {
     }
 
 
+
 	public boolean mystoreupdate(Map<String, String> params, int idx) {
 		StoreDTO storedto = new StoreDTO();
 		storedto.setStore_idx(idx);
@@ -275,6 +268,14 @@ public class StoreService {
 		return success;
 	}
 
+	public List<CategoryOptDTO> findStoreCategorys(List<StoreDTO> stores) {
+		return store_dao.findStoreCategorys(stores);
+	}
+
+
+	public List<StoreCategoryDTO> storeHelpMeIdx(List<StoreDTO> stores) {
+		return  store_dao.storeHelpMeIdx(stores);
+	}
 
 
 

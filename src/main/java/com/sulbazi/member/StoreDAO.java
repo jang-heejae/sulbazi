@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 
 import com.sulbazi.board.BoardDTO;
 import com.sulbazi.category.CategoryOptDTO;
@@ -59,10 +60,8 @@ public interface StoreDAO {
 
 	List<PhotoDTO> findPhotosForStores(List<StoreDTO> stores);
 
-	List<StoreCategoryDTO> findStoreCategorys(List<StoreDTO> stores);
 
-	List<CategoryOptDTO> findCategotyOpts(List<StoreCategoryDTO> storeCategorys);
-
+	
 	List<CategoryOptDTO> OptionsCategoryState(int categorystate);
 
 	List<BoardDTO> storemyboard(int store_idx);
@@ -74,6 +73,11 @@ public interface StoreDAO {
 	List<Integer> mystoreopt(int storeIdx);
 
 	int mystoreupdate(StoreDTO storedto);
+
+	List<CategoryOptDTO> findStoreCategorys(List<StoreDTO> stores);
+
+	List<StoreCategoryDTO> storeHelpMeIdx(List<StoreDTO> stores);
+
 
 
 

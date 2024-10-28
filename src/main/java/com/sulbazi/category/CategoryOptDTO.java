@@ -6,6 +6,14 @@ public class CategoryOptDTO {
 	private String opt_name;
 	private boolean category_state;
 	
+//    @Override
+//    public String toString() {
+//        return "CategoryOptDTO{" +
+//                "opt_idx=" + opt_idx +
+//                ", category_idx=" + category_idx +
+//                ", opt_name='" + opt_name + '\'' +
+//                '}';
+//    }
 	
 	public int getOpt_idx() {
 		return opt_idx;
