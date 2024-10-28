@@ -1,6 +1,6 @@
 package com.sulbazi.report;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class ReportDTO {
 	private int report_idx;

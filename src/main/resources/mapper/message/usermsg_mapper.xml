@@ -13,5 +13,8 @@
 	<select id="getUserById" resultType="com.sulbazi.member.UserDTO">
 	 	SELECT user_nickname FROM user WHERE user_id = #{messageUserId}
 	</select>
-	
+	<!-- 신고 당한 개인 메시지 내용뽑아오기 -->
+	<select id="userreportedIdx" parameterType="int" resultType="String">
+    	SELECT usermsg_content FROM usermsg WHERE usermsg_idx = #{reported_idx}
+	</select>
 </mapper>

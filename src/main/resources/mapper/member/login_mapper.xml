@@ -14,4 +14,7 @@
 			SELECT admin_id FROM admin WHERE admin_id=#{id} AND admin_pw=#{pw}
 		</if>
 	</select>
+	<select id="userRevoke" parameterType="map" resultType="boolean">
+            SELECT COUNT(*) FROM user WHERE user_id = #{id} AND user_revoke = 1
+</select>
 </mapper>
