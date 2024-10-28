@@ -181,7 +181,7 @@
 				        </c:if>
 				    </c:forEach>
 				</fieldset>
-                <h2>메뉴 등록</h2>
+            <!--     <h2>메뉴 등록</h2>
                 <select name="menu_category" id="category">
                     <option value="food">안주</option>
                     <option value="sul">주류</option>
@@ -190,7 +190,7 @@
                 <input type="text" name="menu_price" value="" placeholder="메뉴 가격"/><span class="price">원</span>
                 <input type="file" name="files" multiple="multiple"/>
                 <button type="button" id="menu_go">등록</button>
-                <div id="menu_list"></div>
+                <div id="menu_list"></div> -->
             </div>
         </div>
         <button type="button" id="save" onclick="save(event)">회원가입</button>
@@ -231,6 +231,11 @@ function readFile(input){
 		}
 	}
 }
+$(document).ready(function() {
+    $('#save').click(function(event) {
+        save(event); // 여기서 save 함수를 호출
+    });
+});
 
 $(document).ready(function() {
     $('#checknumberBtn').click(function(event) {
@@ -254,7 +259,7 @@ $(document).ready(function() {
     });
 });
 
-$(document).ready(function() {
+/* $(document).ready(function() {
     $('#menu_go').click(function() {
         const menuName = $('input[name="menu_name"]').val(); // 메뉴 이름
         const menuPrice = $('input[name="menu_price"]').val(); // 메뉴 가격
@@ -293,7 +298,7 @@ $(document).ready(function() {
             alert('메뉴 이름, 가격 및 카테고리를 모두 입력해주세요.'); // 필드가 비어 있을 경우 경고
         }
     });
-});
+}); */
 /* function getCoordinates() {
     const address = $('#store_address').val();
     const apiKey = 'c27fdf5010600b97cd4cc85f7f6a04f3'; // 실제 API 키로 변경

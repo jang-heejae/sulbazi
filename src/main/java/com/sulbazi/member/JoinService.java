@@ -55,7 +55,7 @@ public class JoinService {
 			 int store_idx = dto.getStore_idx();
 			 if(store_idx > 0 && row >0) {
 				 try {
-					photo_ser.filesaveone(fileone, store_idx, 7);
+					photo_ser.filesaveone(fileone, store_idx, 1);
 					photo_ser.fileSave(files, store_idx, 2);
 					StoreCategoryDTO storecategorydto = new StoreCategoryDTO();
 					int category1 = Integer.parseInt(param.get("category1"));

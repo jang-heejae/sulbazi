@@ -4,4 +4,11 @@
 >
 <mapper namespace="com.sulbazi.board.BoardDAO">
 
+	<select id="boardlistgo" resultType="map">
+		SELECT * FROM board ORDER BY board_idx DESC
+	</select>
+	
+	<select id="detail" resultType="com.sulbazi.board.BoardDTO">
+		SELECT * FROM board WHERE board_idx = #{param1}
+	</select>
 </mapper>

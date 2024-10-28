@@ -1,4 +1,4 @@
-package com.sulbazi.photo;
+	package com.sulbazi.photo;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -96,5 +96,9 @@ public class PhotoService {
 
 	public List<PhotoDTO> mystorephoto(int store_idx) {
 		return photo_dao.mystorephoto(store_idx);
+	}
+
+	public List<PhotoDTO> detail(int store_idx) {
+		return photo_dao.detail(store_idx);
 	}
 }
