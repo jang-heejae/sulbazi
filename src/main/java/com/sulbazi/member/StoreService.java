@@ -32,6 +32,7 @@ public class StoreService {
 	
 	public StoreDTO getStoreDetail(int idx) {
 		StoreDTO sd = store_dao.getStoreDetail(idx);
+		System.out.println(sd.getStore_idx());
 		String storeTime = sd.getStore_time().replace("\n", "<br>");
 		sd.setStore_time(storeTime);
 		return sd;
@@ -142,12 +143,23 @@ public class StoreService {
 	public Map<String, Object> bookmarkCheck(String loginId, int storeidx) {
 		int store_idx = storeidx;
 		String user_id= loginId;
+		System.out.println(store_idx);
+		System.out.println(user_id);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
-		if (store_dao.bookmarkCheckCount(user_id,store_idx) == 0) {
-			map.put("bookmark",store_dao.bookmarkCheck(user_id,store_idx));
+		map.put("user_id", user_id);
+		map.put("store_idx", store_idx);
+		int s = store_dao.bookmarkCheckCount(map);
+		System.out.println(s);
+		if ( s == 0) {
+			
+			map.put("bookmark",store_dao.bookmarkCheck(map));
+			
+			
 		}else {
-			int del = store_dao.delBookmark(user_id,store_idx);
+			int del = store_dao.delBookmark(map);
 		}
+		
 		
 		int bookmark_user = store_dao.storeBookmarkCheck(store_idx);
 		if ( bookmark_user >= 0) {
@@ -174,6 +186,55 @@ public class StoreService {
 
 		return storeExplain;
 	}
+
+
+	public List<StoreDTO> getStoresInArea(double minLat, double maxLat, double minLng, double maxLng, int page,
+			int cnt) {
+		
+        Map<String, Object> params = new HashMap<>();
+        params.put("minLat", minLat);
+        params.put("maxLat", maxLat);
+        params.put("minLng", minLng);
+        params.put("maxLng", maxLng);
+        params.put("offset", (page - 1) * cnt);
+        params.put("limit", cnt);
+        List<StoreDTO> storeList = store_dao.findStoresInArea(params);
+        
+        
+        return storeList;
+	}
+
+
+	public int getTotalPages(double minLat, double maxLat, double minLng, double maxLng, int cnt) {
+		
+        Map<String, Object> params = new HashMap<>();
+        params.put("minLat", minLat);
+        params.put("maxLat", maxLat);
+        params.put("minLng", minLng);
+        params.put("maxLng", maxLng);
+        
+        int totalStores = store_dao.countStoresInArea(params);
+        return (int) Math.ceil((double) totalStores / cnt);  
+        
+	}
+
+
+	public List<PhotoDTO> findPhotosForStores(List<StoreDTO> stores) {
+		return store_dao.findPhotosForStores(stores);
+	}
+
+
+	public List<StoreCategoryDTO> findStoreCategorys(List<StoreDTO> stores) {
+		return store_dao.findStoreCategorys(stores);
+	}
+
+
+	public List<CategoryOptDTO> findCategotyOpts(List<StoreCategoryDTO> storeCategorys) {
+		return store_dao.findCategotyOpts(storeCategorys);
+	}
+
+
+
 
 
 
