@@ -25,6 +25,7 @@
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 15px;
+            overflow-y: auto;
         }
         .header {
             text-align: center;
@@ -94,25 +95,34 @@
 							<img src="/photo/${inqueryfile.new_filename}"><br/>
 						</c:forEach>
                     </div>
-                </div>
-                <div class="form-group flex-group">
-                    <div class="flex-item">
-                        <label class="form-label">관리자</label>
-                        <c:forEach items="${answeradmin}" var="answerad">
-                        	<input type="text" value="${answerad.admin_name}" class="form-control" readonly>
-                        </c:forEach>
-                    </div>
-                    <div class="flex-item">
-                        <label class="form-label" for="responseDate">답변 날짜</label>
-                        <c:forEach items="${answer}" var="inqueryanswer">
-                        	<input type="text" id="responseDate" name="responseDate" class="form-control" value="${inqueryanswer.answer_date}" readonly>
-                    	</c:forEach>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">답변 내용</label>
-                    <div class="admin-response">${userinquerydetailadmin.answer_content}</div>
-                </div>
+                 </div>
+				<c:forEach var="inqueryanswer" items="${answer}">
+    				<c:set var="matchedAdminName" value="" />
+    				<c:forEach var="answerad" items="${answeradmin}">
+        				<c:if test="${inqueryanswer.admin_id == answerad.admin_id}">
+            				<c:set var="matchedAdminName" value="${answerad.admin_name}" />
+            				<c:set var="isMatched" value="true" />
+            				<c:choose>
+                				<c:when test="${isMatched == 'true'}">
+                    				<div class="form-group flex-group">
+                        				<div class="flex-item">
+                            				<label class="form-label">관리자</label>
+                            				<input type="text" value="${matchedAdminName}" class="form-control" readonly>
+                        				</div>
+                        				<div class="flex-item">
+                            				<label class="form-label" for="responseDate">답변 날짜</label>
+                            				<input type="text" id="responseDate" name="responseDate" class="form-control" value="${inqueryanswer.answer_date}" readonly>
+                        				</div>
+                    				</div>
+                    				<div class="form-group">
+                        				<label class="form-label">답변 내용</label>
+                        				<div class="admin-response">${inqueryanswer.answer_content}</div>
+                    				</div>
+                				</c:when>
+            				</c:choose>
+        				</c:if>
+    				</c:forEach>
+				</c:forEach>
             </form>
         </div>
     </div>

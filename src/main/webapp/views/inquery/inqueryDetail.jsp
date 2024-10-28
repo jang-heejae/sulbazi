@@ -95,115 +95,58 @@
 						</c:forEach>
                     </div>
                 </div>
-<%--                 <div class="form-group flex-group">
-                    <div class="flex-item">
-                        <label class="form-label">관리자</label>
-                        <input type="text" value="${inquerydetailadmin}" class="form-control" readonly>
-                    </div>
-                    <div class="flex-item">
-                        <label class="form-label" for="responseDate">답변 날짜</label>
-                        <input type="text" id="responseDate" name="responseDate" class="form-control" value="${userinquerydetailadmin.answer_date}" readonly>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">답변 내용</label>
-                    <div class="admin-response">${userinquerydetailadmin.answer_content}</div>
-                </div> --%>
-                <div id="answerList">
-    				<!-- 기존의 답변 목록이 여기에 추가될 것입니다. -->
-				</div>
-				<form id="answerForm">
-    				<div class="admin-response">
-        				<textarea id="answer" rows="3"></textarea>
-    				</div>
-    				<button type="button" id="submitAnswer">답변 등록</button>
-				</form>
+				<c:forEach var="inqueryanswer" items="${answer}">
+    				<c:set var="matchedAdminName" value="" />
+    				<c:forEach var="answerad" items="${answeradmin}">
+        				<c:if test="${inqueryanswer.admin_id == answerad.admin_id}">
+            				<c:set var="matchedAdminName" value="${answerad.admin_name}" />
+            				<c:set var="isMatched" value="true" />
+            				<c:choose>
+                				<c:when test="${isMatched == 'true'}">
+                    				<div class="form-group flex-group">
+                        				<div class="flex-item">
+                            				<label class="form-label">관리자</label>
+                            				<input type="text" value="${matchedAdminName}" class="form-control" readonly>
+                        				</div>
+                        				<div class="flex-item">
+                            				<label class="form-label" for="responseDate">답변 날짜</label>
+                            				<input type="text" id="responseDate" name="responseDate" class="form-control" value="${inqueryanswer.answer_date}" readonly>
+                        				</div>
+                    				</div>
+                    				<div class="form-group">
+                        				<label class="form-label">답변 내용</label>
+                        				<div class="admin-response">${inqueryanswer.answer_content}</div>
+                    				</div>
+                				</c:when>
+            				</c:choose>
+        				</c:if>
+    				</c:forEach>
+				</c:forEach>
             </form>
+			<form action="adminanswer.do" method="post">
+    			<div class="admin-response">
+    				 <input type="hidden" name="inqueryIdx" value="${userinquerydetail.inquery_idx}">
+        			<textarea id="answer" name="answer" rows="3" style="width: 722px; max-width:722px;"></textarea>
+    			</div>
+    			<button type="submit" id="submitAnswer" style="margin-top: 5;">답변 등록</button>
+			</form>
         </div>
     </div>
 </body>
 <script>
 var loginId = '${sessionScope.loginId}';
-var btn = document.getElementsByTagName('button');
-btn[0].addEventListener('click', function(event) {
+var btn = document.getElementById('submitAnswer');
+btn.addEventListener('click', function(event) {
     var result = confirm('등록하시겠습니까?');
-    console.log(result);
     if (result == true) {
         alert('등록되었습니다');
-        $('form')[1].submit();// 폼을 수동으로 제출합니다.
-        $('#answer').val('');
+        // 폼을 직접 제출하도록 수정합니다.
+        document.querySelector("form[action='adminanswer.do']").submit();
     } else {
-    	addquery();
+        alert('등록이 취소되었습니다');
+        event.preventDefault(); // 등록이 취소되었을 때 폼 제출을 방지합니다.
     }
 });
 
-addquery(); // 리스트 업데이트 함수 호출
-    function addquery() {
-        $.ajax({
-            type: 'POST',
-            url: 'answer.ajax',
-            data: {},
-            dataType: 'JSON',
-            success: function(data) {
-                console.log("데이터 수신 성공:", data);
-                if (data && data.list && Array.isArray(data.list)) {
-                    answer(data.list);
-                } else {
-                    console.log("유효한 리스트가 없습니다.");
-                }
-            },
-            error: function(e) {
-                console.log("AJAX 요청 실패:", e);
-            }
-        });
-        $.ajax({
-            type: 'GET',
-            url: 'answeradmin.ajax',
-            data: {},
-            dataType: 'JSON',
-            success: function(data) {
-                console.log("데이터 수신 성공:", data);
-                if (data && data.list && Array.isArray(data.list)) {
-                    answeradmin(data.list);
-                } else {
-                    console.log("유효한 리스트가 없습니다.");
-                }
-            },
-            error: function(e) {
-                console.log("AJAX 요청 실패:", e);
-            }
-        });
-    }
-
-var newAnswerHtml = '';
-function answer(list) {
-	list.forEach(function(item, idx)) {
-		newAnswerHtml += '<div class="form-group flex-group">';
-		newAnswerHtml += '<div class="flex-item">';
-		newAnswerHtml += '<label class="form-label">관리자</label>';
-		newAnswerHtml += '<input type="text" value='+item.+' class="form-control" readonly>';
-		newAnswerHtml += '</div>';
-		newAnswerHtml += '<div class="flex-item">';
-		newAnswerHtml += '<label class="form-label">답변 날짜</label>'
-		newAnswerHtml += '<input type="text" name="responseDate" class="form-control" value='+item.+' readonly>'
-		newAnswerHtml += '</div>';
-		newAnswerHtml += '</div>';
-		newAnswerHtml += '<div class="form-group">';
-		newAnswerHtml += '<label class="form-label">답변 내용</label>';
-	}
-}
-		
-function answeradmin(list) {
-	list.forEach(function(item, idx)) {
-		newAnswerHtml += '<div class="admin-response">'+${}+'</div>';
-		newAnswerHtml += '</div>';
-		$('#answerList').append(newAnswerHtml);
-	}
-}
-   
-    
-
-
-	
 </script>
 </html>

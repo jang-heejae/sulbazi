@@ -10,7 +10,30 @@
 </style>
 </head>
 <body>
-	
+	<div>
+		<table>
+			<thead>
+				<tr>
+					<th>게시판 분류</th>
+					<th>게시물 제목</th>
+					<th>좋아요 수</th>
+					<th>조회 수</th>
+					<th>게시 일자</th>
+				</tr>
+			</thead>
+            <tbody>
+                <c:forEach var="board" items="${myboard}">
+                    <tr>
+                        <td>${board.board_category}</td>
+                        <td>${board.board_subject}</td>
+                        <td>${board.like_count}</td>
+                        <td>${board.board_bHit}</td>
+                        <td>${board.board_date}</td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+		</table>
+	</div>
 </body>
 <script>
 

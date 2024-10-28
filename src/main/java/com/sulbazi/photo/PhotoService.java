@@ -68,4 +68,12 @@ public class PhotoService {
 	public List<PhotoDTO> inqueryphoto(int inqueryIdx) {
 		return photo_dao.inqueryphoto(inqueryIdx);
 	}
+
+	public PhotoDTO mystorebestphoto(int store_idx) {
+		return photo_dao.mystorebestphoto(store_idx);
+	}
+
+	public List<PhotoDTO> mystorephoto(int store_idx) {
+		return photo_dao.mystorephoto(store_idx);
+	}
 }

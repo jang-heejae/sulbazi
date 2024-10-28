@@ -12,4 +12,8 @@ public interface PhotoDAO {
 	void fileSave(PhotoDTO photoDTO);
 
 	List<PhotoDTO> inqueryphoto(int inqueryIdx);
+
+	PhotoDTO mystorebestphoto(int store_idx);
+
+	List<PhotoDTO> mystorephoto(int store_idx);
 }
