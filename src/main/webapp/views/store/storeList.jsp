@@ -155,6 +155,15 @@
     			width: 100px;
     			
     		}
+    		.categories{
+    			width: 100%;
+    			height:100%;
+    		}
+    		.categories p{
+    			display:inline-block;
+    			margin: 0 0;
+    			color: #BDBDBD;
+    		}
 			
 
 </style>
@@ -291,7 +300,7 @@
 			success:function(data){
 				console.log(data);
 				if (data.list && data.list.length) {
-					drawList(data.list , data.photos , data.categoryOpts, data.storeCategorys)
+					drawList(data.list , data.photos , data.categoryOpts , data.storeCategorys)
 					drawMarkers(data.list);
 					console.log(data.list)
 					console.log(data.list.length)
@@ -330,44 +339,35 @@
 	            return p.photo_folder_idx === store.store_idx;
 	        });
 	        
-	        var storeCategory = storeCategorys.find(function(sc){
-	        	return sc.store_idx === store.store_idx;
-	        });
+ 	        var relatedCategoryOpts = categoryOpts.filter(function(categoryOpt) {
+	            return storeCategorys.some(function(storeCategory) {
+	                return storeCategory.store_idx === store.store_idx && storeCategory.opt_idx === categoryOpt.opt_idx;
+	            });
+	        }); 
 	        
-	        var categoryOpt = categoryOpts.find(function(co){
-	        	return co.opt_idx === storeCategory.opt_idx;
-	        });
-	        
-	        
+
 	        
 	        var content ='<tr>'
 	            content +='<td class="store-img">'
 	            content +='<img src="/photo/'+photo.new_filename+'" alt="'+store.store_name+'" width="95px" height="95px">'
 	            content +='</td>'
 	            content +='<td>'
-	            content +='<h3>'+store.store_name+'</h3>'
+	            content += '<h3 onclick="location.href=\'storeDetail.do?storeidx=' + store.store_idx + '\'">' + store.store_name + '</h3>';
 	            content +='<div class="store-rating">'
 	            content +='<span>⭐'+ store.star_average +' ('+ store.review_total+')명</span>'
 	            content +='</div>'
 	            content +='<div class="categories">'
-/* 	            content += '<p>' + categoryOpt.opt_name + '</p>'; */
+
+	                for (var i = 0; i < Math.min(relatedCategoryOpts.length, 4); i++) {
+	                    content += '<p>' + '&nbsp; #'+relatedCategoryOpts[i].opt_name + '</p>';
+	                }
+
+	            
+	            
 	            content +='</div>'
 	            content +='<p>'+store.store_address+'</p>'
 	            content +='</td>'
 	            content +='</tr>';
-	
-	        // 각 store의 categories를 순회하여 추가
-/* 	        store.categories.forEach(function(category) {
-	            if (category.category_idx == 1) {
-	                content += `# ${category.opt_name} <br/>`;
-	            } else if (category.category_idx == 2) {
-	                content += `# ${category.opt_name} <br/>`;
-	            } else if (category.category_idx == 3) {
-	                content += `# ${category.opt_name} <br/>`;
-	            } else if (category.category_idx == 4) {
-	                content += `# ${category.opt_name} <br/>`;
-	            }
-	        }); */
 	
 	
 	        // 생성된 HTML을 리스트 컨테이너에 추가
