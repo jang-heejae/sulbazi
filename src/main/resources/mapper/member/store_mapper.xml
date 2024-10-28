@@ -168,8 +168,8 @@
 	</select>
 	
 	
-	<!-- 매장 마이페이지  정보 수정 -->
-	<update id="" parameterType="com.sulbazi.member.StoreDTO">
+ 	<!-- 매장 마이페이지  정보 수정 -->
+<!-- 	<update id="" parameterType="com.sulbazi.member.StoreDTO">
 		SELECT store SET store_id=#{store_id}, store_pw=#{store_pw}, store_name=#{store_name}, 
 			store_number=#{store_number}, store_phone=#{store_phone}, 
 			store_address=#{store_address}, store_time=#{store_time}
@@ -178,7 +178,7 @@
 	
 	<update id="" parameterType="com.sulbazi.category.StoreCategoryDTO">
 		UPDATE  store_category SET opt_idx=#{opt_idx} WHERE store_idx=#{store_idx}
-	</update>
+	</update>  -->
 	
 	<!-- 매장 마이페이지  내 댓글 보기 -->
 	
