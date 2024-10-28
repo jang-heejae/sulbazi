@@ -58,7 +58,7 @@
     }
     .gobtn{
         width: 50px;
-        height: 50px;
+        height: 30px;
     }
     .gobtn:hover{
     	cursor: pointer;
@@ -71,17 +71,20 @@
 	<section class="chatBox">
         <div class="chatitems">
           <c:forEach items="${list}" var="localchat" varStatus="status">
+          <form action="localchatroom.go?idx=${localchat.localchat_idx}" method="post">
             <div class="chatroom">
                 <div class="roomname">
+                	<input type="hidden" name="localchat_idx" value="${localchat.localchat_idx}">
                     <p>${localchat.local_category}</p>
                     <%-- <img src="${someImagePath}/${status.index + 1}.jpg" alt="Chat Image" /> --%>
                     <img src="resources/img/${status.index + 1}.png" alt="Chat Image" />
                     <!-- <img src="resources/img/1.png" alt="Chat Image" /> -->
                 </div>
                 <div class="chatgo">
-                    <div class="gobtn" onclick="location.href='localchatroom.go'">참여</div>
+                    <button type="submit" class="gobtn">참가</button>
                 </div>
             </div>
+            </form>
        	</c:forEach>
       </div>
 	</section>

@@ -3,8 +3,15 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.message.LocalMsgDAO">
-	<!-- 신고 당한 지역 메시지 내용뽑아오기 -->
-	<select id="localreportedIdx" parameterType="int" resultType="String">
-    	SELECT localmsg_content FROM localmsg WHERE localmsg_idx = #{reported_idx}
+
+	<!-- 지역 채팅방 입장 시 해당 방 메세지들 출력 -->
+	<select id="localmsg" resultType="com.sulbazi.message.LocalMsgDTO">
+		SELECT * FROM localmsg WHERE localchat_idx = #{idx}
 	</select>
+
+
+	<select id="localreportedIdx" parameterType="int" resultType="String">
+       SELECT localmsg_content FROM localmsg WHERE localmsg_idx = #{reported_idx}
+   	</select>
+
 </mapper>
