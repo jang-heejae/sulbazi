@@ -34,7 +34,7 @@
 		width: 200px;
 	}
 	#userProfile{
-		background-color: #D8D8D8;
+		background-color: rgb(255, 140, 9);
 		position: absolute;
 		top: 226px;
     	left: 542px;
@@ -164,7 +164,88 @@
 		</ul>
 	</div>
 	<div class="userCate">
-		<ul>
+		    <ul>
+        <!-- 주종 카테고리 -->
+        <li>
+            <label>주종</label>&nbsp;&nbsp;&nbsp;
+                <c:forEach var="category" items="${allCategories}">
+                    <c:if test="${category.category_idx == 1}">
+                        <c:set var="isChecked" value="false" />
+                        <!-- 사용자가 선택한 항목인지 확인 -->
+                        <c:forEach var="userCategory" items="${categories}">
+                            <c:if test="${category.opt_idx == userCategory.opt_idx}">
+                                <c:set var="isChecked" value="true" />
+                            </c:if>
+                        </c:forEach>
+                        <!-- 주종 카테고리 옵션 출력 -->
+                            <input type="radio" name="opt_name1" value="${category.opt_name}"
+                                   <c:if test="${isChecked}">checked="checked"</c:if>/>
+                            ${category.opt_name}
+                    </c:if>
+                </c:forEach>
+        </li>
+
+        <!-- 안주 카테고리 -->
+        <li>
+            <label>안주</label>&nbsp;&nbsp;&nbsp;
+                <c:forEach var="category" items="${allCategories}">
+                    <c:if test="${category.category_idx == 2}">
+                        <c:set var="isChecked" value="false" />
+                        <!-- 사용자가 선택한 항목인지 확인 -->
+                        <c:forEach var="userCategory" items="${categories}">
+                            <c:if test="${category.opt_idx == userCategory.opt_idx}">
+                                <c:set var="isChecked" value="true" />
+                            </c:if>
+                        </c:forEach>
+                        <!-- 안주 카테고리 옵션 출력 -->
+                            <input type="radio" name="opt_name2" value="${category.opt_name}"
+                                   <c:if test="${isChecked}">checked="checked"</c:if>/>
+                            ${category.opt_name}
+                    </c:if>
+                </c:forEach>
+        </li>
+
+        <!-- 분위기 카테고리 -->
+        <li>
+            <label>분위기</label>&nbsp;&nbsp;&nbsp;
+                <c:forEach var="category" items="${allCategories}">
+                    <c:if test="${category.category_idx == 3}">
+                        <c:set var="isChecked" value="false" />
+                        <!-- 사용자가 선택한 항목인지 확인 -->
+                        <c:forEach var="userCategory" items="${categories}">
+                            <c:if test="${category.opt_idx == userCategory.opt_idx}">
+                                <c:set var="isChecked" value="true" />
+                            </c:if>
+                        </c:forEach>
+                        <!-- 분위기 카테고리 옵션 출력 -->
+                            <input type="radio" name="opt_name3" value="${category.opt_name}"
+                                   <c:if test="${isChecked}">checked="checked"</c:if>/>
+                            ${category.opt_name}
+                    </c:if>
+                </c:forEach>
+        </li>
+
+        <!-- 방문목적 카테고리 -->
+        <li>
+            <label>방문목적</label>&nbsp;&nbsp;&nbsp;
+                <c:forEach var="category" items="${allCategories}">
+                    <c:if test="${category.category_idx == 4}">
+                        <c:set var="isChecked" value="false" />
+                        <!-- 사용자가 선택한 항목인지 확인 -->
+                        <c:forEach var="userCategory" items="${categories}">
+                            <c:if test="${category.opt_idx == userCategory.opt_idx}">
+                                <c:set var="isChecked" value="true" />
+                            </c:if>
+                        </c:forEach>
+                        <!-- 방문목적 카테고리 옵션 출력 -->
+                            <input type="radio" name="opt_name4" value="${category.opt_name}"
+                                   <c:if test="${isChecked}">checked="checked"</c:if>/>
+                            ${category.opt_name}
+                    </c:if>
+                </c:forEach>
+        </li>
+    </ul>
+<%-- 		<ul>
 			<c:forEach var="category" items="${categories}">
             <c:choose>
                 <c:when test="${category.category_idx == 1}">
@@ -185,7 +266,7 @@
                 </c:when>
             </c:choose>
         </c:forEach>
-		</ul>
+		</ul> --%>
 	</div>
 </body>
 <script>

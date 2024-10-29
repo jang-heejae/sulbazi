@@ -11,10 +11,31 @@
 		color: white;
 		font-weight: bold;
 	}
+	.chatBox{
+      display: flex;
+         justify-content: space-around;
+         align-items: center;
+      width : 100%;
+      height: 100%;
+   }
+   .chatitems{
+      position: absolute;
+      top: 20%;
+       width: 940px;
+       height: 650px;
+       display: flex;
+       flex-wrap: wrap;
+       justify-content: center;
+       align-items: center;
+       align-content: center;
+       background-color: #73734F;
+       border-radius: 20px;
+   }
 	.userNickname{
 		position: absolute;
-		top: 188px;
-    	left: 841px;
+		top: 185px;
+   		left: 953px;
+    	font-size: 55px;
 	}
 	.userProfile{
 		position: absolute;
@@ -34,7 +55,7 @@
 		width: 200px;
 	}
 	#userProfile{
-		background-color: #D8D8D8;
+		background-color: rgb(255, 140, 9);
 		position: absolute;
 		top: 226px;
     	left: 542px;
@@ -124,6 +145,10 @@
 </head>
 <body>
 	<c:import url="../main/main.jsp"/>
+	<section class="chatBox">
+        <div class="chatitems">
+        </div>
+   </section>
 	<div id="userProfile">
 		<div>
 			<c:if test="${files.size()>0}">
@@ -141,7 +166,7 @@
 		</ul>
 	</div>
 	<div id="button"><button type="button" onclick="location.href='userUpdate.go'">정보 수정</button></div>
-	<div class="userNickname"><h2>${info.user_nickname} 님</h2></div>
+	<div class="userNickname">${info.user_nickname}</div>
 	<div class="userProfile">
 		<ul>
 			<li>아이디 <input type="text" name="user_id" value="${info.user_id}" readonly="readonly"/></li>

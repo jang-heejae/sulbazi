@@ -10,4 +10,12 @@ public class MainController {
 	public String main() {
 		return "main/main";
 	}
+	@RequestMapping(value="/mainPage.go")
+	public String mainPage() {
+		return "main/mainPage";
+	}
+	@RequestMapping(value="/adminMain.go")
+	public String admin() {
+		return "main/adminMain";
+	}
 }

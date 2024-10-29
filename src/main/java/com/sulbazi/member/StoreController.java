@@ -123,7 +123,7 @@ public class StoreController {
 		System.out.println(loginId);
 		return store_ser.bookmarkCheck(loginId,storeidx);
 	}
-	
+
     @GetMapping(value = "/list.ajax")
     @ResponseBody
     public ResponseEntity<?> storeList(
@@ -159,9 +159,8 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while retrieving store data");
         }
     }
-    
 
-	
+
 	/*
 	 * @RequestMapping(value="/menu2.go") public String storeMenu2(int idx, Model
 	 * model, HttpSession session) { = store_ser.(idx);

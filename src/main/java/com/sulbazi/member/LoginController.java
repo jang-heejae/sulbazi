@@ -36,7 +36,7 @@ public class LoginController {
 	            session.setAttribute("loginId", id);
 	            session.setAttribute("opt", opt);
 	            if (loginResult.equals("user")) {
-	                page = "redirect:/main.go";
+	                page = "redirect:/mainPage.go";
 	            } else if (loginResult.equals("store")) {
 	                page = "redirect:/storeMain.go";
 	            } else if (loginResult.equals("admin")) {
@@ -66,12 +66,12 @@ public class LoginController {
 	}
 	
 	@PostMapping(value="/userfindpw.do")
-	public String userfindpwdo(String id, String email, Model model) {
-		logger.info("변경할 비밀번호의 일반 사용자 이름, 이메일 : " + id + email);
+	public String userfindpwdo(String user_id, String email, Model model) {
+		logger.info("변경할 비밀번호의 일반 사용자 이름, 이메일 : " + user_id + email);
 		String page = "";
-		if (login_ser.userfindpwdo(id, email) != null) {
+		if (login_ser.userfindpwdo(user_id, email) != null) {
 			model.addAttribute("findtype", "user");
-			model.addAttribute("identifier", id);
+			model.addAttribute("identifier", user_id);
 			page = "member/changePw";
 		}else {
 			model.addAttribute("msg", "해당 아이디와 이메일로 등록된 비밀번호가 없습니다.");
@@ -81,13 +81,16 @@ public class LoginController {
 	}
 	
 	@PostMapping(value="/storefindpw.do")
-	public String storefindpwdo(String store_number, Model model) {
+	public String storefindpwdo(String store_id, String store_number, Model model) {
 		logger.info("변경할 비밀번호의 매장 사용자 사업자 번호 : " + store_number);
 		String page = "";
-		if (login_ser.storefindpwdo(store_number) != null) {
+		if (login_ser.storefindpwdo(store_id, store_number) != null) {
 			model.addAttribute("findtype", "store");
-			model.addAttribute("identifier", store_number);
+			model.addAttribute("identifier", store_id);
 			page = "member/changePw";
+		}else {
+			model.addAttribute("msg", "해당 아이디와 이메일로 등록된 비밀번호가 없습니다.");
+			page = "member/login";
 		}
 		return page;
 	}

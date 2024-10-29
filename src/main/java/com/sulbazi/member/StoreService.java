@@ -254,8 +254,6 @@ public class StoreService {
 	}
 
 
-
-
 	public List<CategoryOptDTO> OptionsCategoryState(int categorystate) {
 		return store_dao.OptionsCategoryState(categorystate);
 	}
