@@ -123,11 +123,9 @@ public class StoreController {
 		System.out.println(loginId);
 		return store_ser.bookmarkCheck(loginId,storeidx);
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> origin/master
+
+
     @GetMapping(value = "/list.ajax")
     @ResponseBody
     public ResponseEntity<?> storeList(
@@ -163,11 +161,7 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while retrieving store data");
         }
     }
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> origin/master
 
 	
 	/*
