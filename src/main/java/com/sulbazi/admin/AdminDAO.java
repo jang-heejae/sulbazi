@@ -28,5 +28,10 @@ public interface AdminDAO {
 
 	List<HashMap<String, Object>> adminStoreList(int limit, int offset);
 
-	UserDTO adminUserDetail(String user_id);
+	UserDTO getUserInfo(String user_id);
+    
+	List<HashMap<String, Object>> getRevokeInfo(String user_id);
+    
+	List<HashMap<String, Object>> getUserCategories(String user_id);
+
 }

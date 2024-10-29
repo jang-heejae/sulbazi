@@ -34,6 +34,7 @@
 		    width: 100%;
 		    gap: 20px;
 		}
+		
 		        input{
 		            font-size: 15px;
 		            margin-top:-1px; 

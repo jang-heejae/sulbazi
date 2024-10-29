@@ -22,4 +22,8 @@ public interface CategoryDAO {
 
 	void storejoin(StoreCategoryDTO storecategorydto);
 
+	void userUpdate(String user_id, Integer category_idx, Integer opt_idx);
+
+	Integer updateOpt(String opt_name1);
+
 }

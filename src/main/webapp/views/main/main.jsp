@@ -162,7 +162,7 @@
             </div>
             <div class="full2">
                 <ul class="list2">
-                    <li><a href="userMyPage.go">나의 정보</a></li>
+                    <li><a href="userMyPage.go?user_id=${sessionScope.loginId}">나의 정보</a></li>
                     <li><a href="userReview.go">나의 리뷰</a></li>
                     <li><a href="userMyChat.go">나의 대화방</a></li>
                     <li><a href="MyBookmark.go">즐겨찾기 매장</a></li>
