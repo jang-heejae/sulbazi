@@ -88,12 +88,6 @@
                 cursor: pointer;
                 margin-left:5; 
             }
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-=======
->>>>>>> origin/master
             .searchicon{
             	width: 25px;
             }
@@ -152,11 +146,7 @@
     			margin: 0 0;
     			color: #BDBDBD;
     		}
-			
-<<<<<<< HEAD
-=======
->>>>>>> origin/master
->>>>>>> origin/master
+
 
 </style>
 </head>
@@ -222,11 +212,7 @@
 
 </body>
 <script>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/master
+
 		var loginId = '${sessionScope.loginId}';
 		
 		/* 지도 영역 */

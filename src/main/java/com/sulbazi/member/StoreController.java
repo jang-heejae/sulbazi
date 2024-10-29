@@ -309,7 +309,6 @@ public class StoreController {
 	
 	
 	
-	
 	//나의 매장 리뷰 댓글
 	@RequestMapping(value="/storeMyReview.go")
 	public String storemyreview() {
@@ -331,18 +330,76 @@ public class StoreController {
 	
 	//매장 나의 메뉴 가기
 	@RequestMapping(value="/storeMyMenu.go")
-	public String storemymenu() {
+	public String storemymenu() {		
 		return "store/storeMyMenu";
 	}
+
+
+    @GetMapping("/menuFiltering.ajax")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> filterMenu(
+            @RequestParam("menu_category") String menuCategory, HttpSession session) {
+		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
+        // 서비스에서 필터링된 메뉴 및 사진 리스트 가져오기
+    	List<StoreMenuDTO> menulist = store_ser.storemenulist(store_idx);
+    	List<PhotoDTO> menuphoto = photo_ser.storemenuphoto(store_idx);
+        // 결과를 JSON 형식으로 변환하여 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("menulist", menulist);
+        response.put("menuphoto", menuphoto);
+        return ResponseEntity.ok(response);
+    }
+	
+    @GetMapping("/alcholmenuFiltering.ajax")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> alcholfilterMenu(
+            @RequestParam("menu_category") String menuCategory, HttpSession session) {
+		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
+        // 서비스에서 필터링된 메뉴 및 사진 리스트 가져오기
+		List<StoreMenuDTO> menulist = store_ser.storealcholmenulist(store_idx);
+		List<PhotoDTO> menuphoto = photo_ser.alcholmenuphoto(store_idx);
+        // 결과를 JSON 형식으로 변환하여 반환
+        Map<String, Object> response = new HashMap<>();
+        response.put("menulist", menulist);
+        response.put("menuphoto", menuphoto);
+        return ResponseEntity.ok(response);
+    }
 	
 	
+    @PostMapping(value="/menuUpdate.ajax")
+    @ResponseBody
+    public String menuupdate(@RequestParam Map<String, String> map) {
+    	String menu_idx = map.get("menu_idx"); // 메뉴 인덱스
+        String menu_name = map.get("menu_name"); // 메뉴 이름
+        String menu_price = map.get("menu_price"); // 메뉴 가격
+        boolean isUpdated = store_ser.menuupdate(menu_name, menu_price,menu_idx);
+        return isUpdated ? "{\"success\": true}" : "{\"success\": false, \"message\": \"수정 실패\"}";
+    }
+
+    @PostMapping(value="/menuDelete.ajax")
+    @ResponseBody
+    public String menudelete(@RequestParam Map<String, String> map) {
+    	String menu_idx = map.get("menu_idx"); // 메뉴 인덱스
+    	String menu_category = map.get("menu_category");
+    	photo_ser.totalmenudelete(menu_category, menu_idx);
+        boolean isUpdated = store_ser.menudelete(menu_idx);
+        return isUpdated ? "{\"success\": true}" : "{\"success\": false, \"message\": \"수정 실패\"}";
+    }
 	
 	
-	
-	
-	
-	
-	
+    @PostMapping(value="/menuInsert.do")
+    public String menuinsert(@RequestParam("files") MultipartFile[] files, @RequestParam Map<String, String> params, HttpSession session) {
+        boolean success = false;
+        logger.info("params: {}", params);
+        logger.info("file count: " + files.length);
+
+        int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
+        if(store_ser.menuinsert(files, store_idx, params) > 0) {
+            success = true;
+        }
+        logger.info("Success status: " + success);
+        return "store/storeMyMenu";
+    }
 	
 	
 	

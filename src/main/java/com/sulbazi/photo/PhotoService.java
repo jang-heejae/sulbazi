@@ -25,11 +25,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.inquery.InqueryDTO;
+import com.sulbazi.member.StoreDAO;
+import com.sulbazi.member.StoreMenuDTO;
 
 @Service
 public class PhotoService {
 	
 	@Autowired PhotoDAO photo_dao;
+	@Autowired StoreDAO store_dao;
 	
 	@Value("${upload.path}") private String bpath;
 	
@@ -127,13 +130,7 @@ public class PhotoService {
 	}
 
 	public void storeupdatephoto(MultipartFile[] inqueryfiles,int store_idx,int photocategory) {
-//		PhotoDTO storephodo_dto = new PhotoDTO();
-//	
-//		int row = photo_dao.storeupdatephoto(storephodo_dto);
-//		if (store_idx>0 && row>0) {
-			savestoreupdate(inqueryfiles,store_idx, photocategory);
-//		}
-//		return store_idx;
+		savestoreupdate(inqueryfiles,store_idx, photocategory);
 	}
 	
 	private void savestoreupdate(MultipartFile[] files, int photofolderidx, int photocategory) {
@@ -160,9 +157,96 @@ public class PhotoService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-	
 	}
+	
+
+	   //메뉴 사진
+	   public List<PhotoDTO> storemenuphoto(int store_idx) {
+	      List<StoreMenuDTO> menulist =store_dao.storemenulist(store_idx);
+	      List<PhotoDTO> menuphoto = new ArrayList<>();
+	      for (StoreMenuDTO menudto : menulist) {
+	         List<PhotoDTO> photoList = photo_dao.storemenuphoto(menudto.getMenu_idx());
+	         menuphoto.addAll(photoList);
+	      }
+	      return menuphoto;
+	   }
+
+	   public List<PhotoDTO> alcholmenuphoto(int store_idx) {
+	      List<StoreMenuDTO> menulist =store_dao.storealcholmenulist(store_idx);
+	      List<PhotoDTO> menuphoto = new ArrayList<>();
+	      for (StoreMenuDTO menudto : menulist) {
+	         List<PhotoDTO> photoList = photo_dao.alcholmenuphoto(menudto.getMenu_idx());
+	         menuphoto.addAll(photoList);
+	      }
+	      return menuphoto;
+	   }
+	   
+	   
+		public boolean totalmenudelete(String menu_category,String menu_idx) {
+			int row = 0;
+			boolean success = false;
+			if(menu_category.equals("안주")) {
+				row = photo_dao.menuphotodelete(menu_idx);
+			} else if(menu_category.equals("주류")) {
+				row = photo_dao.alcholphotodelete(menu_idx);
+			}
+			
+			if(row != 0) {
+				success = true;
+			}
+			return success;
+		}
+
+		
+		public void menuphotoFile(MultipartFile[] files, int photofolderidx, Map<String, String> params) {
+		    try {
+		        if (files == null || params == null) {
+		            logger.error("Files or params are null. Cannot proceed with photo upload.");
+		            return;  // 예외를 방지하고 메서드를 종료합니다.
+		        }
+		        
+		        logger.info("file length : {}", files.length);
+		        for (MultipartFile file : files) {
+		            if (file == null || file.isEmpty()) {
+		                logger.warn("File is null or empty. Skipping file upload.");
+		                continue;
+		            }
+
+		            String ori_filename = file.getOriginalFilename();
+		            logger.info("파일명 : " + ori_filename);
+		            int pos = ori_filename != null ? ori_filename.lastIndexOf(".") : -1;
+
+		            if (pos >= 0) {
+		                String ext = ori_filename.substring(pos);
+		                String newFileName = UUID.randomUUID().toString() + ext;
+		                byte[] menuarr = file.getBytes();
+		                Path path = Paths.get("C:/upload/" + newFileName);
+		                Files.write(path, menuarr);
+
+		                int photocategory = 0;
+		                if ("안주".equals(params.get("menu_category"))) {
+		                    photocategory = 2;
+		                } else if ("술".equals(params.get("menu_category"))) {
+		                    photocategory = 6;
+		                }
+
+		                logger.info(newFileName);
+		                logger.info("photocategory: " + photocategory);
+		                logger.info("photofolderidx: " + photofolderidx);
+
+		                logger.info("photocategory: " + photocategory);
+		                logger.info("newFileName: " + newFileName);
+		                logger.info("photofolderidx: " + photofolderidx);
+		                // DB에 값 삽입
+		                photo_dao.storephotoupdate(photocategory, newFileName, photofolderidx);
+		            }
+		        }
+		    } catch (IOException e) {
+		        logger.error("File upload failed", e);
+		    }
+		}
+
+
 
 
 }

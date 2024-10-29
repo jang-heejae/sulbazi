@@ -42,7 +42,29 @@
 			VALUES(#{param1},#{param2},#{param3})
 	</insert>
 
-
+	<!-- 매장 메뉴 사진 -->
+    <select id="storemenuphoto" resultType="com.sulbazi.photo.PhotoDTO">
+      	SELECT new_filename FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=2
+   	</select>
+   
+   	<!-- 매장 술메뉴 사진 -->
+   	<select id="alcholmenuphoto" resultType="com.sulbazi.photo.PhotoDTO">
+      	SELECT new_filename FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=6
+   	</select>
+	
+	<!-- 매장 메뉴 지우기 -->
+	<delete id="menuphotodelete">
+		DELETE FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=2
+	</delete>
+	
+	<delete id="alcholphotodelete">
+		DELETE FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=6
+	</delete>
+	
+<!-- 	<insert id="menuphotoinsert">
+    	INSERT INTO photo(photo_category_idx, new_filename, photo_folder_idx)
+    		VALUES(#{photocategory}, #{newFileName}, #{photofolderidx})
+	</insert> -->
 	
 </mapper>
 

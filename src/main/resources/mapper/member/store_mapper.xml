@@ -97,6 +97,8 @@
         ORDER BY star_average DESC, review_total DESC, store_idx ASC
         LIMIT #{offset}, #{limit}
     </select>
+    
+    
     <!-- 토탈페이지 계산 -->
 	<select id="countStoresInArea" parameterType="map" resultType="int">
         SELECT COUNT(*)
@@ -156,29 +158,12 @@
 
 
 
-	<!-- 매장리스트 카테고리 -->
-	<select id="storeHelpMeIdx" parameterType="list" resultType="com.sulbazi.category.StoreCategoryDTO">
-	    SELECT * FROM store_category 
-	    <where>
-	        store_idx IN
-	        <foreach item="store" collection="list" open="(" separator="," close=")">
-	            #{store.store_idx}
-	        </foreach>
-	    </where>
-	    ORDER BY CASE store_idx
-	        <foreach item="store" index="index" collection="list">
-	            WHEN #{store.store_idx} THEN #{index}
-	        </foreach>
-	    END
-	</select>
-
-
-
 	<!-- 매장 이름 검색 후 store_idx 추출-->
 	<select id="storenamesearch" resultType="int">
 		SELECT store_idx FROM store 
 			WHERE store_name LIKE CONCAT('%', #{param1}, '%')
 	</select>
+
 
 	<!-- 매장 메뉴 검색 후 store_idx 추출-->
 	<select id="storemenusearch" resultType="int">
@@ -224,15 +209,36 @@
 	
 	
 	<!-- 매장 마이페이지  메뉴 정보 보기 -->
+	<select id="storemenulist" resultType="com.sulbazi.member.StoreMenuDTO">
+      	SELECT menu_idx,menu_name,menu_price  
+         	FROM store_menu WHERE store_idx=#{param1} AND menu_category='안주'
+   	</select>
+   
+   <!-- 매장 마이페이지  술 메뉴 정보 보기 -->
+   	<select id="storealcholmenulist" resultType="com.sulbazi.member.StoreMenuDTO">
+      	SELECT menu_idx,menu_name,menu_price 
+         	FROM store_menu WHERE store_idx=#{param1} AND menu_category='술'
+   	</select>
 	
 	
-	
-	
-
 	<!-- 매장 마이페이지  메뉴 정보 수정 -->
-
-
-
+	<update id="menuupdate">
+		UPDATE store_menu SET menu_name=#{param1},menu_price=#{param2}
+			WHERE menu_idx=#{param3} 
+	</update>
+	
+	<delete id="menudelete">
+		DELETE FROM store_menu WHERE menu_idx=#{param1}
+	</delete>
+	
+	<insert id="menuinsert"
+		useGeneratedKeys="true"
+		keyColumn="menu_idx"
+		keyProperty="menu_idx" 
+		parameterType="com.sulbazi.member.StoreMenuDTO">
+		INSERT INTO store_menu(store_idx,menu_name, menu_price,menu_category)
+			VALUES (#{store_idx}, #{menu_name}, #{menu_price}, #{menu_category})
+	</insert>
 
 	<!-- 매장 마이페이지  홍보글 정보 보기 -->
 	<select id="storemyboard" resultType="com.sulbazi.board.BoardDTO">

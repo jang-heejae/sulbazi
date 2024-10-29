@@ -19,6 +19,18 @@ public interface PhotoDAO {
 	List<PhotoDTO> mystorephoto(int store_idx);
 
 	int storephotoupdate(int photocategory, String newFileName, int photofolderidx);
+	
+	List<PhotoDTO> alcholmenuphoto(int photofolderidx);
+
+	List<PhotoDTO> storemenuphoto(int photofolderidx);
+
+	int menuphotodelete(String menu_idx);
+
+	int alcholphotodelete(String menu_idx);
+
+	int menuphotoinsert(int photocategory, String newFileName, int photofolderidx);
+
+
 
 }
  
