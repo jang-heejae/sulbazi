@@ -175,10 +175,7 @@ public class StoreService {
 		return storeExplain;
 	}
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
 	public List<StoreDTO> getStoresInArea(double minLat, double maxLat, double minLng, double maxLng, int page,
 			int cnt) {
 		
