@@ -16,6 +16,6 @@ public class MainController {
 	}
 	@RequestMapping(value="/adminMain.go")
 	public String admin() {
-		return "main/adminMain";
+		return "main/adminMainPage";
 	}
 }

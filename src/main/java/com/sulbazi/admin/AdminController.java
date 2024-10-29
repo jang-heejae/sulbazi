@@ -1,6 +1,7 @@
 package com.sulbazi.admin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -17,9 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sulbazi.category.CategoryOptDTO;
+import com.sulbazi.member.StoreDTO;
+import com.sulbazi.member.StoreService;
+import com.sulbazi.photo.PhotoDTO;
+import com.sulbazi.photo.PhotoService;
+
 @Controller
 public class AdminController {
 	@Autowired AdminService admin_ser;
+	@Autowired StoreService store_ser;
+	@Autowired PhotoService photo_ser;
 	Logger log= LoggerFactory.getLogger(getClass());
 	
 	@RequestMapping(value="/adminList.go")
@@ -91,5 +100,21 @@ public class AdminController {
 		int page_ = Integer.parseInt(page);
 		int cnt_ = Integer.parseInt(cnt);
 		return admin_ser.adminStoreList(page_, cnt_, category, keyword); 
+	}
+	
+	@RequestMapping(value="/adminStoreDetail.go")
+	public String adminStoreDetail(int store_idx, Model model) {
+		model.addAttribute("store_idx", store_idx);
+		List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);//활성화된 카테고리
+		model.addAttribute("options", options);
+		StoreDTO storedto = store_ser.mystore(store_idx); 
+	    List<Integer> selectedValues = store_ser.mystoreopt(store_idx);
+	    PhotoDTO mystorebestphoto = photo_ser.mystorebestphoto(store_idx);
+	    List<PhotoDTO> mystorephoto = photo_ser.mystorephoto(store_idx);
+	    model.addAttribute("mystorebestphoto", mystorebestphoto);
+	    model.addAttribute("mystorephoto", mystorephoto);
+	    model.addAttribute("selectedValues", selectedValues);
+	    model.addAttribute("storedto", storedto);
+		return "admin/adminStoreDetail";
 	}
 }

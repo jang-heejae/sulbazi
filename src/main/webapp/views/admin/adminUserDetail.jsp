@@ -245,28 +245,6 @@
                 </c:forEach>
         </li>
     </ul>
-<%-- 		<ul>
-			<c:forEach var="category" items="${categories}">
-            <c:choose>
-                <c:when test="${category.category_idx == 1}">
-                    <li>주종 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="radio" name="opt_name1" value="${category.opt_name}" checked="checked" readonly="readonly"/>&nbsp;${category.opt_name}</li>
-                </c:when>
-                <c:when test="${category.category_idx == 2}">
-                    <li>안주 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="radio" name="opt_name2" value="${category.opt_name}" checked="checked" readonly="readonly"/>&nbsp;${category.opt_name}</li>
-                </c:when>
-                <c:when test="${category.category_idx == 3}">
-                    <li>분위기 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="radio" name="opt_name3" value="${category.opt_name}" checked="checked" readonly="readonly"/>&nbsp;${category.opt_name}</li>
-                </c:when>
-                <c:when test="${category.category_idx == 4}">
-                    <li>방문목적 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="radio" name="opt_name4" value="${category.opt_name}" checked="checked" readonly="readonly"/>&nbsp;${category.opt_name}</li>
-                </c:when>
-            </c:choose>
-        </c:forEach>
-		</ul> --%>
 	</div>
 </body>
 <script>

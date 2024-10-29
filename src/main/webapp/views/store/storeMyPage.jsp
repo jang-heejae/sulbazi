@@ -12,6 +12,8 @@ body {
     align-items: center;
     gap: 20px;
     margin: 20px;
+    font-weight: bold;
+    color: white;
 }
 
 .all {
@@ -22,6 +24,7 @@ body {
     margin-top: 150px;
     margin-left: auto;
     margin-right: auto;
+        z-index: 9999;
 }
 
 .filter {
@@ -46,48 +49,93 @@ fieldset {
     color: white;
 }
 
-table {
-    width: 400px;
-    border-collapse: collapse; /* 테두리 겹침 방지 */
-}
-
-table, tr, td {
-    padding: 15px; /* 단위 추가, 원하는 만큼 늘림 */
-    border: 1px solid #ccc; /* 테두리 색상 및 두께 설정 */
-    background-color: orange; /* 셀 배경 색상 */
-    vertical-align: middle; /* 수직 정렬 */
-}
-
 td {
     text-align: left; /* 텍스트 왼쪽 정렬 */
     white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
 }
-div.table{
+	.table{
+	position: absolute;
+	top: 200px;
+	left: 1016px;
 	width:400px;
-	
-}
-div.form-group{
-	width:400px;
-}
-input[type="text"]{
-	border-radius: 10px;
-	height: 32;
-	width: 400;
-}
-
-textarea {
-	border-radius: 10px;
-}
-
-.radio-group {
-    display: flex; /* flex 컨테이너로 설정 */
-    gap: 10px; /* 요소 간 간격 설정 */
-}
-
-img {
-	width: 100;
-	height: 100;
-}
+	}
+	.table li{
+	 	padding: 10px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.form-group{
+		left: 562px;
+    	position: absolute;
+    	top: 190px;
+    	width: 400px;
+	}
+	.form-group2{
+		position: absolute;
+    	top: 443px;
+    	left: 505px;
+	}
+	.form-group3{
+		height: 335px;
+    	width: 523px;
+    	display: flex;
+   		flex-wrap: wrap;
+	}
+	.form-group2 div{
+		margin: 3px;
+	}
+	input[type="text"]{
+		padding: 4px;
+		border-radius: 15px;
+		width: 250px;
+	}
+	.store_cate{
+		position: absolute;
+		top: 630px;
+    	left: 842px;
+	}
+	textarea {
+		border-radius: 10px;
+		width: 400px;
+		height: 150px;
+	}
+	.radio-group {
+    	display: flex; /* flex 컨테이너로 설정 */
+   		gap: 10px; /* 요소 간 간격 설정 */
+	}
+	#mainPhoto{
+		width: 215px;
+    	height: 215px;
+	}
+	#storePhoto{
+		width: 150px;
+		height: 150px;
+	}
+	#button{
+		position: absolute;
+		top: -224px;
+    	left: 73px;
+	}
+	button{
+		background-color: #20290E;
+		color: white;
+		padding: 5px;
+		border-radius: 5px;
+		font-size: 14;
+		font-weight: bold;
+	}
+	#bookmark{
+		top: 219px;
+    	position: absolute;
+    	left: 925px;
+	}
+	#bookmark li{
+		text-align: center;
+	}
+	.likeIcon{
+		width: 50px;
+	}
 
 </style>
 </head>
@@ -95,50 +143,41 @@ img {
 <jsp:include page="../main/storeMain.jsp"/>
 <div class="all">
 	<div class="form-group">
-	    <label class="form-label">매장 대표 사진</label>
+	    <label>매장 대표 사진</label>
 	        <div>
-				<img src="/photo/${mystorebestphoto.new_filename}"><br/>
+				<img id="mainPhoto" src="/photo/${mystorebestphoto.new_filename}"><br/>
 	        </div>
-		<label class="form-label">매장 내외부 사진</label>
-			<div>
+	</div>
+	<div id="bookMark">
+			<img class="likeIcon" src="resources/img/userLike.png"/>
+		<ul>
+			<li>${storedto.bookmark_user}</li>
+		</ul>
+	</div>
+	<div class="form-group2">
+		<label>매장 내외부 사진</label>
+			<div class="form-group3">
 				<c:forEach items="${mystorephoto}" var="mystoreinout">
-				<img src="/photo/${mystoreinout.new_filename}"><br/>
-			</c:forEach>
+					<div><img id="storePhoto" src="/photo/${mystoreinout.new_filename}"></div><br/>
+				</c:forEach>
 			</div>
 	</div>
+	<div class="storinfo">
 	<div class="table">
-		<table>
-			<tr>
-				<td>아이디</td>
-				<td><input type="text" value="${storedto.store_id}" readonly></td>
-			</tr>
-			<tr>
-				<td>비밀번호</td>
-				<td><input type="text" value="${storedto.store_pw}" readonly></td>
-			</tr>
-			<tr>
-				<td>매장이름</td>
-				<td><input type="text" value="${storedto.store_name}" readonly></td>
-			</tr>
-			<tr>
-				<td>사업자 번호</td>
-				<td><input type="text" value="${storedto.store_number}" readonly></td>
-			</tr>
-			<tr>
-				<td>매장 전화번호</td>
-				<td><input type="text" value="${storedto.store_phone}" readonly></td>
-			</tr>
-			<tr>
-				<td>매장 주소</td>
-				<td><input type="text" value="${storedto.store_address}" readonly></td>
-			</tr>
-			<tr>
-				<td>매장 운영시간</td>
-				<td><textarea style="width: 400px; height: 250px;" readonly>${storedto.store_time}</textarea></td>
-			</tr>
-			<tr>
-				<td>주종</td>
-				<td>
+		<ul>
+			<li>아이디 <input type="text" value="${storedto.store_id}" readonly></li>
+			<li>비밀번호 <input type="text" value="${storedto.store_pw}" readonly></li>
+			<li>매장 이름 <input type="text" value="${storedto.store_name}" readonly></li>
+			<li>사업자 번호 <input type="text" value="${storedto.store_number}" readonly></li>
+			<li>전화번호 <input type="text" value="${storedto.store_phone}" readonly></li>
+			<li>운영시간</li>
+			<li><textarea readonly>${storedto.store_time}</textarea></li>
+		</ul>
+	</div>
+	<div class="store_cate">
+		<ul>
+			<li>
+				<label>주종</label>
 					<div class="radio-group">
 						<c:forEach var="option" items="${options}">
 	               			<c:if test="${option.category_idx == 1}">
@@ -148,12 +187,10 @@ img {
 	               			</c:if>
 	           			</c:forEach>
 	           		</div>
-	           </td>
-			</tr>
-			<tr>
-				<td>안주</td>
-				<td>
-					<div class="radio-group">
+			</li>
+			<li>
+				<label>안주</label>
+				<div class="radio-group">
 						<c:forEach var="option" items="${options}">
 	               			<c:if test="${option.category_idx == 2}">
 	                   			<input type="radio" name="food" value="${option.opt_idx}"
@@ -162,12 +199,10 @@ img {
 	               			</c:if>
 	           			</c:forEach>
 	           		</div>
-	           </td>
-			</tr>
-			<tr>
-				<td>분위기</td>
-				<td>
-					<div class="radio-group">
+			</li>
+			<li>
+				<label>분위기</label>
+				<div class="radio-group">
 						<c:forEach var="option" items="${options}">
 		               		<c:if test="${option.category_idx == 3}">
 		                   		<input type="radio" name="mood" value="${option.opt_idx}"
@@ -176,12 +211,10 @@ img {
 		               		</c:if>
 		           		</c:forEach>
 		           	</div>
-	           </td>
-			</tr>
-			<tr>
-				<td>방문목적</td>
-				<td>
-					<div class="radio-group">
+			</li>
+			<li>
+				<label>방문목적</label>
+				<div class="radio-group">
 						<c:forEach var="option" items="${options}">
 		               		<c:if test="${option.category_idx == 4}">
 		                   		<input type="radio" name="visit" value="${option.opt_idx}"
@@ -190,10 +223,10 @@ img {
 		               		</c:if>
 		           		</c:forEach>
 		           	</div>
-	           </td>
-			</tr>
-		</table>		
-		<a href="mystoreUpdate.go?idx=${store_idx}">수정</a>
+		           	<div id="button"><button type="button" onclick="mystoreUpdate.go?idx=${store_idx}">정보 수정</button></div>
+			</li>
+		</ul>
+	</div>
 	</div>
 </div>
 </body>
