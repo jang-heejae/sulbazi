@@ -36,3 +36,4 @@
 	     WHERE photo_folder_idx = #{store_idx} AND photo_category_idx = 1;
 	</select>
 </mapper>
+

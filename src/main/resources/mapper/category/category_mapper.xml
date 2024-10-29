@@ -51,4 +51,11 @@
 		INSERT INTO store_category (store_idx, opt_idx)
 			VALUES (#{store_idx}, #{opt_idx})
 	</insert>
+	<select id="updateOpt" parameterType="String" resultType="int">
+    	SELECT opt_idx FROM category_opt WHERE opt_name = #{opt_name}
+	</select>
+	<update id="userUpdate" parameterType="map">
+    	UPDATE user_category SET opt_idx = #{opt_idx}
+    	WHERE user_id = #{user_id} AND category_idx = #{category_idx}
+	</update>
 </mapper>

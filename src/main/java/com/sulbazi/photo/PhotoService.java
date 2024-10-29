@@ -11,6 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,6 +72,7 @@ public class PhotoService {
 	public List<PhotoDTO> inqueryphoto(int inqueryIdx) {
 		return photo_dao.inqueryphoto(inqueryIdx);
 	}
+
  
 	public void filesaveone(MultipartFile fileone, int store_idx, int i) {
 		String photo = "";
@@ -88,6 +93,7 @@ public class PhotoService {
 		photodto.setPhoto_folder_idx(store_idx);
 		photodto.setPhoto_category_idx(i);
 		photo_dao.fileSave(photodto);
+
 	}
 
 	public PhotoDTO mystorebestphoto(int store_idx) {
@@ -96,9 +102,27 @@ public class PhotoService {
 
 	public List<PhotoDTO> mystorephoto(int store_idx) {
 		return photo_dao.mystorephoto(store_idx);
+
 	}
+<<<<<<< HEAD
 
 	public List<PhotoDTO> detail(int store_idx) {
 		return photo_dao.detail(store_idx);
 	}
+=======
+	
+	// 유저 이미지 가져오기
+	public ResponseEntity<Resource> getImg(String user_photo) {
+		Resource reso = new FileSystemResource(bpath+user_photo);
+		HttpHeaders header = new HttpHeaders();
+		try {
+			String type = Files.probeContentType(Paths.get(bpath+user_photo));
+			header.add("content-type", type);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Resource>(reso, header, 200);
+	}
+
+>>>>>>> origin/master
 }

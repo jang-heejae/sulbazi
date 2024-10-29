@@ -4,30 +4,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"/>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
-<script src="resources/jquery.twbsPagination.js"></script>
 <style>
         body{
             background-color: #041d03;
         }
         .back{
-        	display: flex;
-        	flex-direction: column;
-            align-items: center;  
-        	
-        	/* overflow-y: auto; */
-        	
+        	overflow-y: auto;
         }
         div.filter{
-       		display: flex;
-		    flex-direction: column;
-		    align-items: center;
             background-color: white;
             position: fixed;
-            width: 220px;
-            height: 700px;
+            width: 220;
+            height: auto;
             left: 363px;
             top: 200;
             border-radius: 15px;
@@ -38,39 +27,32 @@
             vertical-align:middle;
         }
         legend{
-            font-size: 18px;
+            font-size: 23px;
             font-weight: 800;
-            margin: 0px;
         }
         fieldset{
             border-color: white;
-            margin: 0px 20px 0px 20px;
-            width: 80%;
-            height: 22%;
+            margin: auto;
+            margin-bottom: 5;
+            margin-top: 5;
+            width: 170;
             border-bottom-color: rgb(255, 140, 9);
         }
-        input[type="radio"] {
-		    width: 16px; /* 너비 */
-		    height: 16px; /* 높이 */
-		    margin: 2px; /* 간격 조절 */
-		    vertical-align: middle; /* 텍스트와 수직 중앙 정렬 */
-		}
-
         #filtering{
-            /* position: absolute; */
+            position: absolute;
             right: 10px;
             background-color: rgb(255, 140, 9);
-            /* color: black; */
+            color: black;
             border-color: rgb(255, 140, 9);
             border-radius: 15px;
             font-weight: 800;
-            padding: 5px;
-            margin-top:-7px;
+            padding: 5;
+            margin-top:5;
         	}
             .search-container {
                 display: flex;
                 align-items: center;
-                width: 610px;
+                width: 500px;
                 margin: 20px auto;
                 left: 630px;
     			position: absolute;
@@ -83,7 +65,7 @@
                 border-radius: 15px;
             }
             .search-wrapper {
-                /* position: relative; */
+                position: relative;
                 margin-left: 10px;
             }
             .search-input {
@@ -96,16 +78,18 @@
             .search-button {
                 position: absolute;
     			background-color : rgb(255, 140, 9);
-    			/* color: black; */
+    			color: black;
     			border-color: rgb(255, 140, 9);
-    			border-radius: 20px;
-    			/* font-weight: 500; */
-    			/* padding: 5; */
-                width: 54px;
-                height: 37px;
+    			border-radius: 15px;
+    			font-weight: 500;
+    			padding: 5;
+                width: 30px;
+                height: 30px;
                 cursor: pointer;
                 margin-left:5; 
             }
+<<<<<<< HEAD
+=======
             .searchicon{
             	width: 25px;
             }
@@ -165,6 +149,7 @@
     			color: #BDBDBD;
     		}
 			
+>>>>>>> origin/master
 
 </style>
 </head>
@@ -172,7 +157,6 @@
 <body>
 	<jsp:include page="../main/main.jsp"/>
     <div class="back">
-
 <form>
     <div class="filter">
         <fieldset>
@@ -214,7 +198,6 @@
     </div>
 </form>
     </div>
-    
 	<form>
     	<div class="search-container">
         	<select class="search-select" id="searchCategory">
@@ -224,39 +207,16 @@
         	</select>
         	<div class="search-wrapper">
             	<input type="text" class="search-input" id="searchQuery" placeholder="검색어를 입력하세요">
-            	<button id="performSearch" class="search-button" type="button" >
-            		<img class="searchicon" alt="serchicon" src="resources/img/serchicon.png">
-            	</button>
+            	<button class="search-button" type="button" id="performSearch"><div class="searchicon">⌕</div></button>
         	</div>
     	</div>
+    	
 	</form>
-	
-	<main>
-	         	   <!-- 지도 영역 -->
-	    <div class="mapwhatname" id="map" style="width:789px;height:320px;"></div>
-	    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=4ae2258b561b1a937e5d3f2c155e60f9"></script>
-	    <!-- 매장리스트 -->
-	    <div class="bodysize">
-			<table class="list-table">
-				<tbody id="list" >
-	
-				</tbody>
-				<tr>
-					<th colspan="2">
-						<div class="container">
-				    		<nav aria-label="Page navigation">
-				        		<ul class="pagination" id="pagination"></ul>
-				    		</nav>
-						</div>
-					</th>
-				</tr>
-			</table>
-		</div>
-	</main>
-	
 
 </body>
 <script>
+<<<<<<< HEAD
+=======
 		var loginId = '${sessionScope.loginId}';
 		
 		/* 지도 영역 */
@@ -409,6 +369,7 @@
 
 
 
+>>>>>>> origin/master
 //필터링
 $('#filtering').click(function() {
 	var alchol = $(':input:radio[name=alchol]:checked').val();

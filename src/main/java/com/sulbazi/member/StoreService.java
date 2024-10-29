@@ -32,7 +32,6 @@ public class StoreService {
 	
 	public StoreDTO getStoreDetail(int idx) {
 		StoreDTO sd = store_dao.getStoreDetail(idx);
-		System.out.println(sd.getStore_idx());
 		String storeTime = sd.getStore_time().replace("\n", "<br>");
 		sd.setStore_time(storeTime);
 		return sd;
@@ -143,23 +142,12 @@ public class StoreService {
 	public Map<String, Object> bookmarkCheck(String loginId, int storeidx) {
 		int store_idx = storeidx;
 		String user_id= loginId;
-		System.out.println(store_idx);
-		System.out.println(user_id);
-		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("user_id", user_id);
-		map.put("store_idx", store_idx);
-		int s = store_dao.bookmarkCheckCount(map);
-		System.out.println(s);
-		if ( s == 0) {
-			
-			map.put("bookmark",store_dao.bookmarkCheck(map));
-			
-			
+		if (store_dao.bookmarkCheckCount(user_id,store_idx) == 0) {
+			map.put("bookmark",store_dao.bookmarkCheck(user_id,store_idx));
 		}else {
-			int del = store_dao.delBookmark(map);
+			int del = store_dao.delBookmark(user_id,store_idx);
 		}
-		
 		
 		int bookmark_user = store_dao.storeBookmarkCheck(store_idx);
 		if ( bookmark_user >= 0) {
@@ -188,6 +176,8 @@ public class StoreService {
 	}
 
 
+<<<<<<< HEAD
+=======
 	public List<StoreDTO> getStoresInArea(double minLat, double maxLat, double minLng, double maxLng, int page,
 			int cnt) {
 		
@@ -226,6 +216,7 @@ public class StoreService {
 
 
 
+>>>>>>> origin/master
 	public List<CategoryOptDTO> OptionsCategoryState(int categorystate) {
 		return store_dao.OptionsCategoryState(categorystate);
 	}
@@ -259,7 +250,6 @@ public class StoreService {
 	public List<StoreCategoryDTO> storeHelpMeIdx(List<StoreDTO> stores) {
 		return  store_dao.storeHelpMeIdx(stores);
 	}
-
 
 
 

@@ -8,15 +8,15 @@
 <script>
 	var loginId = '${sessionScope.loginId}';
 	var msg = "${msg}";
-
 	
 	if(msg!=""){
 		alert(msg);
 		location.replace('./userchatlist.go');
 	}
 	
-	// 방 개설자만 세팅창 보이기
 	$(document).ready(function() {
+
+		// 방 개설자만 세팅창 보이기
 		var userId = $('h2').data('userid').toString();
 		var menu = $('.menu').css('display');
 				
@@ -35,6 +35,91 @@
 			console.log(loginId);
 			$('.fa-cog').hide();
 		}
+		
+	    
+		// 메세지 전송
+	    $('.sendmsg').click(function () {
+	        var usermsg_content = $('textarea[name="usermsgcontent"]').val();
+	        var user_id = $('input[name="user_id"]').val();
+	        var userchat_idx = ${idx};
+	
+	        console.log("메세지내용"+usermsg_content);
+	        console.log("로그인한 아이디"+loginId);
+	        console.log("현재방 번호 "+userchat_idx);
+	        if (usermsg_content.trim() === "") {
+	            alert("메세지를 입력해주세요.");
+	            return;
+	        }
+
+	        $.ajax({
+	            url: '/SULBAZI/sendMessage.ajax',
+	            type: 'POST',
+	            data: {
+	            	user_id: user_id,
+	                usermsg_content: usermsg_content,
+	                userchat_idx: userchat_idx
+	            },
+	            success: function () {
+	                loadMessages();  // 메세지를 다시 로드
+	                $('textarea[name="usermsgcontent"]').val("");  // 입력 필드 비우기
+	            },
+	            error: function () {
+	                alert("메세지 전송에 실패했습니다.");
+	            }
+	        });
+	        
+	    });
+		
+	    // 5초마다 새 메세지를 불러오기
+	    var userchat_idx = ${idx};
+	    setInterval(loadMessages, 1000);
+
+	    function loadMessages() {
+	        $.ajax({
+	            url: '/SULBAZI/loadMessages.ajax',
+	            type: 'GET',
+	            data: { userchat_idx: userchat_idx },
+	            dataType: 'json',
+	            success: function (data) {
+	                $('.chatlist').empty();
+	                $.each(data, function (index, msg) {
+	          
+	                	var messageHtml = '<div class="usermsg">';
+	                	messageHtml += '<div class="user">';
+	                	messageHtml += '<img alt="프로필" src="/photo/' + msg.user_photo + '" class="user-photo">';
+				    	messageHtml += '<div class="usernick">' + msg.user_nickname + '</div>';
+	                	messageHtml += '</div>';
+	                	messageHtml += '<div class="txtbox">';
+	                	messageHtml += '<div class="msgtxt">' + msg.usermsg_content + '</div>';
+	                	// msg.usermsg_time을 원하는 형식으로 변환
+	                	var date = new Date(msg.usermsg_time);
+	                	var formattedDate = date.getFullYear() + '-' 
+	                	    + ('0' + (date.getMonth() + 1)).slice(-2) + '-' 
+	                	    + ('0' + date.getDate()).slice(-2) + ' ' 
+	                	    + date.getHours() + ':' 
+	                	    + ('0' + date.getMinutes()).slice(-2);
+
+	                	messageHtml += '<div class="msgtime">' + formattedDate + '</div>';
+	                	messageHtml += '</div>';
+	                	messageHtml += '</div>';
+	                	$('.chatlist').append(messageHtml);
+	                    
+	                });
+	                
+	                var chatList = $('.chatlist');
+	        	    chatList.scrollTop(chatList[0].scrollHeight);
+	        	    
+	            },
+	            error: function () {
+	                console.log("메세지를 불러오는 중 오류가 발생했습니다.");
+	            }
+	        });
+	    }
+
+	    // 페이지 로드 시 메세지 불러오기
+	    loadMessages();
+
+		
 	});
 	
 </script>
@@ -60,7 +145,7 @@
     }
     .section{
         position: absolute;
-        top: 20%;
+        top: 18%;
         display: flex;
     }
     .content{
@@ -159,6 +244,11 @@
         background-color: aliceblue;
         border-radius: 10px;
     }
+    .room2 img{
+    	width: 40px;
+	    height: 40px;
+	    border-radius: 25px;
+    }
     .roomout{
 	    display: flex;
 	    align-items: center;
@@ -174,11 +264,11 @@
     .setting{
     	display: none;
     	position: absolute;
-   	    top: 25px;
-   	    left: 106px;
    	    width: 95px;
    		height: 65px;
    		background-color: aliceblue;
+   		bottom: 25px;
+   		padding: 5px;
     }
     .setting div:hover{
     	cursor: pointer;
@@ -186,8 +276,8 @@
     }
     .notice{
     	display: none;
-        position: absolute;
-    	top: -200px;
+        position: absolute;    
+        top: 390px;
 	    flex-direction: column;
 	    justify-content: center;
 	    align-items: center;
@@ -203,7 +293,7 @@
     .roomedit{
     	display: none;
    	    position: absolute;
-	    top: -117px;
+	    top: 460px;
 	    background-color: rgb(106, 106, 219);
 	    width: 300px;
         height: 120px;
@@ -222,6 +312,7 @@
         background-color: thistle;
         width: 100%;
         height: 550px;
+        overflow-y: auto;
     }
     .noti{
     	display: flex;
@@ -237,12 +328,29 @@
     .noti i{
    	    margin: 0 5px;
     }
-    
-    .usertxt{
-   	    width: 320px;
+    .user{
+    	display: flex;
+	    justify-content: flex-start;
+	    align-items: center;
+    }
+    .user img{
+   	    border-radius: 20px;
+	    width: 35px;
+	    height: 35px;
+    }
+    .txtbox{
+		display: flex;
+    	align-items: baseline;
+	}
+    .msgtxt{
+    	display: inline;
+	    background-color: white;
     	border-radius: 10px;
-    	background-color: white;
-   	    margin: 5px 0;
+   	    margin: 5px;
+   	    padding: 3px;
+    }
+    .msgtime{
+    	font-size: x-small;
     }
     .textarea{
         display: flex;
@@ -288,19 +396,19 @@
                 </div>
             </div>
             <div class="chatroom">
-            	<c:forEach items="${roominfo}" var="roominfo">
                 <div class="roomtitle">
+            	<c:forEach items="${roominfo}" var="roominfo">
                 	<div class="title">${roominfo.userchat_subject}</div>
-                	<div class="people"></div><div>/${roominfo.current_people}</div>
-                </div>
+                	<div class="people">${usertotal}/${roominfo.current_people}</div>
                 </c:forEach>
+                </div>
                 <div class="cont2">
                     <div class="userlist">
                     	<div>
                     	<c:forEach items="${userlist}" var="userlist">
                         <div class="room2">
-                        	<div>${userPhoto[userlist.user_id]}</div>
-                            <div class="user">${userNickname[userlist.user_id]}</div>
+							<img width="20" alt="img" src="/photo/${userPhotos[userlist.user_id]}">
+                            <div class="user">${userNicknames[userlist.user_id]}</div>
                         </div>
                         </c:forEach>
                         </div>
@@ -360,23 +468,17 @@
                         </div>
                     </div>
                     <div class="msgform">
+					    <c:if test="${not empty roominfo}">
+					        <c:forEach items="${roominfo}" var="roominfo">
+					            <c:if test="${not empty roominfo.notice}">
+					                <div class="noti">
+					                    <i class="fas fa-bullhorn"></i>
+					                    <p>${roominfo.notice}</p>
+					                </div>
+					            </c:if>
+					        </c:forEach>
+					    </c:if>
                         <div class="chatlist">
-						    <c:if test="${not empty roominfo}">
-						        <c:forEach items="${roominfo}" var="roominfo">
-						            <c:if test="${not empty roominfo.notice}">
-						                <div class="noti">
-						                    <i class="fas fa-bullhorn"></i>
-						                    <p>${roominfo.notice}</p>
-						                </div>
-						            </c:if>
-						        </c:forEach>
-						    </c:if>
-                            <c:forEach items="${usermsg}" var = "msg">
-                            <div class="usermsg">
-                            	<div class="user">${userNicknames[msg.user_id]}</div>
-                                <div class="usertxt">${msg.usermsg_content}</div>
-                            </div>
-                            </c:forEach>
                         </div>
                         <div class="textarea">
                         	<input type="text" name="user_id" value="${sessionScope.loginId}" readonly>
@@ -391,9 +493,9 @@
 </body>
 <script>	
 	// 방 인원수
-	var total = ${usertotal};
+/* 	var total = ${usertotal};
 	$('.people').text(total);
-
+ */
 	// 공지사항
 	$('.notification, .noticancel').click(function() {
    	   var display = $('.notice').css('display');
