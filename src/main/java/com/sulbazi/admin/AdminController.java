@@ -22,11 +22,6 @@ public class AdminController {
 	@Autowired AdminService admin_ser;
 	Logger log= LoggerFactory.getLogger(getClass());
 	
-	
-	@RequestMapping(value="/adminMain.go")
-	public String admin() {
-		return "main/adminMain";
-	}
 	@RequestMapping(value="/adminList.go")
 	public String adminListGo() {
 		return "admin/adminList";
@@ -68,10 +63,10 @@ public class AdminController {
 	}
 	@GetMapping(value="/adminUserList.ajax")  
 	@ResponseBody
-	public Map<String, Object> adminUserList(String page, String cnt){
+	public Map<String, Object> adminUserList(String page, String cnt, String category, String keyword){
 		int page_ = Integer.parseInt(page);
 		int cnt_ = Integer.parseInt(cnt);
-		return admin_ser.adminUserList(page_, cnt_); 
+		return admin_ser.adminUserList(page_, cnt_, category, keyword); 
 	}
 	@RequestMapping(value="/adminUserDetail.go")
 	public String adminUserDetail(String user_id, Model model) {
@@ -85,9 +80,9 @@ public class AdminController {
 	}
 	@GetMapping(value="/adminStoreList.ajax")  
 	@ResponseBody
-	public Map<String, Object> adminStoreList(String page, String cnt){
+	public Map<String, Object> adminStoreList(String page, String cnt, String category, String keyword){
 		int page_ = Integer.parseInt(page);
 		int cnt_ = Integer.parseInt(cnt);
-		return admin_ser.adminStoreList(page_, cnt_); 
+		return admin_ser.adminStoreList(page_, cnt_, category, keyword); 
 	}
 }

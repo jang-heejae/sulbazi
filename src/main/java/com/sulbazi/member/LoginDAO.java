@@ -9,7 +9,7 @@ public interface LoginDAO {
 
 	String userfindpw(String id, String email);
 
-	String storefindpwdo(String store_number);
+	String storefindpwdo(String store_id, String store_number);
 
 	int changeuserpw(String id, String newPassword);
 

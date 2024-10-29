@@ -11,6 +11,8 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import com.sulbazi.category.CategoryService;
 public class UserService {
 	@Autowired UserDAO user_dao;
 	@Autowired CategoryService category_ser;
+	Logger log = LoggerFactory.getLogger(getClass());
 	@Value("${upload.path}") private String bpath;
 	
 	public void userMyPage(String userId, Model model) {
@@ -46,7 +49,7 @@ public class UserService {
 	    userDTO.setUser_pw(param.get("user_pw"));
 	    userDTO.setUser_nickname(param.get("user_nickname"));
 	    userDTO.setUser_phone(param.get("user_phone"));
-
+	    log.info("userDTO :"+userDTO);
 	    String photo = "";
 	    try {
 	        if (files != null && !files.isEmpty()) {
@@ -64,7 +67,12 @@ public class UserService {
 	    }
 	    user_dao.userUpdate(userDTO);
 	    category_ser.userUpdate(param, userDTO.getUser_id());
-
+	    log.info("upSer param :"+param);
+	    log.info("upSer user_id :"+userDTO.getUser_id());
 	    return userDTO;
+	}
+
+	public int overlay(String user_nickname) {
+		return user_dao.overlay(user_nickname);
 	}
 }

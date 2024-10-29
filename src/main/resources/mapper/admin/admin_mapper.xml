@@ -19,14 +19,52 @@
 	<select id="getAdminNameById" parameterType="String" resultType="String">
     	SELECT admin_name FROM admin WHERE admin_id = #{admin_id}
 	</select>
-	<select id="adminUserList">
+<!-- 	<select id="adminUserList">
 		SELECT * FROM user ORDER BY user_date DESC LIMIT #{param1} OFFSET #{param2}
+	</select> -->
+	<select id="adminUserList" parameterType="map" resultType="com.sulbazi.member.UserDTO">
+    	SELECT * FROM user
+    	<where>
+        	<if test="category != null and keyword != null and keyword != ''">
+            	<choose>
+                	<when test="category == 'user_id'">
+                    	AND user_id LIKE CONCAT('%', #{keyword}, '%')
+                	</when>
+                	<when test="category == 'user_nickname'">
+                    	AND user_nickname LIKE CONCAT('%', #{keyword}, '%')
+                	</when>
+                	<when test="category == 'user_email'">
+                    	AND user_email LIKE CONCAT('%', #{keyword}, '%')
+                	</when>
+                	<otherwise>
+                    	-- 다른 검색 옵션이 없는 경우 전체 데이터 반환
+                	</otherwise>
+            	</choose>
+        	</if>
+    	</where>
+    	ORDER BY user_date DESC LIMIT #{limit} OFFSET #{offset}
 	</select>
 	<select id="userCount" resultType="int">
 		SELECT CEIL(COUNT(user_id)/#{param1}) FROM user
 	</select>
 	<select id="adminStoreList">
-		SELECT * FROM store ORDER BY store_idx DESC LIMIT #{param1} OFFSET #{param2}
+		SELECT * FROM store
+		<where>
+        	<if test="category != null and keyword != null and keyword != ''">
+            	<choose>
+                	<when test="category == 'store_id'">
+                    	AND store_id LIKE CONCAT('%', #{keyword}, '%')
+                	</when>
+                	<when test="category == 'store_name'">
+                    	AND store_name LIKE CONCAT('%', #{keyword}, '%')
+                	</when>
+                	<otherwise>
+                    	-- 다른 검색 옵션이 없는 경우 전체 데이터 반환
+                	</otherwise>
+            	</choose>
+        	</if>
+    	</where>
+		ORDER BY store_idx DESC LIMIT #{limit} OFFSET #{offset}
 	</select>
 	<select id="storeCount" resultType="int">
 		SELECT CEIL(COUNT(store_idx)/#{param1}) FROM store
@@ -40,16 +78,5 @@
     	SELECT revoke_start, revoke_stop
     	FROM revokes
    		WHERE user_id = #{user_id}
-	</select>
-	<select id="getUserCategories" resultType="hashMap">
-    	SELECT 
-        	co.category_idx,
-        	co.opt_name
-    	FROM 
-        	user_category uc
-    	LEFT JOIN 
-        	category_opt co ON uc.opt_idx = co.opt_idx
-    	WHERE 
-        	uc.user_id = #{user_id}
 	</select>
 </mapper>

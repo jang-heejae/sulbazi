@@ -21,4 +21,6 @@ public interface UserDAO {
 	boolean userUpdateCate(String user_id, String value);
 
 	int userUpdate(UserDTO userDto);
+
+	int overlay(String user_nickname);
 }

@@ -40,14 +40,36 @@ public class AdminService {
 	public boolean adminUpdate(Map<String, Object>param) {
 		return admin_dao.adminUpdate(param) > 0 ? true : false;
 	}
-	public Map<String, Object> adminUserList(int page, int cnt) {
+	public Map<String, Object> adminUserList(int page, int cnt, String category, String keyword) {
 		 int limit = cnt;
 		 int offset = (page-1) * cnt;
+		 
+		 Map<String, Object> param = new HashMap<String, Object>();
+		 param.put("limit", limit);
+		 param.put("offset", offset);
+		 param.put("category", category);
+		 param.put("keyword", keyword);
 		 int totalPages = admin_dao.userCount(cnt);
 	  
 		 Map<String, Object> map = new HashMap<String, Object>();
 		 map.put("totalPages", totalPages);
-		 map.put("list", admin_dao.adminUserList(limit, offset));
+		 map.put("list", admin_dao.adminUserList(param));
+		 return map;
+	}
+	public Map<String, Object> adminStoreList(int page, int cnt, String category, String keyword) {
+		 int limit = cnt;
+		 int offset = (page-1) * cnt;
+		 
+		 Map<String, Object> param = new HashMap<String, Object>();
+		 param.put("limit", limit);
+		 param.put("offset", offset);
+		 param.put("category", category);
+		 param.put("keyword", keyword);
+		 int totalPages = admin_dao.storeCount(cnt);
+	  
+		 Map<String, Object> map = new HashMap<String, Object>();
+		 map.put("totalPages", totalPages);
+		 map.put("list", admin_dao.adminStoreList(param));
 		 return map;
 	}
 
@@ -67,11 +89,12 @@ public class AdminService {
 	            }
 	        }
 
-	        // 3. 카테고리 정보 가져오기
-	        List<HashMap<String, Object>> categoryDetails = admin_dao.getUserCategories(user_id);
-	        model.addAttribute("categories", categoryDetails);
-	        log.info("categories{}:"+categoryDetails);
-	        System.out.println("Category Detail: " + categoryDetails);
+	        List<HashMap<String, Object>> allCategories = user_dao.getAllCategories();
+		    model.addAttribute("allCategories", allCategories);
+		    
+	        List<HashMap<String, Object>> userCategories  = user_dao.getUserCategories(user_id);
+	        model.addAttribute("categories", userCategories);
+
 	    }
 
 	    // 4. 파일 정보 가져오기
@@ -80,14 +103,4 @@ public class AdminService {
 	    log.info("user_photo{}:"+files);
 	}
 	
-	public Map<String, Object> adminStoreList(int page, int cnt) {
-		int limit = cnt;
-		 int offset = (page-1) * cnt;
-		 int totalPages = admin_dao.storeCount(cnt);
-	  
-		 Map<String, Object> map = new HashMap<String, Object>();
-		 map.put("totalPages", totalPages);
-		 map.put("list", admin_dao.adminStoreList(limit, offset));
-		 return map;
-	}
 }

@@ -76,22 +76,36 @@ public class CategoryService {
 		storecategorydto.setOpt_idx(category4);
 		category_dao.storejoin(storecategorydto);
 	}
-
+	
 	public void userUpdate(Map<String, String> param, String user_id) {
+	    logger.info("cateup param:" + param);
+	    logger.info("cateup user_id:" + user_id);
+
 	    try {
-	        String[] categoryNames = {"opt_name1", "opt_name2", "opt_name3", "opt_name4"};
-	        for (int i = 0; i < categoryNames.length; i++) {
-	            String opt_name = param.get(categoryNames[i]);
-	            if (opt_name != null && !opt_name.isEmpty()) {
-	                Integer opt_idx = category_dao.updateOpt(opt_name);
-	                if (opt_idx != null) {
-	                    category_dao.userUpdate(user_id, i + 1, opt_idx);
+	        // 각 opt_name에 대한 처리
+	        String[] optNames = {"opt_name1", "opt_name2", "opt_name3", "opt_name4"};
+	        for (int i = 0; i < optNames.length; i++) {
+	            String opt_name_value = param.get(optNames[i]);
+	            if (opt_name_value != null && !opt_name_value.isEmpty()) {
+	                int opt_idx = category_dao.updateOpt(opt_name_value);
+	                if (opt_idx != 0) {
+	                    // 기존 항목이 있는지 확인
+	                    boolean exists = category_dao.userUpdate(user_id, opt_idx);
+	                    if (exists) {
+	                        // 기존 항목이 있으면 업데이트
+	                        category_dao.userUpdateCate(user_id, opt_idx);
+	                        logger.info("Updated user_id: " + user_id + ", opt_idx: " + opt_idx + ", opt_name: " + opt_name_value);
+	                    } else {
+	                        // 기존 항목이 없으면 삽입
+	                        category_dao.userInsertCate(user_id, opt_idx);
+	                        logger.info("Inserted user_id: " + user_id + ", opt_idx: " + opt_idx + ", opt_name: " + opt_name_value);
+	                    }
 	                } else {
-	                    logger.error("옵션 이름으로부터 opt_idx를 찾지 못했습니다: opt_name=" + opt_name);
+	                    logger.error("옵션 이름으로부터 opt_idx를 찾지 못했습니다: opt_name=" + opt_name_value);
 	                }
 	            }
 	        }
-	    } catch (NumberFormatException e) {
+	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 	}
