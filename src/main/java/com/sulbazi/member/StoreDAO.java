@@ -77,13 +77,9 @@ public interface StoreDAO {
 
 	List<StoreCategoryDTO> storeHelpMeIdx(List<StoreDTO> stores);
 
-<<<<<<< HEAD
 	List<StoreMenuDTO> storemenulist(int store_idx);
-=======
+
 	int getTPage(int cnt);
-
-
->>>>>>> origin/master
 
 	List<StoreMenuDTO> storealcholmenulist(int store_idx);
 

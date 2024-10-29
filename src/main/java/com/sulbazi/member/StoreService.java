@@ -311,7 +311,6 @@ public class StoreService {
 	}
 
 
-<<<<<<< HEAD
 	public List<StoreMenuDTO> storealcholmenulist(int store_idx) {
 		return store_dao.storealcholmenulist(store_idx);
 		   }
@@ -354,7 +353,7 @@ public class StoreService {
 	}
 
 }
-=======
 
-}
->>>>>>> origin/master
+
+
+

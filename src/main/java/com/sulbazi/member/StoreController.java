@@ -166,8 +166,7 @@ public class StoreController {
         }
     }
 
-<<<<<<< HEAD
-=======
+
 
 	/*
 	 * @RequestMapping(value="/menu2.go") public String storeMenu2(int idx, Model
@@ -179,7 +178,7 @@ public class StoreController {
 	 * 
 	 * }
 	 */
->>>>>>> origin/master
+
 
 	@RequestMapping(value="/storeList.go")
 	public String storelist(Model model) {

@@ -138,12 +138,11 @@ public class InqueryController {
     }
 
 
-<<<<<<< HEAD
+
 
 	//관리자 문의 글 상세페이지 이동
 
-=======
->>>>>>> origin/master
+
 	@GetMapping(value="/inqueryDetail.go")
     public String admininquerydetail(@RequestParam("inqueryIdx") int inqueryIdx, Model model, HttpSession session) {
 		logger.info("문의상세가기 관리자컨트롤러");
