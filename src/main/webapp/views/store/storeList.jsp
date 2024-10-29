@@ -12,7 +12,7 @@
         body{
             background-color: #041d03;
         }
-<<<<<<< HEAD
+
         .back{
         	overflow-y: auto;
         }
@@ -151,7 +151,6 @@
     			color: #BDBDBD;
     		}
 
-=======
 		.back {
 		    display: flex;
 		    flex-direction: column;
@@ -321,7 +320,6 @@
 		    background-color: #f0f0f0;
 		}
 			
->>>>>>> origin/master
 
 </style>
 </head>
@@ -413,10 +411,7 @@
 
 </body>
 <script>
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
 		var loginId = '${sessionScope.loginId}';
 		
 		/* 지도 영역 */
@@ -709,10 +704,6 @@
 
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 //필터링
 $('#filtering').click(function() {
 	var alchol = $(':input:radio[name=alchol]:checked').val();
