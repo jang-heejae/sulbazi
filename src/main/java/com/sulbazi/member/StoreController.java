@@ -30,7 +30,10 @@ import com.sulbazi.board.BoardDTO;
 import com.sulbazi.board.BoardService;
 import com.sulbazi.category.CategoryDTO;
 import com.sulbazi.category.CategoryOptDTO;
+<<<<<<< HEAD
 import com.sulbazi.category.CategoryService;
+=======
+>>>>>>> origin/master
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
@@ -123,7 +126,10 @@ public class StoreController {
 		return store_ser.bookmarkCheck(loginId,storeidx);
 	}
 
+<<<<<<< HEAD
 	
+=======
+>>>>>>> origin/master
     @GetMapping(value = "/list.ajax")
     @ResponseBody
     public ResponseEntity<?> storeList(
@@ -204,9 +210,23 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while retrieving store data");
         }
     }
+<<<<<<< HEAD
 
 
 	
+=======
+
+	/*
+	 * @RequestMapping(value="/menu2.go") public String storeMenu2(int idx, Model
+	 * model, HttpSession session) { = store_ser.(idx);
+	 * 
+	 * model.addAttribute("store", storeDetail);
+	 * model.addAttribute("file",storeDetail); logger.info("storeDetail: " +
+	 * storeDetail); return "store/storeMenu2";
+	 * 
+	 * }
+	 */
+>>>>>>> origin/master
 
 	@RequestMapping(value="/storeList.go")
 	public String storelist(Model model) {

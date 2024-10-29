@@ -35,6 +35,9 @@
             	user_photo = #{user_photo},
         	</if>
     	</set>
-    WHERE user_id = #{user_id}
-</update>
+    	WHERE user_id = #{user_id}
+	</update>
+	<select id="overlay" resultType="int">
+    	SELECT COUNT(user_nickname) FROM user WHERE user_nickname = #{param1}
+	</select>
 </mapper>

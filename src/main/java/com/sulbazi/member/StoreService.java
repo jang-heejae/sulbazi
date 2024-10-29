@@ -177,8 +177,11 @@ public class StoreService {
 		return storeExplain;
 	}
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/master
 	public List<StoreDTO> getStoresInArea(double minLat, double maxLat, double minLng, double maxLng, int page,
 			int cnt) {
 		
@@ -214,7 +217,10 @@ public class StoreService {
 		return store_dao.findPhotosForStores(stores);
 	}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	public List<CategoryOptDTO> OptionsCategoryState(int categorystate) {
 		return store_dao.OptionsCategoryState(categorystate);
 	}
