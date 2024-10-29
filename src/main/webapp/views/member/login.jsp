@@ -26,10 +26,13 @@
     }
     .inp{
     	width: 100%;
+    	padding: 5px;
+    	border-radius: 10px;
     }
     a{
         text-decoration: none;
         color: white;
+        padding: 20px
     }
 	#loginBox{
 		position: absolute;
@@ -44,7 +47,20 @@
 		color: white;
 		font-size: 20px;
 	}
-
+	ul, li{
+		list-style: none;
+	}
+	.loginBox{
+		position: absolute;
+   		left: -28px;
+	}
+	.findid{
+		display: flex;
+    	flex-direction: column;
+    	justify-content: space-around;
+    	align-items: center;
+    	height: 59px;
+	}
 </style>
 </head>
 <body>
@@ -54,35 +70,32 @@
              <a href="./#">SULBAZI</a>
         </div>
         <hr/>
-	<table>
-		<tr>
-			<th><input class="inp" type="text" name="id" placeholder="아이디를 입력하세요" value=""/></th>
-		</tr>
-		<tr>
-			<th><input class="inp" type="password" name="pw" placeholder="비밀번호를 입력하세요" value=""/></th>
-		</tr>
-		<tr>
-			<td>
-				<input type="radio" name="option" value="user_log"/>일반 회원
-				<input type="radio" name="option" value="store_log"/>매장 회원
-				<input type="radio" name="option" value="admin_log"/>관리자
-			</td>
-		</tr>
-		<tr>
-			<td><button type="submit">로그인</button></td>
-		</tr>
-		<tr>
-			<td><a href="findid.go">아이디 찾기</a></td>
-			<td><a href="findpw.go">비밀번호 찾기</a></td>
-		</tr>
-		<tr>
-			<td><a href="userjoin.go">일반 회원가입</a></td>
-			<td><a href="storeJoin.go">사업자 회원가입</a></td>
-		</tr>
-	</table>
+		<div class="loginBox">
+			<ul>
+				<li><input class="inp" type="text" name="id" placeholder="아이디를 입력하세요" value=""/></li>
+				<li><input class="inp" type="password" name="pw" placeholder="비밀번호를 입력하세요" value=""/></li>
+			</ul>
+			<ul>
+				<li>
+					<input type="radio" name="option" value="user_log"/>일반 회원&nbsp;
+					<input type="radio" name="option" value="store_log"/>매장 회원&nbsp;
+					<input type="radio" name="option" value="admin_log"/>관리자
+				</li><br/>
+				<li><button type="submit">로그인</button></li>
+			</ul>
+			<ul class="findid">
+				<li>
+					<a href="findid.go">아이디 찾기</a>
+					<a href="findpw.go">비밀번호 찾기</a>
+				</li>
+				<li>
+					<a href="userjoin.go">일반 회원가입</a>
+					<a href="storeJoin.go">사업자 회원가입</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 	</form>
-	
 </body>
 <script>
 	var msg = '${msg}';

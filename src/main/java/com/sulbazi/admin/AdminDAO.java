@@ -22,16 +22,14 @@ public interface AdminDAO {
 
 	int userCount(int cnt);
 
-	List<HashMap<String, Object>> adminUserList(int limit, int offset);
+	List<HashMap<String, Object>> adminUserList(Map<String, Object> param);
 	
 	int storeCount(int cnt);
 
-	List<HashMap<String, Object>> adminStoreList(int limit, int offset);
+	List<HashMap<String, Object>> adminStoreList(Map<String, Object> param);
 
 	UserDTO getUserInfo(String user_id);
     
 	List<HashMap<String, Object>> getRevokeInfo(String user_id);
-    
-	List<HashMap<String, Object>> getUserCategories(String user_id);
 
 }

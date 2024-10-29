@@ -56,30 +56,36 @@
 		font-family: "Irish Grover", system-ui;
 		font-size: 20px;
     	color: #041d03; /* 버튼 글자색 */
-    	background-color: rgb(255, 140, 9); /* 버튼 배경색 */
+    	background-color: #73734F; /* 버튼 배경색 */
     	padding: 5px 10px; /* 버튼 안쪽 여백 */
     	text-decoration: none; /* 밑줄 제거 */
     	border-radius: 5px; /* 둥근 모서리 */
-    	border: 1px solid rgb(255, 140, 9); /* 버튼 테두리 색 */
+    	border: 1px solid #73734F; /* 버튼 테두리 색 */
 	}
 
 	.pagination .active a {
-    	background-color: rgb(255, 140, 9); /* 현재 페이지 강조 색 */
-    	color: white; /* 현재 페이지 글자색 */
+    	background-color: #73734F; /* 현재 페이지 강조 색 */
+    	color: rgb(255, 140, 9); /* 현재 페이지 글자색 */
 	}
 	.page-item.active .page-link {
     	z-index: 1;
-    	color: #fff;
-    	background-color: rgb(255, 140, 9);
-    	border-color: rgb(255, 140, 9);
+    	color: rgb(255, 140, 9);
+    	background-color: #73734F;
+    	border-color: #73734F;
 	}
 	.page-item.disabled .page-link {
     	color: #fff;;
     	pointer-events: none;
     	cursor: auto;
-    	background-color: rgb(255, 140, 9);
-    	border-color: rgb(255, 140, 9);
+    	background-color: #73734F;
+    	border-color: #73734F;
 	}
+	.page-item.disabled .page-link {
+    	color: rgb(255, 140, 9);
+    	pointer-events: none;
+    	cursor: auto;
+    	background-color: #73734F;
+    	border-color: #73734F;
 </style>
 </head>
 <body>
