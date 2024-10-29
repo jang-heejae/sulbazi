@@ -17,15 +17,19 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sulbazi.board.BoardDTO;
 import com.sulbazi.board.BoardService;
 import com.sulbazi.category.CategoryDTO;
 import com.sulbazi.category.CategoryOptDTO;
+import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
 
@@ -114,9 +118,7 @@ public class StoreController {
 		
 		return store_ser.bookmarkCheck(loginId,storeidx);
 	}
-<<<<<<< HEAD
-=======
-	
+
     @GetMapping(value = "/list.ajax")
     @ResponseBody
     public ResponseEntity<?> storeList(
@@ -197,7 +199,6 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while retrieving store data");
         }
     }
->>>>>>> origin/master
 
 	
 	/*

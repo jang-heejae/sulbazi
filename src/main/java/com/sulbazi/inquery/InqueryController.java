@@ -137,7 +137,6 @@ public class InqueryController {
 		return page;
     }
 
-<<<<<<< HEAD
 	//관리자 문의 글 상세페이지 이동
 	@GetMapping(value="/inqueryDetail.go")
     public String admininquerydetail(@RequestParam("inqueryIdx") int inqueryIdx, Model model, HttpSession session) {
@@ -166,8 +165,6 @@ public class InqueryController {
     }
 
 	
-=======
->>>>>>> origin/master
 	@PostMapping(value="/adminanswer.do")
 	public String adminanswer(@RequestParam String answer, HttpSession session, @RequestParam int inqueryIdx) {
 	    logger.info("답변 등록 컨트롤러");

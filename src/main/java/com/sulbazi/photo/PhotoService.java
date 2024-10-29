@@ -95,6 +95,27 @@ public class PhotoService {
 		photo_dao.fileSave(photodto);
 
 	}
+	
+	public void menufile(MultipartFile file, int store_idx, int i) {
+		String photo = "";
+		try {
+			String ori = file.getOriginalFilename();
+			logger.info(ori);
+			int ext = ori.lastIndexOf(".");
+			String extt = ori.substring(ext);
+			photo = UUID.randomUUID()+extt;
+			Path path = Paths.get(bpath+photo);
+			byte[] arr = file.getBytes();
+			Files.write(path, arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		PhotoDTO photodto = new PhotoDTO();
+		photodto.setNew_filename(photo);
+		photodto.setPhoto_folder_idx(store_idx);
+		photodto.setPhoto_category_idx(i);
+		photo_dao.menufile(photodto);
+	}
 
 	public PhotoDTO mystorebestphoto(int store_idx) {
 		return photo_dao.mystorebestphoto(store_idx);
@@ -104,12 +125,14 @@ public class PhotoService {
 		return photo_dao.mystorephoto(store_idx);
 
 	}
-<<<<<<< HEAD
 
-	public List<PhotoDTO> detail(int store_idx) {
-		return photo_dao.detail(store_idx);
+	public List<PhotoDTO> detail1(int store_idx, int photo_category_idx) {
+		return photo_dao.detail1(store_idx, photo_category_idx);
 	}
-=======
+	
+	public List<PhotoDTO> detail4(int store_idx, int photo_category_idx) {
+		return photo_dao.detail4(store_idx, photo_category_idx);
+	}
 	
 	// 유저 이미지 가져오기
 	public ResponseEntity<Resource> getImg(String user_photo) {
@@ -124,5 +147,5 @@ public class PhotoService {
 		return new ResponseEntity<Resource>(reso, header, 200);
 	}
 
->>>>>>> origin/master
+
 }

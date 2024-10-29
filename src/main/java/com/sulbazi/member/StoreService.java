@@ -176,8 +176,6 @@ public class StoreService {
 	}
 
 
-<<<<<<< HEAD
-=======
 	public List<StoreDTO> getStoresInArea(double minLat, double maxLat, double minLng, double maxLng, int page,
 			int cnt) {
 		
@@ -216,7 +214,6 @@ public class StoreService {
 
 
 
->>>>>>> origin/master
 	public List<CategoryOptDTO> OptionsCategoryState(int categorystate) {
 		return store_dao.OptionsCategoryState(categorystate);
 	}

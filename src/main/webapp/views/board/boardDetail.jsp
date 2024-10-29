@@ -9,10 +9,10 @@
     <script src="https://kit.fontawesome.com/6282a8ba62.js" crossorigin="anonymous"></script>
 </head>
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
     img.icon{
-		width:25px;
-	}
+      width:25px;
+   }
     *{
         margin: 0;
         padding: 0;
@@ -123,33 +123,75 @@
         border-radius: 10px;
     }
     .boardlist{
-        position: absolute;
+        position: relative;
         width: 1200px;
-        height: 600px;
+        height: 700px;
         background-color: rgb(255, 140, 9);
         border-radius: 10px;
         margin-top: 10%;
         left: 20%;
-        padding: 20px;
+        padding: 3% 10% 3% 10%;
         box-sizing: border-box;
     }
-    td{
-        padding: 1%;
-        border: 1px solid #aaa;
-        width: 150px;
-        border-radius: 6px;
-        background-color: whitesmoke;
-        font-weight: 700;
+    .bboard{
+       background-color: white;
     }
-    .like, .view{
-        width: 100px;
+    th{
+       width: 100px;
+       border: 1px solid #aaa;
     }
-    .time{
-        width: 200px;
-    }
-    .subject{
-    	width: 500px;
-    }
+    .photo1{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: absolute; /* 테이블 내 원하는 위치에 배치 가능 */
+    top: 55px; /* 원하는 Y 좌표 */
+    left: 35px; /* 원하는 X 좌표 */
+   }
+   .what{
+      height: 60px;
+   }
+   .category{
+      font-size: 20px;
+   }
+   .date{
+      font-size: 16px;
+   }
+   .alxwnf{
+      width: 800px;
+      margin-left: 1%;
+      background-color: black;
+      height: 2px;
+   }
+   .storephoto{
+      width: 1000px;
+      height: 160px;
+   }
+   .subject{
+      width: 1000px;
+      height: 300px;
+      text-align: left;
+      vertical-align: top;
+   }
+   .like-button {
+    background-color: transparent;
+   
+    border: none;
+    color: red;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+   }
+   .like-button i {
+       margin-right: 5px;
+   }
+   .photo4{
+   	width: 100%; /* th의 너비에 맞추기 위해 100%로 설정 */
+    height: 100%; /* 비율에 맞게 자동으로 높이를 조정 */
+    object-fit: cover; /* 비율을 유지하면서도 전체 영역을 채우도록 설정 */
+   }
 </style>
 </head>
 <body>
@@ -208,38 +250,62 @@
         </div>  
     </header>
     <div class="boardlist">
-		<table>
-			<tr>
-				<th>${info.borad_category}</th>
-				<th>${info.board_subject}</th>
-				<th><i class="fa-solid fa-heart" style="color: red; margin-right: 5px;"></i>${info.like_count}</th>
-				<th><i class="fa-solid fa-eye" style="color: #999999; margin-right: 5px;"></i>${info.board_bHit}</th>
-			</tr>
-			<tr>
-			</tr>
-			<tr>
-			</tr>
-			<tr>
-            <th>사진</th>
-            <td>
-                <c:if test="${not empty files}">
-                    <c:forEach var="photo" items="${files}">
-                        <img src="/photo/${photo}" alt="사진" style="width:100px;height:auto;"/>
-                    </c:forEach>
-                </c:if>
-                <c:if test="${empty files}">
-                    <p>사진이 없습니다.</p>
-                </c:if>
-            </td>
-        </tr>
-			<tr>
-				<th colspan = "2">
-					<a href="./">리스트</a>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<a href="update.go?board_idx=${info.board_idx}">수정</a>
-				</th>
-			</tr>
-		</table>
+       <div class="bboard">
+         <table>
+            <tr>
+               <th class="category">${info.board_category}</th>
+               <th colspan="2" class="category" style="text-align: left; width: 400px;">${info.board_content}</th>
+               <th></th>
+               <th><i class="fa-solid fa-heart" style="color: red; margin-right: 5px;"></i>${info.like_count}</th>
+               <th><i class="fa-solid fa-eye" style="color: #999999; margin-right: 5px;"></i>${info.board_bHit}</th>
+            </tr>
+            <tr class="what">
+               <th>${info.board_category}</th>
+               <th></th>
+               <th></th>
+               <th></th>
+               <th></th>
+               <th class="date">${info.board_date}</th>
+            </tr>
+         </table>
+               <c:if test="${not empty files}">
+                   <c:forEach var="photo" items="${files}">
+                       <img src="/photo/${photo}" alt="사진" class="photo1"/>
+                   </c:forEach>
+               </c:if>
+               <c:if test="${empty files}">
+                   <p>사진이 없습니다.</p>
+               </c:if>
+               <hr class="alxwnf">
+            <table>
+               <tr>
+                  	<th class="subject">
+						<c:if test="${not empty files4}">
+		                   <c:forEach var="photo" items="${files4}">
+		                       <img src="/photo/${photo}" alt="사진" class="photo4"/>
+		                   </c:forEach>
+              		 	</c:if>
+              		 	<c:if test="${empty files4}">
+		                   <p>사진이 없습니다.</p>
+			            </c:if>
+					</th>
+               </tr>
+               <tr>
+                  <th>${info.board_subject}</th>               
+               </tr>
+            
+            <%-- <tr>
+               <th colspan = "2">
+                  <a href="./">리스트</a>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <a href="update.go?board_idx=${info.board_idx}">수정</a>
+               </th>
+            </tr> --%>
+           </table>
+           <button id="likeButton" class="like-button">
+               <i class="fa-solid fa-heart"></i> <span id="likeCount">${info.like_count}</span>
+           </button>
+       </div>
     </div>
 </body>
 <script>
@@ -324,30 +390,48 @@ document.querySelectorAll('.fa-bell').forEach(function(bell) {
 });
 
 $.ajax({
-	type: 'GET',
-	url : 'boardList.ajax',
-	data:{},
-	dataType:'JSON',
-	success:function(data){
-		console.log(data);
-		if(data.login){
-			drawList(data.list);
-		}else{
-			alert('로그인이 필요한 서비스입니다.');
-			location.href='./login.go';
-		}
-	},error:function(e){
-		console.log(e);
-	}
+   type: 'GET',
+   url : 'boardList.ajax',
+   data:{},
+   dataType:'JSON',
+   success:function(data){
+      console.log(data);
+      if(data.login){
+         drawList(data.list);
+      }else{
+         alert('로그인이 필요한 서비스입니다.');
+         location.href='./login.go';
+      }
+   },error:function(e){
+      console.log(e);
+   }
 });
 
+$(document).on('click', '.like-button', function() {
+    var boardIdx = $(this).data('board_idx'); // 해당 게시물의 board_idx 가져오기
+    var userId = $('user_id').val(); // 사용자 ID 가져오기 (예: 숨겨진 input에서)
 
-
-
-
-
-
-
+    $.ajax({
+        url: 'boardlike.ajax', // 좋아요를 처리할 URL
+        type: 'POST',
+        data: {
+            board_idx: boardIdx,
+            user_id: userId // user_id를 전송
+        },
+        success: function(response) {
+            // 성공적으로 처리된 후의 행동
+            if (response.success) {
+                alert('좋아요가 등록되었습니다.');
+            } else {
+                alert('좋아요 등록에 실패했습니다.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error: ', error);
+            alert('서버 오류가 발생했습니다. 나중에 다시 시도하세요.');
+        }
+    });
+});
 
 
 

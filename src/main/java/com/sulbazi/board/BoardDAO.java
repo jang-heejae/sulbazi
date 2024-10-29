@@ -15,6 +15,12 @@ public interface BoardDAO {
 
 	BoardDTO detail(String board_idx);
 
+	boolean isLiked(BoardLikeDTO likeDTO);
+
+	void deleteLike(BoardLikeDTO likeDTO);
+
+	void insertLike(BoardLikeDTO likeDTO);
+
 
 
 }

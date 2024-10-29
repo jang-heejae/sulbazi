@@ -318,7 +318,7 @@ $.ajax({
 		list.forEach(function(item,board_idx){
 			content += '<tr>';
 			content += '<td>'+item.board_category+'</td>';
-			content += '<td class="subject"><a href="boardDetail.go?board_idx=' + item.board_idx + '" style="color: blue;">' + item.board_subject + '</a></td>';
+			content += '<td class="subject"><a href="boardDetail.go?board_idx=' + item.board_idx + '" style="color: blue;">' + item.board_content + '</a></td>';
 			content += '<td class="like">' +
             '<i class="fa-solid fa-heart" style="color: red; margin-right: 5px;"></i>' + 
             item.like_count + 

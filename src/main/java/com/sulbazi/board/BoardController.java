@@ -9,10 +9,14 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sulbazi.photo.PhotoDTO;
@@ -52,5 +56,23 @@ public class BoardController {
 	public String detail(String board_idx, Model model) {
 		board_ser.detail(board_idx, model);
 		return "board/boardDetail";
+	}
+	
+	@PostMapping(value="/boardlike.ajax")
+	@ResponseBody
+	public BoardLikeDTO boardlike(int user_id, String store_idx) {
+		logger.info("좋아요 parmas : ", user_id + store_idx);
+		return null;
+	}
+	
+	@RequestMapping(value="/test.go")
+	public String testgo() {
+		return "member/test";
+	}
+	
+	@PostMapping(value="/test.ajax")
+	public ResponseEntity<?> test(@RequestParam Map<String, Object> params) {
+		logger.info("params : {} ", params);
+		return null;
 	}
 }
