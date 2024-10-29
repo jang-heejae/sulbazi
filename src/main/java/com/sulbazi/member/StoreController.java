@@ -125,7 +125,6 @@ public class StoreController {
 	}
 
 
-
     @GetMapping(value = "/list.ajax")
     @ResponseBody
     public ResponseEntity<?> storeList(
@@ -162,8 +161,6 @@ public class StoreController {
         }
     }
 
-
-	
 	/*
 	 * @RequestMapping(value="/menu2.go") public String storeMenu2(int idx, Model
 	 * model, HttpSession session) { = store_ser.(idx);

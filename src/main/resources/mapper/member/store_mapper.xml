@@ -87,6 +87,10 @@
 		select * from category_opt where opt_idx=#{param1}
 	</select>
 
+
+
+
+
 	<!-- 매장 리스트  -->
 	<select id="findStoresInArea" parameterType="map" resultType="com.sulbazi.member.StoreDTO">
         SELECT * 
@@ -184,9 +188,27 @@
 	</select>
 	
 	<select id="mystoreopt" resultType="int">
-		SELECT  opt_idx FROM store_category WHERE store_idx=#{param1} ;
+		SELECT  opt_idx FROM store_category WHERE store_idx=#{param1} 
 	</select>
-	
+
+
+
+ 	<!-- 매장 마이페이지  정보 수정 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	<!-- 매장 마이페이지  내 댓글 보기 -->
 	

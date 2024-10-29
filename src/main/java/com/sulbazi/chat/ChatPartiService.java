@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 @Service
 public class ChatPartiService {
@@ -24,11 +25,15 @@ public class ChatPartiService {
 		return chatparti_dao.usertotal(idx);
 	}
 	
-	/* 방에 참여중인 사용자 */
+	/* 방에 참여중인 사용자 - 개인 */
 	public List<PartiDTO> userlist(int idx) {
 		return chatparti_dao.userlist(idx);
 	}
-
+	public List<PartiDTO> userlistajax(int chatroomIdx) {
+		return chatparti_dao.userlistajax(chatroomIdx);
+	}
+	
+	
 	/* 지역 채팅방 참여 */
 	public void localparti(String userId, int idx) {
 		
@@ -45,6 +50,15 @@ public class ChatPartiService {
 	public void localroomout(String userId, int roomIdx) {
 		chatparti_dao.localroomout(userId, roomIdx);
 	}
+	
+	/* 방에 참여중인 사용자 - 지역 */
+	public List<PartiDTO> localuserlist(int idx) {
+		return chatparti_dao.localuserlist(idx);
+	}
+
+
+
+
 
 
 }
