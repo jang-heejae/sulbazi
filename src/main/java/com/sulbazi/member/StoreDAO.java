@@ -1,6 +1,7 @@
 package com.sulbazi.member;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -53,8 +54,6 @@ public interface StoreDAO {
 
 	CategoryOptDTO storeByCategoryopt(Integer integer);
 
-<<<<<<< HEAD
-=======
 	int delBookmark(Map<String, Object> map);
 
 	int bookmarkCheck(Map<String, Object> map);
@@ -66,8 +65,6 @@ public interface StoreDAO {
 	List<PhotoDTO> findPhotosForStores(List<StoreDTO> stores);
 
 
-	
->>>>>>> origin/master
 	List<CategoryOptDTO> OptionsCategoryState(int categorystate);
 
 	List<BoardDTO> storemyboard(int store_idx);

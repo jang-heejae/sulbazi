@@ -14,20 +14,30 @@ public interface ChatPartiDAO {
 	/* 방에 참여중인 총 사용자 */
 	Integer usertotal(int idx);
 	
-	/* 방에 참여중인 사용자 */
+	/* 방에 참여중인 사용자 - 개인 */
 	List<PartiDTO> userlist(int idx);
+	List<PartiDTO> userlistajax(int chatroomIdx);
 	
 	/* 채팅방 개설 후 참여 */
 	int createparti(int idx, String userId);
 	
+	
+	
+	
+	
+	
 	/* 지역 채팅방 참여 상태 확인 */
 	int localreparti(String userId, int idx);
+	
 	/* 지역 채팅방 참여 */
 	int insertlocalparti(String userId, int idx);
 
-	
 	/* 지역 채팅방에서 나가면 참여상태 false */
 	int localroomout(String userId, int roomIdx);
+	
+	/* 방에 참여중인 사용자 - 지역 */
+	List<PartiDTO> localuserlist(int idx);
+	
 	
 	
 

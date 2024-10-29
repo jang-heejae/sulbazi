@@ -16,6 +16,94 @@
 		alert(msg);
 		location.replace('./userchatlist.go');
 	}
+	
+	$(document).ready(function() {
+
+		// 메세지 전송
+	    $('.sendmsg').click(function () {
+	        var localmsg_content = $('textarea[name="usermsgcontent"]').val();
+	        var user_id = $('input[name="user_id"]').val();
+	        var localchat_idx = ${roomidx};
+	
+	        console.log("메세지내용"+localmsg_content);
+	        console.log("로그인한 아이디"+loginId);
+	        console.log("현재방 번호 "+localchat_idx);
+	        if (localmsg_content.trim() === "") {
+	            alert("메세지를 입력해주세요.");
+	            return;
+	        }
+
+	        $.ajax({
+	            url: '/SULBAZI/localsendMessage.ajax',
+	            type: 'POST',
+	            data: {
+	            	user_id: user_id,
+	                localmsg_content: localmsg_content,
+	                localchat_idx: localchat_idx
+	            },
+	            success: function () {
+	                loadMessages();  // 메세지를 다시 로드
+	                $('textarea[name="usermsgcontent"]').val("");  // 입력 필드 비우기
+	            },
+	            error: function () {
+	                alert("메세지 전송에 실패했습니다.");
+	            }
+	        });
+	        
+	    });
+		
+	    // 5초마다 새 메세지를 불러오기
+	    var localchat_idx = ${roomidx};
+	    setInterval(loadMessages, 3000);
+
+	    function loadMessages() {
+	        $.ajax({
+	            url: '/SULBAZI/localloadMessages.ajax',
+	            type: 'GET',
+	            data: { localchat_idx: localchat_idx },
+	            
+	            success: function (data) {
+	                $('.chatlist').empty();
+	                $.each(data, function (index, msg) {
+	          
+	                	var messageHtml = '<div class="usermsg">';
+	                	messageHtml += '<div class="user">';
+	                	messageHtml += '<img alt="프로필" src="/photo/' + msg.user_photo + '" class="user-photo">';
+				    	messageHtml += '<div class="usernick">' + msg.user_nickname + '</div>';
+	                	messageHtml += '</div>';
+	                	messageHtml += '<div class="txtbox">';
+	                	messageHtml += '<div class="msgtxt">' + msg.localmsg_content + '</div>';
+	                	// msg.usermsg_time을 원하는 형식으로 변환
+	                	var date = new Date(msg.localmsg_time);
+	                	var formattedDate = date.getFullYear() + '-' 
+	                	    + ('0' + (date.getMonth() + 1)).slice(-2) + '-' 
+	                	    + ('0' + date.getDate()).slice(-2) + ' ' 
+	                	    + date.getHours() + ':' 
+	                	    + ('0' + date.getMinutes()).slice(-2);
+
+	                	messageHtml += '<div class="msgtime">' + formattedDate + '</div>';
+	                	messageHtml += '</div>';
+	                	messageHtml += '</div>';
+	                	
+	                	$('.chatlist').append(messageHtml);
+	                    
+	                });
+	                
+	                var chatList = $('.chatlist');
+	        	    chatList.scrollTop(chatList[0].scrollHeight);
+	        	    
+	            },
+	            error: function () {
+	                console.log("메세지를 불러오는 중 오류가 발생했습니다.");
+	            }
+	        });
+	    }
+
+	    // 페이지 로드 시 메세지 불러오기
+	    loadMessages();
+
+		
+	});
 </script>
 <style>
 *{
@@ -119,12 +207,20 @@ a{
         background-color: aliceblue;
         border-radius: 10px;
     }
+    .room2 img{
+    	width: 40px;
+	    height: 40px;
+	    border-radius: 25px;
+    }
     .roomout{
-        width: 95px;
 	    display: flex;
 	    align-items: center;
+		justify-content: space-between;
     }
-    .roomout:hover{
+    .roomoutbtn{
+    	display: flex;
+    }
+    .roomoutbtn:hover{
     	cursor: pointer;
     	font-weight: bold;
     }
@@ -137,12 +233,31 @@ a{
         background-color: thistle;
         width: 100%;
         height: 550px;
+        overflow-y: auto;
     }
-    .usertxt{
-   	    width: 320px;
+    .user{
+    	display: flex;
+	    justify-content: flex-start;
+	    align-items: center;
+    }
+    .user img{
+   	    border-radius: 20px;
+	    width: 35px;
+	    height: 35px;
+    }
+    .txtbox{
+		display: flex;
+    	align-items: baseline;
+	}
+    .msgtxt{
+    	display: inline;
+	    background-color: white;
     	border-radius: 10px;
-    	background-color: white;
-   	    margin: 5px 0;
+   	    margin: 5px;
+   	    padding: 3px;
+    }
+    .msgtime{
+    	font-size: x-small;
     }
     .textarea{
         display: flex;
@@ -186,16 +301,22 @@ a{
             </div>
             <div class="chatroom">
             	<div class="chatroom">
-                <div class="roomtitle">${subject}</div>
+                <div class="roomtitle">${subject}${userNicknames}</div>
                 <div class="cont2">
                     <div class="userlist">
+                    	<div>
+                        <c:forEach items="${localuserlist}" var="localuserlist">
                         <div class="room2">
-                            <div class="user">쵹쵹시진핑</div>
-                            <div class="user">방장</div>   
+							<img width="20" alt="img" src="/photo/${userPhoto[localuserlist.user_id]}">
+                            <div class="user">${userNickname[localuserlist.user_id]}</div>
+                        </div>
+                        </c:forEach>
                         </div>
                         <div class="roomout">
-                        	<i class="fas fa-sign-out-alt"></i>
-                        	<p>방 나가기</p>
+                        	<div class="roomoutbtn">
+	                        	<i class="fas fa-sign-out-alt"></i>
+	                        	<p>방 나가기</p>
+                        	</div>
                         </div>
                     </div>
                     <div class="msgform">
@@ -240,6 +361,19 @@ a{
 			}
 		});
 	});
+	
+	// 채팅 입력창 포커스되면 placeholder 제거
+	$('.txtarea').on('focus', function() {
+	      $(this).attr('placeholder', '');  
+	});
+	
+	// 텍스트가 없으면 placeholder 복구
+    $('.txtarea').on('blur', function() {
+      if ($(this).val() === '') {
+        $(this).attr('placeholder', '메세지 입력');  
+      }
+    });
+	 
 	 
 </script>
 </html>
