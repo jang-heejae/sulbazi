@@ -16,7 +16,24 @@ public class StoreDTO {
 	   private float star_average;
 	   private int bookmark_user;
 	   
-	   
+	   @Override
+	   public String toString() {
+	       return "StoreDTO{" +
+	               "store_idx=" + store_idx +
+	               ", store_id='" + store_id + '\'' +
+	               ", store_pw='" + store_pw + '\'' +
+	               ", store_number='" + store_number + '\'' +
+	               ", store_name='" + store_name + '\'' +
+	               ", store_phone='" + store_phone + '\'' +
+	               ", store_time='" + store_time + '\'' +
+	               ", store_address='" + store_address + '\'' +
+	               ", store_latitude=" + store_latitude +
+	               ", store_longitude=" + store_longitude +
+	               ", review_total=" + review_total +
+	               ", star_average=" + star_average +
+	               ", bookmark_user=" + bookmark_user +
+	               '}';
+	   }
 	   
 	   public int getStore_idx() {
 	      return store_idx;

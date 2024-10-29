@@ -164,6 +164,7 @@ public class InqueryController {
 		return page;
     }
 
+
 	@PostMapping(value="/adminanswer.do")
 	public String adminanswer(@RequestParam String answer, HttpSession session, @RequestParam int inqueryIdx) {
 	    logger.info("답변 등록 컨트롤러");
