@@ -14,4 +14,25 @@
        SELECT localmsg_content FROM localmsg WHERE localmsg_idx = #{reported_idx}
    	</select>
 
+
+	<!-- 메세지 전송 -->
+	<insert id="localsendmsg"
+		useGeneratedKeys="true"
+		keyColumn="localmsg_idx"
+		keyProperty="localmsg_idx"
+		parameterType="com.sulbazi.message.UserMsgDTO">
+		INSERT INTO localmsg(localchat_idx, user_id, localmsg_content)
+    			VALUES(#{localchat_idx}, #{user_id}, #{localmsg_content})
+	</insert>
+	
+	<!-- 메세지 로드 -->
+	<select id="getlocalmsg" parameterType="int" resultType="map">
+	    SELECT lm.*, u.user_nickname, u.user_photo 
+	    FROM localmsg lm
+	    JOIN user u ON lm.user_id = u.user_id
+	    WHERE lm.localchat_idx = #{localchat_idx} 
+	    ORDER BY lm.localmsg_time
+	</select>
+	
+	
 </mapper>

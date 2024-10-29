@@ -130,6 +130,7 @@ public class StoreController {
 		return store_ser.bookmarkCheck(loginId,storeidx);
 	}
 
+
     @GetMapping(value = "/list.ajax")
     @ResponseBody
     public ResponseEntity<?> storeList(
@@ -166,8 +167,11 @@ public class StoreController {
         }
     }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/master
 	/*
 	 * @RequestMapping(value="/menu2.go") public String storeMenu2(int idx, Model
 	 * model, HttpSession session) { = store_ser.(idx);

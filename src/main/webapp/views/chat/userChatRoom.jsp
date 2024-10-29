@@ -36,6 +36,48 @@
 			$('.fa-cog').hide();
 		}
 		
+		// 참여자 리스트
+		var chatroom_idx = ${idx};
+		var ownerId = '${userid}';
+		
+	    function loadUserList() {
+	        $.ajax({
+	            url: '/SULBAZI/userlist.ajax',
+	            type: 'GET',
+	            data: { chatroom_idx: chatroom_idx },
+	            dataType: 'json',
+	            success: function(data) {
+	                $('.ajax').empty(); // 기존 사용자 목록 비우기
+
+	                $.each(data, function (index, user) {
+	      	          
+	                	var userlist = '<div class="room2">';
+	                    userlist += '<img width="20" alt="프로필" src="/photo/' + user.user_photo + '">';
+	                    
+	                    if (user.user_id === loginId && user.user_id === ownerId) {
+	                        userlist += '<div class="user" style="font-weight: bold; color: blue;"><i class="fas fa-crown"></i>' + user.user_nickname + ' ㉯</div>';
+	                    } else if (user.user_id === loginId) {
+	                        userlist += '<div class="user" style="font-weight: bold;">' + user.user_nickname + '㉯</div>';
+	                    } else if (user.user_id === ownerId) {
+	                        userlist += '<div class="user" style="font-weight: bold; color: blue;"><i class="fas fa-crown"></i>' + user.user_nickname + '</div>';
+	                    } else {
+	                        userlist += '<div class="user">' + user.user_nickname + '</div>';
+	                    }
+
+	                   
+	                    userlist += '</div>';
+	                	
+	                	$('.ajax').append(userlist);
+	                    
+	                });
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('AJAX 요청 실패:', status, error);
+	            }
+	        });
+	    }
+		
+	    loadUserList();
 	    
 		// 메세지 전송
 	    $('.sendmsg').click(function () {
@@ -72,6 +114,7 @@
 		
 	    // 5초마다 새 메세지를 불러오기
 	    var userchat_idx = ${idx};
+		var ownerId = '${userid}';
 	    setInterval(loadMessages, 1000);
 
 	    function loadMessages() {
@@ -87,7 +130,17 @@
 	                	var messageHtml = '<div class="usermsg">';
 	                	messageHtml += '<div class="user">';
 	                	messageHtml += '<img alt="프로필" src="/photo/' + msg.user_photo + '" class="user-photo">';
-				    	messageHtml += '<div class="usernick">' + msg.user_nickname + '</div>';
+	                	
+	                	if (msg.user_id === loginId && msg.user_id === ownerId) {
+	                		messageHtml += '<div class="usernick" style="font-weight: bold;"><i class="fas fa-crown"></i>' + msg.user_nickname + ' ㉯</div>';
+	                    } else if (msg.user_id === loginId) {
+	                    	messageHtml += '<div class="usernick" style="font-weight: bold;">' + msg.user_nickname + ' ㉯</div>';
+	                    } else if (msg.user_id === ownerId) {
+	                    	messageHtml += '<div class="usernick"><i class="fas fa-crown"></i>' + msg.user_nickname + '</div>';
+	                    } else {
+	                    	messageHtml += '<div class="usernick">' + msg.user_nickname + '</div>';
+	                    }
+	                	
 	                	messageHtml += '</div>';
 	                	messageHtml += '<div class="txtbox">';
 	                	messageHtml += '<div class="msgtxt">' + msg.usermsg_content + '</div>';
@@ -109,6 +162,7 @@
 	                var chatList = $('.chatlist');
 	        	    chatList.scrollTop(chatList[0].scrollHeight);
 	        	    
+			        	    
 	            },
 	            error: function () {
 	                console.log("메세지를 불러오는 중 오류가 발생했습니다.");
@@ -119,7 +173,7 @@
 	    // 페이지 로드 시 메세지 불러오기
 	    loadMessages();
 
-		
+	    
 	});
 	
 </script>
@@ -214,7 +268,7 @@
         display: flex;
 	    width: 780px;
 	    height: 50px;
-	    background-color: bisque;
+	    background-color: lightgray;
 	    align-items: center;
 	    justify-content: center;
     }
@@ -230,7 +284,7 @@
     	display: flex;
    	    justify-content: space-between;
 	    width: 200px;
-	    background-color: darkcyan;
+	    background-color: white;
 	    flex-direction: column;
     }
     .room2{
@@ -241,8 +295,9 @@
         margin: 10px;
         width: 180px;
         height: 50px;
-        background-color: aliceblue;
-        border-radius: 10px;
+        background-color: lightgray;
+        border-radius: 50px;
+        border: 1px solid black;
     }
     .room2 img{
     	width: 40px;
@@ -253,6 +308,7 @@
 	    display: flex;
 	    align-items: center;
 		justify-content: space-between;
+		background-color: lightgray;
     }
     .roomoutbtn{
     	display: flex;
@@ -306,13 +362,16 @@
     
     .msgform{
         width: 580px;
-        background-color: darkolivegreen;
+        background-color: 82B5D6;
     }
     .chatlist{
-        background-color: thistle;
         width: 100%;
         height: 550px;
         overflow-y: auto;
+    }
+    .fa-crown{
+    	color: EFE041;
+    	margin-right: 5px;
     }
     .noti{
     	display: flex;
@@ -385,7 +444,7 @@
                             <c:forEach items="${list}" var="userchat">
 	                            <div class="room">
 	                                <div class="roominfo">${userchat.userchat_subject}</div>
-	                                <div class="roominfo">/${userchat.current_people}</div>   
+	                                <div class="roominfo">${userchat.user_id}</div>   
 	                            </div>
                             </c:forEach>
                             <div class="back">
@@ -404,13 +463,7 @@
                 </div>
                 <div class="cont2">
                     <div class="userlist">
-                    	<div>
-                    	<c:forEach items="${userlist}" var="userlist">
-                        <div class="room2">
-							<img width="20" alt="img" src="/photo/${userPhotos[userlist.user_id]}">
-                            <div class="user">${userNicknames[userlist.user_id]}</div>
-                        </div>
-                        </c:forEach>
+                    	<div class="ajax">
                         </div>
                         <div class="roomout">
                         	<div class="roomoutbtn">

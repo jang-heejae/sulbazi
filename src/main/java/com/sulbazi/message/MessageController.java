@@ -18,8 +18,9 @@ public class MessageController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired MessageService msg_ser;
 	
+	// 개인 채팅방
 	// 메세지 전송
-    @PostMapping("/sendMessage.ajax")
+    @PostMapping(value="/sendMessage.ajax")
     @ResponseBody
     public String sendmsg(@RequestParam String user_id, @RequestParam String usermsg_content, @RequestParam int userchat_idx, Model model) {
         msg_ser.sendmsg(user_id, usermsg_content, userchat_idx, model);
@@ -27,10 +28,27 @@ public class MessageController {
     }
     
     // 메세지 로드
-    @GetMapping("/loadMessages.ajax")
+    @GetMapping(value="/loadMessages.ajax")
     @ResponseBody
     public List<UserMsgDTO> getmsg(@RequestParam int userchat_idx) {
         return msg_ser.getmsg(userchat_idx);
     }
 
+    
+    // 지역 채팅방
+    // 메세지 전송
+    @PostMapping(value="/localsendMessage.ajax")
+    @ResponseBody
+    public String localsendmsg(@RequestParam String user_id, @RequestParam String localmsg_content, @RequestParam int localchat_idx, Model model) {
+        msg_ser.localsendmsg(user_id, localmsg_content, localchat_idx, model);
+        return "success";
+    }
+    
+    // 메세지 로드
+    @GetMapping(value="/localloadMessages.ajax")
+    @ResponseBody
+    public List<UserMsgDTO> getlocalmsg(@RequestParam int localchat_idx) {
+        return msg_ser.getlocalmsg(localchat_idx);
+    }
+    
 }

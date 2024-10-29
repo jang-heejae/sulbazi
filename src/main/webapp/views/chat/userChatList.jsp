@@ -19,6 +19,42 @@
     a{
         text-decoration: none;
     }
+    .searchbox{
+   		display: flex;
+	    position: absolute;
+	    top: 80px;
+   	    left: 803px;
+    }
+    .search{
+        display: flex;
+    	align-items: center;
+        position: relative;
+        width: 300px; /* 원하는 너비 설정 */
+        margin: 50px auto; /* 가운데 정렬 */
+    }
+    .search i{
+        position: absolute;
+        left: 10px; /* 아이콘의 위치 설정 */
+        top: 50%; /* 수직 중앙 정렬 */
+        transform: translateY(-50%); /* 수직 중앙 정렬 */
+        color: #aaa; /* 아이콘 색상 */
+    }
+    .search input{
+    	outline: none;
+        padding-left: 40px; /* 아이콘의 너비 만큼 여백 추가 */
+        width: 100%; /* 부모 요소의 너비에 맞추기 */
+        height: 40px; /* 원하는 높이 설정 */
+        border: 1px solid #ccc; /* 테두리 스타일 */
+        border-radius: 5px; /* 모서리 둥글게 */
+    }
+    .search p{
+    	width: 50px;
+    	color: white;
+    	font-size: small;
+    }
+    .return{
+		width: 50px;
+    }
 	.chatBox{
 		display: flex;
    		justify-content: space-around;
@@ -47,6 +83,13 @@
 		height: 230px;
 		background-color : 73734F;
 		border-radius: 45px;
+	}
+	.title{
+		font-size: large;
+		font-weight: bold;
+	}
+	.createduser{
+		font-size: medium;
 	}
     .newroombtn{        
         z-index: 999;
@@ -112,42 +155,7 @@
         width: 200px;
         align-items: center;
     }
-    .searchbox{
-   		display: flex;
-	    position: absolute;
-	    top: 80px;
-   	    left: 803px;
-    }
-    .search{
-        display: flex;
-    	align-items: center;
-        position: relative;
-        width: 300px; /* 원하는 너비 설정 */
-        margin: 50px auto; /* 가운데 정렬 */
-    }
-    .search i{
-        position: absolute;
-        left: 10px; /* 아이콘의 위치 설정 */
-        top: 50%; /* 수직 중앙 정렬 */
-        transform: translateY(-50%); /* 수직 중앙 정렬 */
-        color: #aaa; /* 아이콘 색상 */
-    }
-    .search input{
-    	outline: none;
-        padding-left: 40px; /* 아이콘의 너비 만큼 여백 추가 */
-        width: 100%; /* 부모 요소의 너비에 맞추기 */
-        height: 40px; /* 원하는 높이 설정 */
-        border: 1px solid #ccc; /* 테두리 스타일 */
-        border-radius: 5px; /* 모서리 둥글게 */
-    }
-    .search p{
-    	width: 50px;
-    	color: white;
-    	font-size: small;
-    }
-    .return{
-		width: 50px;
-    }
+    
     .return a{
 	    position: absolute;
 	    top: 66px;
@@ -202,13 +210,16 @@
                     <ul>
                     	<li><input type="hidden" name="userchat_idx" value="${userchat.userchat_idx}" readonly/></li>
                     	<li><input type="hidden" name="userchat_date" value="${userchat.userchat_date}" readonly/></li>
-                        <li>
+                        <li class="title">
                         	${userchat.userchat_subject}
                         	<input type="hidden" name="userchat_subject" value="${userchat.userchat_subject}" readonly/>	
                         </li>
-                        <li>
+                        <li class="createduser">
                         	${userchat.user_id}
                         	<input type="hidden" name="user_id" value="${userchat.user_id}" readonly/>	
+                        </li>
+                        <li>
+                        	<span class="total_${userchat.userchat_idx}"></span> / ${userchat.current_people}
                         </li>
                     </ul>
                 </div>
@@ -231,7 +242,8 @@
 </body>
 <script>
 $(document).ready(function() {
-    
+	
+	
     // 채팅방 취소 버튼
     $('.newroombtn, .cancel').click(function(){      
         var display = $('.createroom').css('display');
@@ -258,18 +270,57 @@ $(document).ready(function() {
         location.replace('./userchatlist.go');
     }
     
+	
+    
+
+    
+    	
+    	
+    	
     
     // 참가 신청
-/*     $('.gobtn').on('click',function(event) {
+     /* $('.gobtn').on('click',function(event) {
         event.preventDefault(); // 폼 제출 막기 (필요할 경우 사용)
 		if($(this).text() === "참가"){
 	        $(this).text('참가신청중');
 		}else if($(this).text() === "참가신청중"){
 			$(this).closest('form').submit();			
 		}
-    }); */
-
+    });
+ */
     
+ 	
+    // 각 방에 참여한 사용자 수
+     $('.chatroom').each(function() {
+        var chatroom_idx = $(this).find('input[name="userchat_idx"]').val();
+        console.log(chatroom_idx);
+        
+        $.ajax({
+            url: '/SULBAZI/usertotal.ajax',
+            method: 'GET',
+            data: { chatroom_idx: chatroom_idx },
+            success: function(count) {
+                // 참여자 수를 표시할 DOM 요소에 업데이트
+                console.log(count);
+                $('.total_' + chatroom_idx).text(count);
+
+                // 참가 버튼 표시 조건
+               /*  var currentPeople = parseInt('${userchat.current_people}');
+                if (count < currentPeople) {
+                    $('#joinButton_' + chatroomId).show();
+                } */
+            },
+            error: function() {
+            	$('.total_' + chatroom_idx).text('Error');
+            }
+        });
+        
+    });
+ 	
+   
+ 
+ 
+ 
     // 페이지 로드 시 검색어가 있을 경우
     var storedQuery = localStorage.getItem('searchQuery'); // 로컬 스토리지에서 검색어 가져오기
     if (storedQuery) {
@@ -351,7 +402,7 @@ $(document).ready(function() {
         location.href = "userchatlist.go"; // 리스트 페이지로 이동
     });
     
-	
+    
     
 });
 </script>
