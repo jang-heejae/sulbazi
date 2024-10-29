@@ -38,11 +38,7 @@ public interface StoreDAO {
 
 	List<StoreMenuDTO> getStoreAlcohol(int idx);
 
-	int bookmarkCheck(String user_id, int store_idx);
-
-	int bookmarkCheckCount(String user_id, int store_idx);
-
-	int delBookmark(String user_id, int store_idx);
+	int bookmarkCheckCount(Map<String, Object> map);
 
 	List<PhotoDTO> getStorePhotos(int idx);
 
@@ -64,6 +60,7 @@ public interface StoreDAO {
 
 	List<PhotoDTO> findPhotosForStores(List<StoreDTO> stores);
 
+
 	List<CategoryOptDTO> OptionsCategoryState(int categorystate);
 
 	List<BoardDTO> storemyboard(int store_idx);
@@ -80,7 +77,13 @@ public interface StoreDAO {
 
 	List<StoreCategoryDTO> storeHelpMeIdx(List<StoreDTO> stores);
 
+<<<<<<< HEAD
 	List<StoreMenuDTO> storemenulist(int store_idx);
+=======
+	int getTPage(int cnt);
+
+
+>>>>>>> origin/master
 
 	List<StoreMenuDTO> storealcholmenulist(int store_idx);
 
