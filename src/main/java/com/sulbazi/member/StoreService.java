@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -74,11 +75,18 @@ public class StoreService {
 		 return map;
 	}
 
-	public Map<String, Object> storemenusearch(String keyword) {
+	public Map<String, Object> storemenusearch(String keyword,int page,int cnt) {
+		int limit = cnt;
+		int offset = (page-1) * cnt;
+		
+		
 		logger.info("매장메뉴키워드서비스");
 		logger.info(keyword);
 		List<Integer> menusearch = store_dao.storemenusearch(keyword);
 		logger.info("필터링된 매장 idx" + menusearch);
+		
+		int totalPages = (int) Math.ceil((double) menusearch.size() / cnt);
+		
 		
 		List<StoreDTO> filteringstorelist ; 
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -93,7 +101,25 @@ public class StoreService {
 			 
 		 }	
 		 
-		 map.put("searchresult", accumulatedFilteringStoreList);
+		 
+		 accumulatedFilteringStoreList.sort(
+				    Comparator.comparingDouble(StoreDTO::getStar_average).reversed() // 별점 높은 순
+				              .thenComparingInt(StoreDTO::getReview_total).reversed() // 리뷰 수 높은 순
+				              .thenComparingInt(StoreDTO::getStore_idx) // store_idx 오름차순
+				);
+		 int toIndex = Math.min(offset + limit, accumulatedFilteringStoreList.size());
+		 List<StoreDTO> paginatedList = accumulatedFilteringStoreList.subList(offset, toIndex);
+		 
+		 List<PhotoDTO> photoList = store_dao.findPhotosForStores(paginatedList);
+		 List<CategoryOptDTO> categoryOpts = store_dao.findStoreCategorys(paginatedList);
+		 List<StoreCategoryDTO> storeCategorys = store_dao.storeHelpMeIdx(paginatedList);
+		 
+		 map.put("searchresult", paginatedList);
+		 map.put("totalPages", totalPages);
+		 map.put("photos", photoList);
+		 map.put("categoryOpts", categoryOpts);
+		 map.put("storeCategorys", storeCategorys);
+		
 		 logger.info("map 종원 {}:",map);
 		 
 		 return map;

@@ -177,6 +177,9 @@
 		h3:hover {
 		    color: purple;
 		}
+		.hover-td:hover {
+		    background-color: #f0f0f0;
+		}
 			
 
 </style>
@@ -280,8 +283,28 @@
 		    level: 3
 		};
 		
+
+		
+/* 		//매장 테이블 호버시 지도 위치 이동
+		function moveMapCenter(lat, lng) {
+		    var newCenter = new kakao.maps.LatLng(lat, lng);
+		    map.setCenter(newCenter);
+		} */
+		
 		var map = new kakao.maps.Map(container, options);
 		var markers = []; // 마커를 저장할 배열
+		
+		// 마우스 호버 맵 이동
+		// 기본 중심 위치를 저장
+		var defaultCenter = map.getCenter();
+
+
+		
+		
+		
+		
+		
+		
 		
 		/* 리스트 페이징  */
 		var show = 1;
@@ -346,10 +369,19 @@
 	    storeList.forEach(function(store, idx) {
 	        // 각 store에 대한 HTML 구조를 생성
 	        /* var photo = photos[idx]; */
-	        var photo = photos.find(function(p) {
-	        	/* p는 포토 리스트의 photo 들이다 */
+/* 	        var photo = photos.find(function(p) {
 	            return p.photo_folder_idx === store.store_idx;
-	        });
+	        }); */
+
+	        if (Array.isArray(photos)) {
+	            var photo = photos.find(function(p) {
+	                return p.photo_folder_idx === store.store_idx;
+	            });
+	        } else {
+	            console.warn("photos가 배열이 아닙니다.", photos);
+	            
+	            
+	        }
 	        
  	        var relatedCategoryOpts = categoryOpts.filter(function(categoryOpt) {
 	            return storeCategorys.some(function(storeCategory) {
@@ -363,7 +395,7 @@
 	            content +='<td class="store-img">'
 	            content +='<img src="/photo/'+photo.new_filename+'" alt="'+store.store_name+'" width="95px" height="95px">'
 	            content +='</td>'
-	            content +='<td>'
+	            content +='<td  class="hover-td" data-lat="'+store.store_latitude+'" data-lng="'+store.store_longitude+'">'
 	            content += '<h3 class="store-name" data-store-idx="' + store.store_idx +'"  onclick="location.href=\'storeDetail.do?storeidx=' + store.store_idx + '\'">'+ store.store_name + '</h3>';
 	            
 	            
@@ -372,10 +404,12 @@
 	            content +='</div>'
 	            content +='<div class="categories">'
 
-	                for (var i = 0; i < Math.min(relatedCategoryOpts.length, 4); i++) {
+/* 	                for (var i = 0; i < Math.min(relatedCategoryOpts.length, 4); i++) {
 	                    content += '<p>' + '&nbsp; #'+relatedCategoryOpts[i].opt_name + '</p>';
-	                }
-
+	                } */
+	                relatedCategoryOpts.slice(0, 4).forEach(function(opt) {
+	                    content += '<p>&nbsp;#' + opt.opt_name + '</p>';
+	                });
 	            
 	            
 	            content +='</div>'
@@ -388,13 +422,35 @@
 	        listContainer.innerHTML += content;
 	    });
 	    
+		// 모든 .hover-td 클래스에 대해 이벤트 리스너 추가
+		document.querySelectorAll('.hover-td').forEach(function(td) {
+		    td.addEventListener('mouseenter', function() {
+		        // td의 data 속성에서 위도, 경도 값 가져오기
+		        var lat = parseFloat(td.getAttribute('data-lat'));
+		        var lng = parseFloat(td.getAttribute('data-lng'));
+		        map.setCenter(new kakao.maps.LatLng(lat, lng));
+		    });
+		    
+/* 		    td.addEventListener('mouseleave', function() {
+		        // 지도 중심을 기본 위치로 되돌림
+		        map.setCenter(defaultCenter);
+		    }); */
+		});
+	    
 	    // h3 요소에 마우스 호버 이벤트 추가
 	    document.querySelectorAll('.store-name').forEach(function(element) {
 	        var storeIdx = element.getAttribute('data-store-idx');
-	        var markerObj = markers.find(function(marker) {
-	            return marker.storeIdx == storeIdx;
-	        });
-
+/* 	        if (Array.isArray(markers)) {
+	            var markerObj = markers.find(function(marker) {
+	                return marker.someCondition; // 원하는 조건
+	            });
+	        } else {
+	            console.warn("markers가 배열이 아닙니다.", markers);
+	        } */
+            var markerObj = markers.find(function(marker) {
+                return marker.storeIdx === storeIdx;
+            });
+	        
 	        if (markerObj) {
 	            // 마우스 오버 시 인포윈도우 표시
 	            element.addEventListener('mouseover', function() {
@@ -422,22 +478,49 @@
 	        </tr>
 	    `;
 	}
-
+	
+	
+	
+/* 	//중복마커 지우기
+	var storeIdxSet = new Set(); */
+	
 	function drawMarkers(storeList) {
 	    // 기존 마커 제거
-	    markers.forEach(function(markerObj) {
+   	    markers.forEach(function(markerObj) {
 	        markerObj.marker.setMap(null);
-	    });
-	    markers = [];
+	    });  
+	     markers = [];
+	    
+	    
+	    
+/*         //중복마커 지우기
+		    markers.forEach(function(markerObj) {
+		        markerObj.marker.setMap(null);
+		    });
+		    markers = [];
+		    storeIdxSet.clear(); */
+	   
 
 	    storeList.forEach(function(store) {
 	        var markerPosition = new kakao.maps.LatLng(store.store_latitude, store.store_longitude);
 	        
 	        // 마커 생성 (일반 마커 사용)
-	        var marker = new kakao.maps.Marker({
+ 	        var marker = new kakao.maps.Marker({
 	            position: markerPosition,
 	            map: map // 마커를 생성할 때 지도에 바로 추가
-	        });
+	        });  
+	        
+/* 	        //중복마커 지우기
+	        // store_idx 중복 여부 확인
+	        if (!storeIdxSet.has(store.store_idx)) {
+	            var markerPosition = new kakao.maps.LatLng(store.store_latitude, store.store_longitude);
+	            
+	            // 마커 생성
+	            var marker = new kakao.maps.Marker({
+	                position: markerPosition,
+	                map: map
+	            }); */
+
 	        
 	        // 인포윈도우의 내용 생성
 			var windowText = '';
@@ -471,6 +554,10 @@
 
 	        // 마커와 관련된 정보를 배열에 저장
 	        markers.push({ marker: marker, infoWindow: infoWindow, storeIdx: store.store_idx });
+	        
+/* 	        //중복 마커 지우기
+	        storeIdxSet.add(store.store_idx);
+	        } */
 	    });
 	}
 	
@@ -505,7 +592,7 @@ $('#filtering').click(function() {
 })
 
 
-
+//$('#pagination').twbsPagination('destroy'); //기존에 만들어진 페이징을 파괴
 
 //검색
 $('#performSearch').click(function() {
@@ -513,73 +600,48 @@ $('#performSearch').click(function() {
 	var keyword = document.getElementById("searchQuery").value;
 	console.log(category);
 	console.log(keyword);
+	$('#pagination').twbsPagination('destroy'); //기존에 만들어진 페이징을 파괴
+	
+	searchPageCall(category,keyword,1)
+	
+
+});
+
+
+function searchPageCall(category, keyword, page) {
     $.ajax({
-        type:'GET',  //method
-        url: category+'search.ajax',  //요청 주소
-        data:{'keyword' :keyword},   //파라메터
-        dataType:'JSON',  //받을 데이터 타입
+        type: 'GET',
+        url: category + 'search.ajax',
+        data: {
+            'keyword': keyword,
+            'page': page,
+            'cnt': 5
+        },
+        dataType: 'JSON',
         success: function(data) {
             console.log(data);
-            if (data && data.searchresult && data.searchresult.length) {
-                drawSearchResults(data.searchresult);
+            if (data.searchresult && data.searchresult.length) {
+                drawList(data.searchresult, data.photos, data.categoryOpts, data.storeCategorys);
+                drawMarkers(data.searchresult);
+                
+                
+                $('#pagination').twbsPagination({
+                    startPage: 1,
+                    totalPages: data.totalpages, 
+                    visiblePages: 5,
+                    onPageClick: function(evt, page) {
+                        searchPageCall(category, keyword, page);
+                    }
+                });
             } else {
                 showNoStoresMessage();
             }
-
         },
-        error:function(e) {  //실패했을 경우(실패 내용)
-            console.log(e)
+        error: function(e) {
+            console.log(e);
         }
     });
-});
-
-function drawSearchResults(storeList){
-	
-	var listContainer = document.getElementById('list');
-	listContainer.innerHTML='';
-	
-	storeList.forEach(function(store,idx){
-		var content = '<tr>';
-        content += '<td class="store-img">';
-        content += '<img src="/photo/' + store.new_filename + '" alt="' + store.store_name + '" width="95px" height="95px">';
-        content += '</td>';
-        content += '<td>';
-        content += '<h3 class="store-name" data-store-idx="' + store.store_idx + '" onclick="location.href=\'storeDetail.do?storeidx=' + store.store_idx + '\'">' + store.store_name + '</h3>';
-        content += '<div class="store-rating">';
-        content += '<span>⭐' + store.star_average + ' (' + store.review_total + '명)</span>';
-        content += '</div>';
-        content += '<div class="categories">';
-	});
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

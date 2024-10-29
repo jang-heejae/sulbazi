@@ -76,6 +76,8 @@ public interface StoreDAO {
 
 	List<StoreCategoryDTO> storeHelpMeIdx(List<StoreDTO> stores);
 
+	int getTPage(int cnt);
+
 
 
 

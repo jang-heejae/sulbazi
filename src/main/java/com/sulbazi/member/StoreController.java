@@ -141,53 +141,8 @@ public class StoreController {
             List<PhotoDTO> photoList = store_ser.findPhotosForStores(stores);
             List<CategoryOptDTO> categoryOpts = store_ser.findStoreCategorys(stores);
             List<StoreCategoryDTO> storeCategorys = store_ser.storeHelpMeIdx(stores);
-//            List<CategoryOptDTO> categoryOpts = store_ser.findCategotyOpts(storeCategorys);
-            
 
-            
-            
-            
-//            for (CategoryOptDTO categoryOptDTO : categoryOpts) {
-//            	int i = categoryOptDTO.getOpt_idx();
-//            	String c = categoryOptDTO.getOpt_name();
-//            	
-//            	System.out.println("카태고리"+i+':'+ c );
-//            			
-//			}
 
-//            List<Integer> storeIdxCategory = new ArrayList<>();
-//            
-//            for (StoreDTO  storedto : stores) {
-//				int c = storedto.getStore_idx();
-//				System.out.println(c);
-//				
-//				storeIdxCategory.add(c);
-//			}
-            
-        
-//            for (StoreCategoryDTO sc : storeCategorys) {
-//            	int asd = sc.getOpt_idx();
-//            	int dsa = sc.getStore_idx();
-//            	
-//            	System.out.println("카테고리 디폴트 store:"+dsa+" : "+asd);
-//			}
-            
-            
-            
-//            for (CategoryOptDTO categoryOptDTO : categoryOpts) {
-//					int a = categoryOptDTO.getOpt_idx();
-//					int b = categoryOptDTO.getCategory_idx();
-//					String c = categoryOptDTO.getOpt_name();
-//					
-//					//System.out.println("카테고리: " +a+" : "+b+" : "+c);
-//					logger.info("카테고리 :{}",categoryOptDTO);
-//			}
-            
-            
-            
-
-            
-            
             // 응답 데이터 구성
             Map<String, Object> response = new HashMap<>();
             response.put("list", stores);
@@ -237,11 +192,12 @@ public class StoreController {
 	
 	@GetMapping(value="/menusearch.ajax")
 	@ResponseBody
-	public Map<String, Object> storemenusearch(String keyword) {
+	public Map<String, Object> storemenusearch(String keyword,int page,int cnt) {
 		logger.info("메뉴키워드 컨트롤러");
 		logger.info(keyword);
+		/* System.out.println("이종원 페이지,cnt 확인"+page+" : "+cnt); */
 		Map<String, Object> map = new HashMap<String, Object>();
-		return store_ser.storemenusearch(keyword);
+		return store_ser.storemenusearch(keyword,page,cnt);
 	}
 	
 	@GetMapping(value="/addrsearch.ajax")
