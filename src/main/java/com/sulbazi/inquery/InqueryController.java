@@ -44,7 +44,7 @@ public class InqueryController {
 		logger.info("params: {}", params);
 		logger.info("file count:"+inqueryfiles.length);
 		inquery_ser.userinquerywrite(inqueryfiles, params, session);
-		return "inquery/inqueryUserList";
+		return "redirect:/userinquery.go";
 	}
 	
 	//사용자 문의 글 리스트 
@@ -136,6 +136,11 @@ public class InqueryController {
 		}
 		return page;
     }
+
+
+
+
+	//관리자 문의 글 상세페이지 이동
 
 
 	@GetMapping(value="/inqueryDetail.go")

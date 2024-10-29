@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CategoryService {
@@ -77,6 +78,21 @@ public class CategoryService {
 		category_dao.storejoin(storecategorydto);
 	}
 	
+
+	@Transactional
+	public void mystoreoptupdate(Map<String, String> params, int idx) {
+		category_dao.deletemystoreopt(idx);
+		int alchol = Integer.parseInt(params.get("alchol"));
+		int food = Integer.parseInt(params.get("food"));
+		int mood = Integer.parseInt(params.get("mood"));
+		int visit = Integer.parseInt(params.get("visit"));
+		category_dao.updatemystoreopt(alchol, idx);
+		category_dao.updatemystoreopt(food, idx);
+		category_dao.updatemystoreopt(mood, idx);
+		category_dao.updatemystoreopt(visit, idx);
+	}
+
+
 	public void userUpdate(Map<String, String> param, String user_id) {
 	    logger.info("cateup param:" + param);
 	    logger.info("cateup user_id:" + user_id);

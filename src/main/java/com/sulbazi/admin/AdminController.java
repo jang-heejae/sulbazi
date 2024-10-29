@@ -33,17 +33,20 @@ public class AdminController {
 		model.addAttribute("result", msg);
 		return "admin/adminList";
 	}
+	
 	@GetMapping(value="/adminList.ajax")
 	@ResponseBody
 	public Map<String, Object>adminList(){
 		return admin_ser.adminList();
 	}
+	
 	@RequestMapping(value="/adminUpdate.do")
 	public String adminChange(String admin_id, Model model) {
 		AdminDTO dto = admin_ser.adminChange(admin_id);
 		model.addAttribute("info", dto);
 		return "admin/adminUpdate";
 	}
+	
 	@PostMapping(value="/adminUpdate.ajax")
 	@ResponseBody 
     public Map<String, Object> adminUpdate(@RequestParam Map<String, Object>param) {
@@ -57,10 +60,12 @@ public class AdminController {
             }
         return response; 
     }
+	
 	@RequestMapping(value="/adminUserList.go")
 	public String adminUserList() {
 		return "admin/adminUserList";
 	}
+	
 	@GetMapping(value="/adminUserList.ajax")  
 	@ResponseBody
 	public Map<String, Object> adminUserList(String page, String cnt, String category, String keyword){
@@ -68,6 +73,7 @@ public class AdminController {
 		int cnt_ = Integer.parseInt(cnt);
 		return admin_ser.adminUserList(page_, cnt_, category, keyword); 
 	}
+	
 	@RequestMapping(value="/adminUserDetail.go")
 	public String adminUserDetail(String user_id, Model model) {
 		admin_ser.adminUserDetail(user_id, model);
@@ -78,6 +84,7 @@ public class AdminController {
 	public String adminStoreList() {
 		return "admin/adminStoreList";
 	}
+	
 	@GetMapping(value="/adminStoreList.ajax")  
 	@ResponseBody
 	public Map<String, Object> adminStoreList(String page, String cnt, String category, String keyword){

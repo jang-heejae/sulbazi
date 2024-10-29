@@ -12,6 +12,146 @@
         body{
             background-color: #041d03;
         }
+<<<<<<< HEAD
+        .back{
+        	overflow-y: auto;
+        }
+        div.filter{
+            background-color: white;
+            position: fixed;
+            width: 220;
+            height: auto;
+            left: 363px;
+            top: 200;
+            border-radius: 15px;
+        }
+        input{
+            font-size: 15px;
+            margin-top:-1px; 
+            vertical-align:middle;
+        }
+        legend{
+            font-size: 23px;
+            font-weight: 800;
+        }
+        fieldset{
+            border-color: white;
+            margin: auto;
+            margin-bottom: 5;
+            margin-top: 5;
+            width: 170;
+            border-bottom-color: rgb(255, 140, 9);
+        }
+        #filtering{
+            position: absolute;
+            right: 10px;
+            background-color: rgb(255, 140, 9);
+            color: black;
+            border-color: rgb(255, 140, 9);
+            border-radius: 15px;
+            font-weight: 800;
+            padding: 5;
+            margin-top:5;
+        	}
+            .search-container {
+                display: flex;
+                align-items: center;
+                width: 500px;
+                margin: 20px auto;
+                left: 630px;
+    			position: absolute;
+    			top: 100px;
+            }
+            .search-select {
+                padding: 8px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 15px;
+            }
+            .search-wrapper {
+                position: relative;
+                margin-left: 10px;
+            }
+            .search-input {
+                width: 450;
+                padding: 8px 40px 8px 8px; /* 오른쪽 여백을 추가해 아이콘과 겹치지 않도록 */
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 15px;
+            }
+            .search-button {
+                position: absolute;
+    			background-color : rgb(255, 140, 9);
+    			color: black;
+    			border-color: rgb(255, 140, 9);
+    			border-radius: 15px;
+    			font-weight: 500;
+    			padding: 5;
+                width: 30px;
+                height: 30px;
+                cursor: pointer;
+                margin-left:5; 
+            }
+            .searchicon{
+            	width: 25px;
+            }
+			.bodysize table,tr,td,th{
+                border:1px solid black;
+                border-collapse: collapse;
+                width:100%;
+                padding: 5px 10px;
+            }
+			main{
+				display: flex;
+				flex-direction: column;
+                align-items: center;       
+			    position: absolute;
+			    top: 203px;
+			    left: 50%;
+			    transform: translateX(-50%);
+			}
+			.mapwhatname{
+				margin: 0 0 20px 0 ;
+				border-radius: 8px;
+			}
+			.bodysize{
+				background-color: white;
+				width: 788px;
+				border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                align-items: center; 
+			}
+			.filedA{
+				height: 194px;
+			}
+			.filedB{
+				height: 145px;
+			}
+			.filedC{
+				height: 168px;
+			}
+			.container{
+			    display: flex;
+			    justify-content: center; 
+			    align-items: center; 
+			    width: 100%; 
+    		}
+    		.store-img{
+    			width: 100px;
+    			
+    		}
+    		.categories{
+    			width: 100%;
+    			height:100%;
+    		}
+    		.categories p{
+    			display:inline-block;
+    			margin: 0 0;
+    			color: #BDBDBD;
+    		}
+
+=======
 		.back {
 		    display: flex;
 		    flex-direction: column;
@@ -181,6 +321,7 @@
 		    background-color: #f0f0f0;
 		}
 			
+>>>>>>> origin/master
 
 </style>
 </head>
@@ -272,6 +413,10 @@
 
 </body>
 <script>
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/master
 		var loginId = '${sessionScope.loginId}';
 		
 		/* 지도 영역 */
@@ -564,6 +709,10 @@
 
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/master
 //필터링
 $('#filtering').click(function() {
 	var alchol = $(':input:radio[name=alchol]:checked').val();

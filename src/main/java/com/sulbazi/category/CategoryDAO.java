@@ -22,12 +22,20 @@ public interface CategoryDAO {
 
 	void storejoin(StoreCategoryDTO storecategorydto);
 
+	int deletemystoreopt(int idx);
+
+	int updatemystoreopt(int opt_idx, int store_idx);
+
+	void userUpdate(String user_id, Integer category_idx, Integer opt_idx);
+
 	Integer updateOpt(String opt_name_value);
+
 
 	boolean userUpdate(String user_id, Integer opt_idx);
 
 	void userUpdateCate(String user_id, int opt_idx);
 
 	void userInsertCate(String user_id, int opt_idx);
+
 
 }

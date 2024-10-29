@@ -17,12 +17,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sulbazi.board.BoardDTO;
 import com.sulbazi.category.CategoryDTO;
 import com.sulbazi.category.CategoryOptDTO;
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.photo.PhotoDTO;
+import com.sulbazi.photo.PhotoService;
 
 
 @Service
@@ -280,6 +282,22 @@ public class StoreService {
     }
 
 
+	public boolean mystoreupdate(Map<String, String> params, int idx) {
+		StoreDTO storedto = new StoreDTO();
+		storedto.setStore_idx(idx);
+		storedto.setStore_pw(params.get("store_pw"));
+		storedto.setStore_name(params.get("store_name"));
+		storedto.setStore_phone(params.get("store_phone"));
+		storedto.setStore_address(params.get("store_address"));
+		storedto.setStore_time(params.get("store_time"));
+		int row = store_dao.mystoreupdate(storedto);
+		boolean success = false;
+		if(row != 0) {
+			success = true;
+		}
+		return success;
+	}
+
 	public List<CategoryOptDTO> findStoreCategorys(List<StoreDTO> stores) {
 		return store_dao.findStoreCategorys(stores);
 	}
@@ -289,7 +307,54 @@ public class StoreService {
 		return  store_dao.storeHelpMeIdx(stores);
 	}
 
+	public List<StoreMenuDTO> storemenulist(int store_idx) {
+		return store_dao.storemenulist(store_idx);
+	}
 
 
+	public List<StoreMenuDTO> storealcholmenulist(int store_idx) {
+		return store_dao.storealcholmenulist(store_idx);
+		   }
+
+
+	public boolean menuupdate(String menu_name, String menu_price, String menu_idx) {
+		boolean success = false;
+		int row = store_dao.menuupdate(menu_name,menu_price,menu_idx);
+		if(row != 0) {
+			success = true;
+		}
+		return success;
+	}
+
+
+	public boolean menudelete(String menu_idx) {
+		boolean success = false;
+		int row = store_dao.menuudelete(menu_idx);
+		if(row != 0) {
+			success = true;
+		}
+		return false;
+	}
+
+	
+	public int menuinsert(MultipartFile[] files,int store_idx, Map<String, String> params) {
+		StoreMenuDTO store_menu = new StoreMenuDTO();
+		PhotoService photo_ser = new PhotoService();
+		store_menu.setMenu_name(params.get("menu_name"));//메뉴 이름
+		store_menu.setMenu_price(params.get("menu_price"));//메뉴 가격
+		store_menu.setStore_idx(store_idx);
+		store_menu.setMenu_category(params.get("menu_category"));
+		int row = store_dao.menuinsert(store_menu);
+		int photofolderidx = store_menu.getMenu_idx();
+		logger.info("방금 insert 한"+photofolderidx);//폴더 idx
+		if (photofolderidx>0 && row>0) {
+			photo_ser.menuphotoFile(files,photofolderidx,params);
+		}
+		return photofolderidx;
+	}
 
 }
+
+
+
+

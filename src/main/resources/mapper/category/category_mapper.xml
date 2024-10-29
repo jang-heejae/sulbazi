@@ -51,6 +51,23 @@
 		INSERT INTO store_category (store_idx, opt_idx)
 			VALUES (#{store_idx}, #{opt_idx})
 	</insert>
+
+
+	
+	<!-- 매장 카테고리 업데이트 -->
+	<!-- update문 불가로 delete와 insert문 사용 -->
+	<delete id="deletemystoreopt" >
+		DELETE FROM store_category WHERE store_idx=#{param1}
+	</delete>
+	
+	<insert id="updatemystoreopt">
+		INSERT INTO store_category(opt_idx, store_idx) 
+			VALUES (#{opt_idx}, #{store_idx})
+	</insert>
+	
+	
+	
+
 	
 	<select id="updateOpt" parameterType="String" resultType="int">
     	SELECT opt_idx FROM category_opt WHERE opt_name = #{opt_name}
