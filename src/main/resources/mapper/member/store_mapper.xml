@@ -89,11 +89,6 @@
 
 
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/master
 	<!-- 매장 리스트  -->
 	<select id="findStoresInArea" parameterType="map" resultType="com.sulbazi.member.StoreDTO">
         SELECT * 
