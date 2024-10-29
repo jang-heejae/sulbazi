@@ -78,7 +78,7 @@ public class CategoryService {
 		category_dao.storejoin(storecategorydto);
 	}
 	
-<<<<<<< HEAD
+
 	@Transactional
 	public void mystoreoptupdate(Map<String, String> params, int idx) {
 		category_dao.deletemystoreopt(idx);
@@ -92,8 +92,7 @@ public class CategoryService {
 		category_dao.updatemystoreopt(visit, idx);
 	}
 
-=======
->>>>>>> origin/master
+
 	public void userUpdate(Map<String, String> param, String user_id) {
 	    logger.info("cateup param:" + param);
 	    logger.info("cateup user_id:" + user_id);

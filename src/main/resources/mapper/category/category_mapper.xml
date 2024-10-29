@@ -51,7 +51,7 @@
 		INSERT INTO store_category (store_idx, opt_idx)
 			VALUES (#{store_idx}, #{opt_idx})
 	</insert>
-<<<<<<< HEAD
+
 
 	
 	<!-- 매장 카테고리 업데이트 -->
@@ -67,8 +67,7 @@
 	
 	
 	
-=======
->>>>>>> origin/master
+
 	
 	<select id="updateOpt" parameterType="String" resultType="int">
     	SELECT opt_idx FROM category_opt WHERE opt_name = #{opt_name}
