@@ -114,7 +114,7 @@
     <header>
         <nav class="navbar">
             <div class="logo_text">
-                <a href="#">SULBAZI</a>
+                <a href="./">SULBAZI</a>
             </div>
         </nav>
     </header>

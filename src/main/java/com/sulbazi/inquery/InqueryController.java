@@ -44,7 +44,7 @@ public class InqueryController {
 		logger.info("params: {}", params);
 		logger.info("file count:"+inqueryfiles.length);
 		inquery_ser.userinquerywrite(inqueryfiles, params, session);
-		return "inquery/inqueryUserList";
+		return "redirect:/userinquery.go";
 	}
 	
 	//사용자 문의 글 리스트 
@@ -136,6 +136,39 @@ public class InqueryController {
 		}
 		return page;
     }
+
+
+
+
+	//관리자 문의 글 상세페이지 이동
+
+
+	@GetMapping(value="/inqueryDetail.go")
+    public String admininquerydetail(@RequestParam("inqueryIdx") int inqueryIdx, Model model, HttpSession session) {
+		logger.info("문의상세가기 관리자컨트롤러");
+		String page= "login";
+		if(session.getAttribute("loginId") == null) {
+			model.addAttribute("result", "로그인이 필요한 서비스");
+		}else {
+			InqueryDTO userinquerydetail = null; //문의 글
+			List<AnswerDTO> answer = null; //문의 답변
+			List<PhotoDTO> userinquerydetailphoto = null; //문의 사진
+			page="redirect:/inquery/inqueryList";
+			userinquerydetail = inquery_ser.userinquerydetail(inqueryIdx);
+			answer = inquery_ser.answer(inqueryIdx);
+			List<AdminDTO> answeradmin = inquery_ser.answeradmin(inqueryIdx);
+			userinquerydetailphoto = photo_ser.inqueryphoto(inqueryIdx);
+			if(userinquerydetail != null) {
+				page="inquery/inqueryDetail";
+				model.addAttribute("userinquerydetail",userinquerydetail);
+				model.addAttribute("answer", answer);
+				model.addAttribute("answeradmin",answeradmin);
+				model.addAttribute("userinquerydetailphoto", userinquerydetailphoto);
+			}
+		}
+		return page;
+    }
+
 
 	@PostMapping(value="/adminanswer.do")
 	public String adminanswer(@RequestParam String answer, HttpSession session, @RequestParam int inqueryIdx) {

@@ -17,6 +17,10 @@
         background-color: #041d03;
         height: 1800;
     }
+    legend{
+    	color: white;
+    	font-weight: bold;
+    }
     .navbar{
         z-index: 99;
         position: absolute;
@@ -103,7 +107,7 @@
     <header>
         <nav class="navbar">
             <div class="logo_text">
-                <a href="#">SULBAZI</a>
+                <a href="./">SULBAZI</a>
             </div>
         </nav>
     </header>
@@ -131,9 +135,8 @@
                 <h2>프로필 사진</h2>
                 <input type="file" name="files" multiple="multiple">
                 <h2>카테고리(각 1개 선택가능(필수))</h2>
-                <h3>주종</h3>
         		<fieldset>
-				    <legend>Category 1</legend>
+				    <legend>주종</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 1}">
 				            <input type="radio" id="category_${category.category_idx}" name=category1 value="${category.opt_idx}" />
@@ -143,7 +146,7 @@
 				</fieldset>
 
 				<fieldset>
-				    <legend>Category 2</legend>
+				    <legend>안주</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 2}">
 				            <input type="radio" id="category_${category.category_idx}" name=category2 value="${category.opt_idx}" />
@@ -153,7 +156,7 @@
 				</fieldset>
 				
 				<fieldset>
-				    <legend>Category 3</legend>
+				    <legend>분위기</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 3}">
 				            <input type="radio" id="category_${category.category_idx}" name=category3 value="${category.opt_idx}" />
@@ -163,7 +166,7 @@
 				</fieldset>
 				
 				<fieldset>
-				    <legend>Category 4</legend>
+				    <legend>방문목적</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 4}">
 				            <input type="radio" id="category_${category.category_idx}" name=category4 value="${category.opt_idx}" />

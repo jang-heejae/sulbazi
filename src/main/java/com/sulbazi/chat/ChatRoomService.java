@@ -17,7 +17,6 @@ public class ChatRoomService {
 	@Autowired ChatPartiDAO chatparti_dao;
 	
 	/* 개인 채팅방 리스트 */
-	
 	public List<UserChatroomDTO> chatlist() {
 		return chatroom_dao.chatlist();
 	}
@@ -27,8 +26,8 @@ public class ChatRoomService {
 		return chatroom_dao.search(query);
 	}
 	
-	/* 개인 채팅방 생성 */
 	
+	/* 개인 채팅방 생성 */	
 	public int chatcreate(UserChatroomDTO userchatroomdto, Model model, String userId) {
 		
 		int row = chatroom_dao.chatcreate(userchatroomdto);
@@ -46,8 +45,7 @@ public class ChatRoomService {
 		return row;
 	}
 	
-	/* 생성한 채팅방 수정 */
-	
+	/* 생성한 채팅방 수정 */	
 	public void updatechatroom(Map<String, String> params) {
 		chatroom_dao.updatechatroom(params);
 	}
@@ -79,8 +77,7 @@ public class ChatRoomService {
 	
 	
 	
-	/* 지역 채팅방 리스트 */
-	
+	/* 지역 채팅방 리스트 */	
 	public List<UserChatroomDTO> localchatlist() {
 		return chatroom_dao.localchatlist();
 	}
@@ -89,6 +86,8 @@ public class ChatRoomService {
 	public List<LocalChatroomDTO> localroom() {
 		return chatroom_dao.localroom();
 	}
+
+	
 
 
 

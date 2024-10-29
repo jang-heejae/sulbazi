@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,12 +17,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sulbazi.board.BoardDTO;
 import com.sulbazi.category.CategoryDTO;
 import com.sulbazi.category.CategoryOptDTO;
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.photo.PhotoDTO;
+import com.sulbazi.photo.PhotoService;
 
 
 @Service
@@ -74,11 +77,18 @@ public class StoreService {
 		 return map;
 	}
 
-	public Map<String, Object> storemenusearch(String keyword, Model model) {
+	public Map<String, Object> storemenusearch(String keyword,int page,int cnt) {
+		int limit = cnt;
+		int offset = (page-1) * cnt;
+		
+		
 		logger.info("매장메뉴키워드서비스");
 		logger.info(keyword);
 		List<Integer> menusearch = store_dao.storemenusearch(keyword);
 		logger.info("필터링된 매장 idx" + menusearch);
+		
+		int totalPages = (int) Math.ceil((double) menusearch.size() / cnt);
+		
 		
 		List<StoreDTO> filteringstorelist ; 
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -91,12 +101,34 @@ public class StoreService {
 			 
 			 accumulatedFilteringStoreList.addAll(filteringstorelist);
 			 
-			 model.addAttribute("filteringstorelist", accumulatedFilteringStoreList);
-			 map.put("searchresult", accumulatedFilteringStoreList);
-		 }		 
+		 }	
+		 
+		 
+		 accumulatedFilteringStoreList.sort(
+				    Comparator.comparingDouble(StoreDTO::getStar_average).reversed() // 별점 높은 순
+				              .thenComparingInt(StoreDTO::getReview_total).reversed() // 리뷰 수 높은 순
+				              .thenComparingInt(StoreDTO::getStore_idx) // store_idx 오름차순
+				);
+		 int toIndex = Math.min(offset + limit, accumulatedFilteringStoreList.size());
+		 List<StoreDTO> paginatedList = accumulatedFilteringStoreList.subList(offset, toIndex);
+		 
+		 List<PhotoDTO> photoList = store_dao.findPhotosForStores(paginatedList);
+		 List<CategoryOptDTO> categoryOpts = store_dao.findStoreCategorys(paginatedList);
+		 List<StoreCategoryDTO> storeCategorys = store_dao.storeHelpMeIdx(paginatedList);
+		 
+		 map.put("searchresult", paginatedList);
+		 map.put("totalPages", totalPages);
+		 map.put("photos", photoList);
+		 map.put("categoryOpts", categoryOpts);
+		 map.put("storeCategorys", storeCategorys);
+		
+		 logger.info("map 종원 {}:",map);
+		 
 		 return map;
 	}
 
+	
+	
 	public Map<String, Object> storeaddrsearch(String keyword, Model model) {
 		logger.info("매장메뉴키워드서비스");
 		logger.info(keyword);
@@ -224,8 +256,6 @@ public class StoreService {
 	}
 
 
-
-
 	public List<CategoryOptDTO> OptionsCategoryState(int categorystate) {
 		return store_dao.OptionsCategoryState(categorystate);
 	}
@@ -251,6 +281,22 @@ public class StoreService {
     }
 
 
+	public boolean mystoreupdate(Map<String, String> params, int idx) {
+		StoreDTO storedto = new StoreDTO();
+		storedto.setStore_idx(idx);
+		storedto.setStore_pw(params.get("store_pw"));
+		storedto.setStore_name(params.get("store_name"));
+		storedto.setStore_phone(params.get("store_phone"));
+		storedto.setStore_address(params.get("store_address"));
+		storedto.setStore_time(params.get("store_time"));
+		int row = store_dao.mystoreupdate(storedto);
+		boolean success = false;
+		if(row != 0) {
+			success = true;
+		}
+		return success;
+	}
+
 	public List<CategoryOptDTO> findStoreCategorys(List<StoreDTO> stores) {
 		return store_dao.findStoreCategorys(stores);
 	}
@@ -260,6 +306,9 @@ public class StoreService {
 		return  store_dao.storeHelpMeIdx(stores);
 	}
 
+	public List<StoreMenuDTO> storemenulist(int store_idx) {
+		return store_dao.storemenulist(store_idx);
+	}
 
 	public List<StoreMenuDTO> storemenulist(int store_idx) {
 		return store_dao.storemenulist(store_idx);
@@ -272,5 +321,49 @@ public class StoreService {
 
 
 
+	public List<StoreMenuDTO> storealcholmenulist(int store_idx) {
+		return store_dao.storealcholmenulist(store_idx);
+		   }
+
+
+	public boolean menuupdate(String menu_name, String menu_price, String menu_idx) {
+		boolean success = false;
+		int row = store_dao.menuupdate(menu_name,menu_price,menu_idx);
+		if(row != 0) {
+			success = true;
+		}
+		return success;
+	}
+
+
+	public boolean menudelete(String menu_idx) {
+		boolean success = false;
+		int row = store_dao.menuudelete(menu_idx);
+		if(row != 0) {
+			success = true;
+		}
+		return false;
+	}
+
+	
+	public int menuinsert(MultipartFile[] files,int store_idx, Map<String, String> params) {
+		StoreMenuDTO store_menu = new StoreMenuDTO();
+		PhotoService photo_ser = new PhotoService();
+		store_menu.setMenu_name(params.get("menu_name"));//메뉴 이름
+		store_menu.setMenu_price(params.get("menu_price"));//메뉴 가격
+		store_menu.setStore_idx(store_idx);
+		store_menu.setMenu_category(params.get("menu_category"));
+		int row = store_dao.menuinsert(store_menu);
+		int photofolderidx = store_menu.getMenu_idx();
+		logger.info("방금 insert 한"+photofolderidx);//폴더 idx
+		if (photofolderidx>0 && row>0) {
+			photo_ser.menuphotoFile(files,photofolderidx,params);
+		}
+		return photofolderidx;
+	}
 
 }
+
+
+
+

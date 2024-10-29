@@ -19,33 +19,64 @@
 	<select id="getAdminNameById" parameterType="String" resultType="String">
     	SELECT admin_name FROM admin WHERE admin_id = #{admin_id}
 	</select>
-	<select id="adminUserList">
+<!-- 	<select id="adminUserList">
 		SELECT * FROM user ORDER BY user_date DESC LIMIT #{param1} OFFSET #{param2}
+	</select> -->
+	<select id="adminUserList" parameterType="map" resultType="com.sulbazi.member.UserDTO">
+    	SELECT * FROM user
+    	<where>
+        	<if test="category != null and keyword != null and keyword != ''">
+            	<choose>
+                	<when test="category == 'user_id'">
+                    	AND user_id LIKE CONCAT('%', #{keyword}, '%')
+                	</when>
+                	<when test="category == 'user_nickname'">
+                    	AND user_nickname LIKE CONCAT('%', #{keyword}, '%')
+                	</when>
+                	<when test="category == 'user_email'">
+                    	AND user_email LIKE CONCAT('%', #{keyword}, '%')
+                	</when>
+                	<otherwise>
+                    	-- 다른 검색 옵션이 없는 경우 전체 데이터 반환
+                	</otherwise>
+            	</choose>
+        	</if>
+    	</where>
+    	ORDER BY user_date DESC LIMIT #{limit} OFFSET #{offset}
 	</select>
 	<select id="userCount" resultType="int">
 		SELECT CEIL(COUNT(user_id)/#{param1}) FROM user
 	</select>
 	<select id="adminStoreList">
-		SELECT * FROM store ORDER BY store_idx DESC LIMIT #{param1} OFFSET #{param2}
+		SELECT * FROM store
+		<where>
+        	<if test="category != null and keyword != null and keyword != ''">
+            	<choose>
+                	<when test="category == 'store_id'">
+                    	AND store_id LIKE CONCAT('%', #{keyword}, '%')
+                	</when>
+                	<when test="category == 'store_name'">
+                    	AND store_name LIKE CONCAT('%', #{keyword}, '%')
+                	</when>
+                	<otherwise>
+                    	-- 다른 검색 옵션이 없는 경우 전체 데이터 반환
+                	</otherwise>
+            	</choose>
+        	</if>
+    	</where>
+		ORDER BY store_idx DESC LIMIT #{limit} OFFSET #{offset}
 	</select>
 	<select id="storeCount" resultType="int">
 		SELECT CEIL(COUNT(store_idx)/#{param1}) FROM store
 	</select>
-	<select id="adminUserDetail" resultType="com.sulbazi.member.UserDTO">
-    	SELECT 
-        	u.*, 
-        	r.revoke_start, 
-        	r.revoke_stop,
-        	co.opt_name  -- category_opt에서 가져오는 option_name
-    	FROM 
-        	user u
-    	LEFT JOIN 
-        	revokes r ON u.user_id = r.user_id
-    	LEFT JOIN 
-        	user_category uc ON u.user_id = uc.user_id
-    	LEFT JOIN 
-        	category_opt co ON uc.opt_idx = co.opt_idx  -- option_idx로 category_opt와 연결
-    	WHERE 
-        	u.user_id = #{user_id}
-</select>
+	<select id="getUserInfo" resultType="com.sulbazi.member.UserDTO">
+    	SELECT *
+    	FROM user
+    	WHERE user_id = #{user_id}
+	</select>
+	<select id="getRevokeInfo" resultType="hashMap">
+    	SELECT revoke_start, revoke_stop
+    	FROM revokes
+   		WHERE user_id = #{user_id}
+	</select>
 </mapper>

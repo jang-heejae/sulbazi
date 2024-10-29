@@ -51,4 +51,39 @@
 		INSERT INTO store_category (store_idx, opt_idx)
 			VALUES (#{store_idx}, #{opt_idx})
 	</insert>
+
+
+	
+	<!-- 매장 카테고리 업데이트 -->
+	<!-- update문 불가로 delete와 insert문 사용 -->
+	<delete id="deletemystoreopt" >
+		DELETE FROM store_category WHERE store_idx=#{param1}
+	</delete>
+	
+	<insert id="updatemystoreopt">
+		INSERT INTO store_category(opt_idx, store_idx) 
+			VALUES (#{opt_idx}, #{store_idx})
+	</insert>
+	
+	
+	
+
+	
+	<select id="updateOpt" parameterType="String" resultType="int">
+    	SELECT opt_idx FROM category_opt WHERE opt_name = #{opt_name}
+	</select>
+	<select id="userUpdate" parameterType="map" resultType="boolean">
+    	SELECT COUNT(*) > 0
+    	FROM user_category
+    	WHERE user_id = #{user_id} AND opt_idx = #{opt_idx}
+	</select>
+	<update id="userUpdateCate" parameterType="map">
+    	UPDATE user_category 
+    	SET opt_idx = #{opt_idx}
+    	WHERE user_id = #{user_id} AND opt_idx = #{opt_idx}
+	</update>
+	<insert id="userInsertCate" parameterType="map">
+    	INSERT INTO user_category (user_id, opt_idx)
+    	VALUES (#{user_id}, #{opt_idx})
+	</insert>
 </mapper>

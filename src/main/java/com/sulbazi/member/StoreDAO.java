@@ -61,7 +61,6 @@ public interface StoreDAO {
 	List<PhotoDTO> findPhotosForStores(List<StoreDTO> stores);
 
 
-	
 	List<CategoryOptDTO> OptionsCategoryState(int categorystate);
 
 	List<BoardDTO> storemyboard(int store_idx);
@@ -72,16 +71,29 @@ public interface StoreDAO {
 
 	List<Integer> mystoreopt(int storeIdx);
 
+	int mystoreupdate(StoreDTO storedto);
+
 	List<CategoryOptDTO> findStoreCategorys(List<StoreDTO> stores);
 
 	List<StoreCategoryDTO> storeHelpMeIdx(List<StoreDTO> stores);
 
 	List<StoreMenuDTO> storemenulist(int store_idx);
+<<<<<<< HEAD
 
 	List<StoreMenuDTO> storealcholmenulist(int store_idx);
 
+=======
+>>>>>>> origin/master
 
+	int getTPage(int cnt);
 
+	List<StoreMenuDTO> storealcholmenulist(int store_idx);
+
+	int menuupdate(String menu_name, String menu_price, String menu_idx);
+
+	int menuudelete(String menu_idx);
+
+	int menuinsert(StoreMenuDTO store_menu);
 
 
 
