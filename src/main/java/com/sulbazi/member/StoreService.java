@@ -2,8 +2,7 @@ package com.sulbazi.member;
 
 
 import java.util.List;
-
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -336,20 +335,26 @@ public class StoreService {
 	}
 
 	
-	public int menuinsert(MultipartFile[] files,int store_idx, Map<String, String> params) {
+	public int menuinsert(MultipartFile[] files, Map<String, String> params,int store_idx) throws IOException {
 		StoreMenuDTO store_menu = new StoreMenuDTO();
 		PhotoService photo_ser = new PhotoService();
 		store_menu.setMenu_name(params.get("menu_name"));//메뉴 이름
 		store_menu.setMenu_price(params.get("menu_price"));//메뉴 가격
 		store_menu.setStore_idx(store_idx);
-		store_menu.setMenu_category(params.get("menu_category"));
+		store_menu.setMenu_category(params.get("menu_category"));//메뉴 카테고리
 		int row = store_dao.menuinsert(store_menu);
-		int photofolderidx = store_menu.getMenu_idx();
-		logger.info("방금 insert 한"+photofolderidx);//폴더 idx
-		if (photofolderidx>0 && row>0) {
-			photo_ser.menuphotoFile(files,photofolderidx,params);
+		int photo_folder_idx = store_menu.getMenu_idx();
+		logger.info("방금 insert 한"+photo_folder_idx);//폴더 idx
+        int photo_category_idx = 0;
+        if ("안주".equals(params.get("menu_category"))) {
+        	photo_category_idx = 2;
+        } else if ("술".equals(params.get("menu_category"))) {
+        	photo_category_idx = 6;
+        }
+		if (photo_folder_idx>0 && row>0) {
+			photo_ser.menuphotoinsert(files,photo_folder_idx,photo_category_idx);
 		}
-		return photofolderidx;
+		return photo_folder_idx;
 	}
 
 }

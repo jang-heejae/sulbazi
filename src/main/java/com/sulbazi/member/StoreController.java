@@ -263,7 +263,7 @@ public class StoreController {
 	}
 	
 	@PostMapping(value="/mystoreUpdate.do")
-	public String mystoreupdatedo(MultipartFile[] newmystoreinout,MultipartFile[] bestmystore, @RequestParam Map<String, String> params,Model model, HttpSession session) throws IOException {
+	public String mystoreupdatedo(MultipartFile[] bestmystore, MultipartFile[] newmystoreinout, @RequestParam Map<String, String> params,Model model, HttpSession session) throws IOException {
 		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
 		logger.info("store_idx:{}",store_idx);
 		logger.info("params:{}",params);
@@ -359,13 +359,13 @@ public class StoreController {
 	
 	
     @PostMapping(value="/menuInsert.do")
-    public String menuinsert(@RequestParam("files") MultipartFile[] files, @RequestParam Map<String, String> params, HttpSession session) {
+    public String menuinsert(@RequestParam("files") MultipartFile[] files, @RequestParam Map<String, String> params, HttpSession session) throws IOException {
         boolean success = false;
         logger.info("params: {}", params);
         logger.info("file count: " + files.length);
 
         int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
-        if(store_ser.menuinsert(files, store_idx, params) > 0) {
+        if(store_ser.menuinsert(files, params,store_idx ) > 0) {
             success = true;
         }
         logger.info("Success status: " + success);

@@ -102,8 +102,8 @@ img {
 		<label class="form-label">매장 내외부 사진</label>
 			<div>
 				<c:forEach items="${mystorephoto}" var="mystoreinout">
-				<img src="/photo/${mystoreinout.new_filename}"><br/>
-			</c:forEach>
+					<img src="/photo/${mystoreinout.new_filename}"><br/>
+				</c:forEach>
 			</div>
 	</div>
 	<div class="table">
