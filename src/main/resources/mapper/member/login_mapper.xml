@@ -19,7 +19,7 @@
 	</select>
 	
 	<select id="storefindpwdo" resultType="String">
-		SELECT store_pw FROM store WHERE store_number=#{store_number}
+		SELECT store_pw FROM store WHERE store_id=#{store_id} AND store_number=#{store_number}
 	</select>
 	
 	<update id="changeuserpw">

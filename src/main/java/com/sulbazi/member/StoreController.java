@@ -200,7 +200,6 @@ public class StoreController {
         }
     }
 
-	
 	/*
 	 * @RequestMapping(value="/menu2.go") public String storeMenu2(int idx, Model
 	 * model, HttpSession session) { = store_ser.(idx);

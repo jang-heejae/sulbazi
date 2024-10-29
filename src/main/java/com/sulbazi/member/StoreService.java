@@ -175,7 +175,6 @@ public class StoreService {
 		return storeExplain;
 	}
 
-
 	public List<StoreDTO> getStoresInArea(double minLat, double maxLat, double minLng, double maxLng, int page,
 			int cnt) {
 		
@@ -210,9 +209,6 @@ public class StoreService {
 	public List<PhotoDTO> findPhotosForStores(List<StoreDTO> stores) {
 		return store_dao.findPhotosForStores(stores);
 	}
-
-
-
 
 	public List<CategoryOptDTO> OptionsCategoryState(int categorystate) {
 		return store_dao.OptionsCategoryState(categorystate);

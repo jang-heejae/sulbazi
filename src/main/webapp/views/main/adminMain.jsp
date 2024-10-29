@@ -135,7 +135,7 @@
        justify-content: center;
        align-items: center;
        align-content: center;
-       background-color: rgb(255, 140, 9);
+       background-color: #73734F;
        border-radius: 20px;
    }
 </style>
