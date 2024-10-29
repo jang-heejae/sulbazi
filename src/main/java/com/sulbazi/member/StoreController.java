@@ -55,7 +55,8 @@ public class StoreController {
 	
 	
 	@RequestMapping(value="/storeDetail.do")
-    public String getStoreDetail(int idx, Model model, HttpSession session) {
+    public String getStoreDetail(int storeidx, Model model, HttpSession session) {
+		int idx = storeidx;
         StoreDTO storeDetail = store_ser.getStoreDetail(idx);
         PhotoDTO file= store_ser.getStorePhoto(idx);
         List<PhotoDTO> files= store_ser.getStorePhotos(idx);
@@ -63,11 +64,12 @@ public class StoreController {
         List<CategoryOptDTO> storeOverviews = store_ser.getStoreExplain(idx);
 
 
+
         model.addAttribute("store", storeDetail);
         model.addAttribute("files", files);
         model.addAttribute("file", file);
         model.addAttribute("board", boardList);
-        model.addAttribute("storeidx",idx);
+		/* model.addAttribute("storeidx",idx); */
         model.addAttribute("storeOverviews",storeOverviews);
         logger.info("storeDetail: " + storeDetail);
         return "store/storeDetail";
@@ -76,7 +78,8 @@ public class StoreController {
 	
 	
 	@RequestMapping(value="/menu.do")
-    public String storeMenu1(int idx, Model model, HttpSession session) {
+    public String storeMenu1(int storeidx, Model model, HttpSession session) {
+		int idx = storeidx;
         List<PhotoDTO> files= store_ser.fileList(idx);
         logger.info("files list size: {}", files.size());
         for (PhotoDTO f : files) {
@@ -97,7 +100,8 @@ public class StoreController {
     }
 	
 	@RequestMapping(value="/menu2.do")
-    public String storeMenu2(int idx, Model model, HttpSession session) {
+    public String storeMenu2(int storeidx, Model model, HttpSession session) {
+		int idx = storeidx;
         List<PhotoDTO> files= store_ser.alcoholFileList(idx);
         logger.info("files list size: {}", files.size());
         for (PhotoDTO f : files) {
@@ -115,10 +119,11 @@ public class StoreController {
 	@PostMapping(value="/bookmark.ajax")
 	@ResponseBody
 	public Map<String, Object> bookmarkCheck(String loginId,int storeidx ){
-		
+		System.out.println(storeidx);
+		System.out.println(loginId);
 		return store_ser.bookmarkCheck(loginId,storeidx);
 	}
-
+	
     @GetMapping(value = "/list.ajax")
     @ResponseBody
     public ResponseEntity<?> storeList(
@@ -136,53 +141,8 @@ public class StoreController {
             List<PhotoDTO> photoList = store_ser.findPhotosForStores(stores);
             List<CategoryOptDTO> categoryOpts = store_ser.findStoreCategorys(stores);
             List<StoreCategoryDTO> storeCategorys = store_ser.storeHelpMeIdx(stores);
-//            List<CategoryOptDTO> categoryOpts = store_ser.findCategotyOpts(storeCategorys);
-            
 
-            
-            
-            
-//            for (CategoryOptDTO categoryOptDTO : categoryOpts) {
-//            	int i = categoryOptDTO.getOpt_idx();
-//            	String c = categoryOptDTO.getOpt_name();
-//            	
-//            	System.out.println("카태고리"+i+':'+ c );
-//            			
-//			}
 
-//            List<Integer> storeIdxCategory = new ArrayList<>();
-//            
-//            for (StoreDTO  storedto : stores) {
-//				int c = storedto.getStore_idx();
-//				System.out.println(c);
-//				
-//				storeIdxCategory.add(c);
-//			}
-            
-        
-//            for (StoreCategoryDTO sc : storeCategorys) {
-//            	int asd = sc.getOpt_idx();
-//            	int dsa = sc.getStore_idx();
-//            	
-//            	System.out.println("카테고리 디폴트 store:"+dsa+" : "+asd);
-//			}
-            
-            
-            
-//            for (CategoryOptDTO categoryOptDTO : categoryOpts) {
-//					int a = categoryOptDTO.getOpt_idx();
-//					int b = categoryOptDTO.getCategory_idx();
-//					String c = categoryOptDTO.getOpt_name();
-//					
-//					//System.out.println("카테고리: " +a+" : "+b+" : "+c);
-//					logger.info("카테고리 :{}",categoryOptDTO);
-//			}
-            
-            
-            
-
-            
-            
             // 응답 데이터 구성
             Map<String, Object> response = new HashMap<>();
             response.put("list", stores);
@@ -199,7 +159,9 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while retrieving store data");
         }
     }
+    
 
+	
 	/*
 	 * @RequestMapping(value="/menu2.go") public String storeMenu2(int idx, Model
 	 * model, HttpSession session) { = store_ser.(idx);
@@ -230,12 +192,12 @@ public class StoreController {
 	
 	@GetMapping(value="/menusearch.ajax")
 	@ResponseBody
-	public Map<String, Object> storemenusearch(String keyword,Model model) {
+	public Map<String, Object> storemenusearch(String keyword,int page,int cnt) {
 		logger.info("메뉴키워드 컨트롤러");
 		logger.info(keyword);
+		/* System.out.println("이종원 페이지,cnt 확인"+page+" : "+cnt); */
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("searchresult",store_ser.storemenusearch(keyword, model));
-		return map;
+		return store_ser.storemenusearch(keyword,page,cnt);
 	}
 	
 	@GetMapping(value="/addrsearch.ajax")
@@ -291,4 +253,5 @@ public class StoreController {
 	}
 	
 }
+
 
