@@ -86,7 +86,17 @@
 	<select id="storeByCategoryopt" parameterType="java.lang.Integer" resultType="com.sulbazi.category.CategoryOptDTO">
 		select * from category_opt where opt_idx=#{param1}
 	</select>
+<<<<<<< HEAD
 	
+=======
+
+
+
+
+
+
+
+>>>>>>> origin/master
 	<!-- 매장 리스트  -->
 	<select id="findStoresInArea" parameterType="map" resultType="com.sulbazi.member.StoreDTO">
         SELECT * 
@@ -189,20 +199,25 @@
 	
 
 
- 	<!-- 매장 마이페이지  정보 수정 -->
-<!-- 	<update id="" parameterType="com.sulbazi.member.StoreDTO">
 
-		SELECT store SET store_id=#{store_id}, store_pw=#{store_pw}, store_name=#{store_name}, 
-			store_number=#{store_number}, store_phone=#{store_phone}, 
-			store_address=#{store_address}, store_time=#{store_time}
-			WHERE store_idx=#{store_idx}
-	</update>
-	
-	<update id="" parameterType="com.sulbazi.category.StoreCategoryDTO">
-		UPDATE  store_category SET opt_idx=#{opt_idx} WHERE store_idx=#{store_idx}
 
-	</update> -->
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> origin/master
 	
 	<!-- 매장 마이페이지  내 댓글 보기 -->
 	
