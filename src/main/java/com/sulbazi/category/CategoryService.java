@@ -89,7 +89,25 @@ public class CategoryService {
 		category_dao.updatemystoreopt(food, idx);
 		category_dao.updatemystoreopt(mood, idx);
 		category_dao.updatemystoreopt(visit, idx);
-		
+	}
+
+	public void userUpdate(Map<String, String> param, String user_id) {
+	    try {
+	        String[] categoryNames = {"opt_name1", "opt_name2", "opt_name3", "opt_name4"};
+	        for (int i = 0; i < categoryNames.length; i++) {
+	            String opt_name = param.get(categoryNames[i]);
+	            if (opt_name != null && !opt_name.isEmpty()) {
+	                Integer opt_idx = category_dao.updateOpt(opt_name);
+	                if (opt_idx != null) {
+	                    category_dao.userUpdate(user_id, i + 1, opt_idx);
+	                } else {
+	                    logger.error("옵션 이름으로부터 opt_idx를 찾지 못했습니다: opt_name=" + opt_name);
+	                }
+	            }
+	        }
+	    } catch (NumberFormatException e) {
+	        e.printStackTrace();
+	    }
 	}
 }
 

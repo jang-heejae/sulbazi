@@ -16,6 +16,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -95,6 +99,19 @@ public class PhotoService {
 	public List<PhotoDTO> mystorephoto(int store_idx) {
 		return photo_dao.mystorephoto(store_idx);
 
+	}
+	
+	// 유저 이미지 가져오기
+	public ResponseEntity<Resource> getImg(String user_photo) {
+		Resource reso = new FileSystemResource(bpath+user_photo);
+		HttpHeaders header = new HttpHeaders();
+		try {
+			String type = Files.probeContentType(Paths.get(bpath+user_photo));
+			header.add("content-type", type);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Resource>(reso, header, 200);
 	}
 
 	public void mystorebestphotoupdate(MultipartFile[] files, int store_idx) {

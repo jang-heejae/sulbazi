@@ -4,6 +4,37 @@
 >
 <mapper namespace="com.sulbazi.member.UserDAO">
 	<select id="files" resultType="com.sulbazi.member.UserDTO">
-		SELECT * FROM user WHERE user_id = #{param1}
+		SELECT * FROM user WHERE user_id = #{user_id}
 	</select>
+	<select id="getUserInfo" resultType="com.sulbazi.member.UserDTO">
+    	SELECT * FROM user WHERE user_id = #{user_id}
+	</select>
+	<select id="getUserCategories" resultType="hashMap">
+    	SELECT opt_idx
+    	FROM user_category
+    	WHERE user_id = #{user_id}
+	</select>
+	<select id="getAllCategories" resultType="hashMap">
+    	SELECT category_idx, opt_idx, opt_name
+    	FROM category_opt
+    	WHERE category_state = 1
+	</select>
+	<update id="userUpdate" parameterType="com.sulbazi.member.UserDTO">
+    	UPDATE user
+    	<set>
+        	<if test="user_pw != null and user_pw != ''">
+            	user_pw = #{user_pw},
+        	</if>
+        	<if test="user_nickname != null and user_nickname != ''">
+            	user_nickname = #{user_nickname},
+        	</if>
+        	<if test="user_phone != null and user_phone != ''">
+            	user_phone = #{user_phone},
+        	</if>
+        	<if test="user_photo != null and user_photo != ''">
+            	user_photo = #{user_photo},
+        	</if>
+    	</set>
+    WHERE user_id = #{user_id}
+</update>
 </mapper>

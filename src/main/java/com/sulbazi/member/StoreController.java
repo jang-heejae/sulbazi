@@ -59,8 +59,7 @@ public class StoreController {
 	
 	
 	@RequestMapping(value="/storeDetail.do")
-    public String getStoreDetail(int storeidx, Model model, HttpSession session) {
-		int idx = storeidx;
+    public String getStoreDetail(int idx, Model model, HttpSession session) {
         StoreDTO storeDetail = store_ser.getStoreDetail(idx);
         PhotoDTO file= store_ser.getStorePhoto(idx);
         List<PhotoDTO> files= store_ser.getStorePhotos(idx);
@@ -68,12 +67,11 @@ public class StoreController {
         List<CategoryOptDTO> storeOverviews = store_ser.getStoreExplain(idx);
 
 
-
         model.addAttribute("store", storeDetail);
         model.addAttribute("files", files);
         model.addAttribute("file", file);
         model.addAttribute("board", boardList);
-		/* model.addAttribute("storeidx",idx); */
+        model.addAttribute("storeidx",idx);
         model.addAttribute("storeOverviews",storeOverviews);
         logger.info("storeDetail: " + storeDetail);
         return "store/storeDetail";
@@ -82,8 +80,7 @@ public class StoreController {
 	
 	
 	@RequestMapping(value="/menu.do")
-    public String storeMenu1(int storeidx, Model model, HttpSession session) {
-		int idx = storeidx;
+    public String storeMenu1(int idx, Model model, HttpSession session) {
         List<PhotoDTO> files= store_ser.fileList(idx);
         logger.info("files list size: {}", files.size());
         for (PhotoDTO f : files) {
@@ -104,8 +101,7 @@ public class StoreController {
     }
 	
 	@RequestMapping(value="/menu2.do")
-    public String storeMenu2(int storeidx, Model model, HttpSession session) {
-		int idx = storeidx;
+    public String storeMenu2(int idx, Model model, HttpSession session) {
         List<PhotoDTO> files= store_ser.alcoholFileList(idx);
         logger.info("files list size: {}", files.size());
         for (PhotoDTO f : files) {
@@ -123,10 +119,10 @@ public class StoreController {
 	@PostMapping(value="/bookmark.ajax")
 	@ResponseBody
 	public Map<String, Object> bookmarkCheck(String loginId,int storeidx ){
-		System.out.println(storeidx);
-		System.out.println(loginId);
+		
 		return store_ser.bookmarkCheck(loginId,storeidx);
 	}
+
 	
     @GetMapping(value = "/list.ajax")
     @ResponseBody
@@ -208,6 +204,7 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while retrieving store data");
         }
     }
+
 
 	
 

@@ -5,19 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"/>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=4ae2258b561b1a937e5d3f2c155e60f9"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"/>
         <style>
-/*             body{
+            body{
                 background-color: #20290E;
-            } */
+            }
             .bodysize{
                 background-color: white;
-/*                 position: absolute;
+                position: absolute;
                 top: 202px
-                left: 626px; */
+                left: 626px;
                 width: 788px;
                 height: 5000px;
                 border-radius: 8px;
@@ -135,20 +134,6 @@
 			.address-table{
 				border:0px;
 			}
-			.mapwhatname{
-				margin: 0 0 80px 0 ;
-				border-radius: 8px;
-			}
-			main{
-				display: flex;
-				flex-direction: column;
-                align-items: center;       
-			    position: absolute;
-			    top: 192px;
-			    left: 50%;
-			    transform: translateX(-50%);
-			}
-			
 			
 
             
@@ -158,17 +143,13 @@
     <body>
     <jsp:include page="../main/main.jsp"/>
         <main>
-            <!-- 지도 영역 -->
-            <div class="mapwhatname" id="map" style="width:789px;height:320px;"></div>
-        
-        
-            <div class="bodysize">            	
+            <div class="bodysize">
                	<div class="ativeimage">
                		<img src="/photo/${file.new_filename}" alt="Store Photo" id="mainimg" />
                	</div>
                 <br/>
                 <p class="left-align"><strong>${store.store_name}</strong></p>
-                <button class="favorite-btn" onclick="bookmark(${store.store_idx})">즐겨찾기</button>
+                <button class="favorite-btn" onclick="bookmark(${storeidx})">즐겨찾기</button>
                 <div class="linetag"></div>
                 <br/>
                 <ul class="title-container">
@@ -241,8 +222,8 @@
                 <!-- 메뉴정보 페이징 처리-->
                 <fieldset>
                     <legend>메뉴</legend>
-				    <button onclick="location.href='menu.do?storeidx=${store.store_idx}'">안주</button>
-				    <button onclick="location.href='menu2.do?storeidx=${store.store_idx}'">술종류</button>
+				    <button onclick="location.href='menu.do?idx=${store.store_idx}'">안주</button>
+				    <button onclick="location.href='menu2.do?idx=${store.store_idx}'">술종류</button>
                 </fieldset>			
                 <!-- 사진 내외부 사진-->
                 <fieldset>
@@ -273,32 +254,8 @@
 
     </body>
     <script>
-    /* 지도 영역 */
-		var container = document.getElementById('map');
-    	var storeLatitude = '${store.store_latitude}'
-    	var storeLongitude = '${store.store_longitude}'
-   		 
-		var options = {
-			center: new kakao.maps.LatLng(storeLatitude, storeLongitude),
-			level: 3
-		};
-
-		var map = new kakao.maps.Map(container, options);
-		
-		// 마커가 표시될 위치입니다 
-		var markerPosition  = new kakao.maps.LatLng(storeLatitude, storeLongitude); 
-
-		// 마커를 생성합니다
-		var marker = new kakao.maps.Marker({
-		    position: markerPosition
-		});
-		marker.setMap(map);
-		
-    /* 북마크 영역 */
-    	var loginId = '${sessionScope.loginId}';   
-
+    	var loginId = '${sessionScope.loginId}';    
     	function bookmark(storeidx){
-    		console.log(storeidx)
     	    $.ajax({
     	        type: 'POST',
     	        url: 'bookmark.ajax',
@@ -306,10 +263,10 @@
     	        dataType:'JSON',
     	        success: function(data) {
     	            if (data.bookmark>0) {
-    	            	console.log(data.bookmark);
     	            	$('.favorite-btn').css('background-color', '#28256C');
     	            	$('.favorite-btn').text('즐겨찾기 완료'); 
 					}else{
+						
 						$('.favorite-btn').css('background-color', '#FFA91F');
 						$('.favorite-btn').text('즐겨찾기');
 					}
@@ -321,7 +278,5 @@
     	        }
     	    });
     	}
-    	
-    	
     </script>
 </html>
