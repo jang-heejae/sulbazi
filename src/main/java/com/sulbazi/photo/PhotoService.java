@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,10 +15,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sulbazi.member.StoreDAO;
+import com.sulbazi.member.StoreMenuDTO;
+
 @Service
 public class PhotoService {
 	
 	@Autowired PhotoDAO photo_dao;
+	@Autowired StoreDAO store_dao;
 	
 	@Value("${upload.path}") private String bpath;
 	
@@ -98,6 +103,27 @@ public class PhotoService {
 
 	public List<PhotoDTO> mystorephoto(int store_idx) {
 		return photo_dao.mystorephoto(store_idx);
+	}
+
+	//추가내용
+	public List<PhotoDTO> storemenuphoto(int store_idx) {
+		List<StoreMenuDTO> menulist =store_dao.storemenulist(store_idx);
+		List<PhotoDTO> menuphoto = new ArrayList<>();
+		for (StoreMenuDTO menudto : menulist) {
+			List<PhotoDTO> photoList = photo_dao.storemenuphoto(menudto.getMenu_idx());
+			menuphoto.addAll(photoList);
+		}
+		return menuphoto;
+	}
+
+	public List<PhotoDTO> alcholmenuphoto(int store_idx) {
+		List<StoreMenuDTO> menulist =store_dao.storemenulist(store_idx);
+		List<PhotoDTO> menuphoto = new ArrayList<>();
+		for (StoreMenuDTO menudto : menulist) {
+			List<PhotoDTO> photoList = photo_dao.storemenualcholphoto(menudto.getMenu_idx());
+			menuphoto.addAll(photoList);
+		}
+		return menuphoto;
 	}
 
 }

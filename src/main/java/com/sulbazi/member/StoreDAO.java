@@ -76,6 +76,10 @@ public interface StoreDAO {
 
 	List<StoreCategoryDTO> storeHelpMeIdx(List<StoreDTO> stores);
 
+	List<StoreMenuDTO> storemenulist(int store_idx);
+
+	List<StoreMenuDTO> storealcholmenulist(int store_idx);
+
 
 
 

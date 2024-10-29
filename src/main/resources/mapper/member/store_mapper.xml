@@ -189,19 +189,6 @@
 	
 
 
- 	<!-- 매장 마이페이지  정보 수정 -->
-<!-- 	<update id="" parameterType="com.sulbazi.member.StoreDTO">
-
-		SELECT store SET store_id=#{store_id}, store_pw=#{store_pw}, store_name=#{store_name}, 
-			store_number=#{store_number}, store_phone=#{store_phone}, 
-			store_address=#{store_address}, store_time=#{store_time}
-			WHERE store_idx=#{store_idx}
-	</update>
-	
-	<update id="" parameterType="com.sulbazi.category.StoreCategoryDTO">
-		UPDATE  store_category SET opt_idx=#{opt_idx} WHERE store_idx=#{store_idx}
-
-	</update> -->
 
 	
 	<!-- 매장 마이페이지  내 댓글 보기 -->
@@ -209,12 +196,19 @@
 	
 	
 	
-	<!-- 매장 마이페이지  메뉴 정보 보기 -->
+	<!-- 매장 마이페이지  안주 메뉴 정보 보기 -->
+	<select id="storemenulist" resultType="com.sulbazi.member.StoreMenuDTO">
+		SELECT menu_idx,menu_name,menu_price  
+			FROM store_menu WHERE store_idx=#{param1} AND menu_category='안주'
+	</select>
+	
+	<!-- 매장 마이페이지  안주 메뉴 정보 보기 -->
+	<select id="storealcholmenulist" resultType="com.sulbazi.member.StoreMenuDTO">
+		SELECT menu_idx,menu_name,menu_price 
+			FROM store_menu WHERE store_idx=#{param1} AND menu_category='술'
+	</select>
 	
 	
-	
-	
-
 	<!-- 매장 마이페이지  메뉴 정보 수정 -->
 
 
