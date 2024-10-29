@@ -28,7 +28,7 @@ public interface PhotoDAO {
 
 	int alcholphotodelete(String menu_idx);
 
-	int menuphotoinsert(int photocategory, String newFileName, int photofolderidx);
+	int menuphotoinsert(PhotoDTO photo);
 
 
 

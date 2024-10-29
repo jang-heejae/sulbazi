@@ -61,10 +61,10 @@
 		DELETE FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=6
 	</delete>
 	
-<!-- 	<insert id="menuphotoinsert">
+	<insert id="menuphotoinsert">
     	INSERT INTO photo(photo_category_idx, new_filename, photo_folder_idx)
-    		VALUES(#{photocategory}, #{newFileName}, #{photofolderidx})
-	</insert> -->
+    		VALUES(#{photo_category_idx}, #{new_filename}, #{photo_folder_idx})
+	</insert>
 	
 </mapper>
 

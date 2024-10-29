@@ -238,7 +238,11 @@ public class PhotoService {
 		                logger.info("newFileName: " + newFileName);
 		                logger.info("photofolderidx: " + photofolderidx);
 		                // DB에 값 삽입
-		                photo_dao.storephotoupdate(photocategory, newFileName, photofolderidx);
+		                PhotoDTO photo = new PhotoDTO();
+		                photo.setPhoto_category_idx(photocategory);
+		                photo.setNew_filename(newFileName);
+		                photo.setPhoto_folder_idx(photofolderidx);
+		                photo_dao.menuphotoinsert(photo);
 		            }
 		        }
 		    } catch (IOException e) {
