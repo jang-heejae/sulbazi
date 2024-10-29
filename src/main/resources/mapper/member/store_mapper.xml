@@ -136,6 +136,7 @@
 	        )
 	</select>
 	
+
 	<!-- 매장리스트 카테고리 -->
 	<select id="storeHelpMeIdx" parameterType="list" resultType="com.sulbazi.category.StoreCategoryDTO">
 	    SELECT * FROM store_category 
@@ -153,6 +154,23 @@
 	</select>
 
 
+
+
+	<!-- 매장리스트 카테고리 -->
+	<select id="storeHelpMeIdx" parameterType="list" resultType="com.sulbazi.category.StoreCategoryDTO">
+	    SELECT * FROM store_category 
+	    <where>
+	        store_idx IN
+	        <foreach item="store" collection="list" open="(" separator="," close=")">
+	            #{store.store_idx}
+	        </foreach>
+	    </where>
+	    ORDER BY CASE store_idx
+	        <foreach item="store" index="index" collection="list">
+	            WHEN #{store.store_idx} THEN #{index}
+	        </foreach>
+	    END
+	</select>
 
 
 
@@ -199,7 +217,7 @@
 			store_address=#{store_address}, store_time=#{store_time} WHERE store_idx=#{store_idx}
 	</update>
 
-
+	
 	<!-- 매장 마이페이지  내 댓글 보기 -->
 	
 	

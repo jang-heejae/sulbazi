@@ -54,6 +54,7 @@ public interface StoreDAO {
 
 	CategoryOptDTO storeByCategoryopt(Integer integer);
 
+
 	int delBookmark(Map<String, Object> map);
 
 	int bookmarkCheck(Map<String, Object> map);
