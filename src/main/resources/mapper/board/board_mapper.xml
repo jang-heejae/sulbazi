@@ -4,4 +4,35 @@
 >
 <mapper namespace="com.sulbazi.board.BoardDAO">
 
+	<select id="boardlistgo" resultType="map">
+		SELECT * FROM board ORDER BY board_idx DESC
+	</select>
+	
+	<select id="detail" resultType="com.sulbazi.board.BoardDTO">
+		SELECT * FROM board WHERE board_idx = #{param1}
+	</select>
+	
+	<insert id="insertLike" parameterType="com.sulbazi.board.BoardLikeDTO">
+        INSERT INTO board_like(board_idx, user_id)VALUES(#{board_idx}, #{user_id})
+    </insert>
+
+    <delete id="deleteLike" parameterType="com.sulbazi.board.BoardLikeDTO">
+        DELETE FROM board_like WHERE board_idx = #{board_idx} AND user_id = #{user_id}
+    </delete>
+
+    <select id="isLiked" parameterType="com.sulbazi.board.BoardLikeDTO" resultType="boolean">
+	    SELECT COUNT(*) > 0
+	    FROM board_like
+	    WHERE user_id = #{user_id} AND board_idx = #{board_idx}
+	</select>
+	
+	<select id="getstore_idx" parameterType="String" resultType="int">
+		SELECT store_idx FROM store WHERE store_id = #{store_id}
+	</select>
+	
+	<insert id="boardwriteajax" parameterType="com.sulbazi.board.BoardDTO">
+		INSERT INTO 
+		board(store_idx, board_subject, board_content, board_date, board_bHit, like_count, board_category, board_state)
+			VALUES(#{store_idx}, #{board_subject}, #{board_content}, #{board_date}, #{board_bHit}, #{like_count}, #{board_category}, #{board_state}
+	</insert>
 </mapper>

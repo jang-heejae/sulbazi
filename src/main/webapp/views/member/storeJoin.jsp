@@ -6,6 +6,7 @@
     <title>SULBAZI</title>
     <script src="https://kit.fontawesome.com/6282a8ba62.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=4ae2258b561b1a937e5d3f2c155e60f9&libraries=services"></script>
 </head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
@@ -130,9 +131,9 @@
 	            <span id="numberAvailableMessage" style="color: blue;"></span><br> <!-- 사용 가능한 아이디 메시지 추가 -->
                 <input type="text" name="store_name" value="" placeholder="매장 이름(필수)">
                 <input type="text" name="store_phone" value="" placeholder="매장 전화번호(선택사항)">
-                <input type="text" id="store_address" name="store_address" value="" placeholder="매장 주소(필수)">
-                <!-- <input type="hidden" id="latitude" name="latitude">
-				<input type="hidden" id="longitude" name="longitude"> -->
+                <input type="text" id="addressInput" name="store_address" value="" placeholder="매장 주소(필수)">
+                <input type="hidden" id="latitude" name="latitude" value="">
+				<input type="hidden" id="longitude" name="longitude" value="">
                 <textarea name="store_time" placeholder="ex) 운영 시간                                                      월요일 15:00 ~ 02:00                                    화요일 휴무                                             수요일 15:00 ~ 02:00"></textarea>
                 <h2>대표 사진</h2>
                 <input type="file" name="fileone" multiple="multiple">
@@ -181,7 +182,7 @@
 				        </c:if>
 				    </c:forEach>
 				</fieldset>
-                <h2>메뉴 등록</h2>
+            <!--     <h2>메뉴 등록</h2>
                 <select name="menu_category" id="category">
                     <option value="food">안주</option>
                     <option value="sul">주류</option>
@@ -190,7 +191,7 @@
                 <input type="text" name="menu_price" value="" placeholder="메뉴 가격"/><span class="price">원</span>
                 <input type="file" name="files" multiple="multiple"/>
                 <button type="button" id="menu_go">등록</button>
-                <div id="menu_list"></div>
+                <div id="menu_list"></div> -->
             </div>
         </div>
         <button type="button" id="save" onclick="save(event)">회원가입</button>
@@ -231,6 +232,14 @@ function readFile(input){
 		}
 	}
 }
+$(document).ready(function() {
+    $('#save').click(function(event) {
+        save(event); // 여기서 save 함수를 호출
+    });
+    $('#addressInput').on('blur', function() {
+        getCoordinates();
+    });
+});
 
 $(document).ready(function() {
     $('#checknumberBtn').click(function(event) {
@@ -254,78 +263,24 @@ $(document).ready(function() {
     });
 });
 
-$(document).ready(function() {
-    $('#menu_go').click(function() {
-        const menuName = $('input[name="menu_name"]').val(); // 메뉴 이름
-        const menuPrice = $('input[name="menu_price"]').val(); // 메뉴 가격
+function getCoordinates() {
+    const address = document.getElementById('addressInput').value.trim(); 
+    const geocoder = new kakao.maps.services.Geocoder();
 
-        if (menuName && menuPrice) {
-            // 메뉴 이름과 가격이 입력되었는지 확인
-            $('#menu_list').append('<div>' + menuName + ' - ' + menuPrice + ' 원</div>'); // 입력한 값 추가
-            $('#menu_list').children().last().css({
-                'color': 'white',
-                'background-color': '#e98d1c',
-                'padding': '10px',
-                'margin': '5px',
-                'border-radius': '5px'
-            });
-            $('input[name="menu_name"]').val(''); // 입력 필드 초기화
-            $('input[name="menu_price"]').val(''); // 입력 필드 초기화
+    const callback = function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            console.log("Result:", result);  
+            const latitude = result[0].y; // y 값을 latitude 변수에
+            const longitude = result[0].x; 
+            document.getElementById('latitude').value = latitude; // 위도 값을 hidden input에 저장
+            document.getElementById('longitude').value = longitude; // 경도 값을 hidden input에 저장
+            console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
         } else {
-            alert('메뉴 이름과 가격을 모두 입력해주세요.'); // 필드가 비어 있을 경우 경고
+            console.error("주소를 찾을 수 없습니다.");
         }
-    });
-});
+    };
 
-$(document).ready(function() {
-    $('#menu_go').click(function() {
-    	const menuName = $('input[name="menu_name"]').val(); // 메뉴 이름
-        const menuPrice = $('input[name="menu_price"]').val(); // 메뉴 가격
-        const menuCategory = $('select[name="menu_category"]').val(); // 선택한 카테고리
-
-        if (menuName && menuPrice && menuCategory !== 'select') {
-            // 메뉴 이름, 가격, 카테고리가 입력되었는지 확인
-            $('#menu_list').append('<div>' + menuCategory + ': ' + menuName + ' - ' + menuPrice + ' 원</div>'); // 입력한 값 추가
-            $('input[name="menu_name"]').val(''); // 입력 필드 초기화
-            $('input[name="menu_price"]').val(''); // 입력 필드 초기화
-            $('select[name="menu_category"]').val('select'); // 카테고리 선택 초기화
-        } else {
-            alert('메뉴 이름, 가격 및 카테고리를 모두 입력해주세요.'); // 필드가 비어 있을 경우 경고
-        }
-    });
-});
-/* function getCoordinates() {
-    const address = $('#store_address').val();
-    const apiKey = 'c27fdf5010600b97cd4cc85f7f6a04f3'; // 실제 API 키로 변경
-
-    // 주소를 JavaScript에서 직접 인코딩
-    const encodedAddress = encodeURIComponent(address);
-    
-    $.ajax({
-        type: 'GET',
-        url: `https://dapi.kakao.com/v2/local/search/address.json?query=${encodedAddress}`,
-        headers: {
-            'Authorization': `KakaoAK ${apiKey}`
-        },
-        success: function(response) {
-            if (response.documents.length > 0) {
-                const { x, y } = response.documents[0].address;
-                $('#latitude').val(y); // 위도
-                $('#longitude').val(x); // 경도
-            } else {
-                alert('주소를 찾을 수 없습니다.');
-            }
-        },
-        error: function(error) {
-            console.error(error);
-            alert('주소를 가져오는 데 오류가 발생했습니다.');
-        }
-    });
+    geocoder.addressSearch(address, callback);
 }
-$(document).ready(function() {
-    $('#store_address').blur(function() {
-        getCoordinates(); // 주소 입력 후 포커스 아웃 시 좌표 가져오기
-    });
-}); */
 </script>
 </html>

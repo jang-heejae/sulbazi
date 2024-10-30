@@ -1,5 +1,6 @@
 package com.sulbazi.member;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -16,4 +17,8 @@ public interface JoinDAO {
 	boolean checkEmail(String userEmail);
 
 	boolean checknumber(String storenumber);
+
+	void menudo(StoreMenuDTO menuDTO);
+
+	List<StoreMenuDTO> menulist(int store_idx);
 }

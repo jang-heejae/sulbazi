@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.multi.MultiFileChooserUI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,6 +94,28 @@ public class PhotoService {
 		photodto.setPhoto_category_idx(i);
 		photo_dao.fileSave(photodto);
 	}
+	
+	public void menufile(MultipartFile file, int store_idx, int i) {
+		String photo = "";
+		try {
+			String ori = file.getOriginalFilename();
+			logger.info(ori);
+			int ext = ori.lastIndexOf(".");
+			String extt = ori.substring(ext);
+			photo = UUID.randomUUID()+extt;
+			Path path = Paths.get(bpath+photo);
+			byte[] arr = file.getBytes();
+			Files.write(path, arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		PhotoDTO photodto = new PhotoDTO();
+		photodto.setNew_filename(photo);
+		photodto.setPhoto_folder_idx(store_idx);
+		photodto.setPhoto_category_idx(i);
+		photo_dao.menufile(photodto);
+	}
+
 		
 
 	public PhotoDTO mystorebestphoto(int store_idx) {
@@ -250,6 +273,49 @@ public class PhotoService {
 		    }
 		}
 
+		public List<PhotoDTO> detail1(int store_idx, int photo_category_idx) {
+			return photo_dao.detail1(store_idx, photo_category_idx);
+		}
+		
+		public List<PhotoDTO> detail4(int store_idx, int photo_category_idx) {
+			return photo_dao.detail4(store_idx, photo_category_idx);
+		}
+
+		public List<PhotoDTO> menulist(int store_idx, int i) {
+			return detail1(store_idx, i);
+		}
+		
+		// 게시판 게시글 사진 저장하는 메서드
+		public void boardwriteajax(MultipartFile[] file, int store_idxx, int i) throws IOException {
+			PhotoDTO photoDTO = new PhotoDTO();
+			String photo = storeFile(file);
+			logger.info(photo);
+			photoDTO.setNew_filename(photo);
+			photoDTO.setPhoto_folder_idx(store_idxx);
+			photoDTO.setPhoto_category_idx(i);
+			photo_dao.fileSave(photoDTO);
+		}
+		
+		// 파일 한개만 저장하는 메서드 (가져온 파일을 랜덤아이디로 지정 후 C 드라이브에 저장)
+		public String fileonesave(MultipartFile file) {
+			String photo = "";
+			try {
+				if (!file.isEmpty()) {
+					String ori = file.getOriginalFilename();
+					int ext = ori.lastIndexOf(".");
+					String extt = ori.substring(ext);
+					photo = UUID.randomUUID()+extt;
+					Path path = Paths.get(bpath+photo);
+					byte[] arr;
+					arr = file.getBytes();
+					Files.write(path, arr);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			return photo;
+		}
 
 
 
