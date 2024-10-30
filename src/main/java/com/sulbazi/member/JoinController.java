@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sulbazi.category.CategoryDAO;
 import com.sulbazi.category.CategoryOptDTO;
 import com.sulbazi.category.CategoryService;
+import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
 @Controller
 public class JoinController {
@@ -46,13 +48,17 @@ public class JoinController {
 	 public Map<String, Object> storeJoin(
 			 MultipartFile[] files,
 			 MultipartFile fileone,
-			 @RequestParam Map<String, String> param) { 
+			 @RequestParam Map<String, String> param,
+			 @RequestParam("latitude") String latitude,
+	         @RequestParam("longitude") String longitude) { 
 		logger.info("param : {}", param);
+		logger.info("lat : {}",latitude);
+		logger.info("lon : {}",longitude);
 		Map<String, Object> map = new HashMap<String, Object>();
 		 try {
-			 join_ser.storeJoin(files, fileone, param);
+			 int store_idx = join_ser.storeJoin(files, fileone, param, latitude, longitude);
 			 map.put("success", true); 
-			 map.put("link", "/SULBAZI/menu.go");
+			 map.put("link", "/SULBAZI/menu.go?store_idx="+store_idx);
 		} catch (Exception e) {
 			map.put("success", false);
             map.put("message", "오류가 발생했습니다: " + e.getMessage());
@@ -120,12 +126,43 @@ public class JoinController {
 	}
 	
 	@RequestMapping(value="/menu.go")
-	public String menu() {
+	public String menu(@RequestParam(value = "store_idx", required = false) Integer store_idx, Model model) {
+		model.addAttribute("store_idx", store_idx);
+		logger.info("방금 회원가입한 매장 idx : " + store_idx);
 		return "member/menu";
 	}
 
+	@PostMapping(value="/menu.do")
+	@ResponseBody
+	public Map<String, Object> menudo(
+			MultipartFile file,
+			@RequestParam("menu_name") String menu_name,
+            @RequestParam("menu_price") String menu_price,
+            @RequestParam("menu_category") String menu_category,
+            @RequestParam(value = "store_idx", required = false) Integer store_idx){
+		logger.info("메뉴이름:"+menu_name+", 메뉴가격:"+menu_price+", 메뉴카테고리:"+menu_category+", store_idx:"+store_idx);
+		StoreMenuDTO menuDTO = new StoreMenuDTO();
+		menuDTO.setMenu_category(menu_category);
+		menuDTO.setMenu_price(menu_price);
+		menuDTO.setMenu_name(menu_name);
+		menuDTO.setStore_idx(store_idx);
+		join_ser.menudo(file, menuDTO);
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", true);
+		return response;
+	}
 	
-	
+	@GetMapping(value="/menulist")
+	@ResponseBody
+	public Map<String, Object> menulist(@RequestParam(value = "store_idx", required = false) Integer store_idx){
+		logger.info("idx 값:{} ",store_idx);	
+		List<PhotoDTO> photodto = photo_ser.menulist(store_idx, 2);
+		List<StoreMenuDTO> menudto = join_ser.menulist(store_idx);
+		Map<String, Object> map = new HashMap<>();
+		map.put("menulist", menudto);
+		map.put("menuphoto", photodto);
+		return map;
+	}
 	
 	
 	

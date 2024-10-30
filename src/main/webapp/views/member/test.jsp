@@ -4,42 +4,50 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <title>주소 검색</title>
-</head>
-<body>
-    <h1>주소로 검색</h1>
-    <form id="addressForm" action="kakaoapi" method="post">
-        <input type="text" id="address" name="address" placeholder="주소를 입력하세요" required>
-        <input type="hidden" id="latitude" name="latitude">
-        <input type="hidden" id="longitude" name="longitude">
-        <button type="button" id="searchBtn">검색</button>
-    </form>
-
-    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=d1b7cd884610b0da5809195298922af8"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=4ae2258b561b1a937e5d3f2c155e60f9&libraries=services"></script>
     <script>
-        var geocoder = new kakao.maps.services.Geocoder();
+        function getCoordinates() {
+            const address = document.getElementById('addressInput').value.trim(); 
+            const geocoder = new kakao.maps.services.Geocoder();
 
-        document.getElementById('searchBtn').onclick = function() {
-            var address = document.getElementById('address').value;
-
-            // 주소로 좌표를 검색합니다
-            geocoder.addressSearch(address, function(result, status) {
+            const callback = function(result, status) {
                 if (status === kakao.maps.services.Status.OK) {
-                    var latitude = result[0].y;
-                    var longitude = result[0].x;
-
-                    console.log("위도: " + latitude + ", 경도: " + longitude);
-                    // 위도와 경도를 hidden 필드에 설정
-                    document.getElementById('latitude').value = latitude;
-                    document.getElementById('longitude').value = longitude;
-
-                    // 폼 제출
-                    document.getElementById('addressForm').submit();
+                    console.log("Result:", result);  // 전체 결과를 출력하여 구조 확인
+                    const latitude = result[0].y; // y 값을 latitude 변수에
+                    const longitude = result[0].x; 
+                    sendCoordinatesToServer(latitude, longitude);
+                    console.log('Latitude: ${latitude}, Longitude: ${longitude}');
                 } else {
-                    alert("주소를 찾을 수 없습니다. 다시 입력해 주세요.");
+                    console.error("주소를 찾을 수 없습니다.");
+                }
+            };
+
+            geocoder.addressSearch(address, callback);
+        }
+        function sendCoordinatesToServer(latitude, longitude) {
+            $.ajax({
+                url: 'test.ajax',
+                type: 'POST', // 요청 방법
+                data: {
+                    lat: latitude,
+                    lon: longitude
+                },
+                success: function(response) {
+                    console.log("서버 응답:", response); // 서버의 응답 처리
+                },
+                error: function(xhr, status, error) {
+                    console.error("서버 요청 실패:", error); // 오류 처리
                 }
             });
-        };
+        }
     </script>
+</head>
+<body>
+    <h1>주소 검색</h1>
+    <input type="text" id="addressInput" placeholder="주소를 입력하세요" />
+    <button onclick="getCoordinates()">위도/경도 검색</button>
 </body>
 </html>
