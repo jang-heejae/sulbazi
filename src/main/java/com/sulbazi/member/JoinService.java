@@ -17,11 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sulbazi.board.BoardDTO;
 import com.sulbazi.category.CategoryDAO;
 import com.sulbazi.category.CategoryOptDTO;
 import com.sulbazi.category.CategoryService;
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.category.UserCategoryDTO;
+import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
 
 @Service
@@ -37,7 +39,9 @@ public class JoinService {
 		 public int storeJoin(
 				 MultipartFile[] files,
 				 MultipartFile fileone,
-				 Map<String, String> param) {
+				 Map<String, String> param,
+				 String latitude,
+				 String longitude) {
 			StoreDTO dto = new StoreDTO(); 
 			 dto.setStore_id(param.get("store_id"));
 			 dto.setStore_pw(param.get("store_pw"));
@@ -46,6 +50,10 @@ public class JoinService {
 			 dto.setStore_phone(param.get("store_phone"));
 			 dto.setStore_time(param.get("store_time"));
 			 dto.setStore_address(param.get("store_address"));
+			 double latitude2 = Double.parseDouble(latitude);
+			 double longitude2 = Double.parseDouble(longitude);
+			 dto.setStore_latitude(latitude2);
+			 dto.setStore_longitude(longitude2);
 			 // double latitude = Double.parseDouble((String) param.get("latitude"));
 			 // dto.setStore_latitude(latitude);
 			 // double longitude = Double.parseDouble((String) param.get("longitude"));
@@ -55,7 +63,7 @@ public class JoinService {
 			 int store_idx = dto.getStore_idx();
 			 if(store_idx > 0 && row >0) {
 				 try {
-					photo_ser.filesaveone(fileone, store_idx, 7);
+					photo_ser.filesaveone(fileone, store_idx, 1);
 					photo_ser.fileSave(files, store_idx, 2);
 					StoreCategoryDTO storecategorydto = new StoreCategoryDTO();
 					int category1 = Integer.parseInt(param.get("category1"));
@@ -127,6 +135,15 @@ public class JoinService {
 
 		public boolean checknumber(String storenumber) {
 			return join_dao.checknumber(storenumber);
+		}
+
+		public void menudo(MultipartFile file, StoreMenuDTO menuDTO) {
+			join_dao.menudo(menuDTO);
+			photo_ser.menufile(file, menuDTO.getStore_idx(), 2);
+		}
+
+		public List<StoreMenuDTO> menulist(int store_idx) {
+			return join_dao.menulist(store_idx);
 		}
 
 }

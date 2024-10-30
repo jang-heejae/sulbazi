@@ -9,6 +9,11 @@
 			VALUES(#{photo_folder_idx},#{new_filename}, #{photo_category_idx})
 	</insert>
 	
+	<insert id="menufile" parameterType="com.sulbazi.photo.PhotoDTO">
+		INSERT INTO photo(photo_folder_idx, new_filename, photo_category_idx)
+			VALUES(#{photo_folder_idx},#{new_filename}, #{photo_category_idx})
+	</insert>
+	
 	<select id="inqueryphoto" 
 		resultType="com.sulbazi.photo.PhotoDTO">
 		SELECT new_filename FROM photo 
@@ -62,5 +67,15 @@
 	</delete>
 	
 	
+	<select id="detail1" resultType="com.sulbazi.photo.PhotoDTO">
+	    SELECT * FROM photo
+	     WHERE photo_folder_idx = #{store_idx} AND photo_category_idx = #{photo_category_idx};
+	</select>
+	
+	<select id="detail4" resultType="com.sulbazi.photo.PhotoDTO">
+		SELECT * FROM photo
+		 WHERE photo_folder_idx = #{store_idx} AND photo_category_idx = #{photo_category_idx};
+	</select>
+
 </mapper>
 
