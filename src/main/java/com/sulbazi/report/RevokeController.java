@@ -11,7 +11,8 @@ import org.springframework.stereotype.Controller;
 public class RevokeController {
 	@Autowired RevokeService revoke_ser;
 
-	    public static void revokeSchedule(String[] args) {
-	        SpringApplication.run(RevokeController.class, args);
-	    }
+	/*
+	 * public static void revokeSchedule(String[] args) {
+	 * SpringApplication.run(RevokeController.class, args); }
+	 */
 }

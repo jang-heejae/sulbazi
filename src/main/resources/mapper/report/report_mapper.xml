@@ -13,17 +13,18 @@
 	<select id="reportDetail" parameterType="String">
 		SELECT * FROM report WHERE report_idx = #{report_idx}
 	</select>
+
 	<insert id="processWrite" parameterType="com.sulbazi.report.ProcessDTO"
-        useGeneratedKeys="true" keyProperty="process_idx" keyColumn="process_idx">
-        INSERT INTO process (report_idx, admin_id, process_content, process_result)
-        VALUES (#{report_idx}, #{admin_id}, #{process_content}, #{process_result})
-    </insert>
-    <update id="updateReportResult" parameterType="map">
+    	useGeneratedKeys="true" keyProperty="process_idx" keyColumn="process_idx">
+    	INSERT INTO process (report_idx, admin_id, process_content, process_result, revoke_idx)
+    	VALUES (#{report_idx}, #{admin_id}, #{process_content}, #{process_result}, #{revoke_idx})
+	</insert>
+	<update id="updateReportResult" parameterType="map">
     	UPDATE report
     	SET report_state = #{result, jdbcType=INTEGER}
     	WHERE report_idx = #{report_idx}
 	</update>
-    <select id="getProcessesByReportIdx" parameterType="int" resultType="com.sulbazi.report.ProcessDTO">
+	<select id="getProcessesByReportIdx" parameterType="int" resultType="com.sulbazi.report.ProcessDTO">
     	SELECT * FROM process WHERE report_idx = #{report_idx} ORDER BY process_idx DESC
 	</select>
 	<select id="getReportedIdByReportIdx" parameterType="int" resultType="com.sulbazi.report.ReportDTO">

@@ -3,10 +3,12 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.report.RevokeDAO">
-	<insert id="revoke" parameterType="com.sulbazi.report.RevokeDTO">
-        INSERT INTO revokes(user_id, admin_id, revoke_start, revoke_stop)
-        VALUES(#{user_id}, #{admin_id}, #{revoke_start}, #{revoke_stop})
-    </insert>
+
+    <insert id="revoke" parameterType="com.sulbazi.report.RevokeDTO"
+    	useGeneratedKeys="true" keyProperty="revoke_idx" keyColumn="revoke_idx">
+    	INSERT INTO revokes (user_id, admin_id, revoke_start, revoke_stop)
+    	VALUES (#{user_id}, #{admin_id}, #{revoke_start}, #{revoke_stop})
+	</insert>
     <update id="revokeUpdate" parameterType="map">
         UPDATE user
         <set>
@@ -18,10 +20,33 @@
         </set>
         WHERE user_id = #{reported_id}  <!-- user_id와 reported_id 매핑 -->
     </update>
+    <select id="getRevokeByIdx" parameterType="int" resultType="com.sulbazi.report.RevokeDTO">
+    	SELECT * FROM revokes WHERE revoke_idx = #{revoke_idx}
+	</select>
     <select id="userIds" resultType="String">
         SELECT user_id FROM user; <!-- 모든 user_id 가져오기 -->
     </select>
-    <update id="revokeSchedule" parameterType="map">
+
+	<select id="process" parameterType="String" resultType="com.sulbazi.report.ProcessDTO">
+    	SELECT 
+        	p.process_idx,
+        	p.report_idx,
+        	p.admin_id,
+        	p.process_content,
+        	p.process_date,
+        	p.process_result,
+        	r.revoke_idx,
+        	r.revoke_start,
+        	r.revoke_stop
+    	FROM process p
+    	LEFT JOIN revokes r ON p.report_idx = #{report_idx}
+    	WHERE p.report_idx = #{report_idx}
+    	ORDER BY p.process_date DESC
+	</select>
+    <select id="getRevokeByUserId" parameterType="String" resultType="com.sulbazi.report.RevokeDTO">
+    	SELECT * FROM revokes WHERE user_id = #{reported_id}
+	</select>
+	<update id="revokeSchedule" parameterType="map">
         UPDATE user 
         SET user_revoke = CASE 
             WHEN start_date = #{today} AND stop_date = #{today} THEN '0' 
@@ -30,21 +55,4 @@
         END 
         WHERE user_id = #{userId};
     </update>
-    <select id="process" parameterType="String" resultType="com.sulbazi.report.ProcessDTO">
-        SELECT 
-            p.process_idx,
-            p.report_idx,
-            p.admin_id,
-            p.process_content,
-            p.process_date,
-            p.process_result,
-            r.revoke_start,
-            r.revoke_stop
-        FROM process p
-        LEFT JOIN revokes r ON p.report_idx = (SELECT report_idx FROM report WHERE reported_id = r.user_id)
-        WHERE p.process_idx = #{process_idx};
-    </select>
-    <select id="getRevokeByUserId" parameterType="String" resultType="com.sulbazi.report.RevokeDTO">
-    	SELECT * FROM revokes WHERE user_id = #{reported_id}
-	</select>
 </mapper>
