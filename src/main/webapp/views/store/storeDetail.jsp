@@ -255,18 +255,22 @@
 						</tr>
 					</table>
                 </fieldset>
-                <!-- 리뷰  사용자 일경우 신고 수정 삭제 
-                 매장일 경우 신고 답글
-                 페이징 처리 -->
-                 <fieldset>
-                    <legend>리뷰</legend>
+                <section>
+                 <!-- 리뷰 작성-->
+		             <article>
+			             <legend>리뷰 작성</legend>
+			      		 <button onclick="openWindowTab(${store.store_idx})">리뷰가기</button>
+		             </article>
+		                <!-- 리뷰  사용자 일경우 신고 수정 삭제 
+		                 매장일 경우 신고 답글 -->
+		                 리뷰 글들
+	                 <article>
+	                 	<table id="review-section">
+                 	
+	                 	</table>
+	                 </article>
+                </section>
 
-                </fieldset>
-                <!-- 리뷰 작성-->
-                <fieldset>
-                    <legend>리뷰 작성</legend>
-                    
-                </fieldset>
             </div>
 
         </main>
@@ -322,6 +326,71 @@
     	    });
     	}
     	
+    	//리뷰 글쓰기  아쟉
+function openWindowTab(storeIdx) {
+    window.open(
+        'review.go?storeidx=' + storeIdx, 
+        '_blank', 
+        'width=800,height=600,top=100,left=200,resizable=no'
+    );
+}
+    	// 리뷰 섹션 아쟉스
+    	var storeIdx = '${store.store_idx}';
+    	reviewShow(storeIdx);
+
+ 		function reviewShow(storeIdx){
+ 			console.log("이종원 리뷰"+storeIdx)
+ 			$.ajax({
+ 				type:'POST', 
+ 				url: 'reviewAllUser.ajax',
+ 				data:{
+ 					'storeIdx':storeIdx
+ 				},
+ 				dataType:'json',
+ 				success:function(data){
+					drawList(data.reviews);
+ 					
+ 				},
+ 				error:function(e){
+ 					console.log(e);	
+ 				}
+ 			});
+ 			
+ 		};
     	
+ 		function drawList(reviews){
+ 			var listContainer = document.getElementsById('review-section');
+ 			
+ 			
+ 			reviews.foreach(function(review,idx){
+ 				
+ 				
+ 			var content = '<tr>'
+ 			 	content += '<td = class = "profile">'
+ 			 	content +='<img src="" alt="user" class="profile-image">'
+ 			 	content +='</td>'
+ 			 	content +='<td colspan="2" class="user-info">'
+ 			 	content +='<strong>username</strong>'
+ 			 	content +='<div class="like-section">'
+ 			 	content +='<img src="" alt="좋아요" class="icon"> 좋아요 </div>'
+ 			 	content +='</td></tr>'
+ 			 	content +='<tr><td class="rating-cell">'
+ 			 	content +='<img src="" alt="별점" class="icon"> 별점 </td>'
+ 			 	content +='<td class="likes-cell">'
+ 			 	content +='<img src="like_icon.png" alt="좋아요" class="icon"> 좋아요수 </td>'
+ 			 	content +='<td class="category-cell"> 방문목적 , 분위기</td></tr>'
+ 			 	content +='<tr> <td colspan="3" class="review-content-cell">'
+ 			 	content +='글쓰기 영역 줄바꿈 rplace 필요 </td></tr>'
+ 			 	content +='<tr><td colspan="3" class="action-cell">날짜 컬럼 넣기'
+ 			 	content +='<span class="report-section"><img src="like_icon.png" alt="좋아요" class="icon">신고</span>'
+ 			 	content +='<button class="action-button">답글</button>'
+ 			 	content +='<button class="action-button">수정</button>'
+ 			 	content +='<button class="action-button">신고</button>'
+ 			 	content +='<button class="action-button">삭제</button>'
+ 			 	content +='</td></tr>'
+ 			 	
+ 			 	listContainer.append(content);
+ 			});
+ 		}
     </script>
 </html>

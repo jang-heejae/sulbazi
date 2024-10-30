@@ -11,6 +11,7 @@ import com.sulbazi.board.BoardDTO;
 import com.sulbazi.category.CategoryOptDTO;
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.photo.PhotoDTO;
+import com.sulbazi.review.ReviewDTO;
 
 @Mapper
 public interface StoreDAO {
@@ -88,6 +89,7 @@ public interface StoreDAO {
 	int menuudelete(String menu_idx);
 
 	int menuinsert(StoreMenuDTO store_menu);
+
 
 
 

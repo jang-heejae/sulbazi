@@ -15,10 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sulbazi.member.StoreDTO;
+import com.sulbazi.member.StoreService;
+
 @Controller
 public class CategoryController {
 	
 @Autowired CategoryService category_ser;
+@Autowired StoreService store_ser;
 	
 Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -54,15 +58,19 @@ Logger logger = LoggerFactory.getLogger(getClass());
 	}
 	
 
-	//매장 리스트 필터링 
-	@PostMapping(value="/filtering.ajax")
-	@ResponseBody
-	public Map<String,Object> storefiltering(@RequestParam Map<String, String> params,Model model) {
-		logger.info("매장 필터링 컨트롤러");
-		List<Integer> filteringstoreidx= category_ser.storefiltering(params);
-		logger.info(""+filteringstoreidx);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("map",category_ser.storefiltering(params));
-		return map;
-	}
+	
+	 //매장 리스트 필터링
+	  
+	  @PostMapping(value="/filtering.ajax")
+	  @ResponseBody 
+	  public Map<String,Object> storefiltering(@RequestParam Map<String, String> params,Model model) {
+	  
+	  logger.info("매장 필터링 컨트롤러"); 
+	 
+
+	  
+	  return category_ser.storefiltering(params );  
+	  }
+	  
+	 
 }
