@@ -24,6 +24,7 @@ import com.sulbazi.category.CategoryOptDTO;
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
+import com.sulbazi.review.ReviewDTO;
 
 
 @Service
@@ -53,11 +54,18 @@ public class StoreService {
 
 
 	
-	public Map<String, Object> storenamesearch(String keyword, Model model) {
+	public Map<String, Object> storenamesearch(String keyword,int page,int cnt) {
+		int limit = cnt;
+		int offset = (page-1) * cnt;
+		
 		logger.info("매장이름키워드서비스");
 		logger.info(keyword);
 		List<Integer> namesearch = store_dao.storenamesearch(keyword);
 		logger.info("필터링된 매장 idx" + namesearch);
+		
+		
+		int totalPages = (int) Math.ceil((double) namesearch.size() / cnt);
+		
 		
 		List<StoreDTO> filteringstorelist ; 
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -67,12 +75,30 @@ public class StoreService {
 			 logger.info("하나하나 분리: {}", storeidx); 
 			 filteringstorelist =store_dao.storesearch(storeidx);
 			 logger.info("list: {}", filteringstorelist); 
-			 
 			 accumulatedFilteringStoreList.addAll(filteringstorelist);
-			 
-			 model.addAttribute("filteringstorelist", accumulatedFilteringStoreList);
-			 map.put("searchresult", accumulatedFilteringStoreList);
 		 }		 
+		 
+		 accumulatedFilteringStoreList.sort(
+				    Comparator.comparingDouble(StoreDTO::getStar_average).reversed() // 별점 높은 순
+				              .thenComparingInt(StoreDTO::getReview_total).reversed() // 리뷰 수 높은 순
+				              .thenComparingInt(StoreDTO::getStore_idx) // store_idx 오름차순
+				 );
+		 
+		 int toIndex = Math.min(offset + limit, accumulatedFilteringStoreList.size());
+
+		 List<StoreDTO> paginatedList = accumulatedFilteringStoreList.subList(offset, toIndex);
+		 
+		 List<PhotoDTO> photoList = store_dao.findPhotosForStores(paginatedList);
+		 List<CategoryOptDTO> categoryOpts = store_dao.findStoreCategorys(paginatedList);
+		 List<StoreCategoryDTO> storeCategorys = store_dao.storeHelpMeIdx(paginatedList);
+		 
+			 map.put("searchresult", paginatedList);
+			 map.put("totalPages", totalPages);
+			 map.put("photos", photoList);
+			 map.put("categoryOpts", categoryOpts);
+			 map.put("storeCategorys", storeCategorys);
+		 
+		 
 		 return map;
 	}
 
@@ -109,6 +135,8 @@ public class StoreService {
 				              .thenComparingInt(StoreDTO::getStore_idx) // store_idx 오름차순
 				);
 		 int toIndex = Math.min(offset + limit, accumulatedFilteringStoreList.size());
+		 
+		 
 		 List<StoreDTO> paginatedList = accumulatedFilteringStoreList.subList(offset, toIndex);
 		 
 		 List<PhotoDTO> photoList = store_dao.findPhotosForStores(paginatedList);
@@ -128,26 +156,59 @@ public class StoreService {
 
 	
 	
-	public Map<String, Object> storeaddrsearch(String keyword, Model model) {
+	public Map<String, Object> storeaddrsearch(String keyword,int page,int cnt) {
+		int limit = cnt;
+		int offset = (page-1) * cnt;
+		
 		logger.info("매장메뉴키워드서비스");
 		logger.info(keyword);
 		List<Integer> addrsearch = store_dao.storeaddrsearch(keyword);
 		logger.info("필터링된 매장 idx" + addrsearch);
+		
+		int totalPages = (int) Math.ceil((double) addrsearch.size() / cnt);
+
 		
 		List<StoreDTO> filteringstorelist ; 
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<StoreDTO> accumulatedFilteringStoreList = new ArrayList<>();
 		 
 		 for (Integer storeidx : addrsearch) { 
-			 logger.info("하나하나 분리: {}", storeidx); 
+			// logger.info("하나하나 분리: {}", storeidx); 
 			 filteringstorelist =store_dao.storesearch(storeidx);
-			 logger.info("list: {}", filteringstorelist); 
+//			 logger.info("list: {}", filteringstorelist); 
 			 
 			 accumulatedFilteringStoreList.addAll(filteringstorelist);
 			 
-			 model.addAttribute("filteringstorelist", accumulatedFilteringStoreList);
-			 map.put("searchresult", accumulatedFilteringStoreList);
 		 }		 
+		 
+		 
+		 
+		 accumulatedFilteringStoreList.sort(
+				    Comparator.comparingDouble(StoreDTO::getStar_average) // 별점 오름차순// 높은 순으로 변경
+				              .thenComparingInt(StoreDTO::getReview_total).reversed() // 리뷰 수 높은 순
+				              .thenComparingInt(StoreDTO::getStore_idx) // store_idx 오름차순
+				);
+		 
+		 
+		 int toIndex = Math.min(offset + limit, accumulatedFilteringStoreList.size());
+
+		 List<StoreDTO> paginatedList = accumulatedFilteringStoreList.subList(offset, toIndex);
+		 
+		 logger.info("매장리스트 paginatedList: {} " , paginatedList);
+		 logger.info("매장리스트 toIndex: {} " , toIndex);
+		 
+		 List<PhotoDTO> photoList = store_dao.findPhotosForStores(paginatedList);
+		 List<CategoryOptDTO> categoryOpts = store_dao.findStoreCategorys(paginatedList);
+		 List<StoreCategoryDTO> storeCategorys = store_dao.storeHelpMeIdx(paginatedList);
+		 
+			 map.put("searchresult", paginatedList);
+			 map.put("totalPages", totalPages);
+			 map.put("photos", photoList);
+			 map.put("categoryOpts", categoryOpts);
+			 map.put("storeCategorys", storeCategorys);
+		 
+		 
+		 
 		 return map;
 	}
 
@@ -356,6 +417,27 @@ public class StoreService {
 		}
 		return photo_folder_idx;
 	}
+
+
+
+
+
+	/*
+	 * public Map<String, Object> storefiltering(Map<String, String> params) {
+	 * 
+	 * int idx_1= Integer.parseInt(params.get("alchol")) ; int
+	 * idx_2=Integer.parseInt(params.get("food")); int
+	 * idx_3=Integer.parseInt(params.get("mood")); int
+	 * idx_4=Integer.parseInt(params.get("visit"));
+	 * 
+	 * int cnt = Integer.parseInt(params.get("cnt")); int page =
+	 * Integer.parseInt(params.get("page"));
+	 * 
+	 * List<StoreDTO> filteringstoreidx= .storefiltering(idx_1,idx_2,idx_3,idx_4);
+	 * 
+	 * 
+	 * return null; }
+	 */
 
 }
 
