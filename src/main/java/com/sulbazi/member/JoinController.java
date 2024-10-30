@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sulbazi.category.CategoryDAO;
 import com.sulbazi.category.CategoryOptDTO;
 import com.sulbazi.category.CategoryService;
+import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
 @Controller
 public class JoinController {
@@ -146,12 +147,22 @@ public class JoinController {
 		menuDTO.setMenu_name(menu_name);
 		menuDTO.setStore_idx(store_idx);
 		join_ser.menudo(file, menuDTO);
-		List<StoreMenuDTO> menulist = join_ser.menulist(store_idx);
 		Map<String, Object> response = new HashMap<>();
-		response.put("menuList", menulist);
+		response.put("success", true);
 		return response;
 	}
 	
+	@GetMapping(value="/menulist")
+	@ResponseBody
+	public Map<String, Object> menulist(@RequestParam(value = "store_idx", required = false) Integer store_idx){
+		logger.info("idx 값:{} ",store_idx);	
+		List<PhotoDTO> photodto = photo_ser.menulist(store_idx, 2);
+		List<StoreMenuDTO> menudto = join_ser.menulist(store_idx);
+		Map<String, Object> map = new HashMap<>();
+		map.put("menulist", menudto);
+		map.put("menuphoto", photodto);
+		return map;
+	}
 	
 	
 	

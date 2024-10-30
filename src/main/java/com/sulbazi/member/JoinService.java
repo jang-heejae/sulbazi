@@ -17,11 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sulbazi.board.BoardDTO;
 import com.sulbazi.category.CategoryDAO;
 import com.sulbazi.category.CategoryOptDTO;
 import com.sulbazi.category.CategoryService;
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.category.UserCategoryDTO;
+import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
 
 @Service

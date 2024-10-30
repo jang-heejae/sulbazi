@@ -91,7 +91,7 @@
     }
 </style>
 <body>
-<form id="menu.do" method="post" enctype="multipart/form-data">
+<form id="menu.go" method="post" enctype="multipart/form-data">
     <header>
         <nav class="navbar">
             <div class="logo_text">
@@ -111,6 +111,9 @@
                 <input type="text" name="menu_price" value="" placeholder="메뉴 가격"/><span class="price">원</span>
                 <input type="file" name="file" multiple="multiple"/>
                 <button type="button" id="menu_go">등록</button>
+                <div id="menulist" style="color:white; margin-top:30px;"> <!-- 메뉴 리스트 표시 영역 -->
+			        <h3>메뉴 목록</h3>
+			    </div>
             </div>
         </div>
     </form>
@@ -119,7 +122,7 @@
 <script>
 	$(document).ready(function() {
 	    $('#menu_go').click(function() {
-	        var formData = new FormData($('#menu')[0]); // 올바른 ID 사용
+	        var formData = new FormData($('#menu.go')[0]); // 올바른 ID 사용
 	
 	        // 추가적인 데이터 설정
 	        var menuName = $('input[name="menu_name"]').val();
@@ -133,7 +136,7 @@
 	        formData.append('menu_price', menuPrice);
 	        formData.append('menu_category', menuCategory);
 	        formData.append('store_idx', storeIdx);
-	        formData.append('file', $('input[name="file"]')[0].file); // 파일 이름 수정
+	        formData.append('file', $('input[name="file"]')[0].files[0]); // 파일 이름 수정
 	
 	        // AJAX 요청
 	        $.ajax({
@@ -154,16 +157,24 @@
 	            }
 	        });
 	    });
+	    fetchMenuList();
 	});
 	
 	function fetchMenuList() {
+	    var storeIdx = ${store_idx};
 	    $.ajax({
 	        url: 'menulist', // 등록된 메뉴 목록을 가져오는 URL
 	        type: 'GET',
+	        data: {store_idx : storeIdx},
 	        success: function(data) {
-	            $('#menu_list').empty(); // 이전 목록을 비우기
-	            data.forEach(function(menu) {
-	                $('#menu_list').append('<div>' + menu.menu_name + ' - ' + menu.menu_price + '원 (' + menu.menu_category + ')</div>');
+	            $('#menulist').empty(); // 이전 목록을 비우기
+	            data.menulist.forEach(function(menu) {
+	                $('#menulist').append('<div>' + menu.menu_name + ' - ' + menu.menu_price + '원 (' + menu.menu_category + ')</div>');
+	            });
+
+	            // 사진 목록 추가
+	            data.menuphoto.forEach(function(photo) {
+	            	$('#menulist').append('<div><img src="/photo/' + photo.new_filename + '" alt="사진" style="width:100px; height:auto;" /></div>');
 	            });
 	        },
 	        error: function() {

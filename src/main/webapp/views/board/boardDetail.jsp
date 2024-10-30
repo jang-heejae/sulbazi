@@ -254,7 +254,7 @@
          <table>
             <tr>
                <th class="category">${info.board_category}</th>
-               <th colspan="2" class="category" style="text-align: left; width: 400px;">${info.board_content}</th>
+               <th colspan="2" class="category" style="text-align: left; width: 400px;">${info.board_subject}</th>
                <th></th>
                <th><i class="fa-solid fa-heart" style="color: red; margin-right: 5px;"></i>${info.like_count}</th>
                <th><i class="fa-solid fa-eye" style="color: #999999; margin-right: 5px;"></i>${info.board_bHit}</th>
@@ -291,7 +291,7 @@
 					</th>
                </tr>
                <tr>
-                  <th>${info.board_subject}</th>               
+                  <th>${info.board_content}</th>               
                </tr>
             
             <%-- <tr>

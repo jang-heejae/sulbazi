@@ -21,6 +21,10 @@ public interface BoardDAO {
 
 	void insertLike(BoardLikeDTO likeDTO);
 
+	int getstore_idx(String store_id);
+
+	boolean boardWriteajax(BoardDTO boardDTO);
+
 
 
 }

@@ -150,6 +150,11 @@
     .subject{
     	width: 500px;
     }
+    .writebutton{
+    	position: absolute;
+    	top: 140px;
+    	right: 327px;
+    }
 </style>
 <body>
     <header>
@@ -206,6 +211,13 @@
             </div>
         </div>  
     </header>
+    <c:if test="${not empty sessionScope.opt && sessionScope.opt == 'store_log'}">
+    <div class="writebutton" style="text-align: right; margin: 10px;">
+        <a href="boardWrite.go" style="padding: 10px 20px; background-color: rgb(255, 140, 9); color: white; text-decoration: none; border-radius: 5px;">
+            글쓰기
+        </a>
+    </div>
+    </c:if>
     <div class="boardlist">
         <table>
             <tbody id="list">
@@ -318,7 +330,7 @@ $.ajax({
 		list.forEach(function(item,board_idx){
 			content += '<tr>';
 			content += '<td>'+item.board_category+'</td>';
-			content += '<td class="subject"><a href="boardDetail.go?board_idx=' + item.board_idx + '" style="color: blue;">' + item.board_content + '</a></td>';
+			content += '<td class="subject"><a href="boardDetail.go?board_idx=' + item.board_idx + '" style="color: blue;">' + item.board_subject + '</a></td>';
 			content += '<td class="like">' +
             '<i class="fa-solid fa-heart" style="color: red; margin-right: 5px;"></i>' + 
             item.like_count + 

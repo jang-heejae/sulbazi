@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
@@ -56,6 +57,14 @@ public class BoardService {
 
 	public void insertLike(BoardLikeDTO likeDTO) {
 		board_dao.insertLike(likeDTO);
+	}
+
+	public int getstore_idx(String store_id) {
+		return board_dao.getstore_idx(store_id);
+	}
+
+	public boolean boardWriteajax(BoardDTO boardDTO, MultipartFile[] file) {
+		return board_dao.boardWriteajax(boardDTO);
 	}
 
 	
