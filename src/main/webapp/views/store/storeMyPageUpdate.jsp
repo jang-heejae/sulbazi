@@ -15,6 +15,8 @@ body {
 }
 
 .all {
+	position: relative;
+	z-index: 9999;
     width: 65%;
     display: flex;
     flex-direction: row;

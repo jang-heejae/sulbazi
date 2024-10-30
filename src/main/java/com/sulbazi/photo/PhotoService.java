@@ -39,12 +39,12 @@ public class PhotoService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
-	public void fileSave(MultipartFile[] files, int store_idx, int cti) throws IOException {
+	public void fileSave(MultipartFile[] files, int idx, int cti) throws IOException {
 		logger.info("받은 cti 값: " + cti);
 		String filePath = storeFile(files);
         PhotoDTO photoDTO = new PhotoDTO();
         photoDTO.setPhoto_category_idx(cti);
-        photoDTO.setPhoto_folder_idx(store_idx);
+        photoDTO.setPhoto_folder_idx(idx);
         photoDTO.setNew_filename(filePath);
         photo_dao.fileSave(photoDTO);
         logger.info("{photoDTO}:"+photoDTO);

@@ -10,8 +10,39 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
-	body{
-		color: white;
+	body {
+    	display: flex;
+    	flex-direction: column;
+    	align-items: center;
+    	justify-content: center; 
+    	gap: 20px;
+    	margin: 20px;
+    	font-weight: bold;
+    	color: #041d03;
+    	min-height: 100vh;
+    	background-color: #041d03;
+	}
+	.chatBox2 {
+    	display: flex;
+    	justify-content: center;
+    	align-items: flex-start; /* 시작점에서부터 정렬 */
+    	width: 100%;
+    	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
+	}
+	.chatitems2 {
+		margin-top: 150px;
+    	width: 940px;
+    	min-height: 650px; /* 초기 최소 높이 설정 */
+    	height: auto; /* 내용에 따라 높이 자동 조절 */
+    	display: flex;
+    	flex-wrap: wrap;
+    	justify-content: center;
+    	align-items: center;
+    	align-content: center;
+    	background-color: #73734F;
+    	border-radius: 20px;
+    	padding: 20px; /* 내부 여백 추가 */
+    	margin-top: 140px; 
 	}
 	#store{
 		position: absolute;
@@ -34,17 +65,21 @@
 		border-radius: 20px;
 	}
 	#storeTable{
+		color: rgb(255, 140, 9);
 		background-color: #20290E;
-		border: 1px solid #20290E;
+		border: 1px solid rgb(255, 140, 9);
 		border-collapse: collapse;
 		padding: 3px;
 		font-family: "Irish Grover", system-ui;
+		font-weight: bold;
 	}
 	#storeDiv{
 		position: absolute;
-		top: 201px;
+		top: 256px;
     	left: 507px;
     	height: 200px;
+    	width: 896px;
+    	
 	}
 	td{
 		padding: 5px;
@@ -101,6 +136,8 @@
 </head>
 <body>
 	<c:import url="../main/adminMain.jsp"/>
+	    <section class="chatBox2">
+        <div class="chatitems2">
 	<div id="store"><h1>매장 사용자</h1></div>
 	<div id="storeSearch">
 		<ul>
@@ -115,7 +152,7 @@
 		</ul>
 	</div>
 	<div id="storeDiv">
-	<table>
+	<table style="width: 100%; height: 100%;">
 		<thead>
 			<tr id="storeTable">
 				<td>아이디</td>
@@ -139,6 +176,8 @@
 		</tr>
 	</table>
 	</div>
+	</div>
+	</section>
 </body>
 <script>
 var showPage = 1;
@@ -186,7 +225,7 @@ $('#searchIcon').on('click', function(){
 	    var content = '';
 	    for (var item of list) {
 	        content += '<tr>';
-	        content += '<td><a href="adminStoreDetail.go?store_idx=' + item.store_idx + '">'+ item.store_id +'</a></td>';
+	        content += '<td style="color:#041d03;"><a href="adminStoreDetail.go?store_idx=' + item.store_idx + '">'+ item.store_id +'</a></td>';
 	        content += '<td>' + item.store_name + '</td>';
 	        content += '<td>' + item.store_number + '</td>';
 	        content += '<td>' + item.review_total + '</td>';
