@@ -19,6 +19,47 @@
 	
 	$(document).ready(function() {
 
+		// 참여자 리스트
+		var localchat_idx = ${roomidx};
+		
+	    function localloadUserList() {
+	        $.ajax({
+	            url: '/SULBAZI/localuserlist.ajax',
+	            type: 'GET',
+	            data: { localchat_idx: localchat_idx },
+	            dataType: 'json',
+	            success: function(data) {
+	                $('.ajax').empty(); // 기존 사용자 목록 비우기
+
+	                $.each(data, function (index, user) {
+	      	          
+	                	var userlist = '<div class="room2">';
+	                    userlist += '<img width="20" alt="프로필" src="/photo/' + user.user_photo + '">';
+	                    
+	                    if (user.user_id === loginId) {
+	                        userlist += '<div class="user" style="font-weight: bold;">' + user.user_nickname + '㉯</div>';
+	                    } else {
+	                        userlist += '<div class="user">' + user.user_nickname + '</div>';
+	                    }
+	                    
+	                    userlist += '</div>';
+	                	
+	                	$('.ajax').append(userlist);
+	                    
+	                });
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('AJAX 요청 실패:', status, error);
+	            }
+	        });
+	    }
+		
+	    localloadUserList();
+		
+		
+		
+		
+		
 		// 메세지 전송
 	    $('.sendmsg').click(function () {
 	        var localmsg_content = $('textarea[name="usermsgcontent"]').val();
@@ -42,8 +83,8 @@
 	                localchat_idx: localchat_idx
 	            },
 	            success: function () {
-	                loadMessages();  // 메세지를 다시 로드
-	                $('textarea[name="usermsgcontent"]').val("");  // 입력 필드 비우기
+	                loadMessages();  
+	                $('textarea[name="usermsgcontent"]').val("");  
 	            },
 	            error: function () {
 	                alert("메세지 전송에 실패했습니다.");
@@ -304,13 +345,7 @@ a{
                 <div class="roomtitle">${subject}${userNicknames}</div>
                 <div class="cont2">
                     <div class="userlist">
-                    	<div>
-                        <c:forEach items="${localuserlist}" var="localuserlist">
-                        <div class="room2">
-							<img width="20" alt="img" src="/photo/${userPhoto[localuserlist.user_id]}">
-                            <div class="user">${userNickname[localuserlist.user_id]}</div>
-                        </div>
-                        </c:forEach>
+                    	<div class="ajax">
                         </div>
                         <div class="roomout">
                         	<div class="roomoutbtn">
@@ -345,12 +380,12 @@ a{
 	// 방 나가기 클릭 시 parti_state를 0으로 변경
 	
 	$('.roomout').click(function() {
-		var roomIdx = '${roomidx}';
+		var chatroom_idx = '${roomidx}';
 		
 		$.ajax({
-			url: 'localroomout.ajax',
+			url: '/SULBAZI/localroomout.ajax',
 			type: 'POST',
-			data: {roomIdx: roomIdx},
+			data: {chatroom_idx: chatroom_idx},
 			success: function(response) {
 				alert("방을 나갔습니다.");
 				window.location.href = "localchatlist.go";  // 로컬 채팅방 리스트로 이동

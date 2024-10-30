@@ -109,4 +109,5 @@
 	<select id="localroom" resultType="com.sulbazi.chat.LocalChatroomDTO">
 		SELECT * FROM localchat ORDER BY localchat_idx
 	</select>
+	
 </mapper>

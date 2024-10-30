@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -110,6 +111,26 @@ public class ReportController {
         map.put("list", reportList);
         return map;
     }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 개인 채팅방 메세지 신고
+	@PostMapping(value="/reportuser.ajax")
+	@ResponseBody
+	public String usermsgreport(@RequestParam String reported_id, @RequestParam String reporting_id, 
+			@RequestParam String report_category, @RequestParam int reported_idx, @RequestParam String report_content){
+		
+		report_ser.usermsgreport(reported_id,reporting_id,report_category,reported_idx,report_content);
+		
+		return "success";
+	}
 	
 	
 }
