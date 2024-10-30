@@ -16,11 +16,11 @@
 	</select>
 	
 	<select id="getStorePhoto" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
-		select new_filename from photo where photo_folder_idx=#{param1} and photo_category_idx=1
+		select new_filename from photo where photo_folder_idx=#{param1} and photo_category_idx=1 ORDER BY photo_idx DESC LIMIT 1
 	</select>
 	
 	<select id="getStorePhotos" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
-		select new_filename from photo where photo_folder_idx=#{param1} and photo_category_idx=7 ORDER BY photo_idx ASC
+		select new_filename from photo where photo_folder_idx=#{param1} and photo_category_idx=7 ORDER BY photo_idx DESC LIMIT 5
 	</select>
 	
 	<select id="fileList" parameterType="int" resultType="com.sulbazi.photo.PhotoDTO">
@@ -187,8 +187,7 @@
 
 	<!-- 매장 마이페이지  정보 보기 -->
 	<select id="mystore" resultType="com.sulbazi.member.StoreDTO">
-		SELECT store_id, store_pw, store_name, store_number, store_phone, store_address, store_time
-			FROM store WHERE store_idx=#{param1};
+		SELECT * FROM store WHERE store_idx=#{param1};
 	</select>
 	
 	<select id="mystoreopt" resultType="int">

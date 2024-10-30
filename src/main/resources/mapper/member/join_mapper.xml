@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
->
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sulbazi.member.JoinDAO">
 	<insert
       useGeneratedKeys="true"
       keyColumn="store_idx"
       keyProperty="store_idx"
       id="storeJoin" parameterType="com.sulbazi.member.StoreDTO">
-         INSERT INTO store(store_id, store_pw, store_number, store_name, store_phone, store_address, store_time)
-         	VALUES(#{store_id}, #{store_pw}, #{store_number}, #{store_name}, #{store_phone}, #{store_address}, #{store_time})
+         INSERT INTO store(store_id, store_pw, store_number, store_name, store_phone, store_address, store_time, store_latitude, store_longitude)
+         	VALUES(#{store_id}, #{store_pw}, #{store_number}, #{store_name}, #{store_phone}, #{store_address}, #{store_time}, #{store_latitude}, #{store_longitude})
    </insert>
    
    <insert 
@@ -32,4 +31,14 @@
    <select id="checknumber" resultType="boolean">
    		SELECT COUNT(*) > 0 FROM store WHERE store_number = #{storenumber}
    </select>
+   
+   <insert id="menudo" parameterType="com.sulbazi.member.StoreMenuDTO">
+   		INSERT INTO store_menu(menu_name, menu_price, menu_category, store_idx)
+   			VALUES(#{menu_name}, #{menu_price}, #{menu_category}, #{store_idx})
+   </insert>
+   
+   <select id="menulist" parameterType="int" resultType="com.sulbazi.member.StoreMenuDTO">
+   		SELECT * FROM store_menu WHERE store_idx = #{store_idx}
+   </select>
+   
 </mapper>

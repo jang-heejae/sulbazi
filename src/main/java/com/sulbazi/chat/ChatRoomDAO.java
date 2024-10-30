@@ -36,8 +36,8 @@ public interface ChatRoomDAO {
 	/* 지역 채팅방 리스트 */
 	List<UserChatroomDTO> localchatlist();
 
-	/* 지역 채팅방 참여 */
-	List<LocalChatroomDTO> localroom(); /* 채팅룸 안에서 지역 채팅방 목록 */
+	/* 채팅룸 안에서 지역 채팅방 목록 */
+	List<LocalChatroomDTO> localroom(); 
 
 	
 

@@ -10,10 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sulbazi.member.StoreDAO;
+import com.sulbazi.member.StoreDTO;
+import com.sulbazi.member.StoreService;
+import com.sulbazi.photo.PhotoDTO;
+
 @Service
 public class CategoryService {
 	
 	@Autowired CategoryDAO category_dao;
+	@Autowired StoreDAO store_dao;
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -35,17 +41,40 @@ public class CategoryService {
 
 	
 	//매장 리스트 필터링 
-	public List<Integer> storefiltering(Map<String, String> params) {
+	public Map<String,Object> storefiltering(Map<String, String> params) {
 		logger.info("매장 필터링 서비스");
 		logger.info(""+params);
 		int idx_1= Integer.parseInt(params.get("alchol")) ;
 		int idx_2=Integer.parseInt(params.get("food"));
 		int idx_3=Integer.parseInt(params.get("mood"));
 		int idx_4=Integer.parseInt(params.get("visit"));
+		
+		int cnt = Integer.parseInt(params.get("cnt")); 
+		int page = Integer.parseInt(params.get("page")); 
+		
+		int limit = cnt;
+		int offset = (page-1) * cnt;
+		
+		
 		logger.info(""+idx_1);
-		List<Integer> filteringstoreidx= category_dao.storefiltering(idx_1,idx_2,idx_3,idx_4);
-		logger.info(""+filteringstoreidx);
-		return filteringstoreidx;
+		//매장 별점 리뷰 idx 순 offset limt 한거 5개씪
+		List<StoreDTO> filteringstoreidx= category_dao.storefiltering(idx_1,idx_2,idx_3,idx_4,offset,limit);
+		//토탈 페이지 가져온거
+		int totalPages = category_dao.getTotalPages(idx_1,idx_2,idx_3,idx_4);
+		int totalStores = (int) Math.ceil((double) totalPages / cnt); 
+		
+		
+		List<PhotoDTO> photoList = store_dao.findPhotosForStores(filteringstoreidx);
+		List<CategoryOptDTO> categoryOpts = store_dao.findStoreCategorys(filteringstoreidx);
+		List<StoreCategoryDTO> storeCategorys = store_dao.storeHelpMeIdx(filteringstoreidx);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("storeList", filteringstoreidx);
+		map.put("totalPages", totalStores);
+		map.put("photos", photoList);
+		map.put("categoryOpts", categoryOpts);
+		map.put("storeCategorys", storeCategorys);
+		
+		return map;
 	}
 	
 	public List<CategoryOptDTO> joincategory() {

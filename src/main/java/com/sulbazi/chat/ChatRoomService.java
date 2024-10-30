@@ -82,10 +82,6 @@ public class ChatRoomService {
 		return chatroom_dao.localchatlist();
 	}
 
-	/* 지역 채팅방 참여 */
-	public List<LocalChatroomDTO> localroom() {
-		return chatroom_dao.localroom();
-	}
 
 	
 

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.security.Provider.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import com.sulbazi.category.CategoryService;
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
+import com.sulbazi.review.ReviewService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +54,8 @@ public class StoreController {
 	@Autowired PhotoService photo_ser;
 	@Autowired BoardService board_ser;
 	@Autowired CategoryService category_ser;
+	@Autowired ReviewService review_ser;
+	
 	
 	@RequestMapping(value="/storeMain.go")
 	public String storeMain() {
@@ -59,14 +63,19 @@ public class StoreController {
 	}
 	
 	
-	
+	//매장 상세보기
 	@RequestMapping(value="/storeDetail.do")
     public String getStoreDetail(int storeidx, Model model, HttpSession session) {
 		int idx = storeidx;
+		//매장 정보
         StoreDTO storeDetail = store_ser.getStoreDetail(idx);
+        //매장 대표사진 가져오기
         PhotoDTO file= store_ser.getStorePhoto(idx);
+        //해당 매장 사진
         List<PhotoDTO> files= store_ser.getStorePhotos(idx);
+        //해당 매장 게시판 정보
         BoardDTO boardList = store_ser.getBoard(idx);
+        //매장 카테고리 가져오기
         List<CategoryOptDTO> storeOverviews = store_ser.getStoreExplain(idx);
 
 
@@ -77,7 +86,7 @@ public class StoreController {
         model.addAttribute("board", boardList);
 		/* model.addAttribute("storeidx",idx); */
         model.addAttribute("storeOverviews",storeOverviews);
-        logger.info("storeDetail: " + storeDetail);
+		/* logger.info("storeDetail: " + storeDetail); */
         return "store/storeDetail";
   
     }
@@ -87,9 +96,9 @@ public class StoreController {
     public String storeMenu1(int storeidx, Model model, HttpSession session) {
 		int idx = storeidx;
         List<PhotoDTO> files= store_ser.fileList(idx);
-        logger.info("files list size: {}", files.size());
+		/* logger.info("files list size: {}", files.size()); */
         for (PhotoDTO f : files) {
-            logger.info("PhotoDTO: {}", f);
+			/* logger.info("PhotoDTO: {}", f); */
             System.out.println(f.getNew_filename());
         }
         List<StoreMenuDTO> storeMenu = store_ser.getStoreMenuById(idx);
@@ -109,7 +118,7 @@ public class StoreController {
     public String storeMenu2(int storeidx, Model model, HttpSession session) {
 		int idx = storeidx;
         List<PhotoDTO> files= store_ser.alcoholFileList(idx);
-        logger.info("files list size: {}", files.size());
+//        logger.info("files list size: {}", files.size());
         for (PhotoDTO f : files) {
             //logger.info("PhotoDTO: {}", f);
             //System.out.println(f.getNew_filename());
@@ -148,7 +157,7 @@ public class StoreController {
             List<PhotoDTO> photoList = store_ser.findPhotosForStores(stores);
             List<CategoryOptDTO> categoryOpts = store_ser.findStoreCategorys(stores);
             List<StoreCategoryDTO> storeCategorys = store_ser.storeHelpMeIdx(stores);
-
+			/* logger.info("매장리스트 stores: {} " , stores); */
 
             // 응답 데이터 구성
             Map<String, Object> response = new HashMap<>();
@@ -166,6 +175,23 @@ public class StoreController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while retrieving store data");
         }
     }
+    
+    
+    
+    //매장 리뷰 페이지 보내기만함
+	@RequestMapping(value="/review.go")
+    public String reviewJoin (int storeidx, Model model, HttpSession session) {
+        return "store/review";
+    }
+	//매장 리뷰 불러오기 아쟉스
+	
+	@PostMapping(value="/reviewAllUser.ajax")
+	public Map<String, Object> getReviewAllUser(int storeIdx) {
+		return review_ser.getReviewAlluser(storeIdx);
+	}
+	
+	
+    
 
 	/*
 	 * @RequestMapping(value="/menu2.go") public String storeMenu2(int idx, Model
@@ -188,43 +214,52 @@ public class StoreController {
 	
 	@GetMapping(value="/namesearch.ajax")
 	@ResponseBody
-	public Map<String, Object> storenamesearch(String keyword, Model model) {
-		logger.info("매장이름키워드 컨트롤러");
-		logger.info(keyword);
+	public Map<String, Object> storenamesearch(String keyword,int page,int cnt) {
+//		logger.info("매장이름키워드 컨트롤러");
+//		logger.info(keyword);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("searchresult",store_ser.storenamesearch(keyword, model));
-		return map;
+		return store_ser.storenamesearch(keyword,page,cnt);
 	}
 	
 	@GetMapping(value="/menusearch.ajax")
 	@ResponseBody
 	public Map<String, Object> storemenusearch(String keyword,int page,int cnt) {
-		logger.info("메뉴키워드 컨트롤러");
-		logger.info(keyword);
+//		logger.info("메뉴키워드 컨트롤러");
+//		logger.info(keyword);
 		/* System.out.println("이종원 페이지,cnt 확인"+page+" : "+cnt); */
-		Map<String, Object> map = new HashMap<String, Object>();
 		return store_ser.storemenusearch(keyword,page,cnt);
 	}
 	
 	@GetMapping(value="/addrsearch.ajax")
 	@ResponseBody
-	public Map<String, Object> storeaddrsearch(String keyword, Model model) {
-		logger.info("주소키워드 컨트롤러");
-		logger.info(keyword);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("searchresult",store_ser.storeaddrsearch(keyword, model));
-		return map;
+	public Map<String, Object> storeaddrsearch(String keyword,int page,int cnt) {
+//		logger.info("주소키워드 컨트롤러");
+//		logger.info(keyword);
+		return store_ser.storeaddrsearch(keyword,page,cnt);
 	}
+	
+	/*
+	 * @PostMapping(value="/filtering.ajax")
+	 * 
+	 * @ResponseBody public Map<String,Object> storefiltering(@RequestParam
+	 * Map<String, String> params,Model model) {
+	 * 
+	 * return store_ser.storefiltering(params); }
+	 */
+	 
+	
+	
+	
 	
 	
 	//매장 마이페이지
 	@RequestMapping(value="/storeMyPage.go")
 	public String storemypage(Model model, HttpSession session) {
 		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
-		logger.info("store_idx:{}",store_idx);
+//		logger.info("store_idx:{}",store_idx);
 		model.addAttribute("store_idx", store_idx);
 		List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);//활성화된 카테고리
-		logger.info("options: {}",options);
+//		logger.info("options: {}",options);
 		model.addAttribute("options", options);
 		StoreDTO storedto = store_ser.mystore(store_idx); 
 		logger.info("storedto: {}", storedto);
