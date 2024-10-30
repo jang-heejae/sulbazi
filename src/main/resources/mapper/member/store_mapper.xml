@@ -186,8 +186,7 @@
 
 	<!-- 매장 마이페이지  정보 보기 -->
 	<select id="mystore" resultType="com.sulbazi.member.StoreDTO">
-		SELECT store_id, store_pw, store_name, store_number, store_phone, store_address, store_time
-			FROM store WHERE store_idx=#{param1};
+		SELECT * FROM store WHERE store_idx=#{param1};
 	</select>
 	
 	<select id="mystoreopt" resultType="int">

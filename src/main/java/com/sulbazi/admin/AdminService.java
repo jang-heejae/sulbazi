@@ -96,7 +96,6 @@ public class AdminService {
 	        model.addAttribute("categories", userCategories);
 
 	    }
-
 	    // 4. 파일 정보 가져오기
 	    List<UserDTO> files = user_dao.files(user_id);
 	    model.addAttribute("files", files);

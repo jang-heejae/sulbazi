@@ -118,6 +118,26 @@
         justify-content: space-around;
         border-radius: 10px;
     }
+    .chatBox{
+      display: flex;
+         justify-content: space-around;
+         align-items: center;
+      width : 100%;
+      height: 100%;
+   }
+   .chatitems{
+      position: absolute;
+      top: 20%;
+       width: 940px;
+       height: 650px;
+       display: flex;
+       flex-wrap: wrap;
+       justify-content: center;
+       align-items: center;
+       align-content: center;
+       background-color: #73734F;
+       border-radius: 20px;
+   }
 </style>
 <body>
     <header>
@@ -173,6 +193,10 @@
                 </div>
             </div>
         </div>  
+        <section class="chatBox">
+        <div class="chatitems">
+        </div>
+   </section>
     </header>
 </body>
 <script>
