@@ -344,8 +344,8 @@
 	            		totalPages:data.totalpages, 
 	            		visiblePages:5,
 	            		onPageClick:function(evt,page){
-	            			/* console.log('evt',evt); 
-	            			console.log('page',page);  */
+	            			 /* console.log('evt',evt); 
+	            			console.log('이종원 page',page);  */ 
 	            			pageCall(page);
 	            		}
 					});
@@ -574,22 +574,53 @@ $('#filtering').click(function() {
 	console.log(food);
 	console.log(mood);
 	console.log(visit); 
+	$('#pagination').twbsPagination('destroy');  //기존에 만들어진 페이징을 파괴
+	 $('#list').empty();	
+	storeListPage(alchol,food,mood,visit,1);
+});
+
+
+function storeListPage(alchol,food,mood,visit,page){
     $.ajax({
         type:'POST',  //method
         url:'filtering.ajax',  //요청 주소
-        data:{'alchol' :alchol,
+        data:{
+        	
+        	'alchol' :alchol,
         		'food' : food,
         		 'mood' :mood,
-        		 'visit' :visit},   //파라메터
+        		 'visit' :visit,
+                 'page': page,
+                 'cnt': 5
+        		 
+        		 
+        },   //파라메터
         dataType:'JSON',  //받을 데이터 타입
-        success:function(data) {   //성공했을 경우(받을 데이터)
-            /* console.log(data); */
+        success: function(data) {
+            console.log(data);
+            if (data.storeList && data.storeList.length) {
+                drawList(data.storeList, data.photos, data.categoryOpts, data.storeCategorys);
+                drawMarkers(data.storeList);
+                
+                $('#pagination').twbsPagination({
+                    startPage: 1,
+                    totalPages: data.totalPages, 
+                    visiblePages: 5,
+                    onPageClick: function(evt, page) {
+                        searchPageCall(alchol,food,mood,visit,page);
+                    }
+                });
+
+            } else {
+                showNoStoresMessage();
+            }
         },
-        error:function(e) {  //실패했을 경우(실패 내용)
-            console.log(e)
+        error: function(e) {
+            console.log(e);
         }
     });
-})
+}
+
 
 
 //$('#pagination').twbsPagination('destroy'); //기존에 만들어진 페이징을 파괴
@@ -600,15 +631,24 @@ $('#performSearch').click(function() {
 	var keyword = document.getElementById("searchQuery").value;
 	console.log(category);
 	console.log(keyword);
-	$('#pagination').twbsPagination('destroy'); //기존에 만들어진 페이징을 파괴
-	
-	searchPageCall(category,keyword,1)
-	
+	$('#pagination').twbsPagination('destroy');  //기존에 만들어진 페이징을 파괴
+	$('#list').empty();	
 
+
+	searchPageCall(category,keyword,show);
+	
+	console.log('show: ' + show);
+
+
+	
+	
 });
 
 
+
 function searchPageCall(category, keyword, page) {
+
+	
     $.ajax({
         type: 'GET',
         url: category + 'search.ajax',
@@ -624,15 +664,17 @@ function searchPageCall(category, keyword, page) {
                 drawList(data.searchresult, data.photos, data.categoryOpts, data.storeCategorys);
                 drawMarkers(data.searchresult);
                 
-                
                 $('#pagination').twbsPagination({
                     startPage: 1,
-                    totalPages: data.totalpages, 
+                    totalPages: data.totalPages, 
                     visiblePages: 5,
                     onPageClick: function(evt, page) {
-                        searchPageCall(category, keyword, page);
+                        searchPageCall(category,keyword,page);
+/*                         console.log("evt,page : " + evt,page)
+                        console.log("여기가 오륜가? : " + category +" : "+ keyword +" : "+ page) */
                     }
                 });
+
             } else {
                 showNoStoresMessage();
             }

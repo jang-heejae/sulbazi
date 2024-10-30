@@ -31,12 +31,49 @@
     </update>
     
     
-    <!-- 매장 리스트 필터링 -->
-    <select id="storefiltering" resultType="int">
-		SELECT store_idx FROM store_category WHERE opt_idx=#{param1} 
-			OR opt_idx=#{param2} OR opt_idx=#{param3} 
-			OR opt_idx=#{param4} GROUP BY store_idx
-	</select>
+<!-- 매장 리스트 필터링 -->
+<select id="storefiltering" resultType="com.sulbazi.member.StoreDTO">
+    SELECT s.store_idx, s.store_id, s.store_pw, s.store_number, s.store_name, 
+           s.store_phone, s.store_time, s.store_address, s.store_latitude, 
+           s.store_longitude, s.review_total, s.star_average, s.bookmark_user
+    FROM store_category sc
+    INNER JOIN store s ON sc.store_idx = s.store_idx
+    WHERE s.store_idx IN (
+        SELECT store_idx
+        FROM store_category
+        WHERE opt_idx = #{param1}
+    )
+    AND s.store_idx IN (
+        SELECT store_idx
+        FROM store_category
+        WHERE opt_idx = #{param2}
+    )
+    AND s.store_idx IN (
+        SELECT store_idx
+        FROM store_category
+        WHERE opt_idx = #{param3}
+    )
+    AND s.store_idx IN (
+        SELECT store_idx
+        FROM store_category
+        WHERE opt_idx = #{param4}
+    )
+    GROUP BY s.store_idx
+    ORDER BY s.star_average DESC, s.review_total DESC, s.store_idx ASC
+    LIMIT #{param5}, #{param6}
+</select>
+
+<!-- 토탈 페이지 -->
+<select id="getTotalPages" resultType="int">
+    SELECT COUNT(*)
+    FROM (
+        SELECT store_idx
+        FROM store_category
+        WHERE opt_idx IN (#{param1}, #{param2}, #{param3}, #{param4})
+        GROUP BY store_idx
+        HAVING COUNT(DISTINCT opt_idx) = 4
+    ) AS filtered_store
+</select>
 	
 	<select id="joincategory" resultType="com.sulbazi.category.CategoryOptDTO">
 		SELECT * FROM category_opt
