@@ -76,7 +76,7 @@ public class StoreService {
 		 }		 
 		 return map;
 	}
-
+	
 	public Map<String, Object> storemenusearch(String keyword,int page,int cnt) {
 		int limit = cnt;
 		int offset = (page-1) * cnt;

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sulbazi.category.CategoryOptDTO;
 import com.sulbazi.member.StoreDTO;
+import com.sulbazi.member.StoreMenuDTO;
 import com.sulbazi.member.StoreService;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
@@ -111,10 +112,16 @@ public class AdminController {
 	    List<Integer> selectedValues = store_ser.mystoreopt(store_idx);
 	    PhotoDTO mystorebestphoto = photo_ser.mystorebestphoto(store_idx);
 	    List<PhotoDTO> mystorephoto = photo_ser.mystorephoto(store_idx);
+	    List<StoreMenuDTO> storeAlcohol = store_ser.getStoreAlcohol(store_idx);
+	    List<StoreMenuDTO> storeMenu = store_ser.getStoreMenuById(store_idx);
+	    List<PhotoDTO> files= store_ser.fileList(store_idx);
+	    model.addAttribute("files",files);
 	    model.addAttribute("mystorebestphoto", mystorebestphoto);
 	    model.addAttribute("mystorephoto", mystorephoto);
 	    model.addAttribute("selectedValues", selectedValues);
 	    model.addAttribute("storedto", storedto);
+	    model.addAttribute("storeAlcohol",storeAlcohol);
+	    model.addAttribute("storeMenu",storeMenu);
 		return "admin/adminStoreDetail";
 	}
 }

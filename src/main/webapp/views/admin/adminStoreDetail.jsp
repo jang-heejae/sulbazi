@@ -4,105 +4,134 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"/>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=4ae2258b561b1a937e5d3f2c155e60f9"></script>
 <style>
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    margin: 20px;
-    font-weight: bold;
-    color: white;
-}
-
-.all {
-    width: 65%;
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    margin-top: 150px;
-    margin-left: auto;
-    margin-right: auto;
+	body {
+    	display: flex;
+    	flex-direction: column;
+    	align-items: center;
+    	justify-content: center; 
+    	gap: 20px;
+    	margin: 20px;
+    	font-weight: bold;
+    	color: #041d03;
+    	min-height: 100vh;
+    	background-color: #041d03;
+	}
+	.chatBox2 {
+    	display: flex;
+    	justify-content: center;
+    	align-items: flex-start; /* 시작점에서부터 정렬 */
+    	width: 100%;
+    	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
+	}
+	.chatitems2 {
+		margin-top: 150px;
+    	width: 940px;
+    	min-height: 650px; /* 초기 최소 높이 설정 */
+    	height: auto; /* 내용에 따라 높이 자동 조절 */
+    	display: flex;
+    	flex-wrap: wrap;
+    	justify-content: center;
+    	align-items: center;
+    	align-content: center;
+    	background-color: #73734F;
+    	border-radius: 20px;
+    	padding: 20px; /* 내부 여백 추가 */
+    	margin-top: 140px; 
+	}
+	.mapwhatname{
+		border-radius: 8px;
+	}
+	.all {
+    	width: 65%;
+    	gap: 20px;
+    	margin-left: auto;
+    	margin-right: auto;
         z-index: 9999;
-}
-
-.filter {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-around;
-}
-
-fieldset {
-    width: 200px;
-    height: auto;
-}
-
-.form-group {
-    width: 100%;
-    text-align: center;
-    display: flex; /* Flexbox 사용 */
-    flex-direction: column; /* 세로 방향으로 정렬 */
-    align-items: center; /* 수평 중앙 정렬 */
-    gap: 10px; /* 요소 간의 간격 설정 */
-    color: white;
-}
-
-td {
-    text-align: left; /* 텍스트 왼쪽 정렬 */
-    white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
-}
-	.table{
-	position: absolute;
-	top: 200px;
-	left: 1016px;
-	width:400px;
+	}
+	.store_name {
+    	display: flex;
+    	justify-content: center; /* 수직 중앙 정렬 */
+    	align-items: center; /* 양쪽 끝으로 요소 배치 */
+    	width: 100%; /* 부모 요소의 너비에 맞춤 */
+    	margin-bottom: 30px; /* 아래쪽 여백 */
+    	position: relative;
+	}
+	.store_bookmark{
+		position: absolute;
+    	right: 0; /* 부모 요소의 오른쪽 끝에 배치 */
+    	display: flex;
+    	align-items: center; /* 수직 중앙 정렬 */
+    	gap: 10px;
+    	flex-direction: row;
+	}
+	#store-name {
+    	flex: 1; /* 나머지 공간을 차지하여 중앙 정렬 효과 */
+    	text-align: center; /* 텍스트를 가운데 정렬 */
+    	font-size: 36px;
+    	font-weight: bold;
+	}
+	.form-group {
+    	width: 100%;
+    	text-align: center;
+    	gap: 10px; /* 요소 간의 간격 설정 */
+    	color: white;
 	}
 	.table li{
 	 	padding: 10px;
 		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
+    	flex-direction: row;
+    	justify-content: space-evenly;
+    	align-items: center; /* 수직 중앙 정렬 */
+    	gap: 10px;
 	}
-	.form-group{
-		left: 562px;
-    	position: absolute;
-    	top: 190px;
-    	width: 400px;
+	.table li label {
+    	width: 100px; /* 모든 레이블의 너비를 동일하게 고정 */
+   		text-align: right; /* 레이블을 오른쪽으로 정렬 */
 	}
 	.form-group2{
-		position: absolute;
-    	top: 443px;
-    	left: 505px;
+    	display: flex;
+    	flex-direction: row;
+    	flex-wrap: wrap;
+    	justify-content: center;
 	}
 	.form-group3{
-		height: 335px;
-    	width: 523px;
     	display: flex;
-   		flex-wrap: wrap;
+    	flex-direction: row;
+    	flex-wrap: wrap;
+    	justify-content: center;
 	}
-	.form-group2 div{
+	.form-group3 div{
 		margin: 3px;
 	}
-	input[type="text"]{
+	input[type="text"], input[type="password"]{
+		border: none; /* 전체 테두리 제거 */
+    	border-bottom: 2px solid #041d03;
 		padding: 4px;
-		border-radius: 15px;
+		border-radius: 10px;
 		width: 250px;
-	}
-	.store_cate{
-		position: absolute;
-		top: 630px;
-    	left: 842px;
+		background-color: rgba(255, 255, 255, 0.1);
+		color:#041d03;
+		outline: none;
 	}
 	textarea {
+		outline: none;
+		border: none; /* 전체 테두리 제거 */
+    	border-bottom: 2px solid #041d03;
+		background-color: rgba(255, 255, 255, 0.1);
 		border-radius: 10px;
-		width: 400px;
-		height: 150px;
+		width: 100%;
+    	padding: 10px;
+    	color:#041d03;
 	}
 	.radio-group {
     	display: flex; /* flex 컨테이너로 설정 */
    		gap: 10px; /* 요소 간 간격 설정 */
+   		margin: 10px
 	}
 	#mainPhoto{
 		width: 215px;
@@ -112,55 +141,113 @@ td {
 		width: 150px;
 		height: 150px;
 	}
-	#bookmark{
-		top: 219px;
-    	position: absolute;
-    	left: 925px;
-	}
 	#bookmark li{
 		text-align: center;
 	}
+	.store_cate li{
+		display: flex;
+    	flex-direction: column;
+    	align-content: center;
+    	align-items: center;
+	}
 	.likeIcon{
 		width: 50px;
+		margin-right: -12px;
 	}
-
+	.span {
+    	margin-left: -9px;
+    	margin-right: -9px;
+    	padding: 0;
+    	font-size: inherit; /* 상위 요소와 동일한 글자 크기 사용 */
+	}
+	#store_menu {
+    	display: flex;
+    	flex-direction: column;
+    	align-items: center; /* 전체 메뉴를 중앙에 위치시킴 */
+    	width: 100%;
+	}
+	#store_menu li {
+    	text-align: center;
+    	margin-bottom: 20px;
+	}
+	#store_menu laber {
+    	font-size: 24px;
+    	font-weight: bold;
+	}
+	.store_menu2 {
+    	width: 100%;
+    	display: flex;
+    	justify-content: center;
+    	margin-bottom: 20px;
+	}
+	.menu-content {
+    	display: flex;
+    	justify-content: space-between;
+    	align-items: center;
+    	width: 100%; /* 메뉴 항목의 너비를 조정 */
+    	padding: 10px;
+    	border-radius: 8px;
+    	background-color: rgba(255, 255, 255, 0.1);
+	}
+	#store_menu li img {
+    	width: 50px;
+    	height: 50px;
+    	object-fit: cover;
+    	margin-right: 20px;  /* 이미지 비율을 유지하면서 잘 맞게 설정 */
+	}
+	.menu-details {
+    	display: flex;
+    	flex-direction: column;
+    	align-items: flex-end; /* 텍스트를 오른쪽 정렬 */
+    	text-align: right;/* 이름과 가격을 왼쪽으로 정렬 */
+    	gap: 5px; /* 이름과 가격 사이의 간격 */
+	}
 </style>
 </head>
 <body>
 <jsp:include page="../main/storeMain.jsp"/>
+    <section class="chatBox2">
+        <div class="chatitems2">
 <div class="all">
+	<div class="store_name">
+		<div id="store_name" style="font-size: 36px; font-weight: bold; margin-bottom: 30px; color:rgb(255, 140, 9);">
+		${storedto.store_name}</div>
+		<div class="store_bookmark">
+			<i class="fas fa-star" style="color: yellow;"></i>
+			${storedto.star_average}&nbsp;(<span class="span">${storedto.review_total}</span>)
+			<img class="likeIcon" src="resources/img/userLike.png"/>
+			${storedto.bookmark_user}
+		</div>	
+	</div>
 	<div class="form-group">
-	    <label>매장 대표 사진</label>
-	        <div>
+	    <label style="color: #041d03;">매장 대표 사진</label>
+	        <div style="margin-top: 10px;">
 				<img id="mainPhoto" src="/photo/${mystorebestphoto.new_filename}"><br/>
 	        </div>
-	</div>
-	<div id="bookMark">
-			<img class="likeIcon" src="resources/img/userLike.png"/>
-		<ul>
-			<li>${storedto.bookmark_user}</li>
-		</ul>
-	</div>
+	</div><br/>
 	<div class="form-group2">
-		<label>매장 내외부 사진</label>
+		<label style="margin-bottom:10px;">매장 내외부 사진</label>
 			<div class="form-group3">
 				<c:forEach items="${mystorephoto}" var="mystoreinout">
 					<div><img id="storePhoto" src="/photo/${mystoreinout.new_filename}"></div><br/>
 				</c:forEach>
 			</div>
-	</div>
-	<div class="storinfo">
+	</div><br/>
+	<div class="storeinfo">
 	<div class="table">
 		<ul>
-			<li>아이디 <input type="text" value="${storedto.store_id}" readonly></li>
-			<li>비밀번호 <input type="text" value="${storedto.store_pw}" readonly></li>
-			<li>매장 이름 <input type="text" value="${storedto.store_name}" readonly></li>
-			<li>사업자 번호 <input type="text" value="${storedto.store_number}" readonly></li>
-			<li>전화번호 <input type="text" value="${storedto.store_phone}" readonly></li>
-			<li>운영시간</li>
-			<li><textarea readonly>${storedto.store_time}</textarea></li>
+			<li><label>아이디</label> <input type="text" value="${storedto.store_id}" readonly></li>
+			<li><label>비밀번호</label> <input type="password" value="${storedto.store_pw}" readonly></li>
+			<li><label>매장 이름</label> <input type="text" value="${storedto.store_name}" readonly></li>
+			<li><label>사업자 번호</label> <input type="text" value="${storedto.store_number}" readonly></li>
+			<li><label>전화번호</label> <input type="text" value="${storedto.store_phone}" readonly></li>
+			<li><label>주소</label> <input type="text" value="${storedto.store_address}" readonly></li>
+			<li><div class="mapwhatname" id="map" style="width:789px;height:320px;"></div></li>
+			<li><label>운영시간</label></li>
+			<li><textarea id="textarea" readonly>${storedto.store_time}</textarea></li>
 		</ul>
 	</div>
+	<br/>
 	<div class="store_cate">
 		<ul>
 			<li>
@@ -174,7 +261,7 @@ td {
 	               			</c:if>
 	           			</c:forEach>
 	           		</div>
-			</li>
+			</li><li>&nbsp;</li>
 			<li>
 				<label>안주</label>
 				<div class="radio-group">
@@ -186,7 +273,7 @@ td {
 	               			</c:if>
 	           			</c:forEach>
 	           		</div>
-			</li>
+			</li><li>&nbsp;</li>
 			<li>
 				<label>분위기</label>
 				<div class="radio-group">
@@ -198,7 +285,7 @@ td {
 		               		</c:if>
 		           		</c:forEach>
 		           	</div>
-			</li>
+			</li><li>&nbsp;</li>
 			<li>
 				<label>방문목적</label>
 				<div class="radio-group">
@@ -213,10 +300,70 @@ td {
 			</li>
 		</ul>
 	</div>
+	<br/>
+	<div id="store_menu">
+		<ul style="width: 100%">
+			<li class="store_menu2"><label>안주</label></li>
+			<c:if test="${files.size() > 0 && storeMenu.size() > 0}">
+				<li><c:forEach var="file" items="${files}" varStatus="status">
+					    <div class="menu-content">
+					    <img src="/photo/${file.new_filename}" alt="Store Photo" id="imgview" />
+					    <span>-------------------------------------------------</span>
+					   	<div class="menu-details">
+                            <span>${storeMenu[status.index].menu_name}</span>
+                            <span>${storeMenu[status.index].menu_price}</span>
+                        </div>
+                        </div>
+				</c:forEach></li>
+            </c:if>
+            <li class="store_menu2"><label>주류</label></li>
+            <c:if test="${files.size() > 0 && storeAlcohol.size() > 0}">
+				<li><c:forEach var="file" items="${files}" varStatus="status">
+					    <div class="menu-content">
+					    <img src="/photo/${file.new_filename}" alt="Store Photo" id="imgview" />
+					    <span>-------------------------------------------------</span>
+					 	<div class="menu-details">
+                            <span>${storeAlcohol[status.index].menu_name}</span>
+                            <span>${storeAlcohol[status.index].menu_price}</span>
+                        </div>
+                        </div>
+				</c:forEach></li>
+            </c:if>
+            </ul>
+		</div>
 	</div>
 </div>
+</div>
+</section>
 </body>
 <script>
+$(document).ready(function() {
+    var textarea = $('#textarea');
+
+    // textarea 내용의 줄 수를 세어 rows 속성 설정
+    var lines = (textarea.val().split("\n").length) + 1; // \n의 개수를 세어 줄 수 계산
+    textarea.attr('rows', lines);
+});
+
+var container = document.getElementById('map');
+var storeLatitude = '${storedto.store_latitude}'
+var storeLongitude = '${storedto.store_longitude}'
+	 
+var options = {
+	center: new kakao.maps.LatLng(storeLatitude, storeLongitude),
+	level: 3
+};
+
+var map = new kakao.maps.Map(container, options);
+
+// 마커가 표시될 위치입니다 
+var markerPosition  = new kakao.maps.LatLng(storeLatitude, storeLongitude); 
+
+// 마커를 생성합니다
+var marker = new kakao.maps.Marker({
+    position: markerPosition
+});
+marker.setMap(map);
 
 </script>
 </html>

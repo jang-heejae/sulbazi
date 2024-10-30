@@ -223,7 +223,7 @@ td {
 		               		</c:if>
 		           		</c:forEach>
 		           	</div>
-		           	<div id="button"><button type="button" onclick="mystoreUpdate.go?idx=${store_idx}">정보 수정</button></div>
+		           	<div id="button"><button type="button" onclick="location.href='mystoreUpdate.go'">정보 수정</button></div>
 			</li>
 		</ul>
 	</div>
