@@ -4,4 +4,87 @@
 >
 <mapper namespace="com.sulbazi.alarm.AlarmDAO">
 
+	
+
+	<!-- 즐겨찾기 정보 -->
+	<select id="bookmarkinfo" resultType="com.sulbazi.member.BookMarkDTO">
+		SELECT bookmark_idx, user_id, store_idx FROM bookmark
+			WHERE user_id = #{param1}
+	</select>
+
+	<!-- 홍보 게시판 정보 -->
+	<select id="storeboardinfo" resultType="com.sulbazi.board.BoardDTO">
+		SELECT store_idx, board_idx FROM board 
+			WHERE store_idx = #{param1}
+	</select>
+
+	<!-- 개인 대화방 정보 by user_id-->
+	<select id="userchatroominfo" resultType="com.sulbazi.chat.UserChatroomDTO">
+		SELECT userchat_idx, user_id, userchat_subject FROM userchat
+			WHERE user_id = #{param1}
+	</select>
+	
+	<!-- 개인 대화방 정보 by userchat_idx-->
+	<select id="userchatroominfoidx" resultType="com.sulbazi.chat.UserChatroomDTO">
+		SELECT userchat_idx, user_id, userchat_subject FROM userchat
+			WHERE userchat_idx = #{userchat_idx}
+	</select>
+	
+
+	<!-- 대화방 참여자 정보 -->
+	<select id="partiinfo" parameterType="com.sulbazi.chat.PartiDTO"
+		resultType="com.sulbazi.chat.PartiDTO">
+		SELECT parti_idx, user_id, parti_state, chatroom_category, chatroom_idx
+			WHERE parti_state=#{parti_state} AND user_id=#{user_id}
+			AND chatroom_idx=#{chatroom_idx}   
+	</select>
+	
+	<!-- 참여자 존재 유무  -->
+	<select id="partiexist" parameterType="com.sulbazi.chat.PartiDTO"
+		resultType="com.sulbazi.chat.PartiDTO">
+		SELECT parti_idx, user_id, parti_state, chatroom_category, chatroom_idx
+			WHERE user_id=#{user_id} AND chatroom_idx=#{chatroom_idx}   
+	</select>
+	
+	<!-- 고객센터 정보 -->
+	<select id="inquiryinfo" resultType="com.sulbazi.inquery.InqueryDTO">
+		SELECT inquery_idx, inquery_subjecy, id_write FROM inquery
+			WHERE id_write=#{param1}
+	</select>
+	
+	<!-- 고객센터 문의 사항 답변 정보-->
+	<select id="answerinfo" resultType="com.sulbazi.inquery.AnswerDTO">
+		SELECT inquery_idx, answr_idx FROM answer
+			WHERE inquery_idx=#{param1} 
+	</select>
+	
+
+	<!-- 읽음& 안읽음 -->
+	<select id="alarmread" resultType="com.sulbazi.alarm.AlamDTO">
+		SELECT * FROM alarm WHERE alarm_read=#{param1}
+	</select>
+	
+	<!-- 대화방 알림 모음 -->
+	<select id="chatalarm" resultType="com.sulbazi.alarm.AlamDTO">
+		SELECT * FROM alarm WHERE alarm_category_idx=1
+			OR alarm_category_idx=2
+			OR alarm_category_idx=3
+			OR alarm_category_idx=5
+	</select>
+	
+	<!-- 즐겨찾기 or 관리자 알림 모음 -->
+	<select id="categoryalarm" resultType="com.sulbazi.alarm.AlamDTO">
+		SELECT * FROM alarm WHERE alarm_category_idx=#{param1}
+	</select>
+		
+	<!-- 알림 카테고리 별 알림 -->
+	<select id="categoryalarminfo" resultType="com.sulbazi.alarm.AlarmCategoryDTO">
+		SELECT * FROM alarm_category WHERE alarm_category_idx=#{param1}
+	</select>
+	
+	<!-- 알림 insert -->
+	<insert id="alarminsert">
+		INSERT INTO alarm(user_id, alarm_category_idx) 
+			VALUES(#{user_id}, #{alarm_category_idx})
+	</insert>
 </mapper>
