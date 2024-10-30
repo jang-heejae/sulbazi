@@ -5,10 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
+
 import java.util.HashMap;
->>>>>>> origin/master
+
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -26,11 +25,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-<<<<<<< HEAD
-=======
+
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.inquery.InqueryDTO;
->>>>>>> origin/master
 import com.sulbazi.member.StoreDAO;
 import com.sulbazi.member.StoreMenuDTO;
 
@@ -123,29 +120,6 @@ public class PhotoService {
 		return new ResponseEntity<Resource>(reso, header, 200);
 	}
 
-<<<<<<< HEAD
-	//추가내용
-	public List<PhotoDTO> storemenuphoto(int store_idx) {
-		List<StoreMenuDTO> menulist =store_dao.storemenulist(store_idx);
-		List<PhotoDTO> menuphoto = new ArrayList<>();
-		for (StoreMenuDTO menudto : menulist) {
-			List<PhotoDTO> photoList = photo_dao.storemenuphoto(menudto.getMenu_idx());
-			menuphoto.addAll(photoList);
-		}
-		return menuphoto;
-	}
-
-	public List<PhotoDTO> alcholmenuphoto(int store_idx) {
-		List<StoreMenuDTO> menulist =store_dao.storemenulist(store_idx);
-		List<PhotoDTO> menuphoto = new ArrayList<>();
-		for (StoreMenuDTO menudto : menulist) {
-			List<PhotoDTO> photoList = photo_dao.storemenualcholphoto(menudto.getMenu_idx());
-			menuphoto.addAll(photoList);
-		}
-		return menuphoto;
-	}
-
-=======
 	public void mystorebestphotoupdate(MultipartFile[] files, int store_idx) {
 		int i = 1;
 		storeupdatephoto(files, store_idx, i);
@@ -280,7 +254,4 @@ public class PhotoService {
 		}
 
 
-
-
->>>>>>> origin/master
 }

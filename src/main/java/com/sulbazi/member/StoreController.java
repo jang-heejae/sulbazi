@@ -297,27 +297,12 @@ public class StoreController {
 		return "store/storeBoard";
 	}
 	
-<<<<<<< HEAD
 	
-	@RequestMapping(value="/storeMyMenu.go")
-	public String storemymenu(Model model, HttpSession session) {
-		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
-		List<StoreMenuDTO> menulist = store_ser.storemenulist(store_idx);
-		//List<StoreMenuDTO> alcholmenulist = store_ser.storealcholmenulist(store_idx);
-		List<PhotoDTO> menuphoto = photo_ser.storemenuphoto(store_idx);
-		//List<PhotoDTO> alcholmenuphoto = photo_ser.alcholmenuphoto(store_idx);
-		
-		//model.addAttribute("alcholmenuphoto", alcholmenuphoto); //술 메뉴 사진
-		model.addAttribute("menuphoto", menuphoto); //안주 메뉴 사진
-		model.addAttribute("menulist", menulist); //안주 메뉴
-		//model.addAttribute("alcholmenulist", alcholmenulist); //술 메뉴
-=======
 
 	
 	//매장 나의 메뉴 가기
 	@RequestMapping(value="/storeMyMenu.go")
 	public String storemymenu() {		
->>>>>>> origin/master
 		return "store/storeMyMenu";
 	}
 

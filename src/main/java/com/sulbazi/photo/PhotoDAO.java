@@ -18,12 +18,8 @@ public interface PhotoDAO {
 
 	List<PhotoDTO> mystorephoto(int store_idx);
 
-<<<<<<< HEAD
 	List<PhotoDTO> storemenualcholphoto(int photofolderidx);
 
-	List<PhotoDTO> storemenuphoto(int photofolderidx);
-
-=======
 	int storephotoupdate(int photocategory, String newFileName, int photofolderidx);
 	
 	List<PhotoDTO> alcholmenuphoto(int photofolderidx);
@@ -36,8 +32,5 @@ public interface PhotoDAO {
 
 	int menuphotoinsert(PhotoDTO photo);
 
-
-
->>>>>>> origin/master
 }
  

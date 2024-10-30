@@ -78,16 +78,12 @@ public interface StoreDAO {
 	List<StoreCategoryDTO> storeHelpMeIdx(List<StoreDTO> stores);
 
 	List<StoreMenuDTO> storemenulist(int store_idx);
-<<<<<<< HEAD
+
 
 	List<StoreMenuDTO> storealcholmenulist(int store_idx);
-
-=======
->>>>>>> origin/master
 
 	int getTPage(int cnt);
 
-	List<StoreMenuDTO> storealcholmenulist(int store_idx);
 
 	int menuupdate(String menu_name, String menu_price, String menu_idx);
 

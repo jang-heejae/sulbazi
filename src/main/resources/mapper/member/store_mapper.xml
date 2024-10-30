@@ -107,6 +107,7 @@
         WHERE store_latitude BETWEEN #{minLat} AND #{maxLat}
           AND store_longitude BETWEEN #{minLng} AND #{maxLng}
     </select>
+    
     <!-- 매장리스트들 대표사진들 -->
 	<select id="findPhotosForStores" parameterType="list" resultType="com.sulbazi.photo.PhotoDTO">
 	    SELECT * FROM photo 
@@ -196,8 +197,7 @@
 
 
 
-<<<<<<< HEAD
-=======
+
  	<!-- 매장 마이페이지  정보 수정 -->
 
 	<!-- 매장 마이페이지  정보 수정 -->
@@ -207,29 +207,10 @@
 	</update>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> origin/master
-
-	
 	<!-- 매장 마이페이지  내 댓글 보기 -->
 	
 	
 	
-	
-<<<<<<< HEAD
 	<!-- 매장 마이페이지  안주 메뉴 정보 보기 -->
 	<select id="storemenulist" resultType="com.sulbazi.member.StoreMenuDTO">
 		SELECT menu_idx,menu_name,menu_price  
@@ -241,7 +222,7 @@
 		SELECT menu_idx,menu_name,menu_price 
 			FROM store_menu WHERE store_idx=#{param1} AND menu_category='술'
 	</select>
-=======
+
 	<!-- 매장 마이페이지  메뉴 정보 보기 -->
 	<select id="storemenulist" resultType="com.sulbazi.member.StoreMenuDTO">
       	SELECT menu_idx,menu_name,menu_price  
@@ -253,7 +234,7 @@
       	SELECT menu_idx,menu_name,menu_price 
          	FROM store_menu WHERE store_idx=#{param1} AND menu_category='술'
    	</select>
->>>>>>> origin/master
+
 	
 	
 	<!-- 매장 마이페이지  메뉴 정보 수정 -->

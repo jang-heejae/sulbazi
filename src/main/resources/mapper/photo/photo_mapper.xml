@@ -37,7 +37,6 @@
     		LIMIT 5
 	</select>
 	
-<<<<<<< HEAD
 	
 	<!-- 매장 메뉴 사진 -->
 	<select id="storemenuphoto" resultType="com.sulbazi.photo.PhotoDTO">
@@ -51,7 +50,6 @@
 	
 	
 	
-=======
 	<insert id="storephotoupdate">
 		INSERT INTO photo(photo_category_idx, new_filename, photo_folder_idx)
 			VALUES(#{param1},#{param2},#{param3})
@@ -80,7 +78,7 @@
     	INSERT INTO photo(photo_category_idx, new_filename, photo_folder_idx)
     		VALUES(#{photo_category_idx}, #{new_filename}, #{photo_folder_idx})
 	</insert>
->>>>>>> origin/master
+
 	
 </mapper>
 
