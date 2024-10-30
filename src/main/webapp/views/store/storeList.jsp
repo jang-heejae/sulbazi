@@ -12,6 +12,7 @@
         body{
             background-color: #041d03;
         }
+
       .back {
           display: flex;
           flex-direction: column;
@@ -182,6 +183,176 @@
       }
          
 
+		.back {
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		    background-color: white;
+		    position: absolute;
+		    width: 242px;
+		    height: auto;
+		    left: 284px;
+		    top: 201px;
+		    border-radius: 15px;
+		    padding: 20px;
+		    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		}
+		
+		
+		div.filter {
+		    display: flex;
+		    flex-direction: column;
+		    width: 100%;
+		    gap: 20px;
+		}
+		
+		        input{
+		            font-size: 15px;
+		            margin-top:-1px; 
+		            vertical-align:middle;
+		        }
+		legend {
+		    font-size: 16px;
+		    font-weight: bold;
+		    color: #333;
+		    padding: 0 5px;
+		}
+		fieldset {
+		    border: 1px solid #ddd;
+		    border-radius: 10px;
+		    padding: 10px;
+		    width: 100%;
+		}
+		input[type="radio"] {
+		    margin-right: 5px;
+		    cursor: pointer;
+		}
+		input {
+		    font-size: 14px;
+		}
+		
+		
+		#filtering {
+		    background-color: rgb(255, 140, 9);
+		    border: none;
+		    color: white;
+		    border-radius: 20px;
+		    font-weight: bold;
+		    padding: 10px 20px;
+		    cursor: pointer;
+		    margin-top: 10px;
+		    transition: background-color 0.3s ease;
+		    width: 100%;
+		}
+		#filtering:hover {
+		    background-color: rgb(255, 120, 0);
+		}
+		        	
+		
+					
+		.search-container {
+		    display: flex;
+		    align-items: center;
+		    width: 610px;
+		    margin: 20px auto;
+		    left: 630px;
+		    position: absolute;
+		    top: 100px;
+		}
+		.search-select {
+		    padding: 8px;
+		    font-size: 16px;
+		    border: 1px solid #ccc;
+		    border-radius: 15px;
+		}
+		.search-wrapper {
+		    margin-left: 10px;
+		}
+		.search-input {
+		    width: 450px;
+		    padding: 8px 40px 8px 8px;
+		    font-size: 16px;
+		    border: 1px solid #ccc;
+		    border-radius: 15px;
+		}
+		.search-button {
+		    position: absolute;
+		    background-color: rgb(255, 140, 9);
+		    border: none;
+		    border-radius: 20px;
+		    width: 54px;
+		    height: 42px;
+		    transition: background-color 0.3s ease;
+		    cursor: pointer;
+		    margin-left: 5px;
+		}
+		
+		.search-button:hover {
+		    background-color: rgb(255, 120, 0);
+		}
+		     
+		.searchicon {
+		    width: 25px;
+		}
+		.bodysize table, tr, td, th {
+		    border: 1px solid black;
+		    border-collapse: collapse;
+		    width: 100%;
+		    padding: 5px 10px;
+		}
+		main {
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		    position: absolute;
+		    top: 203px;
+		    left: 50%;
+		    transform: translateX(-50%);
+		}
+		.mapwhatname {
+		    margin: 0 0 20px 0;
+		    border-radius: 8px;
+		}
+		.bodysize {
+		    background-color: white;
+		    width: 788px;
+		    border-radius: 8px;
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		}
+
+		.container{
+		    display: flex;
+		    justify-content: center; 
+		    align-items: center; 
+		    width: 100%; 
+		}
+		.store-img{
+		    width: 100px;
+		    
+		}
+		.categories{
+		    width: 100%;
+		    height:100%;
+		}
+		.categories p{
+		    display:inline-block;
+		    margin: 0 0;
+		    color: #BDBDBD;
+		}
+		h3 {
+		    cursor: pointer;
+		}
+		
+		h3:hover {
+		    color: purple;
+		}
+		.hover-td:hover {
+		    background-color: #f0f0f0;
+		}
+
+
 </style>
 </head>
 
@@ -272,6 +443,7 @@
 
 </body>
 <script>
+
       var loginId = '${sessionScope.loginId}';
       
       /* 지도 영역 */
@@ -283,6 +455,12 @@
           level: 3
       };
       
+
+		var loginId = '${sessionScope.loginId}';
+		
+		/* 지도 영역 */
+		var container = document.getElementById('map');
+
 
       
 /*       //매장 테이블 호버시 지도 위치 이동
@@ -310,6 +488,7 @@
       var show = 1;
       
       pageCall(show);
+
 
    function pageCall(page) {
       
@@ -372,6 +551,69 @@
 /*            var photo = photos.find(function(p) {
                return p.photo_folder_idx === store.store_idx;
            }); */
+
+	function pageCall(page) {
+		
+	    var center = map.getCenter(); // 지도 중심 좌표 가져오기
+	    var centerLat = center.getLat();
+	    var centerLng = center.getLng();
+	    var latDiff = 0.0045;
+	    var lngDiff = 0.0045;
+	    
+	    
+		$.ajax({
+			type:'GET',
+			url:'list.ajax',
+			data:{
+				'page':page,
+				'cnt':5,
+	            'minLat': centerLat - latDiff,
+	            'maxLat': centerLat + latDiff,
+	            'minLng': centerLng - lngDiff,
+	            'maxLng': centerLng + lngDiff
+			},
+			dataType:'JSON',
+			success:function(data){
+				/* console.log(data); */
+				if (data.list && data.list.length) {
+					drawList(data.list , data.photos , data.categoryOpts , data.storeCategorys)
+					drawMarkers(data.list);
+					/* console.log(data.list)
+					console.log(data.list.length) */
+					$('#pagination').twbsPagination({ // 페이징 객체 만들기
+						startPage:1, 
+	            		totalPages:data.totalpages, 
+	            		visiblePages:5,
+	            		onPageClick:function(evt,page){
+	            			 /* console.log('evt',evt); 
+	            			console.log('이종원 page',page);  */ 
+	            			pageCall(page);
+	            		}
+					});
+					
+				}else {
+					showNoStoresMessage();
+				}
+				
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	// 매장 리스트를 표시하는 함수
+	function drawList(storeList,photos,categoryOpts,storeCategorys) {
+	    var listContainer = document.getElementById('list');
+	    listContainer.innerHTML = '';
+	
+	    storeList.forEach(function(store, idx) {
+	        // 각 store에 대한 HTML 구조를 생성
+	        /* var photo = photos[idx]; */
+/* 	        var photo = photos.find(function(p) {
+	            return p.photo_folder_idx === store.store_idx;
+	        }); */
+
 
            if (Array.isArray(photos)) {
                var photo = photos.find(function(p) {
@@ -566,6 +808,7 @@
 
 //필터링
 $('#filtering').click(function() {
+<<<<<<< HEAD
    var alchol = $(':input:radio[name=alchol]:checked').val();
    var food = $(':input:radio[name=food]:checked').val();
    var mood = $(':input:radio[name=mood]:checked').val();
@@ -581,21 +824,70 @@ $('#filtering').click(function() {
               'food' : food,
                'mood' :mood,
                'visit' :visit},   //파라메터
+
+	var alchol = $(':input:radio[name=alchol]:checked').val();
+	var food = $(':input:radio[name=food]:checked').val();
+	var mood = $(':input:radio[name=mood]:checked').val();
+	var visit = $(':input:radio[name=visit]:checked').val();
+ 	console.log(alchol);
+	console.log(food);
+	console.log(mood);
+	console.log(visit); 
+	$('#pagination').twbsPagination('destroy');  //기존에 만들어진 페이징을 파괴
+	 $('#list').empty();	
+	storeListPage(alchol,food,mood,visit,1);
+});
+
+
+function storeListPage(alchol,food,mood,visit,page){
+    $.ajax({
+        type:'POST',  //method
+        url:'filtering.ajax',  //요청 주소
+        data:{
+        	
+        	'alchol' :alchol,
+        		'food' : food,
+        		 'mood' :mood,
+        		 'visit' :visit,
+                 'page': page,
+                 'cnt': 5
+        		 
+        		 
+        },   //파라메터
+
         dataType:'JSON',  //받을 데이터 타입
-        success:function(data) {   //성공했을 경우(받을 데이터)
-            /* console.log(data); */
+        success: function(data) {
+            console.log(data);
+            if (data.storeList && data.storeList.length) {
+                drawList(data.storeList, data.photos, data.categoryOpts, data.storeCategorys);
+                drawMarkers(data.storeList);
+                
+                $('#pagination').twbsPagination({
+                    startPage: 1,
+                    totalPages: data.totalPages, 
+                    visiblePages: 5,
+                    onPageClick: function(evt, page) {
+                        searchPageCall(alchol,food,mood,visit,page);
+                    }
+                });
+
+            } else {
+                showNoStoresMessage();
+            }
         },
-        error:function(e) {  //실패했을 경우(실패 내용)
-            console.log(e)
+        error: function(e) {
+            console.log(e);
         }
     });
-})
+}
+
 
 
 //$('#pagination').twbsPagination('destroy'); //기존에 만들어진 페이징을 파괴
 
 //검색
 $('#performSearch').click(function() {
+
    var category = document.getElementById("searchCategory").value;
    var keyword = document.getElementById("searchQuery").value;
    console.log(category);
@@ -605,10 +897,29 @@ $('#performSearch').click(function() {
    searchPageCall(category,keyword,1)
    
 
+	var category = document.getElementById("searchCategory").value;
+	var keyword = document.getElementById("searchQuery").value;
+	console.log(category);
+	console.log(keyword);
+	$('#pagination').twbsPagination('destroy');  //기존에 만들어진 페이징을 파괴
+	$('#list').empty();	
+
+
+
+	searchPageCall(category,keyword,show);
+	
+	console.log('show: ' + show);
+
+
+	
+	
 });
 
 
+
 function searchPageCall(category, keyword, page) {
+
+	
     $.ajax({
         type: 'GET',
         url: category + 'search.ajax',
@@ -624,15 +935,17 @@ function searchPageCall(category, keyword, page) {
                 drawList(data.searchresult, data.photos, data.categoryOpts, data.storeCategorys);
                 drawMarkers(data.searchresult);
                 
-                
                 $('#pagination').twbsPagination({
                     startPage: 1,
-                    totalPages: data.totalpages, 
+                    totalPages: data.totalPages, 
                     visiblePages: 5,
                     onPageClick: function(evt, page) {
-                        searchPageCall(category, keyword, page);
+                        searchPageCall(category,keyword,page);
+/*                         console.log("evt,page : " + evt,page)
+                        console.log("여기가 오륜가? : " + category +" : "+ keyword +" : "+ page) */
                     }
                 });
+
             } else {
                 showNoStoresMessage();
             }

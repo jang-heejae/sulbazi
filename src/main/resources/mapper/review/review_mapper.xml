@@ -7,4 +7,12 @@
 	<select id="reportedIdx" parameterType="int" resultType="String">
     	SELECT review_content FROM review WHERE review_idx = #{reported_idx}
 	</select>
+	
+	<!-- 리뷰 가져오기 내림차순 -->
+	<select id="getReviewAlluser" resultType="com.sulbazi.review.ReviewDTO">
+		select * from review order by review_idx desc	
+	</select>
+	
+	
+	
 </mapper>
