@@ -12,145 +12,6 @@
         body{
             background-color: #041d03;
         }
-
-        .back{
-        	overflow-y: auto;
-        }
-        div.filter{
-            background-color: white;
-            position: fixed;
-            width: 220;
-            height: auto;
-            left: 363px;
-            top: 200;
-            border-radius: 15px;
-        }
-        input{
-            font-size: 15px;
-            margin-top:-1px; 
-            vertical-align:middle;
-        }
-        legend{
-            font-size: 23px;
-            font-weight: 800;
-        }
-        fieldset{
-            border-color: white;
-            margin: auto;
-            margin-bottom: 5;
-            margin-top: 5;
-            width: 170;
-            border-bottom-color: rgb(255, 140, 9);
-        }
-        #filtering{
-            position: absolute;
-            right: 10px;
-            background-color: rgb(255, 140, 9);
-            color: black;
-            border-color: rgb(255, 140, 9);
-            border-radius: 15px;
-            font-weight: 800;
-            padding: 5;
-            margin-top:5;
-        	}
-            .search-container {
-                display: flex;
-                align-items: center;
-                width: 500px;
-                margin: 20px auto;
-                left: 630px;
-    			position: absolute;
-    			top: 100px;
-            }
-            .search-select {
-                padding: 8px;
-                font-size: 16px;
-                border: 1px solid #ccc;
-                border-radius: 15px;
-            }
-            .search-wrapper {
-                position: relative;
-                margin-left: 10px;
-            }
-            .search-input {
-                width: 450;
-                padding: 8px 40px 8px 8px; /* 오른쪽 여백을 추가해 아이콘과 겹치지 않도록 */
-                font-size: 16px;
-                border: 1px solid #ccc;
-                border-radius: 15px;
-            }
-            .search-button {
-                position: absolute;
-    			background-color : rgb(255, 140, 9);
-    			color: black;
-    			border-color: rgb(255, 140, 9);
-    			border-radius: 15px;
-    			font-weight: 500;
-    			padding: 5;
-                width: 30px;
-                height: 30px;
-                cursor: pointer;
-                margin-left:5; 
-            }
-            .searchicon{
-            	width: 25px;
-            }
-			.bodysize table,tr,td,th{
-                border:1px solid black;
-                border-collapse: collapse;
-                width:100%;
-                padding: 5px 10px;
-            }
-			main{
-				display: flex;
-				flex-direction: column;
-                align-items: center;       
-			    position: absolute;
-			    top: 203px;
-			    left: 50%;
-			    transform: translateX(-50%);
-			}
-			.mapwhatname{
-				margin: 0 0 20px 0 ;
-				border-radius: 8px;
-			}
-			.bodysize{
-				background-color: white;
-				width: 788px;
-				border-radius: 8px;
-                display: flex;
-                flex-direction: column;
-                align-items: center; 
-			}
-			.filedA{
-				height: 194px;
-			}
-			.filedB{
-				height: 145px;
-			}
-			.filedC{
-				height: 168px;
-			}
-			.container{
-			    display: flex;
-			    justify-content: center; 
-			    align-items: center; 
-			    width: 100%; 
-    		}
-    		.store-img{
-    			width: 100px;
-    			
-    		}
-    		.categories{
-    			width: 100%;
-    			height:100%;
-    		}
-    		.categories p{
-    			display:inline-block;
-    			margin: 0 0;
-    			color: #BDBDBD;
-    		}
-
 		.back {
 		    display: flex;
 		    flex-direction: column;
@@ -411,7 +272,6 @@
 
 </body>
 <script>
-
 		var loginId = '${sessionScope.loginId}';
 		
 		/* 지도 영역 */
@@ -484,8 +344,8 @@
 	            		totalPages:data.totalpages, 
 	            		visiblePages:5,
 	            		onPageClick:function(evt,page){
-	            			/* console.log('evt',evt); 
-	            			console.log('page',page);  */
+	            			 /* console.log('evt',evt); 
+	            			console.log('이종원 page',page);  */ 
 	            			pageCall(page);
 	            		}
 					});
@@ -714,22 +574,53 @@ $('#filtering').click(function() {
 	console.log(food);
 	console.log(mood);
 	console.log(visit); 
+	$('#pagination').twbsPagination('destroy');  //기존에 만들어진 페이징을 파괴
+	 $('#list').empty();	
+	storeListPage(alchol,food,mood,visit,1);
+});
+
+
+function storeListPage(alchol,food,mood,visit,page){
     $.ajax({
         type:'POST',  //method
         url:'filtering.ajax',  //요청 주소
-        data:{'alchol' :alchol,
+        data:{
+        	
+        	'alchol' :alchol,
         		'food' : food,
         		 'mood' :mood,
-        		 'visit' :visit},   //파라메터
+        		 'visit' :visit,
+                 'page': page,
+                 'cnt': 5
+        		 
+        		 
+        },   //파라메터
         dataType:'JSON',  //받을 데이터 타입
-        success:function(data) {   //성공했을 경우(받을 데이터)
-            /* console.log(data); */
+        success: function(data) {
+            console.log(data);
+            if (data.storeList && data.storeList.length) {
+                drawList(data.storeList, data.photos, data.categoryOpts, data.storeCategorys);
+                drawMarkers(data.storeList);
+                
+                $('#pagination').twbsPagination({
+                    startPage: 1,
+                    totalPages: data.totalPages, 
+                    visiblePages: 5,
+                    onPageClick: function(evt, page) {
+                        searchPageCall(alchol,food,mood,visit,page);
+                    }
+                });
+
+            } else {
+                showNoStoresMessage();
+            }
         },
-        error:function(e) {  //실패했을 경우(실패 내용)
-            console.log(e)
+        error: function(e) {
+            console.log(e);
         }
     });
-})
+}
+
 
 
 //$('#pagination').twbsPagination('destroy'); //기존에 만들어진 페이징을 파괴
@@ -740,15 +631,24 @@ $('#performSearch').click(function() {
 	var keyword = document.getElementById("searchQuery").value;
 	console.log(category);
 	console.log(keyword);
-	$('#pagination').twbsPagination('destroy'); //기존에 만들어진 페이징을 파괴
-	
-	searchPageCall(category,keyword,1)
-	
+	$('#pagination').twbsPagination('destroy');  //기존에 만들어진 페이징을 파괴
+	$('#list').empty();	
 
+
+	searchPageCall(category,keyword,show);
+	
+	console.log('show: ' + show);
+
+
+	
+	
 });
 
 
+
 function searchPageCall(category, keyword, page) {
+
+	
     $.ajax({
         type: 'GET',
         url: category + 'search.ajax',
@@ -764,15 +664,17 @@ function searchPageCall(category, keyword, page) {
                 drawList(data.searchresult, data.photos, data.categoryOpts, data.storeCategorys);
                 drawMarkers(data.searchresult);
                 
-                
                 $('#pagination').twbsPagination({
                     startPage: 1,
-                    totalPages: data.totalpages, 
+                    totalPages: data.totalPages, 
                     visiblePages: 5,
                     onPageClick: function(evt, page) {
-                        searchPageCall(category, keyword, page);
+                        searchPageCall(category,keyword,page);
+/*                         console.log("evt,page : " + evt,page)
+                        console.log("여기가 오륜가? : " + category +" : "+ keyword +" : "+ page) */
                     }
                 });
+
             } else {
                 showNoStoresMessage();
             }
