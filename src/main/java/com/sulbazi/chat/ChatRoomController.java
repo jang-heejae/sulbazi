@@ -200,13 +200,14 @@ public class ChatRoomController {
 			
 			// 참여 테이블에 사용자 인서트
 			chatparti_ser.userparti(userId, idx, id);
+			model.addAttribute("roomin", userId);
 			
 			// 방에 참여중인 총 사용자 
-			logger.info("idx :" + idx);
-			Integer usertotal =chatparti_ser.usertotal(idx);
-			logger.info("total:"+usertotal);
-			
-			model.addAttribute("usertotal", usertotal);
+//			logger.info("idx :" + idx);
+//			Integer usertotal =chatparti_ser.usertotal(idx);
+//			logger.info("total:"+usertotal);
+//			
+//			model.addAttribute("usertotal", usertotal);
 			
 			// 방에 참여중인 사용자
 //			List<PartiDTO> userlist =chatparti_ser.userlist(idx);
@@ -295,59 +296,57 @@ public class ChatRoomController {
 			
 			int idx = localChatroomdto.getLocalchat_idx();
 			
+			System.out.print("idx:"+idx);
+			
 			// 참여 테이블에 사용자 인서트
 			chatparti_ser.localparti(userId, idx);
-			
-			// 방에 참여중인 사용자
-			List<PartiDTO> localuserlist =chatparti_ser.localuserlist(idx);
-			
-
-			Map<String, String> userNickname = new HashMap<String, String>();
-			Map<String, String> userPhoto = new HashMap<String, String>();
-			
-			for (PartiDTO list : localuserlist) {
-				String userlists = list.getUser_id();
-				if (!userNickname.containsKey(userlists)) {
-					UserDTO user = message_ser.getUserById(userlists);
-					if (user != null) {
-						userNickname.put(userlists, user.getUser_nickname());
-						userPhoto.put(userlists, user.getUser_photo());
-					}
-				}
-			}
-			
-			// 방에 해당하는 메세지 가져오기
-			List<LocalMsgDTO> localmsg = message_ser.localmsg(idx);
-			
-		    // 사용자 닉네임을 저장할 맵 생성
-		    Map<String, String> userNicknames = new HashMap<String, String>();
-		    Map<String, String> userPhotos = new HashMap<String, String>();
-		    
-		    // 메시지에서 user_id를 가져와서 닉네임 조회
-		    for (LocalMsgDTO msg : localmsg) {
-		        String messageUserId = msg.getUser_id();
-		        if (!userNicknames.containsKey(messageUserId)) {
-		            UserDTO user = message_ser.getUserById(messageUserId);
-		            if (user != null) {
-		                userNicknames.put(messageUserId, user.getUser_nickname());
-		                userPhotos.put(messageUserId, user.getUser_photo());
-		            }
-		        }
-		    }
+//			
+//			// 방에 참여중인 사용자
+//			List<PartiDTO> localuserlist =chatparti_ser.localuserlist(idx);
+//			
+//
+//			Map<String, String> userNickname = new HashMap<String, String>();
+//			Map<String, String> userPhoto = new HashMap<String, String>();
+//			
+//			for (PartiDTO list : localuserlist) {
+//				String userlists = list.getUser_id();
+//				if (!userNickname.containsKey(userlists)) {
+//					UserDTO user = message_ser.getUserById(userlists);
+//					if (user != null) {
+//						userNickname.put(userlists, user.getUser_nickname());
+//						userPhoto.put(userlists, user.getUser_photo());
+//					}
+//				}
+//			}
+//			
+//			// 방에 해당하는 메세지 가져오기
+//			List<LocalMsgDTO> localmsg = message_ser.localmsg(idx);
+//			
+//		    // 사용자 닉네임을 저장할 맵 생성
+//		    Map<String, String> userNicknames = new HashMap<String, String>();
+//		    Map<String, String> userPhotos = new HashMap<String, String>();
+//		    
+//		    // 메시지에서 user_id를 가져와서 닉네임 조회
+//		    for (LocalMsgDTO msg : localmsg) {
+//		        String messageUserId = msg.getUser_id();
+//		        if (!userNicknames.containsKey(messageUserId)) {
+//		            UserDTO user = message_ser.getUserById(messageUserId);
+//		            if (user != null) {
+//		                userNicknames.put(messageUserId, user.getUser_nickname());
+//		                userPhotos.put(messageUserId, user.getUser_photo());
+//		            }
+//		        }
+//		    }
+//		
 		
 			
-			// 채팅방 목록
-			List<LocalChatroomDTO> localchat_list = chatroom_ser.localroom();
-			model.addAttribute("list", localchat_list);
-			
 			model.addAttribute("roomidx", idx);
-			model.addAttribute("subject", localchat_list.get(idx).toString());
-			model.addAttribute("userNickname", userNickname);
-			model.addAttribute("userNicknames", userNicknames);
-			model.addAttribute("userPhoto", userPhoto);
-			model.addAttribute("userPhotos", userPhotos);
-			model.addAttribute("localmsg",localmsg);
-			model.addAttribute("localuserlist",localuserlist);
+//			model.addAttribute("userNickname", userNickname);
+//			model.addAttribute("userNicknames", userNicknames);
+//			model.addAttribute("userPhoto", userPhoto);
+//			model.addAttribute("userPhotos", userPhotos);
+//			model.addAttribute("localmsg",localmsg);
+//			model.addAttribute("localuserlist",localuserlist);
 			
 			page ="/chat/localChatRoom";
 		}

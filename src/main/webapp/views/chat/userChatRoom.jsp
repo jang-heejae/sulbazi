@@ -6,23 +6,29 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
+
 	var loginId = '${sessionScope.loginId}';
 	var msg = "${msg}";
+	var roomin = "${roomin}";
 	
 	if(msg!=""){
 		alert(msg);
 		location.replace('./userchatlist.go');
 	}
 	
+	
 	$(document).ready(function() {
 
-		// 방 개설자만 세팅창 보이기
+		
+		// 방장 권한 준다
 		var userId = $('h2').data('userid').toString();
 		var menu = $('.menu').css('display');
 				
 		if(loginId === userId){
-			$('.fa-cog').show();
+			$('.roomoutbtn').hide();
+			
 			// 방장 권한
+			$('.fa-cog').show();
 			$('.fa-cog, .setting').on({
 		        'mouseenter':function(e){
 		            $('.setting').css({'display':'block'});
@@ -35,6 +41,164 @@
 			console.log(loginId);
 			$('.fa-cog').hide();
 		}
+		
+		var reported_id;
+		var reported_idx;
+		var report_txt;
+		var reported_nick;
+		
+		// 신고, 강퇴 팝업창
+		$(document).off('click', '.usermsg');
+		
+		$(document).on('click', '.usermsg', function(event) {
+			
+	        // 클릭한 위치 좌표
+	        var x = event.pageX;
+	        var y = event.pageY;
+	        
+	        // 신고, 강퇴 할 유저정보
+	        reported_id = $(this).find('.userid').text().trim();
+			reported_idx = $(this).find('.msgidx').text().trim();
+			report_txt = $(this).find('.msgtxt').text();
+			reported_nick = $(this).find('.usernick').text();
+	        
+		    console.log("메세지 쓴 사람 ID : "+reported_id);
+		    console.log("신고한 메세지 idx : "+reported_idx);
+		    console.log("신고한 메세지 txt : "+report_txt);
+	        console.log("현재 로그인한 사람 ID :"+loginId);
+	        console.log("신고할사용자 닉 :"+reported_nick);
+	        
+	        $('.popup').remove();
+	       
+		    if (reported_id.toString() !== loginId.toString()) {
+				
+				var popup = $(`
+				    <div class="popup">
+				        <div class="reportuser"><i class="fas fa-exclamation-circle"></i>신고</div>
+				    </div>
+				`);
+				
+				var user = $('h2').data('userid').toString();
+				
+				// 방장은 강퇴 옵션 추가해드림
+				if (loginId === user) {
+				    popup.append('<div class="kickuser"><i class="fas fa-crosshairs"></i> 강퇴 </div>');
+				}
+				
+				popup.css({
+				    position: 'absolute',
+				    width: '100px',
+				    height: '50px',
+				    left: x + 'px',
+				    top: y + 'px',
+				    backgroundColor: '#f9f9f9',
+				    border: '1px solid #ccc',
+				    padding: '5px'
+				});
+				
+				
+				$('body').append(popup);
+			}
+		
+	    });
+		
+		// 팝업 제거
+		$(document).on('click', function(event) {
+		    if (!$(event.target).closest('.popup, .msgtxt').length) {
+		        $('.popup').remove();
+		    }
+		});
+		
+		// 신고 할거야
+		$(document).on('click', '.reportuser', function() {
+			
+			var display = $('.reportuserform, .reportcancel').css('display');
+			if (display == 'none'){
+	              $('.reportuserform').show();
+	              $('.reportuserform').css({'display':'flex'});
+	          }else{
+	              $('.reportuserform').hide();
+	          }
+			
+			$('.reportedit').click(function(){
+				
+				var reporting_id = '${sessionScope.loginId}';
+				var report_content = $('textarea[name="report_content"]').val();
+				var report_category = '개인 메시지';
+				
+			    console.log("아작스 신고 당할 사람 "+reported_id);
+			    console.log("아작스 신고 할 사람 "+reporting_id);
+				console.log("아작스 신고할 메세지 번호 "+reported_idx);
+				console.log("신고 내용" + report_content);
+				console.log("아작스 신고할사용자 닉 :"+reported_nick);
+				
+			    $.ajax({
+			        url: '/SULBAZI/reportuser.ajax',
+			        type: 'POST',
+			        data: {
+			        	reported_id: reported_id,
+			        	reporting_id: reporting_id,
+			        	report_category: report_category,
+			        	reported_idx: reported_idx,
+			        	report_content: report_content		        	
+			        },
+			        success: function(response) {
+			            
+			            alert(reported_nick +' 신고 완료');
+			            $('.reportuserform').hide();
+			            $('.popup').remove();
+			            loadMessages();
+			        },
+			        error: function() {
+			            alert(reported_nick +'신고 실패');
+			        }
+			    });
+				
+			});
+			
+		});
+
+		
+		// 강퇴시킬거야~
+		$(document).on('click', '.kickuser', function() {
+		  			
+			var user_id = reported_id;
+			var chatroom_idx = ${idx};
+			var kickmsg = '<div class="kick">' +reported_nick+ '님 강퇴</div>';
+			
+			
+		    console.log("강퇴당할 "+user_id);
+		    console.log("강퇴당할방 "+chatroom_idx);
+		    if (confirm(reported_nick+"를 내보낼거야?")) {
+			    $.ajax({
+			        url: '/SULBAZI/kickuser.ajax',
+			        type: 'POST',
+			        data: {
+			        	user_id: user_id,
+			        	chatroom_idx: chatroom_idx
+			        },
+			        success: function(response) {
+			            
+			            alert(reported_nick +' 아웃');
+			            $('.chatlist').append(kickmsg);
+			            $('.popup').remove();
+			            loadMessages();
+			           
+			        },
+			        error: function() {
+			            alert(reported_nick +'강퇴 실패');
+			        }
+			    });
+		    }
+		});
+		
+		
+		var eventSource = new EventSource('/SULBAZI/subscribe');
+		eventSource.addEventListener('kick', function(event) {
+		    alert(event.data);
+		    window.location.href = '/SULBAZI/userchatlist.go';
+		});
+
 		
 		// 참여자 리스트
 		var chatroom_idx = ${idx};
@@ -79,6 +243,14 @@
 		
 	    loadUserList();
 	    
+	    
+	    // 서버에서 새로운 메세지 확인 후 리로드
+	    const sse = new EventSource("/sse/connect");
+
+		sse.addEventListener("newMessage", function(event) {
+		    loadMessages(); 
+		});
+		
 		// 메세지 전송
 	    $('.sendmsg').click(function () {
 	        var usermsg_content = $('textarea[name="usermsgcontent"]').val();
@@ -112,10 +284,10 @@
 	        
 	    });
 		
-	    // 5초마다 새 메세지를 불러오기
+	    // 새 메세지를 불러오기
 	    var userchat_idx = ${idx};
 		var ownerId = '${userid}';
-	    setInterval(loadMessages, 1000);
+	    setInterval(loadMessages, 10000);
 
 	    function loadMessages() {
 	        $.ajax({
@@ -144,7 +316,10 @@
 	                	messageHtml += '</div>';
 	                	messageHtml += '<div class="txtbox">';
 	                	messageHtml += '<div class="msgtxt">' + msg.usermsg_content + '</div>';
-	                	// msg.usermsg_time을 원하는 형식으로 변환
+	                	messageHtml += '<div class="msgidx" style="display:none;">' + msg.usermsg_idx+ '</div>';
+	                	messageHtml += '<div class="userid" style="display:none;">' + msg.user_id + '</div>';
+	                	
+	                	// 시간 출력 바꾸기
 	                	var date = new Date(msg.usermsg_time);
 	                	var formattedDate = date.getFullYear() + '-' 
 	                	    + ('0' + (date.getMonth() + 1)).slice(-2) + '-' 
@@ -171,7 +346,9 @@
 	    }
 
 	    // 페이지 로드 시 메세지 불러오기
-	    loadMessages();
+	    
+	    	loadMessages();
+	    
 
 	    
 	});
@@ -189,6 +366,10 @@
     h2{
     	display: none;
     }
+    .popup div:hover {
+	    font-weight: bold;
+	    cursor: pointer;
+	}
     .main{
         background-color: #041d03;
         width: 100%;
@@ -280,6 +461,9 @@
         width: 780px;
         background-color: darkkhaki;
     }
+    .kick{
+        color: darkgrey;
+    }
     .userlist{
     	display: flex;
    	    justify-content: space-between;
@@ -345,6 +529,11 @@
    	    width: 260px;
    		height: 100px;
     }
+    .noticearea textarea{
+    	width: 85%;
+        height: 100%;
+        font-size: x-large;
+    }
     
     .roomedit{
     	display: none;
@@ -353,13 +542,23 @@
 	    background-color: rgb(106, 106, 219);
 	    width: 300px;
         height: 120px;
+    }    
+    .reportuserform{
+    	display: none;
+	    width: 250px;
+	    height: 200px;
+	    position: absolute;
+	    top: 400px;
+	    right: 0;
+	    background-color: brown;
+	    flex-direction: column;
+	    align-items: center;
+	    justify-content: center;
     }
-    
-    
-    
-    
-    
-    
+    .reportuserform textarea{
+   	    width: 80%;
+    	height: 70%;
+    }
     .msgform{
         width: 580px;
         background-color: 82B5D6;
@@ -368,6 +567,9 @@
         width: 100%;
         height: 550px;
         overflow-y: auto;
+    }
+    .msgtxt:hover{
+    	cursor: pointer;
     }
     .fa-crown{
     	color: EFE041;
@@ -418,13 +620,13 @@
         width: 100%;
         height: 50px;
     }
+    .textarea textarea{
+   	    width: 100%;
+    }
     textarea{
         border: none;
         resize: none;
         outline: none;
-        width: 85%;
-        height: 100%;
-        font-size: x-large;
     }
     .sendmsg{
         width: 15%;
@@ -517,6 +719,17 @@
 						                <button class="cancel">취소</button>
 						            </div>
                        			</div>
+                       			<div class="reportuserform">
+                       				<h3>
+                       					<i class="fas fa-exclamation-circle"></i>
+                       					신고
+                       				</h3>
+                       				<textarea class="reportarea" name="report_content" placeholder="20자 이내로 신고내용을 입력하세요." maxlength="20"></textarea>
+                       				<div class="reportbtn">
+						            	<button class="reportedit">신고</button>
+						                <button class="reportcancel">취소</button>
+						            </div>
+                       			</div>
 							</div>
                         </div>
                     </div>
@@ -534,7 +747,7 @@
                         <div class="chatlist">
                         </div>
                         <div class="textarea">
-                        	<input type="text" name="user_id" value="${sessionScope.loginId}" readonly>
+                        	<%-- <input type="text" name="user_id" value="${sessionScope.loginId}" readonly> --%>
                             <textarea name="usermsgcontent" placeholder="메세지 입력"></textarea>
                             <button type="button" class="sendmsg">전송</button>
                         </div>
@@ -545,11 +758,29 @@
     </div>
 </body>
 <script>	
+
+
 	// 방 인원수
-/* 	var total = ${usertotal};
-	$('.people').text(total);
- */
-	// 공지사항
+	$('.roomoutbtn').click(function() {
+		var chatroom_idx = '${idx}';
+		
+		$.ajax({
+			url: '/SULBAZI/userroomout.ajax',
+			type: 'POST',
+			data: {chatroom_idx: chatroom_idx},
+			success: function(response) {
+				alert("방을 나갔습니다.");
+				window.location.href = "userchatlist.go";  // 로컬 채팅방 리스트로 이동
+			},
+			error: function(error) {
+				console.error("에러 발생:", error);
+				alert("방 나가기에 실패했습니다.");
+			}
+		});
+	});
+ 
+	
+	// 공지사항 쓸래
 	$('.notification, .noticancel').click(function() {
    	   var display = $('.notice').css('display');
           if (display == 'none'){
@@ -559,6 +790,7 @@
               $('.notice').hide();
           }
     });
+	
 	
 	// 공지 등록, 수정
 	$('.notiedit').click(function() {
@@ -629,7 +861,8 @@
 	    }
     });
     
-	// 방삭제
+    
+	// 방 삭제할거임
 	$('.roomdelete').click(function() {
 	    if (confirm("방을 삭제하시겠습니까?")) {
 	    	var userchat_idx = $('input[name="userchat_idx"]').val();
@@ -668,17 +901,14 @@
 	      $(this).attr('placeholder', '');  
 	});
 	
-	// 텍스트가 없으면 placeholder 복구
+	// 텍스트 없으면 placeholder 복구
     $('.txtarea').on('blur', function() {
       if ($(this).val() === '') {
         $(this).attr('placeholder', '메세지 입력');  
       }
     });
 	    
-	$('.sendmsg').click(function(){
-	    var txt = $('textarea[name=usermsgcontent]').val();
-	    console.log(txt);
-	});
+	
 	
 </script>
 </html>

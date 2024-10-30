@@ -44,7 +44,7 @@ public class MessageService<Objcet> {
         int row = usermsg_dao.sendmsg(message);
         if(row>0) {
         	int idx = message.getUsermsg_idx();
-        	model.addAttribute(idx);
+        	model.addAttribute("msgidx",idx);
         	logger.info("방금 insert한 msg idx : "+idx);
         }
 	}

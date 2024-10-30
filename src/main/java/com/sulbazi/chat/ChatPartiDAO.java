@@ -1,6 +1,7 @@
 package com.sulbazi.chat;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,13 +17,16 @@ public interface ChatPartiDAO {
 	
 	/* 방에 참여중인 사용자 - 개인 */
 	List<PartiDTO> userlist(int idx);
-	List<PartiDTO> userlistajax(int chatroomIdx);
+	List<PartiDTO> userlistajax(int chatroom_idx);
 	
 	/* 채팅방 개설 후 참여 */
 	int createparti(int idx, String userId);
 	
+	/* 개인 채팅방에서 나가면 참여상태 false */
+	void userroomout(String userId, int chatroom_idx);
 	
-	
+	/* 개인 채팅방 강퇴 */
+	int kickuser(Map<String, String> params);
 	
 	
 	
@@ -33,10 +37,14 @@ public interface ChatPartiDAO {
 	int insertlocalparti(String userId, int idx);
 
 	/* 지역 채팅방에서 나가면 참여상태 false */
-	int localroomout(String userId, int roomIdx);
+	int localroomout(String userId, int chatroom_idx);
 	
 	/* 방에 참여중인 사용자 - 지역 */
 	List<PartiDTO> localuserlist(int idx);
+	List<PartiDTO> localuserlistajax(int localchat_idx);
+	
+	
+	
 	
 	
 	

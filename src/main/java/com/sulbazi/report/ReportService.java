@@ -99,4 +99,13 @@ public class ReportService {
 	public List<ReportDTO> getReportsByState(int state) {
 		return report_dao.getReportsByState(state);
 	}
+
+	
+	
+	
+	// 개인 채팅방 메세지 신고
+	public void usermsgreport(String reported_id, String reporting_id, String report_category, int reported_idx, String report_content) {
+		report_dao.usermsgreport(reported_id,reporting_id,report_category, reported_idx,report_content);
+	}
+
 }
