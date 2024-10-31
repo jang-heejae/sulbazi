@@ -24,7 +24,7 @@ public class MessageController {
 	// SSE
 	private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
-    @GetMapping("/sse/connect")
+    @GetMapping(value="/sse/connect")
     @ResponseBody
     public SseEmitter connect() {
         SseEmitter emitter = new SseEmitter(0L);
@@ -43,7 +43,7 @@ public class MessageController {
     public String sendmsg(@RequestParam String user_id, @RequestParam String usermsg_content, @RequestParam int userchat_idx, Model model) {
         msg_ser.sendmsg(user_id, usermsg_content, userchat_idx, model);
         
-     // 모든 연결된 클라이언트에게 새 메시지 이벤트 전송
+        // 모든 연결된 클라이언트에게 새 메시지 이벤트 전송
         for (SseEmitter emitter : emitters) {
             try {
                 emitter.send(SseEmitter.event()

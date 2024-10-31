@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,8 +25,6 @@ public class ChatPartiController {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired ChatPartiService chatparti_ser;
-	private Map<String, SseEmitter> sseEmitters = new ConcurrentHashMap<String, SseEmitter>();
-	
 	
 	
 	/* 각 채팅방의 참여자 수 - 채팅방 리스트 */
@@ -34,12 +33,42 @@ public class ChatPartiController {
 	public Integer usertotal(@RequestParam int chatroom_idx) {
 	    return chatparti_ser.usertotal(chatroom_idx);
 	}
+	
+	private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
-	/* 개인 채팅방 참여자 리스트 */
+
+	/* 개인 채팅방 참여자 리스트 - SSE */
+	@GetMapping(value="/sse/list")
+    @ResponseBody
+    public SseEmitter userlistsse() {
+        SseEmitter emitter = new SseEmitter(0L);
+        emitters.add(emitter);
+
+        emitter.onCompletion(() -> emitters.remove(emitter));
+        emitter.onTimeout(() -> emitters.remove(emitter));
+
+        return emitter;
+    }
+	
+	
+	/* 개인 채팅방 참여자 리스트 - ajax */
 	@GetMapping(value="/userlist.ajax")
 	@ResponseBody
 	public List<PartiDTO> userlistajax(@RequestParam("chatroom_idx") int chatroom_idx) {
-	    return chatparti_ser.userlistajax(chatroom_idx);
+	    List<PartiDTO> participants = chatparti_ser.userlistajax(chatroom_idx);
+	    
+	    // 모든 연결된 클라이언트에게 새 유저 이벤트 전송
+	    for (SseEmitter emitter : emitters) {
+	        try {
+	            emitter.send(SseEmitter.event()
+	                .name("newuser")
+	                .data("새 유저가 도착했습니다."));
+	        } catch (Exception e) {
+	            emitters.remove(emitter);
+	        }
+	    }
+	    
+	    return participants; // 리스트 반환
 	}
 	
 	/* 개인 채팅방에서 나가면 참여상태 false */

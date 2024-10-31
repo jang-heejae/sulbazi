@@ -1,5 +1,7 @@
 package com.sulbazi.alarm;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.sulbazi.chat.PartiDTO;
@@ -9,6 +11,7 @@ import com.sulbazi.inquery.InqueryDTO;
 @Mapper
 public interface AlarmDAO {
 
+<<<<<<< HEAD
 	UserChatroomDTO userchatroominfo(String chatroomboss);
 
 	PartiDTO partiinfo(PartiDTO partidto);
@@ -25,3 +28,12 @@ public interface AlarmDAO {
 	
 
 }
+=======
+	// 채팅방 참여신청 알림
+	int partialarm(String id);
+	
+	// 강퇴 알림
+	int kickuser(Map<String, String> params);
+
+}
+>>>>>>> origin/master
