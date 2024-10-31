@@ -64,27 +64,26 @@ public class ReportController {
 		return "admin/reportDetail";
 	}
 	@GetMapping(value="/processWrite.do")
-	public String processWrite(@RequestParam Map<String, String>param, Model model, HttpSession session, int report_idx, String reported_id) {
-		String admin_id = (String) session.getAttribute("loginId");
-		param.put("admin_id", admin_id);
-		log.info("pro_write contrl reported_id: " + reported_id);
-		log.info("pro_write contrl report_idx: "+report_idx);
-		log.info("pro_write contrl admin_id: "+param.get("admin_id"));
-		ProcessDTO pro_dto = report_ser.processWrite(param, report_idx, reported_id);
-		log.info("pro_write contrl pro_idx : "+ pro_dto);
-		String admin_name = admin_dao.getAdminNameById(admin_id); // admin_name 가져오기
-	    model.addAttribute("admin_name", admin_name);
-		model.addAttribute("proinfo", pro_dto);
-		log.info("pro_write contrl pro_dte : "+ pro_dto);
-		return "redirect:/reportDetail.go?report_idx="+report_idx;
+	public String processWrite(@RequestParam Map<String, String> param, Model model, HttpSession session, int report_idx, String reported_id) {
+	    String admin_id = (String) session.getAttribute("loginId");
+	    param.put("admin_id", admin_id);
+	    log.info("pro_write contrl reported_id: " + reported_id);
+	    log.info("pro_write contrl report_idx: " + report_idx);
+	    log.info("pro_write contrl admin_id: " + param.get("admin_id"));
+	    log.info("pro_write contrl param:{} ", param);
+
+	    ProcessDTO pro_dto = report_ser.processWrite(param, report_idx, reported_id);
+	    log.info("pro_write contrl pro_idx: " + pro_dto);
+
+	    return "redirect:/reportDetail.go?report_idx=" + report_idx;
 	}
+
 	@GetMapping(value="/process.ajax")
 	@ResponseBody
 	public Map<String, Object> process(int report_idx) {
-		log.info("proajax pro_idx : "+report_idx); 
-	return report_ser.process(report_idx);
+	    log.info("proajax report_idx: " + report_idx); 
+	    return report_ser.process(report_idx);
 	}
-	
 	@GetMapping(value="/report_filter.ajax")
     @ResponseBody
     public Map<String, Object> reportFilter(@RequestParam String reportState, @RequestParam String reportCategory) {

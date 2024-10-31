@@ -170,6 +170,7 @@
     </form>
 </body>
 <script>
+
 listCall(); // 페이지 로드 시 데이터 호출
 
 
