@@ -16,7 +16,7 @@
         border: 1px solid black;
         padding: 10px;
         text-align: left;
-    }
+    }   
     #imgview {
         width: 150px;
         height: 150px;

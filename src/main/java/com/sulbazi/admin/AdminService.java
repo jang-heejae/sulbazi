@@ -20,7 +20,7 @@ public class AdminService {
 	@Autowired AdminDAO admin_dao;
 	@Autowired UserDAO user_dao;
 	Logger log= LoggerFactory.getLogger(getClass());
-	
+	 
 	// 관리자 추가 생성 
 	public String adminAdd(Map<String, String> param) {
 		String msg = "실패";

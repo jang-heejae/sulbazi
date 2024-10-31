@@ -11,36 +11,87 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
-	body{
-		color: white;
+		body { 
+    	display: flex;
+    	flex-direction: column;
+    	align-items: center;
+    	justify-content: center; 
+    	gap: 20px;
+    	margin: 20px;
+    	font-weight: bold;
+    	color: #041d03;
+    	min-height: 100vh;
+    	background-color: #041d03;
+	} 
+	.chatBox2 {
+    	display: flex;
+    	justify-content: center;
+    	align-items: flex-start; /* 시작점에서부터 정렬 */
+    	width: 100%;
+    	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
 	}
-	hr{
-		background-color:white;
+	.chatitems2 {
+		margin-top: 150px;
+    	width: 940px;
+    	min-height: 650px; /* 초기 최소 높이 설정 */
+    	height: auto; /* 내용에 따라 높이 자동 조절 */
+    	display: flex;
+    	flex-wrap: wrap;
+    	justify-content: space-between;
+    	align-items: center;
+    	align-content: center;
+    	background-color: #73734F;
+    	border-radius: 20px;
+    	padding: 20px; /* 내부 여백 추가 */
+    	margin-top: 140px; 
 	}
-	#reportList{
-		position: absolute;
-		top: 121px;
-    	left: 507px;
-    	width: 683px;
-	}
+	input[type="radio"] {
+        appearance: none; /* 기본 스타일 제거 */
+        width: 15px;
+        height: 15px;
+        background-color: #041d03; /* 원하는 배경색 */
+        border: 2px solid #041d03; /* 테두리 색 */
+        border-radius: 50%; /* 동그란 모양 */
+        cursor: pointer;
+        position: relative;
+    }
+
+    input[type="radio"]:checked {
+        background-color: #041d03; /* 체크 시 배경색 */
+        border: 0.1px solid #041d03; /* 체크 시 테두리 색 */
+    }
+
+    input[type="radio"]::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: transparent; /* 체크되지 않았을 때는 투명 */
+    }
+
+    input[type="radio"]:checked::after {
+        background-color: rgb(255, 140, 9); /* 체크 시 점 색상 */
+    }
 	#reportTable{
-		background-color: #20290E;
-		border: 1px solid #20290E;
+		background-color: rgb(255, 140, 9);
+		border: 1px solid rgb(255, 140, 9);
 		border-collapse: collapse;
 		padding: 3px;
 		font-family: "Irish Grover", system-ui;
-	}
-	#reportDiv{
-		position: absolute;
-		top: 252px;
-    	left: 507px;
-    	height: 200px;
+		font-weight: bold;
 	}
 	td{
 		padding: 5px;
-		width: 143px;
+		width: 151px;
 		text-align: center;
 		border-bottom: 2px solid white;
+	}
+	#reportList{
+	    margin-bottom: 25px
 	}
 	.pagination {
     	display: flex; /* Flexbox로 설정 */
@@ -91,6 +142,8 @@
 </head>
 <body>
 	<c:import url="../main/adminMain.jsp"/>
+	<section class="chatBox2">
+        <div class="chatitems2">
 	<div id="reportList">
 		<h3>신고 목록</h3>
 		<hr/>
@@ -128,6 +181,8 @@
 		</tr>
 	</table>
 	</div>
+	</div>
+	</section>
 </body>
 <script>
 var showPage = 1;
@@ -200,12 +255,12 @@ function formatDate(dateString) {
     // Date 객체 생성
     const date = new Date(dateString);
     const today = new Date(); // 오늘 날짜 객체 생성
-
-    // 날짜와 시간을 원하는 형식으로 조합
-    if (date.toDateString() == today.toDateString()) {
-        return '00:00:00'; // 오늘 날짜이면 시간만 표시
+    if (date.toDateString() === today.toDateString()) {
+        // 오늘이면 시간만 표시
+        return date.toLocaleTimeString('en-GB'); // 'HH:mm:ss' 형식
     } else {
-        return date.toISOString().split('T')[0]; // 'YYYY-MM-DD-00:00:00' 형태로 리턴
+        // 오늘이 아니면 날짜만 표시
+        return date.toLocaleDateString('en-CA'); // 'YYYY-MM-DD' 형식
     }
 }
 function listPrint(list) {

@@ -1,7 +1,10 @@
 package com.sulbazi.report;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,12 +26,12 @@ public class ReportService {
 	@Autowired AdminDAO admin_dao;
 	Logger log = LoggerFactory.getLogger(getClass());
 	
-
+ 
 	 public Map<String, Object> reportList(int page, int cnt) { 
 		 int limit = cnt;
 		 int offset = (page-1) * cnt;
 		 int totalPages = report_dao.allCount(cnt);
-	  
+	   
 		 Map<String, Object> map = new HashMap<String, Object>();
 		 map.put("totalPages", totalPages);
 		 map.put("list", report_dao.reportList(limit, offset));
@@ -39,7 +42,7 @@ public class ReportService {
 		return report_dao.reportDetail(report_idx);
 	}
 	
-	@Transactional
+	@Transactional // 관리자 신고에 답변달기
 	public ProcessDTO processWrite(Map<String, String> param, int report_idx, String reported_id) {
 	    ProcessDTO pro_dto = new ProcessDTO();
 	    log.info("pro_write service reported_id: " + reported_id);
@@ -65,9 +68,15 @@ public class ReportService {
 	    report_dao.updateReportResult(report_idx, true);
 	    Map<String, Object> params = new HashMap<String, Object>();
 	    params.put("reported_id", reported_id);
-	    params.put("startDate", Date.valueOf(param.get("revoke_start")));
-	    params.put("stopDate", Date.valueOf(param.get("revoke_stop")));
-	    params.put("today", LocalDate.now());
+	    
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    try {
+			params.put("startDate", dateFormat.parse(param.get("revoke_start")));
+			params.put("stopDate", dateFormat.parse(param.get("revoke_stop")));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	    params.put("today", LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
 
 	    // DAO 호출하여 user 테이블 업데이트
 	    revoke_dao.revokeUpdate(params);

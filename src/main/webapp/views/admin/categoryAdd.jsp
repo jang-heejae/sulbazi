@@ -10,6 +10,7 @@
 	body{
 		color: white;
 		background-color: #20290E;
+		overflow: hidden;
 	} 
 	#newCate{
 		background-color: #E98D1C;
@@ -19,7 +20,7 @@
 		padding: 20px;
 		margin: 5px 10px;
 		border-radius: 20px;
-	}
+	} 
 	table, th, td{
 		border: 1px solid white;
 		border-collapse: collapse;
@@ -31,14 +32,30 @@
 	}
 	#wcb{
 		position: absolute;
-		top: 350px;
-		left: 500px;
+		top: 294px;
+    	left: 457px;
 	}
 	#opt_bar{
 		width: 100%;
 	}
+	input{
+		border-radius: 10px;
+		padding: 4px;
+	}
+	#opt_bar{
+		border-radius: 10px;
+		padding: 4px;
+	}
+	button{
+		background-color: #73734F;
+		color: white;
+		padding: 5px;
+		border-radius: 5px;
+		font-size: 14;
+		font-weight: bold;
+	}
 </style>
-</head>
+</head> 
 <body>
 	<form action="categoryAdd.do" method="post" onsubmit="refresh();">
 	<div id="newCate">

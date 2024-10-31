@@ -21,7 +21,7 @@
     	color: #041d03;
     	min-height: 100vh;
     	background-color: #041d03;
-	}
+	} 
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -67,7 +67,7 @@
 	#storeTable{
 		color: rgb(255, 140, 9);
 		background-color: #20290E;
-		border: 1px solid rgb(255, 140, 9);
+		border: 1px solid #20290E;;
 		border-collapse: collapse;
 		padding: 3px;
 		font-family: "Irish Grover", system-ui;

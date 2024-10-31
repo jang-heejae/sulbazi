@@ -14,13 +14,13 @@
 		width: 926px;
 		text-align: center;
 		border-radius: 20px;
-	}
+	} 
 	input[name="revoke_start"], input[name="revoke_stop"]{
 		width: 79px;
 	}
 	input[name="process_content"]{
 		width: 130px;
-	}
+	} 
 	#processList{
 		height: 229px;
     	width: 920px
