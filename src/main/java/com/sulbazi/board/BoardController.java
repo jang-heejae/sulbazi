@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sulbazi.photo.PhotoDAO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
 
@@ -33,7 +35,8 @@ public class BoardController {
 	
 	@Autowired BoardService board_ser;
 	@Autowired PhotoService photo_ser;
-	Logger logger = LoggerFactory.getLogger(getClass());
+	@Autowired PhotoDAO photo_daoDao;
+ 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@RequestMapping(value="/boardList.go")
 	public String boardlist() {
@@ -47,6 +50,13 @@ public class BoardController {
 		if (session.getAttribute("loginId") != null) {
 			map.put("login", true);
 			List<HashMap<String, Object>> list = board_ser.boardlistgo();
+			for (HashMap<String, Object> boardData : list) {
+	            int store_idx = (int) boardData.get("store_idx"); // store_idx 값 추출
+	            logger.info("List store_idx : {}", store_idx);
+	            String store_id = board_ser.selectidx(store_idx);
+	            logger.info("Store ID: {}", store_id);
+	            boardData.put("store_id", store_id); // store_id를 boardData에 추가
+	        }
 			map.put("list", list);
 			logger.info("list : {}", list);
 		}else {
@@ -54,10 +64,18 @@ public class BoardController {
 		}	
 		return map;
 	}
+	
+	@RequestMapping(value="/delete.go")
+	public String del(String board_idx) {
+		logger.info("삭제할 idx : {}", board_idx);
+		board_ser.del(board_idx);
+		String page = "redirect:/boardList.go";
+		return page;
+	}
 
-	@RequestMapping(value="boardDetail.go")
+	@RequestMapping(value="/boardDetail.go")
 	public String detail(String board_idx, Model model) {
-		board_ser.detail(board_idx, model);
+		board_ser.detail(board_idx, model, true);
 		return "board/boardDetail";
 	}
 	
@@ -87,28 +105,28 @@ public class BoardController {
 	@PostMapping(value="/boardWrite.ajax")
 	@ResponseBody
 	public Map<String, Object> boardWriteajax(
-			MultipartFile[] files,
+			@RequestParam("file") MultipartFile[] file,
 			@RequestParam Map<String, String> params,
 			HttpSession session) throws IOException{
 		Map<String, Object> response = new HashMap<>();
 		boolean success = false;
-		logger.info("params : {} ", params);
-		logger.info("files : {} "+ files);
+		logger.info("params : {} ", params + "file : {}", file.length);
 		String store_id = (String) session.getAttribute("loginId");
 		logger.info(store_id);
+		logger.info("파일 랭스 :{} ",file.length);
 		int store_idx = board_ser.getstore_idx(store_id);
 		if (store_idx > 0) {
 			BoardDTO boardDTO = new BoardDTO();
 			boardDTO.setStore_idx(store_idx);
 	        boardDTO.setBoard_subject(params.get("board_subject"));
 	        boardDTO.setBoard_content(params.get("board_content"));
-	        boardDTO.setBoard_date(LocalDate.now());
 	        boardDTO.setBoard_category(params.get("board_category"));
-	        boardDTO.setBoard_state(true);
 	        int store_idxx = boardDTO.getStore_idx();
-	        photo_ser.fileSave(files, store_idxx ,4);
-	        success = board_ser.boardWriteajax(boardDTO, files);
+	        photo_ser.boardwriteajax(file, store_idxx ,4);
+	        success = board_ser.boardWriteajax(boardDTO, file);
 	        if (success) {
+	        	response.put("success", true);
+	        	response.put("link", "/SULBAZI/boardList.go");
 				response.put("message", "게시글을 등록하시겠습니까?");
 			}else {
 				response.put("message", "게시글 등록에 실패했습니다.");
@@ -118,5 +136,54 @@ public class BoardController {
 		}
 		response.put("success", success);
 		return response;
+	}
+	
+	@PostMapping(value="/update.ajax")
+	@ResponseBody
+	public Map<String, Object> updateajax(
+			@RequestParam("file") MultipartFile[] file,
+			@RequestParam Map<String, String> params,
+			HttpSession session) throws IOException{
+		Map<String, Object> response = new HashMap<>();
+		boolean success = false;
+		logger.info("params detail : {} ", params + "file : {}", file.length);
+		String store_id = (String) session.getAttribute("loginId");
+		logger.info(store_id);
+		logger.info("파일 랭스 :{} ",file.length);
+		int store_idx = board_ser.getstore_idx(store_id);
+		if (store_idx > 0) {
+			BoardDTO boardDTO = new BoardDTO();
+			boardDTO.setStore_idx(store_idx);
+	        boardDTO.setBoard_subject(params.get("board_subject"));
+	        boardDTO.setBoard_content(params.get("board_content"));
+	        boardDTO.setBoard_category(params.get("board_category"));
+	        String board_idxs = params.get("board_idx");
+	        logger.info(board_idxs);
+	        int board_idx = Integer.parseInt(board_idxs);
+	        boardDTO.setBoard_idx(board_idx);
+	        int store_idxx = boardDTO.getStore_idx();
+	        if (file != null) {
+	        	photo_ser.updateajax(file, store_idxx ,4);
+			}
+	        success = board_ser.updateajax(boardDTO, file);
+	        if (success) {
+	        	response.put("success", true);
+	        	response.put("link", "/SULBAZI/boardList.go");
+				response.put("message", "수정하시겠습니까?");
+			}else {
+				response.put("message", "수정에 실패했습니다.");
+			}
+		}else {
+			response.put("message", "로그인 후 이용하세요.");
+		}
+		response.put("success", success);
+		return response;
+	}
+	
+	@RequestMapping(value="/update.go")
+	public String update(String board_idx, Model model) {
+		logger.info("idx : {}", board_idx);
+		board_ser.update(board_idx, model);
+		return "board/boardUpdate";
 	}
 }

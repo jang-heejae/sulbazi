@@ -9,6 +9,10 @@
 			VALUES(#{photo_folder_idx},#{new_filename}, #{photo_category_idx})
 	</insert>
 	
+	<update id="updateajax" parameterType="com.sulbazi.photo.PhotoDTO">
+		UPDATE photo SET new_filename = #{new_filename} WHERE photo_folder_idx = #{photo_folder_idx} AND photo_category_idx = #{photo_category_idx}
+	</update>
+	
 	<insert id="menufile" parameterType="com.sulbazi.photo.PhotoDTO">
 		INSERT INTO photo(photo_folder_idx, new_filename, photo_category_idx)
 			VALUES(#{photo_folder_idx},#{new_filename}, #{photo_category_idx})

@@ -12,6 +12,14 @@
 		SELECT * FROM board WHERE board_idx = #{param1}
 	</select>
 	
+	<update id="del">
+		UPDATE board SET board_state = 0 WHERE board_idx = #{param1}
+	</update>
+	
+	<update id="bHit">
+		UPDATE board SET board_bHit = board_bHit + 1 WHERE board_idx = #{param1}
+	</update>
+	
 	<insert id="insertLike" parameterType="com.sulbazi.board.BoardLikeDTO">
         INSERT INTO board_like(board_idx, user_id)VALUES(#{board_idx}, #{user_id})
     </insert>
@@ -19,6 +27,8 @@
     <delete id="deleteLike" parameterType="com.sulbazi.board.BoardLikeDTO">
         DELETE FROM board_like WHERE board_idx = #{board_idx} AND user_id = #{user_id}
     </delete>
+    
+    
 
     <select id="isLiked" parameterType="com.sulbazi.board.BoardLikeDTO" resultType="boolean">
 	    SELECT COUNT(*) > 0
@@ -30,9 +40,22 @@
 		SELECT store_idx FROM store WHERE store_id = #{store_id}
 	</select>
 	
-	<insert id="boardwriteajax" parameterType="com.sulbazi.board.BoardDTO">
+	<insert id="boardWriteajax" parameterType="com.sulbazi.board.BoardDTO">
 		INSERT INTO 
-		board(store_idx, board_subject, board_content, board_date, board_bHit, like_count, board_category, board_state)
-			VALUES(#{store_idx}, #{board_subject}, #{board_content}, #{board_date}, #{board_bHit}, #{like_count}, #{board_category}, #{board_state}
+		board(store_idx, board_subject, board_content, board_category)
+			VALUES(#{store_idx}, #{board_subject}, #{board_content}, #{board_category})
 	</insert>
+	
+	<select id="selectidx" resultType="String">
+		SELECT store_id FROM store WHERE store_idx = #{param1}
+	</select>
+	
+	<update id="updateajax" parameterType="com.sulbazi.board.BoardDTO">
+		UPDATE board SET 
+			board_subject = #{board_subject},
+			board_content = #{board_content},
+			board_category = #{board_category}
+				WHERE board_idx = #{board_idx}
+	</update>
+	
 </mapper>

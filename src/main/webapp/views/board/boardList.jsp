@@ -157,60 +157,7 @@
     }
 </style>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
-            <div class="logo_text">
-                <a href="./#">SULBAZI</a>
-            </div>
-            <div>
-                <ul class="icon">
-                    <li><a href="login.go">로그인</a></li>
-                    <li>
-                        <i class="fa-regular fa-message"></i>
-                        <div class="sub_1">
-                            <div class="sub_txt1">대화중인 대화방</div>
-                            <div class="sub1">알림1</div>
-                            <div class="sub1">알림2</div>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fa-regular fa-bell"></i>
-                        <div class="sub_">
-                            <div class="sub_txt">3개 알림</div>
-                            <div class="sub">알림1</div>
-                            <div class="sub">알림2</div>
-                            <div class="sub">알림3</div>
-                        </div>
-                    </li>
-                    <li class="mypage"><i class="fa-regular fa-user"></i></li>
-                </ul>
-            </div>
-        </nav>
-        <div class="fullbox">
-            <div class="full">
-                <ul class="list1">
-                    <li><a href="localChatRoom.go">지역 대화방</a></li>
-                    <li><a href="userchatlist.go">개인 대화방</a></li>
-                    <li><a href="storeList.go">매장 리스트</a></li>
-                    <li><a href="boardList.go">게시판</a></li>
-                </ul>
-                <a href="userinquery.go">고객센터</a>
-            </div>
-            <div class="full2">
-                <ul class="list2">
-                    <li><a href="storeMyPage.go">나의 정보</a></li>
-                    <li><a href="storeMyReview.go">나의 매장 리뷰</a></li>
-                    <li><a href="storeMyBoard.go">나의 게시글</a></li>
-                    <li><a href="storeMyMenu.go">매장 메뉴 등록</a></li>
-                </ul>
-                <div class="logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <a href="logout.go">로그아웃</a>
-                </div>
-            </div>
-        </div>  
-    </header>
+    <jsp:include page="../main/main.jsp"/>
     <c:if test="${not empty sessionScope.opt && sessionScope.opt == 'store_log'}">
     <div class="writebutton" style="text-align: right; margin: 10px;">
         <a href="boardWrite.go" style="padding: 10px 20px; background-color: rgb(255, 140, 9); color: white; text-decoration: none; border-radius: 5px;">
@@ -229,6 +176,8 @@
 </body>
 <script>
 //main_menu 클릭 이벤트
+var storeId = '<%= request.getAttribute("store_id") %>';
+console.log(storeId);
 document.querySelectorAll('.main_menu').forEach(function(menu) {
     menu.addEventListener('click', function() {
         var fullElement = document.querySelector('.full');
@@ -309,42 +258,47 @@ document.querySelectorAll('.fa-bell').forEach(function(bell) {
 });
 
 $.ajax({
-	type: 'GET',
-	url : 'boardList.ajax',
-	data:{},
-	dataType:'JSON',
-	success:function(data){
-		console.log(data);
-		if(data.login){
-			drawList(data.list);
-		}else{
-			alert('로그인이 필요한 서비스입니다.');
-			location.href='./login.go';
-		}
-	},error:function(e){
-		console.log(e);
-	}
+    type: 'GET',
+    url: 'boardList.ajax',
+    data: {},
+    dataType: 'JSON',
+    success: function(data) {
+        console.log(data);
+        if (data.login) {
+            drawList(data.list); // 수정된 list로 drawList 호출
+        } else {
+            alert('로그인이 필요한 서비스입니다.');
+            location.href = './login.go';
+        }
+    },
+    error: function(e) {
+        console.log(e);
+    }
 });
-	function drawList(list){
-		var content = '';
-		list.forEach(function(item,board_idx){
-			content += '<tr>';
-			content += '<td>'+item.board_category+'</td>';
-			content += '<td class="subject"><a href="boardDetail.go?board_idx=' + item.board_idx + '" style="color: blue;">' + item.board_subject + '</a></td>';
-			content += '<td class="like">' +
-            '<i class="fa-solid fa-heart" style="color: red; margin-right: 5px;"></i>' + 
-            item.like_count + 
-            '</td>';
-			content += '<td class="view">' +
-            '<i class="fa-solid fa-eye" style="color: #999999; margin-right: 5px;"></i>' + // 연한 회색
-            item.board_bHit + 
-            '</td>';
-            content += '<td>'+'게시글 닉네임'+'</td>';
-			content += '<td>'+item.board_date+'</td>';
-			content += '<td style="display: ' + (item.board_state === 1 ? 'table-cell' : 'none') + ';">' + item.board_state + '</td>';
-			content += '</tr>';
-		});
-		$('#list').html(content);
-	}	
+
+function drawList(list) {
+    var content = '';
+    list.forEach(function(item) {
+        // board_state가 0이 아닐 때만 테이블 행을 추가합니다.
+        if (item.board_state > 0) {
+            content += '<tr>';
+            content += '<td>' + item.board_category + '</td>';
+            content += '<td class="subject"><a href="boardDetail.go?board_idx=' + item.board_idx + '" style="color: blue;">' + item.board_subject + '</a></td>';
+            content += '<td class="like">' +
+                '<i class="fa-solid fa-heart" style="color: red; margin-right: 5px;"></i>' + 
+                item.like_count + 
+                '</td>';
+            content += '<td class="view">' +
+                '<i class="fa-solid fa-eye" style="color: #999999; margin-right: 5px;"></i>' + 
+                item.board_bHit + 
+                '</td>';
+            content += '<td>' + item.store_id + '</td>'; // store_id가 포함되어 있어야 함
+            content += '<td>' + item.board_date + '</td>';
+            content += '<td style="display: none;">' + item.board_state + '</td>'; // 숨김 처리
+            content += '</tr>';
+        }
+    });
+    $('#list').html(content);
+}
 </script>
 </html>

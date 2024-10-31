@@ -1,5 +1,6 @@
 package com.sulbazi.board;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sulbazi.photo.PhotoDAO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
 
@@ -20,15 +22,20 @@ public class BoardService {
 	
 	@Autowired BoardDAO board_dao;
 	@Autowired PhotoService photo_ser;
+	@Autowired PhotoDAO photo_dao;
 	Logger logger = LoggerFactory.getLogger(getClass());
 
 	public List<HashMap<String, Object>> boardlistgo() {
 		return board_dao.boardlistgo();
 	}
 
-	public void detail(String board_idx, Model model) {
+	public void detail(String board_idx, Model model, boolean flag) {
 		BoardDTO boarddto = board_dao.detail(board_idx);
+		if(flag) {
+			board_dao.bHit(board_idx);
+		}
 		int store_idx = boarddto.getStore_idx();
+		String store_id = selectidx(store_idx);
 		logger.info("detail에 가져올 store_idx : "+store_idx);
 		List<PhotoDTO> photo1 = photo_ser.detail1(store_idx, 1);
 		List<PhotoDTO> photo4 = photo_ser.detail4(store_idx, 4);
@@ -39,6 +46,7 @@ public class BoardService {
 			logger.info(file1);
 			model.addAttribute("info", boarddto);
 			model.addAttribute("files", file1);
+			model.addAttribute("store", store_id);
 			for (PhotoDTO photodto4 : photo4) {
 				String file4 = photodto4.getNew_filename();
 				logger.info(file4);
@@ -47,6 +55,18 @@ public class BoardService {
 		}
 	}
 
+	public void update(String board_idx, Model model) {
+		BoardDTO boarddto = board_dao.detail(board_idx);
+		int store_idx = boarddto.getStore_idx();
+		List<PhotoDTO> photo = photo_ser.detail4(store_idx, 4);
+		for (PhotoDTO photodto : photo) {
+			String file = photodto.getNew_filename();
+			logger.info("update : {}", file);
+			model.addAttribute("info", boarddto);
+			model.addAttribute("files", file);
+		}
+	}
+	
 	public boolean isLiked(BoardLikeDTO likeDTO) {
 		return board_dao.isLiked(likeDTO);
 	}
@@ -66,6 +86,19 @@ public class BoardService {
 	public boolean boardWriteajax(BoardDTO boardDTO, MultipartFile[] file) {
 		return board_dao.boardWriteajax(boardDTO);
 	}
+
+	public String selectidx(int store_idx) {
+		return board_dao.selectidx(store_idx);
+	}
+
+	public boolean updateajax(BoardDTO boardDTO, MultipartFile[] file) {
+		return board_dao.updateajax(boardDTO);
+	}
+
+	public void del(String board_idx) {
+		board_dao.del(board_idx);	
+	}
+
 
 	
 
