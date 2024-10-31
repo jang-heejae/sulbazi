@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@ page session="true" %>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -132,6 +134,8 @@
 			</form>
         </div>
     </div>
+    
+
 </body>
 <script>
 var loginId = '${sessionScope.loginId}';
@@ -147,6 +151,7 @@ btn.addEventListener('click', function(event) {
         event.preventDefault(); // 등록이 취소되었을 때 폼 제출을 방지합니다.
     }
 });
+
 
 </script>
 </html>

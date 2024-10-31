@@ -186,7 +186,8 @@
 
 	<!-- 매장 마이페이지  정보 보기 -->
 	<select id="mystore" resultType="com.sulbazi.member.StoreDTO">
-		SELECT * FROM store WHERE store_idx=#{param1};
+		SELECT store_id, store_pw, store_name, store_number, store_phone, store_address, store_time,bookmark_user
+			FROM store WHERE store_idx=#{param1};
 	</select>
 	
 	<select id="mystoreopt" resultType="int">
@@ -202,14 +203,6 @@
 		UPDATE store SET store_pw=#{store_pw},store_name=#{store_name}, store_phone=#{store_phone}, 
 			store_address=#{store_address}, store_time=#{store_time} WHERE store_idx=#{store_idx}
 	</update>
-
-
-
-
-
-
-
-
 
 
 

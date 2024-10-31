@@ -65,6 +65,9 @@
 		SELECT answer_date, answer_content,admin_id FROM answer WHERE inquery_idx=#{param1}
 	</select>
 	
+	<update id="inquerystateupdate">
+		UPDATE inquery SET inquery_state = 1 WHERE inquery_idx=#{param1}
+	</update>
 	
 	<select id="answeradmin" resultType="com.sulbazi.admin.AdminDTO">
 		SELECT admin_name,admin_id 

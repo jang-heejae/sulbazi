@@ -5,7 +5,7 @@ import java.sql.Time;
 public class AlamDTO {
 
 	private int alarm_idx;
-	private String	user_id;
+	private String user_id;
 	private int alarm_category_idx;
 	private Time alarm_time;
 	private int alarm_read;
