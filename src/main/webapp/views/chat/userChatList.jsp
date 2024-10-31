@@ -267,7 +267,7 @@ $(document).ready(function() {
     console.log(session);
     if(session!=""){
         alert(session);
-        location.replace('./userchatlist.go');
+        window.location.href = '';
     }
     
 	
@@ -291,7 +291,7 @@ $(document).ready(function() {
     
  	
     // 각 방에 참여한 사용자 수
-     $('.chatroom').each(function() {
+    $('.chatroom').each(function() {
         var chatroom_idx = $(this).find('input[name="userchat_idx"]').val();
         console.log(chatroom_idx);
         
