@@ -87,12 +87,13 @@ public class BoardController {
 	@PostMapping(value="/boardWrite.ajax")
 	@ResponseBody
 	public Map<String, Object> boardWriteajax(
-			MultipartFile[] file,
+			MultipartFile[] files,
 			@RequestParam Map<String, String> params,
 			HttpSession session) throws IOException{
 		Map<String, Object> response = new HashMap<>();
 		boolean success = false;
 		logger.info("params : {} ", params);
+		logger.info("files : {} "+ files);
 		String store_id = (String) session.getAttribute("loginId");
 		logger.info(store_id);
 		int store_idx = board_ser.getstore_idx(store_id);
@@ -102,13 +103,11 @@ public class BoardController {
 	        boardDTO.setBoard_subject(params.get("board_subject"));
 	        boardDTO.setBoard_content(params.get("board_content"));
 	        boardDTO.setBoard_date(LocalDate.now());
-	        boardDTO.setBoard_bHit(0);
-	        boardDTO.setLike_count(0);
 	        boardDTO.setBoard_category(params.get("board_category"));
 	        boardDTO.setBoard_state(true);
 	        int store_idxx = boardDTO.getStore_idx();
-	        photo_ser.boardwriteajax(file, store_idxx ,4);
-	        success = board_ser.boardWriteajax(boardDTO, file);
+	        photo_ser.fileSave(files, store_idxx ,4);
+	        success = board_ser.boardWriteajax(boardDTO, files);
 	        if (success) {
 				response.put("message", "게시글을 등록하시겠습니까?");
 			}else {

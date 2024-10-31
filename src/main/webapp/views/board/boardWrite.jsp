@@ -260,9 +260,9 @@ width: 50px;
             </div>
         </div>  
     </header>
+    <form id="writeForm" method="post" enctype="multipart/form-data">
     <div class="boardlist">
        <div class="bboard">
-       <form method="post" enctype="multipart/form-data">
          <table class="table">
             <tr class="what">
                <th>
@@ -289,15 +289,15 @@ width: 50px;
          		</th>
          	</tr>
          	<tr>
-         		<th><input type="file" id="file" multiple="multiple"></th>
+         		<th><input type="file" name="files" multiple="multiple"></th>
          		<th></th>
-         		<th><button onclick="location.href='boardList.go'">취소</button>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="등록" onclick="save(event)"/></th>
+         		<th><button onclick="location.href='boardList.go'">취소</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="save(event)"></button></th>
          	</tr>
          </table>
          <input type="hidden" id="store_id" value="'${sessionScope.loginId}'">
-       </form>
        </div>
     </div>
+    </form>
 </body>
 <script>
 var loginId = '${sessionScope.loginId}'
@@ -405,8 +405,7 @@ document.getElementById('file').addEventListener('change', function(event) {
 });
 
 function save(event) {
-	var form = new FormData($('form')[0]);
-	form.append('loginId', $('#store_id').val()); // 로그인 ID 추가
+	var form = new FormData($('#writeForm')[0]);
 	$.ajax({
 		type:'POST',
 		url:'boardWrite.ajax',
@@ -421,7 +420,7 @@ function save(event) {
 		error:function(e){
 			console.log(e);
 		}
-	})
+	});
 }
 </script>
 </html>

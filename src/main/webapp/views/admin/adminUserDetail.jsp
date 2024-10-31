@@ -28,7 +28,6 @@
     	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
 	}
 	.chatitems2 {
-		margin-top: 150px;
     	width: 940px;
     	min-height: 650px; /* 초기 최소 높이 설정 */
     	height: auto; /* 내용에 따라 높이 자동 조절 */
@@ -54,6 +53,59 @@
     	border-radius: 50%; /* 동그란 모양으로 만들기 */
     	object-fit: cover; /* 이미지의 비율을 유지하면서 크기를 맞춤 */
 	}
+.userLike {
+    margin-top: 20px;
+}
+.likeIcon {
+    width: 30px;
+    height: 30px;
+}
+.userProfile {
+    width: 60%; /* 오른쪽 정보 영역 너비 설정 */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-left: auto; /* 오른쪽 상단에 위치 */
+}
+.userProfile ul,
+.userCate ul {
+    list-style: none;
+    padding: 0;
+}
+.userProfile li,
+.userCate li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: white;
+}
+.userCate label {
+    font-weight: bold;
+}
+input[type="text"],
+input[type="password"] {
+    border: none; /* 전체 테두리 제거 */
+    border-bottom: 2px solid #041d03;
+    padding: 4px;
+    border-radius: 5px;
+    width: 60%;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #041d03;
+}
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 </style>
 </head>
 <body>
@@ -61,6 +113,7 @@
 	    <section class="chatBox2">
         	<div class="chatitems2">
         	<div class="userProfile">
+        		<div class="userProfile2">
 				<div id="userProfile">
 				<div class="userNickname"><h2>${info.user_nickname} 님</h2></div>
 					<div>
@@ -97,6 +150,7 @@
     				<li>사용 제한 종료일 <fmt:formatDate value="${revoke_stop}" pattern="yyyy-MM-dd" /></li>
 				</c:if>
 				</ul>
+			</div>
 			</div>
 			<div class="userProfile">
 				<ul>

@@ -40,6 +40,9 @@ public class PhotoService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	public void fileSave(MultipartFile[] files, int idx, int cti) throws IOException {
+		
+		logger.info("받은 idx 값: " + idx);
+		logger.info("받은 files 값: " + files);
 		logger.info("받은 cti 값: " + cti);
 		String filePath = storeFile(files);
         PhotoDTO photoDTO = new PhotoDTO();
@@ -48,6 +51,7 @@ public class PhotoService {
         photoDTO.setNew_filename(filePath);
         photo_dao.fileSave(photoDTO);
         logger.info("{photoDTO}:"+photoDTO);
+        logger.info("받은 newfile 값: {}"+filePath);
     }
 
     private String storeFile(MultipartFile[] files) throws IOException {

@@ -20,4 +20,6 @@ public interface RevokeDAO {
 
 	void revokeSchedule(String userId, LocalDate today);
 
+	RevokeDTO getRevokeByIdx(int revoke_idx);
+
 }
