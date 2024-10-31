@@ -77,8 +77,9 @@ public class StoreController {
         BoardDTO boardList = store_ser.getBoard(idx);
         //매장 카테고리 가져오기
         List<CategoryOptDTO> storeOverviews = store_ser.getStoreExplain(idx);
-
-
+        //리뷰 카테고리 가져오기
+        List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);
+        model.addAttribute("options",options);
 
         model.addAttribute("store", storeDetail);
         model.addAttribute("files", files);
@@ -187,7 +188,7 @@ public class StoreController {
 	@PostMapping(value="/reviewAllUser.ajax")
 	@ResponseBody
 	public Map<String, Object> getReviewAllUser(@RequestParam("storeIdx") int storeIdx) {
-		System.out.println("아쟉스 통신 성공");
+		/* System.out.println("아쟉스 통신 성공"); */
 		
 		return review_ser.getReviewAlluser(storeIdx);
 	}
@@ -208,7 +209,7 @@ public class StoreController {
 
 
 	@RequestMapping(value="/storeList.go")
-	public String storelist(Model model) {
+	public String storelist(Model model,HttpSession session) {
 	    List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1); // category_state가 1인 옵션만 가져오기
 	    model.addAttribute("options", options);
 		return "store/storeList";

@@ -808,7 +808,6 @@
 
 //필터링
 $('#filtering').click(function() {
-<<<<<<< HEAD
    var alchol = $(':input:radio[name=alchol]:checked').val();
    var food = $(':input:radio[name=food]:checked').val();
    var mood = $(':input:radio[name=mood]:checked').val();

@@ -37,6 +37,9 @@ public class ReviewDTO {
     // 리뷰 좋아요 수를 저장하는 컬럼 
     private int like_count;
     
+    // 리뷰에 등록된 카테고리 이름들 가져오는 컬럼
+    private String opt_names;
+    
     
 	public int getReview_idx() {
 		return review_idx;
@@ -176,8 +179,14 @@ public class ReviewDTO {
 	public void setLike_count(int like_count) {
 		this.like_count = like_count;
 	}
+	public String getOpt_names() {
+		return opt_names;
+	}
+	public void setOpt_names(String opt_names) {
+		this.opt_names = opt_names;
+	}
     
-
+	
     
     
     
