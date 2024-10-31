@@ -46,11 +46,18 @@
 			WHERE user_id=#{user_id} AND chatroom_idx=#{chatroom_idx}   
 	</select>
 	
-	<!-- 고객센터 정보 -->
+	<!-- 고객센터 정보 by id_write-->
 	<select id="inquiryinfo" resultType="com.sulbazi.inquery.InqueryDTO">
-		SELECT inquery_idx, inquery_subjecy, id_write FROM inquery
+		SELECT inquery_idx, inquery_subject, id_write FROM inquery
 			WHERE id_write=#{param1}
 	</select>
+	
+	<!-- 고객센터 정보 by inquery_idx -->
+	<select id="inquiryinfoidx" resultType="com.sulbazi.inquery.InqueryDTO">
+		SELECT inquery_idx, inquery_subject, id_write, inquery_state FROM inquery
+			WHERE inquery_idx=#{inquery_idx}
+	</select>
+	
 	
 	<!-- 고객센터 문의 사항 답변 정보-->
 	<select id="answerinfo" resultType="com.sulbazi.inquery.AnswerDTO">
@@ -87,4 +94,6 @@
 		INSERT INTO alarm(user_id, alarm_category_idx) 
 			VALUES(#{user_id}, #{alarm_category_idx})
 	</insert>
+	
+	
 </mapper>

@@ -136,6 +136,10 @@ public class InqueryService {
 		
 	}
 
+	public void inquerystateupdate(int inquery_idx) {
+		inquery_dao.inquerystateupdate(inquery_idx);
+	}
+
 	
 	
 	

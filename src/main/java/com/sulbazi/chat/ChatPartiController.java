@@ -68,6 +68,7 @@ public class ChatPartiController {
 		Map<String, Object> response = new HashMap<String, Object>();
 	    response.put("redirect", success); // 클라이언트에게 리다이렉션 요청
 	    
+	    
 	    return response;
 	}
 	

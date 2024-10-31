@@ -141,8 +141,6 @@ public class InqueryController {
 
 
 	//관리자 문의 글 상세페이지 이동
-
-
 	@GetMapping(value="/inqueryDetail.go")
     public String admininquerydetail(@RequestParam("inqueryIdx") int inqueryIdx, Model model, HttpSession session) {
 		logger.info("문의상세가기 관리자컨트롤러");
@@ -169,7 +167,7 @@ public class InqueryController {
 		return page;
     }
 
-
+	//관리자 답변
 	@PostMapping(value="/adminanswer.do")
 	public String adminanswer(@RequestParam String answer, HttpSession session, @RequestParam int inqueryIdx) {
 	    logger.info("답변 등록 컨트롤러");
@@ -179,6 +177,7 @@ public class InqueryController {
 	    logger.info("" + inqueryIdx);
 	    
 	    inquery_ser.adminanswerdo(inqueryIdx, loginId, answer);
+	    inquery_ser.inquerystateupdate(inqueryIdx);
 	    
 	    // 리다이렉트 시 inqueryIdx 파라미터를 함께 전달
 	    return "redirect:/inqueryDetail.go?inqueryIdx=" + inqueryIdx;

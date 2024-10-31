@@ -49,4 +49,9 @@ public class UserController {
 	    return map;
 	}
 	
+    @RequestMapping(value="/userAlarm.go")
+    public String useralarm() {
+    	return "user/userAlarm";
+    }
+	
 }
