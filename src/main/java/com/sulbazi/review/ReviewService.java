@@ -21,15 +21,26 @@ public class ReviewService {
 	}
 
 	public Map<String, Object> getReviewAlluser(int storeIdx) {
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<ReviewDTO> reviewsOfStore = review_dao.getReviewAlluser(storeIdx);
-		List<UserDTO> userInfo = review_dao.getUserName(reviewsOfStore);
-		
-		
-		
-		map.put("reviews", reviewsOfStore);
+		logger.info("리뷰 이종원 씀 보자 : {} ",storeIdx);
 		logger.info("리뷰 이종원 씀 보자 : {} ",reviewsOfStore);
+		map.put("reviews", reviewsOfStore);
+		testGetReviewAlluser();
 		return map;
+	}
+	
+	public void testGetReviewAlluser() {
+	    int testStoreIdx = 1; // 테스트할 storeIdx 설정
+	    List<ReviewDTO> reviews = review_dao.getReviewAlluser(testStoreIdx);
+	    if (reviews != null && !reviews.isEmpty()) {
+	        for (ReviewDTO review : reviews) {
+	            System.out.println("리뷰 내용: " + review.getReview_idx());
+	        }
+	    } else {
+	        System.out.println("리뷰가 존재하지 않거나 조회 실패");
+	    }
 	}
 
 }
