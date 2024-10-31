@@ -148,6 +148,40 @@
 			    left: 50%;
 			    transform: translateX(-50%);
 			}
+    .review-table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    .profile-cell{
+        vertical-align: top;
+        padding: 10px;
+    }
+
+    .profile-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+    .like-section {
+        display: inline;
+    }
+    .rating-cell, .likes-cell, .category-cell, .review-content-cell, .action-cell {
+        padding: 10px;
+    }
+    .icon {
+        width: 20px;
+    }
+    .report-section {
+        margin-left: 20px;
+    }
+    .action-button {
+        margin-left: 10px;
+    }
+    table,tr,td,th{
+                border:1px solid black;
+                border-collapse: collapse;
+                padding: 5px 10px;
+    }
 			
 			
 
@@ -359,37 +393,35 @@ function openWindowTab(storeIdx) {
  		};
     	
  		function drawList(reviews){
- 			var listContainer = document.getElementsById('review-section');
+ 			var listContainer = document.getElementById('review-section');
  			
  			
- 			reviews.foreach(function(review,idx){
- 				
+ 			reviews.forEach(function(review,idx){
+ 				var reviewDate = review.review_date.split(' ')[0];
  				
  			var content = '<tr>'
- 			 	content += '<td = class = "profile">'
- 			 	content +='<img src="" alt="user" class="profile-image">'
- 			 	content +='</td>'
- 			 	content +='<td colspan="2" class="user-info">'
- 			 	content +='<strong>username</strong>'
+ 			 	content += '<td colspan="3" class = "profile">'
+ 			 	content +='<img src="/photo/'+review.user_photo+'" alt="user" class="profile-image">'
+ 			 	content +='<strong>&nbsp;'+review.user_nickname+'</strong>&nbsp;'
  			 	content +='<div class="like-section">'
- 			 	content +='<img src="" alt="좋아요" class="icon"> 좋아요 </div>'
+ 			 	content +='<img src="resources/img/이종원 좋아요전.png" alt="좋아요" class="icon">&nbsp;'+review.user_likecount+'</div>'
  			 	content +='</td></tr>'
  			 	content +='<tr><td class="rating-cell">'
- 			 	content +='<img src="" alt="별점" class="icon"> 별점 </td>'
+ 			 	content +='<img src="resources/img/종원리뷰별.png" alt="별점" class="icon">'+review.starpoint+' </td>'
  			 	content +='<td class="likes-cell">'
- 			 	content +='<img src="like_icon.png" alt="좋아요" class="icon"> 좋아요수 </td>'
+ 			 	content +='<img src="resources/img/종원리뷰좋아요전.png" alt="좋아요" class="icon"> '+review.like_count+' </td>'
  			 	content +='<td class="category-cell"> 방문목적 , 분위기</td></tr>'
  			 	content +='<tr> <td colspan="3" class="review-content-cell">'
- 			 	content +='글쓰기 영역 줄바꿈 rplace 필요 </td></tr>'
- 			 	content +='<tr><td colspan="3" class="action-cell">날짜 컬럼 넣기'
- 			 	content +='<span class="report-section"><img src="like_icon.png" alt="좋아요" class="icon">신고</span>'
+ 			 	content += review.review_content+' </td></tr>'
+ 			 	content +='<tr><td colspan="3" class="action-cell">'+reviewDate
+ 			 	content +='<span class="report-section"><img src="resources/img/yellow.png" alt="좋아요" class="icon"></span>'
  			 	content +='<button class="action-button">답글</button>'
  			 	content +='<button class="action-button">수정</button>'
  			 	content +='<button class="action-button">신고</button>'
  			 	content +='<button class="action-button">삭제</button>'
  			 	content +='</td></tr>'
  			 	
- 			 	listContainer.append(content);
+ 			 	listContainer.innerHTML += content;
  			});
  		}
     </script>

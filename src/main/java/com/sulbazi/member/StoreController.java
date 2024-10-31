@@ -184,9 +184,11 @@ public class StoreController {
         return "store/review";
     }
 	//매장 리뷰 불러오기 아쟉스
-	
 	@PostMapping(value="/reviewAllUser.ajax")
-	public Map<String, Object> getReviewAllUser(int storeIdx) {
+	@ResponseBody
+	public Map<String, Object> getReviewAllUser(@RequestParam("storeIdx") int storeIdx) {
+		System.out.println("아쟉스 통신 성공");
+		
 		return review_ser.getReviewAlluser(storeIdx);
 	}
 	
