@@ -13,8 +13,8 @@ body {
     gap: 20px;
     margin: 20px;
 }
-
-.all {
+ 
+.all { 
 	position: relative;
 	z-index: 9999;
     width: 65%;
@@ -105,9 +105,9 @@ textarea {
 				<div>
 					<c:forEach items="${mystorephoto}" var="mystoreinout">
 						<input type="hidden" name="oldmystoreinout" value="${mystoreinout.new_filename}">
-						<input type="file" name="newmystoreinout" accept="image/*" multiple="multiple"><br/>
 						<img src="/photo/${mystoreinout.new_filename}" name="mystoreinout"><br/>
 				</c:forEach>
+						<input type="file" name="newmystoreinout" accept="image/*" multiple="multiple"><br/>
 				</div>
 		</div>
 		<div class="table">

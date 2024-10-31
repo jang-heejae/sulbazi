@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ChatRoomService {
@@ -56,31 +58,42 @@ public class ChatRoomService {
 	}
 	
 	/* 개인 채팅방 삭제(비공개) */
-	public int deletechatroom(Map<String, String> params, Model model) {
-		int row = chatroom_dao.deletechatroom(params);
-		if(row == 0) {
-			model.addAttribute("del", "퇴장하지 않은 유저 있음");
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void deleteroom(String user_id, int userchat_idx, int chatroom_idx) {
+		
+		int row = chatroom_dao.deletechatroom(userchat_idx);
+		if(row>0) {
+			logger.info("방 비공개 됨");
+			chatparti_dao.userroomout(user_id, chatroom_idx);
+		}else {
+			logger.info("비공개 안됨");
 		}
-		return row;
 	}
 	
 	/* 개인 채팅방 참여 */
-	
-	/* 내가 참여중인 채팅방 목록 */
-	public List<UserChatroomDTO> myroomlist(String userId) {
-		return chatroom_dao.myroomlist(userId);
-	}
 	/* 방 정보 가져오기 */
 	public List<UserChatroomDTO> roominfo(int idx) {
 		return chatroom_dao.roominfo(idx);
 	}
+	/* 입장 가능 인원 수 */
+	public int current(int idx) {
+		return chatroom_dao.current(idx);
+	}
 	
-	
+	/* 내가 참여중인 채팅방 목록 */
+	public List<UserChatroomDTO> myroomlist(String user_id) {
+		return chatroom_dao.myroomlist(user_id);
+	}
 	
 	/* 지역 채팅방 리스트 */	
 	public List<UserChatroomDTO> localchatlist() {
 		return chatroom_dao.localchatlist();
 	}
+
+	
+
+
+	
 
 
 	

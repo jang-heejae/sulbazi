@@ -16,7 +16,7 @@ body {
     color: white;
 }
 
-.all {
+.all { 
     width: 65%;
     display: flex;
     flex-direction: row;
@@ -158,7 +158,11 @@ td {
 		<label>매장 내외부 사진</label>
 			<div class="form-group3">
 				<c:forEach items="${mystorephoto}" var="mystoreinout">
+<<<<<<< HEAD
+					<img src="/photo/${mystoreinout.new_filename}"><br/>
+=======
 					<div><img id="storePhoto" src="/photo/${mystoreinout.new_filename}"></div><br/>
+>>>>>>> origin/master
 				</c:forEach>
 			</div>
 	</div>

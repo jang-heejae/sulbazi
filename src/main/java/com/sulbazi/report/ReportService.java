@@ -1,5 +1,10 @@
 package com.sulbazi.report;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +26,12 @@ public class ReportService {
 	@Autowired AdminDAO admin_dao;
 	Logger log = LoggerFactory.getLogger(getClass());
 	
-
+ 
 	 public Map<String, Object> reportList(int page, int cnt) { 
 		 int limit = cnt;
 		 int offset = (page-1) * cnt;
 		 int totalPages = report_dao.allCount(cnt);
-	  
+	   
 		 Map<String, Object> map = new HashMap<String, Object>();
 		 map.put("totalPages", totalPages);
 		 map.put("list", report_dao.reportList(limit, offset));
@@ -37,26 +42,51 @@ public class ReportService {
 		return report_dao.reportDetail(report_idx);
 	}
 	
-	@Transactional
+	@Transactional // 관리자 신고에 답변달기
 	public ProcessDTO processWrite(Map<String, String> param, int report_idx, String reported_id) {
 	    ProcessDTO pro_dto = new ProcessDTO();
 	    log.info("pro_write service reported_id: " + reported_id);
+	    log.info("pro_write service param: {}", param);
+	    log.info("pro_write service revoke_stop: {}", param.get("revoke_stop"));
+
 	    pro_dto.setAdmin_id(param.get("admin_id"));
 	    pro_dto.setProcess_content(param.get("process_content"));
 	    pro_dto.setReport_idx(report_idx);
 	    String processResult = param.get("cate_opt");
+	    int revokeIdx = 0;
+
 	    if ("revoke".equals(processResult)) {
 	        pro_dto.setProcess_result("이용 제한");
-	        revoke_ser.revoke(param, reported_id); 
+	        revokeIdx = revoke_ser.revoke(param, reported_id); // revoke_idx 값을 받음
 	    } else {
 	        pro_dto.setProcess_result("반려");
+	        revokeIdx = revoke_ser.revoke(param, reported_id);
 	    }
-	    report_dao.processWrite(pro_dto); 
+
+	    pro_dto.setRevoke_idx(revokeIdx); // revoke_idx 설정
+	    report_dao.processWrite(pro_dto);
 	    report_dao.updateReportResult(report_idx, true);
+	    Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("reported_id", reported_id);
+	    
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    try {
+			params.put("startDate", dateFormat.parse(param.get("revoke_start")));
+			params.put("stopDate", dateFormat.parse(param.get("revoke_stop")));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	    params.put("today", LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
+
+	    // DAO 호출하여 user 테이블 업데이트
+	    revoke_dao.revokeUpdate(params);
+
 	    int process_idx = pro_dto.getProcess_idx();
 	    log.info("pro_write service process_idx: " + process_idx);
+	    log.info("pro_write service revoke_idx: " + revokeIdx);
 	    return pro_dto;
 	}
+
 	public Map<String, Object> process(int report_idx) { 
 	    // ProcessDTO 가져오기
 	    List<ProcessDTO> processList = report_dao.getProcessesByReportIdx(report_idx);
@@ -73,24 +103,27 @@ public class ReportService {
 	        // admin_id로 admin_name 가져오기
 	        String admin_name = admin_dao.getAdminNameById(process.getAdmin_id());
 	        combinedData.put("admin_name", admin_name);
-	        // report_idx를 사용하여 reported_id를 가져오는 쿼리
-	        ReportDTO report = report_dao.getReportedIdByReportIdx(process.getReport_idx());
-	        combinedData.put("reported_id", report.getReported_id()); // 예시
-	        combinedData.put("report_state", report.getReport_state());
-	        // 해당 reported_id를 사용하여 revoke 정보를 가져옵니다.
-	        String reported_id = report.getReported_id();
-	        List<RevokeDTO> revokeList = revoke_dao.getRevokeByUserId(reported_id); // reported_id로 조회
-	        RevokeDTO revoke = revokeList.get(0); // 첫 번째 revoke 정보 사용
-	        combinedData.put("revoke_start", revoke.getRevoke_start());
-	        combinedData.put("revoke_stop", revoke.getRevoke_stop());
+	        
+	        // revoke_idx를 사용하여 revoke 정보를 가져오기
+	        if (process.getRevoke_idx() != 0) {
+	            log.info("revoke_idx: " + process.getRevoke_idx());
+	            RevokeDTO revoke = revoke_dao.getRevokeByIdx(process.getRevoke_idx());
+	            if (revoke != null) {
+	                combinedData.put("revoke_start", revoke.getRevoke_start());
+	                combinedData.put("revoke_stop", revoke.getRevoke_stop());
+	            } else {
+	            	combinedData.put("revoke_start", "N/A");
+	                combinedData.put("revoke_stop", "N/A");
+	            }
+	        }
 	        combinedList.add(combinedData);
-	        log.info("통합 리스트: " + combinedList);
 	    }
 	    Map<String, Object> map = new HashMap<>();
 	    map.put("list", combinedList); // 통합 리스트 반환
 	    log.info("뿌리는 정보: " + map);
 	    return map; 
 	}
+
 
 	public List<ReportDTO> getAllReports() {
 		return report_dao.getAllReports();

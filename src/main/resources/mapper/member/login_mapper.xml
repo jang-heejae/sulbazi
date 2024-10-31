@@ -12,7 +12,7 @@
 		</if>
 		<if test="opt == 'admin_log'">
 			SELECT admin_id FROM admin WHERE admin_id=#{id} AND admin_pw=#{pw}
-		</if>
+		</if> 
 	</select>
 	<select id="userfindpw" resultType="String">
 		SELECT user_pw FROM user WHERE user_id=#{id} AND user_email=#{email}

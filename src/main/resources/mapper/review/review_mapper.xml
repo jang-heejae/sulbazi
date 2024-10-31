@@ -8,10 +8,45 @@
     	SELECT review_content FROM review WHERE review_idx = #{reported_idx}
 	</select>
 	
-	<!-- 리뷰 가져오기 내림차순 -->
-	<select id="getReviewAlluser" resultType="com.sulbazi.review.ReviewDTO">
-		select * from review order by review_idx desc	
-	</select>
+	<!-- 리뷰 가져오기 내림차순 조인 4 개 리뷰 좋아요 까지 포함됨  -->
+<select id="getReviewAlluser" parameterType="int" resultType="com.sulbazi.review.ReviewDTO">
+	SELECT 
+	    r.review_idx,
+	    r.store_idx,
+	    r.review_content,
+	    r.review_date,
+	    r.starpoint,
+	    r.review_state,
+	    u.user_nickname,
+	    u.user_likecount,
+	    u.user_photo,
+	    rc.comm_date,
+	    rc.comm_content,
+	    COUNT(rl.user_id) AS like_count,
+	    (
+	        SELECT GROUP_CONCAT(co.opt_name) 
+	        FROM review_category AS rcg 
+	        JOIN category_opt AS co ON rcg.opt_idx = co.opt_idx 
+	        WHERE rcg.review_idx = r.review_idx
+	    ) AS opt_names
+	FROM 
+	    review AS r
+	INNER JOIN 
+	    user AS u ON r.user_id = u.user_id
+	LEFT JOIN 
+	    review_comm AS rc ON r.review_idx = rc.review_idx
+	LEFT JOIN 
+	    review_like AS rl ON r.review_idx = rl.review_idx
+	WHERE 
+	    r.store_idx = #{param1}
+	    AND r.review_state = 1
+	GROUP BY 
+	    r.review_idx, r.store_idx, r.review_content, r.review_date, r.starpoint, r.review_state, 
+	    u.user_nickname, u.user_likecount, u.user_photo, rc.comm_date, rc.comm_content
+	ORDER BY 
+	    r.review_idx DESC;
+</select>
+
 	
 	
 	

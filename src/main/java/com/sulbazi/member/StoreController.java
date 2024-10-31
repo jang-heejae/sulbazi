@@ -77,8 +77,9 @@ public class StoreController {
         BoardDTO boardList = store_ser.getBoard(idx);
         //매장 카테고리 가져오기
         List<CategoryOptDTO> storeOverviews = store_ser.getStoreExplain(idx);
-
-
+        //리뷰 카테고리 가져오기
+        List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);
+        model.addAttribute("options",options);
 
         model.addAttribute("store", storeDetail);
         model.addAttribute("files", files);
@@ -184,9 +185,11 @@ public class StoreController {
         return "store/review";
     }
 	//매장 리뷰 불러오기 아쟉스
-	
 	@PostMapping(value="/reviewAllUser.ajax")
-	public Map<String, Object> getReviewAllUser(int storeIdx) {
+	@ResponseBody
+	public Map<String, Object> getReviewAllUser(@RequestParam("storeIdx") int storeIdx) {
+		/* System.out.println("아쟉스 통신 성공"); */
+		
 		return review_ser.getReviewAlluser(storeIdx);
 	}
 	
@@ -206,7 +209,7 @@ public class StoreController {
 
 
 	@RequestMapping(value="/storeList.go")
-	public String storelist(Model model) {
+	public String storelist(Model model,HttpSession session) {
 	    List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1); // category_state가 1인 옵션만 가져오기
 	    model.addAttribute("options", options);
 		return "store/storeList";
@@ -298,7 +301,7 @@ public class StoreController {
 	}
 	
 	@PostMapping(value="/mystoreUpdate.do")
-	public String mystoreupdatedo(MultipartFile[] newmystoreinout,MultipartFile[] bestmystore, @RequestParam Map<String, String> params,Model model, HttpSession session) throws IOException {
+	public String mystoreupdatedo(MultipartFile[] bestmystore, MultipartFile[] newmystoreinout, @RequestParam Map<String, String> params,Model model, HttpSession session) throws IOException {
 		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
 		logger.info("store_idx:{}",store_idx);
 		logger.info("params:{}",params);
@@ -395,13 +398,13 @@ public class StoreController {
 	
 	
     @PostMapping(value="/menuInsert.do")
-    public String menuinsert(@RequestParam("files") MultipartFile[] files, @RequestParam Map<String, String> params, HttpSession session) {
+    public String menuinsert(@RequestParam("files") MultipartFile[] files, @RequestParam Map<String, String> params, HttpSession session) throws IOException {
         boolean success = false;
         logger.info("params: {}", params);
         logger.info("file count: " + files.length);
 
         int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
-        if(store_ser.menuinsert(files, store_idx, params) > 0) {
+        if(store_ser.menuinsert(files, params,store_idx ) > 0) {
             success = true;
         }
         logger.info("Success status: " + success);

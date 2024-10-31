@@ -15,7 +15,7 @@ input{
     margin-left: 10;
     margin: 0;
 }
-table{
+table{ 
     margin: auto;
     margin-left:auto; 
     margin-right:auto;

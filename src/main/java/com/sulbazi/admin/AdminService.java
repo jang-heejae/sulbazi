@@ -20,7 +20,8 @@ public class AdminService {
 	@Autowired AdminDAO admin_dao;
 	@Autowired UserDAO user_dao;
 	Logger log= LoggerFactory.getLogger(getClass());
-
+	 
+	// 관리자 추가 생성 
 	public String adminAdd(Map<String, String> param) {
 		String msg = "실패";
 		if(admin_dao.adminAdd(param) > 0) {
@@ -28,18 +29,21 @@ public class AdminService {
 		}
 		return msg;
 	}
+	// 관리자 리스트
 	public Map<String, Object> adminList() {
 		List<AdminDTO> list = admin_dao.adminList();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		return map;
 	}
+	// 관리자 비밀번호 변경
 	public AdminDTO adminChange(String admin_id) {
 		return admin_dao.adminChange(admin_id);
 	}
 	public boolean adminUpdate(Map<String, Object>param) {
 		return admin_dao.adminUpdate(param) > 0 ? true : false;
 	}
+	
 	public Map<String, Object> adminUserList(int page, int cnt, String category, String keyword) {
 		 int limit = cnt;
 		 int offset = (page-1) * cnt;

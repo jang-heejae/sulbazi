@@ -8,9 +8,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ChatPartiDAO {
 
+	/* 개인 채팅방 참여 여부 */
+	List<PartiDTO> roomin(String userId, int idx);
+	
 	/* 개인 채팅방 참여 */
 	int userparti(String userId, int idx);
-	int partialarm(String id);
 	
 	/* 방에 참여중인 총 사용자 */
 	Integer usertotal(int idx);
@@ -22,13 +24,19 @@ public interface ChatPartiDAO {
 	/* 채팅방 개설 후 참여 */
 	int createparti(int idx, String userId);
 	
-	/* 개인 채팅방에서 나가면 참여상태 false */
-	void userroomout(String userId, int chatroom_idx);
+	/* 개인 채팅방에서 나가기 */
+	int userroomout(String user_id, int chatroom_idx);
 	
 	/* 개인 채팅방 강퇴 */
 	int kickuser(Map<String, String> params);
 	
+
 	
+	
+	
+	
+	/* 지역 채팅방 참여자 총 인원 */
+	List<PartiDTO> localtotal(int chatroom_idx);
 	
 	/* 지역 채팅방 참여 상태 확인 */
 	int localreparti(String userId, int idx);
@@ -37,11 +45,20 @@ public interface ChatPartiDAO {
 	int insertlocalparti(String userId, int idx);
 
 	/* 지역 채팅방에서 나가면 참여상태 false */
-	int localroomout(String userId, int chatroom_idx);
+	int localroomout(String user_id, int chatroom_idx);
 	
 	/* 방에 참여중인 사용자 - 지역 */
 	List<PartiDTO> localuserlist(int idx);
 	List<PartiDTO> localuserlistajax(int localchat_idx);
+
+	
+
+	
+
+
+
+
+	
 	
 	
 	

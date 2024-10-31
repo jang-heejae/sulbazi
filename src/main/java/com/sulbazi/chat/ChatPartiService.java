@@ -11,18 +11,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import com.sulbazi.alarm.AlarmDAO;
+
 @Service
 public class ChatPartiService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired ChatPartiDAO chatparti_dao;
+	@Autowired AlarmDAO alarm_dao;
+	@Autowired ChatRoomDAO chatroom_dao;
 	private Map<String, SseEmitter> sseEmitters = new ConcurrentHashMap<String, SseEmitter>();
 	
 	
 	/* 개인 채팅방 참여 */
-	public void userparti(String userId, int idx, String id) {
-		chatparti_dao.userparti(userId, idx);
-		chatparti_dao.partialarm(id);
+	/* 개인 채팅방 참여 상태 */
+	public int roomin(String userId, int idx) {
+	    List<PartiDTO> result = chatparti_dao.roomin(userId, idx);
+	    logger.info("참여 상태 : "+result);
+	    return (result != null && !result.isEmpty()) ? 1 : 0; // 결과가 있으면 1, 없으면 0
+	}
+	
+	/* 개인 채팅방 참여 신청 */
+	public int userparti(String userId, int idx) {
+		return chatparti_dao.userparti(userId, idx);		    
 	}
 	
 	/* 방에 참여중인 총 사용자 */
@@ -38,19 +49,26 @@ public class ChatPartiService {
 		return chatparti_dao.userlistajax(chatroom_idx);
 	}
 	
-	/* 개인 채팅방에서 나가면 참여상태 false */
-	public void userroomout(String userId, int chatroom_idx) {
-		chatparti_dao.userroomout(userId, chatroom_idx);
+	/* 개인 채팅방에서 나가기 */
+	public void userroomout(String user_id, int chatroom_idx) {
+		chatparti_dao.userroomout(user_id, chatroom_idx);
 	}
+	
 	
 	/* 개인 채팅방 강퇴 */
 	public boolean kickuser(Map<String, String> params) {
 		int row = chatparti_dao.kickuser(params);
 		
+		// 퇴장 시키면 알람보내기
+		if(row>0) {
+			alarm_dao.kickuser(params);
+		}
 		return row > 0;
 	}
+
 	
-	 // SSE 등록 메서드
+	
+	// SSE 등록 메서드
     public SseEmitter registerSse(String userId) {
         SseEmitter emitter = new SseEmitter();
         sseEmitters.put(userId, emitter);
@@ -87,6 +105,11 @@ public class ChatPartiService {
 		}
 	}
 	
+	/* 지역 채팅방 참여자 총 인원 */
+	public List<PartiDTO> localtotal(int chatroom_idx) {
+		return chatparti_dao.localtotal(chatroom_idx);
+	}
+	
 	/* 방에 참여중인 사용자 - 지역 */
 	public List<PartiDTO> localuserlist(int idx) {
 		return chatparti_dao.localuserlist(idx);
@@ -96,9 +119,12 @@ public class ChatPartiService {
 	}
 	
 	/* 지역 채팅방에서 나가면 참여상태 false */
-	public void localroomout(String userId, int chatroom_idx) {
-		chatparti_dao.localroomout(userId, chatroom_idx);
+	public void localroomout(String user_id, int chatroom_idx) {
+		chatparti_dao.localroomout(user_id, chatroom_idx);
 	}
+
+	
+
 
 	
 

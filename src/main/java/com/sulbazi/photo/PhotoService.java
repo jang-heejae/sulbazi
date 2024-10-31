@@ -43,6 +43,9 @@ public class PhotoService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	public void fileSave(MultipartFile[] files, int idx, int cti) throws IOException {
+		
+		logger.info("받은 idx 값: " + idx);
+		logger.info("받은 files 값: " + files);
 		logger.info("받은 cti 값: " + cti);
 		String filePath = storeFile(files);
         PhotoDTO photoDTO = new PhotoDTO();
@@ -51,6 +54,7 @@ public class PhotoService {
         photoDTO.setNew_filename(filePath);
         photo_dao.fileSave(photoDTO);
         logger.info("{photoDTO}:"+photoDTO);
+        logger.info("받은 newfile 값: {}"+filePath);
     }
 
     private String storeFile(MultipartFile[] files) throws IOException {
@@ -144,46 +148,52 @@ public class PhotoService {
 	}
 
 	public void mystorebestphotoupdate(MultipartFile[] files, int store_idx) {
-		int i = 1;
-		storeupdatephoto(files, store_idx, i);
+		int photo_category_idx = 1;
+		storeupdatephoto(files, store_idx, photo_category_idx);
 				
 	}
 
 	public void mystoreinoutUpdate(MultipartFile[] files, int store_idx) throws IOException {
-		int cti = 7;
-		storeupdatephoto(files, store_idx, cti);
-		
+	    int photo_category_idx = 7;
+	    storeupdatephoto(files, store_idx, photo_category_idx);
 	}
 
-	public void storeupdatephoto(MultipartFile[] inqueryfiles,int store_idx,int photocategory) {
-		savestoreupdate(inqueryfiles,store_idx, photocategory);
+	public void storeupdatephoto(MultipartFile[] files,int store_idx,int photo_category_idx) {
+		savestoreinsert(files,store_idx, photo_category_idx);
 	}
 	
-	private void savestoreupdate(MultipartFile[] files, int photofolderidx, int photocategory) {
-		try {
-			logger.info("file length : {}",files.length);				
-			for (MultipartFile file : files) {
-				logger.info("file 비어있나? : "+file.isEmpty());					
-				String ori_filename = file.getOriginalFilename();
-				logger.info("파일명 : "+ori_filename);
-				
-				int pos = ori_filename.lastIndexOf(".");
-				
-				if(pos>=0) {
-					String ext = "";				
-					ext = ori_filename.substring(pos);						
-					String newFileName = UUID.randomUUID().toString()+ext;		
-					byte[] arr = file.getBytes();
-					Path path = Paths.get("C:/upload/"+newFileName);
-					Files.write(path,arr);
-					photo_dao.storephotoupdate(photocategory, newFileName,photofolderidx);						
-				}					
-				
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	public void menuphotoinsert(MultipartFile[] files,int store_idx,int photo_category_idx) {
+		storeupdatephoto(files,store_idx, photo_category_idx);
+	};
+	
+	 private void savestoreinsert(MultipartFile[] files, int photo_folder_idx, int photo_category_idx) { 
+		 try { 
+			 logger.info("file length : {}",files.length); 
+		 	for(MultipartFile file : files) { 
+		 		logger.info("file 비어있나? : "+file.isEmpty());
+		 		String ori_filename = file.getOriginalFilename();
+		 		logger.info("파일명 : "+ori_filename);
+	 
+		 		int pos = ori_filename.lastIndexOf(".");
+	 
+		 		if(pos>=0) { 
+		 			String ext = ""; ext = ori_filename.substring(pos); 
+		 			String new_filename = UUID.randomUUID().toString()+ext; 
+		 			byte[] arr = file.getBytes();
+		 			Path path = Paths.get("C:/upload/"+new_filename); 
+		 			Files.write(path,arr);
+		 			PhotoDTO dto = new PhotoDTO();
+		 			dto.setPhoto_category_idx(photo_category_idx);
+		 			dto.setNew_filename(new_filename);
+		 			dto.setPhoto_folder_idx(photo_folder_idx);
+		 			photo_dao.fileSave(dto);
+		 		}
+		 	} 
+		 } catch (IOException e) { 
+			 e.printStackTrace();
+			 } 
+		 }
+
 	
 
 	   //메뉴 사진
@@ -224,7 +234,7 @@ public class PhotoService {
 		}
 
 		
-		public void menuphotoFile(MultipartFile[] files, int photofolderidx, Map<String, String> params) {
+/*		public void menuphotoFile(MultipartFile[] files, int photofolderidx, Map<String, String> params) {
 		    try {
 		        if (files == null || params == null) {
 		            logger.error("Files or params are null. Cannot proceed with photo upload.");
@@ -273,8 +283,8 @@ public class PhotoService {
 		        }
 		    } catch (IOException e) {
 		        logger.error("File upload failed", e);
-		    }
-		}
+		    }*/
+		//}
 
 		public List<PhotoDTO> detail1(int store_idx, int photo_category_idx) {
 			return photo_dao.detail1(store_idx, photo_category_idx);
@@ -320,4 +330,19 @@ public class PhotoService {
 			return photo;
 		}
 
+<<<<<<< HEAD
+=======
+		public void updateajax(MultipartFile[] file, int store_idxx, int i) throws IOException {
+			PhotoDTO photoDTO = new PhotoDTO();
+			String photo = storeFile(file);
+			logger.info(photo);
+			photoDTO.setNew_filename(photo);
+			photoDTO.setPhoto_folder_idx(store_idxx);
+			photoDTO.setPhoto_category_idx(i);
+			photo_dao.updateajax(photoDTO);
+		}
+
+
+
+>>>>>>> origin/master
 }

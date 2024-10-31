@@ -25,6 +25,15 @@ public interface BoardDAO {
 
 	boolean boardWriteajax(BoardDTO boardDTO);
 
+	String selectidx(int store_idx);
+
+	boolean updateajax(BoardDTO boardDTO);
+
+	int bHit(String board_idx);
+
+	int del(String board_idx);
+
+
 
 
 }

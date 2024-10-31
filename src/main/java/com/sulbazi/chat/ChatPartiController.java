@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,32 +25,43 @@ public class ChatPartiController {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired ChatPartiService chatparti_ser;
-	private Map<String, SseEmitter> sseEmitters = new ConcurrentHashMap<String, SseEmitter>();
+    private Map<String, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
 	
-	
-	
-	/* 각 채팅방의 참여자 수 - 채팅방 리스트 */
+	/* 각 개인 채팅방의 참여자 수 - 채팅방 리스트 */
 	@GetMapping(value="/usertotal.ajax")
 	@ResponseBody
 	public Integer usertotal(@RequestParam int chatroom_idx) {
 	    return chatparti_ser.usertotal(chatroom_idx);
 	}
+	
 
-	/* 개인 채팅방 참여자 리스트 */
+	
+	/* 개인 채팅방 참여자 리스트 - ajax */
 	@GetMapping(value="/userlist.ajax")
 	@ResponseBody
 	public List<PartiDTO> userlistajax(@RequestParam("chatroom_idx") int chatroom_idx) {
-	    return chatparti_ser.userlistajax(chatroom_idx);
+	    List<PartiDTO> participants = chatparti_ser.userlistajax(chatroom_idx);
+	    // 모든 연결된 클라이언트에게 newuser 이벤트 전송
+        for (SseEmitter emitter : sseEmitters.values()) {
+            try {
+                emitter.send(SseEmitter.event()
+                    .name("newuser")
+                    .data(participants)); // 참여자 리스트 전송
+            } catch (Exception e) {
+                sseEmitters.remove(emitter);
+            }
+        }
+	  
+	    
+	    return participants; // 리스트 반환
 	}
 	
-	/* 개인 채팅방에서 나가면 참여상태 false */
+	/* 개인 채팅방에서 나가기 */
 	@PostMapping(value="/userroomout.ajax")
 	@ResponseBody
-	public String userroomout(HttpSession session, @RequestParam int chatroom_idx) {
+	public String userroomout(@RequestParam String user_id, @RequestParam int chatroom_idx) {
 		
-		String userId = (String) session.getAttribute("loginId");
-		
-		chatparti_ser.userroomout(userId, chatroom_idx);
+		chatparti_ser.userroomout(user_id, chatroom_idx);
 		
 		return "success";
 	}
@@ -68,6 +80,7 @@ public class ChatPartiController {
 		Map<String, Object> response = new HashMap<String, Object>();
 	    response.put("redirect", success); // 클라이언트에게 리다이렉션 요청
 	    
+	    
 	    return response;
 	}
 	
@@ -85,6 +98,13 @@ public class ChatPartiController {
 	
 	
 	
+	/* 지역 채팅방 참여자 총 인원 */
+	@GetMapping(value="/localusertotal.ajax")
+	@ResponseBody
+	public List<PartiDTO> localtotal(@RequestParam int chatroom_idx){
+		return chatparti_ser.localtotal(chatroom_idx);
+	}
+	
 	/* 지역 채팅방 참여자 리스트 */
 	@GetMapping(value="/localuserlist.ajax")
 	@ResponseBody
@@ -92,16 +112,14 @@ public class ChatPartiController {
 	    return chatparti_ser.localuserlistajax(localchat_idx);
 	}
 	
-	
-	
 	/* 지역 채팅방에서 나가면 참여상태 false */
 	@PostMapping(value="/localroomout.ajax")
 	@ResponseBody
 	public String localroomout(HttpSession session, @RequestParam int chatroom_idx) {
 		
-		String userId = (String) session.getAttribute("loginId");
+		String user_id = (String) session.getAttribute("loginId");
 		
-		chatparti_ser.localroomout(userId, chatroom_idx);
+		chatparti_ser.localroomout(user_id, chatroom_idx);
 		return "success";
 	}
 	

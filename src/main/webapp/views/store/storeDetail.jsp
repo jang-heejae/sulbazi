@@ -9,6 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=4ae2258b561b1a937e5d3f2c155e60f9"></script>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
         <style>
 /*             body{
                 background-color: #20290E;
@@ -149,6 +150,84 @@
 			    transform: translateX(-50%);
 			}
 			
+	section.review-gragory{
+		width: 100%;
+	}
+	
+    #review-section {
+    	width:100%;
+        border-collapse: collapse;
+       
+    }
+    .profile{
+        vertical-align: top;
+        padding: 10px;
+    }
+
+    .profile-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+    .like-section {
+        display: inline;
+    }
+    .rating-cell, .likes-cell, .category-cell, .review-content-cell, .action-cell {
+        padding: 10px;
+    }
+    .icon-review {
+        width: 20px;
+    }
+    .report-section {
+        margin-left: 20px;
+    }
+    .action-button {
+        margin-left: 10px;
+    }
+    
+*{
+font-family: 'Gowun Dodum', sans-serif;
+}
+
+
+.mypost {
+    width: 96%;
+    margin : 20px auto 20px auto;
+    box-shadow: 0px 0px 3px 0px gray;
+    padding: 20px;
+    display: none;
+    
+}
+.bloom {
+    color:rgb(138, 138, 151);
+}
+.mybtn {
+     
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px; 
+}
+.mybtn > button {
+    margin-right: 10px;
+    box-shadow: 0px 0px 3px 0px gray;
+    border: 1px solid black;
+}
+  .mybtn > button:hover{
+    border: 4px solid #09f;
+} 
+h3 {
+	margin: 20px;
+}
+.review-write:hover{
+	border: 4px solid #09f;
+}
+.review-write{
+	margin: 0px 30px
+}
+
+			
 			
 
             
@@ -255,16 +334,65 @@
 						</tr>
 					</table>
                 </fieldset>
-                <section>
+                <section class="review-gragory">
                  <!-- 리뷰 작성-->
 		             <article>
-			             <legend>리뷰 작성</legend>
-			      		 <button onclick="openWindowTab(${store.store_idx})">리뷰가기</button>
+			            <h3>리뷰 작성</h3><button type="button" class="review-write btn btn-dark">리뷰 쓰기</button>
+			            <button type="button" class="review-exit btn btn-dark">닫기</button>
+			      		<%-- <button onclick="openWindowTab(${store.store_idx})">리뷰가기</button> --%>
+
+					    <div class="mypost">
+					        <div class="input-group mb-3">
+					            <label class="input-group-text" for="inputGroupSelect01">별점</label>
+					            <select class="form-select" id="inputGroupSelect01">
+					              <option selected>--선택하기--</option>
+					              <option value="1">⭐</option>
+					              <option value="2">⭐⭐</option>
+					              <option value="3">⭐⭐⭐</option>
+					              <option value="4">⭐⭐⭐⭐</option>
+					              <option value="5">⭐⭐⭐⭐⭐</option>
+					            </select>
+					        </div>
+					        <div class="input-group mb-3">
+					            <label class="input-group-text" for="inputGroupSelect01">방문목적</label>
+					            <select class="form-select" id="inputGroupSelect01">
+					           		<option value="" selected>--선택하기--</option>
+					               <c:forEach var="option" items="${options}">
+					                   <c:if test="${option.category_idx == 3}">
+					                       <option value="${option.opt_idx}">${option.opt_name}</option>
+					                   </c:if>
+					               </c:forEach>
+					            </select>
+					        </div>
+					        <div class="input-group mb-3">
+					            <label class="input-group-text" for="inputGroupSelect01">분위기</label>
+					            <select class="form-select" id="inputGroupSelect01">
+					            	<option value="" selected>--선택하기--</option>
+					               <c:forEach var="option" items="${options}">
+					                   <c:if test="${option.category_idx == 4}">
+					                       <option value="${option.opt_idx}">${option.opt_name}</option>
+					                   </c:if>
+					               </c:forEach>
+					            </select>
+					        </div>
+					            <div class="bloom">
+					                <div class="form-floating">
+					                        <textarea class="form-control" placeholder="--내용--" id="floatingTextarea2" style="height: 100px"></textarea>
+					                    </div>
+					            </div>
+					
+					        <div class="mybtn">
+					
+					            <button type="button" class="btn btn-dark">글쓰기</button>
+					            <button type="button" class="btn btn-light">닫기</button>
+					
+					        </div>
+					    </div>
+
 		             </article>
 		                <!-- 리뷰  사용자 일경우 신고 수정 삭제 
 		                 매장일 경우 신고 답글 -->
-		                 리뷰 글들
-	                 <article>
+	                 <article class="table-article">
 	                 	<table id="review-section">
                  	
 	                 	</table>
@@ -354,43 +482,50 @@ function openWindowTab(storeIdx) {
  				error:function(e){
  					console.log(e);	
  				}
- 			});
+ 			}); 
  			
  		};
     	
  		function drawList(reviews){
- 			var listContainer = document.getElementsById('review-section');
+ 			var listContainer = document.getElementById('review-section');
  			
  			
- 			reviews.foreach(function(review,idx){
- 				
+ 			reviews.forEach(function(review,idx){
+ 				var reviewDate = review.review_date.split('T')[0];
  				
  			var content = '<tr>'
- 			 	content += '<td = class = "profile">'
- 			 	content +='<img src="" alt="user" class="profile-image">'
- 			 	content +='</td>'
- 			 	content +='<td colspan="2" class="user-info">'
- 			 	content +='<strong>username</strong>'
+ 			 	content += '<td colspan="3" class = "profile">'
+ 			 	content +='<img src="/photo/'+review.user_photo+'" alt="user" class="profile-image">'
+ 			 	content +='<strong>&nbsp;'+review.user_nickname+'</strong>&nbsp;'
  			 	content +='<div class="like-section">'
- 			 	content +='<img src="" alt="좋아요" class="icon"> 좋아요 </div>'
+ 			 	content +='<img src="resources/img/이종원 좋아요전.png" alt="좋아요" class="icon-review">&nbsp;'+review.user_likecount+'</div>'
  			 	content +='</td></tr>'
  			 	content +='<tr><td class="rating-cell">'
- 			 	content +='<img src="" alt="별점" class="icon"> 별점 </td>'
+ 			 	content +='<img src="resources/img/종원리뷰별.png" alt="별점" class="icon-review">'+review.starpoint+' </td>'
  			 	content +='<td class="likes-cell">'
- 			 	content +='<img src="like_icon.png" alt="좋아요" class="icon"> 좋아요수 </td>'
- 			 	content +='<td class="category-cell"> 방문목적 , 분위기</td></tr>'
+ 			 	content +='<img src="resources/img/종원리뷰좋아요전.png" alt="좋아요" class="icon-review"> '+review.like_count+' </td>'
+ 			 	content +='<td class="category-cell">'+review.opt_names+'</td></tr>'
  			 	content +='<tr> <td colspan="3" class="review-content-cell">'
- 			 	content +='글쓰기 영역 줄바꿈 rplace 필요 </td></tr>'
- 			 	content +='<tr><td colspan="3" class="action-cell">날짜 컬럼 넣기'
- 			 	content +='<span class="report-section"><img src="like_icon.png" alt="좋아요" class="icon">신고</span>'
+ 			 	content += review.review_content+' </td></tr>'
+ 			 	content +='<tr><td colspan="3" class="action-cell">'+reviewDate
+ 			 	content +='<span class="report-section"><img src="resources/img/yellow.png" alt="좋아요" class="icon-review"></span>'
  			 	content +='<button class="action-button">답글</button>'
  			 	content +='<button class="action-button">수정</button>'
  			 	content +='<button class="action-button">신고</button>'
  			 	content +='<button class="action-button">삭제</button>'
  			 	content +='</td></tr>'
  			 	
- 			 	listContainer.append(content);
+ 			 	listContainer.innerHTML += content;
  			});
  		}
+ 		//리뷰 나오기 버튼 클릭시 해당영역 나오기
+ 		$('.review-write').click(function() {
+ 		    $('.mypost').slideDown(1000); 
+ 		});
+
+ 		// 리뷰 숨기기 버튼 클릭 시, 해당 영역을 부드럽게 사라지게 하기
+ 		$('.review-exit').click(function() {
+ 		    $('.mypost').slideUp(2000); 
+ 		});
     </script>
 </html>
