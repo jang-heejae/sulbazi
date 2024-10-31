@@ -19,9 +19,6 @@
 	<select id="getAdminNameById" parameterType="String" resultType="String">
     	SELECT admin_name FROM admin WHERE admin_id = #{admin_id}
 	</select>
-<!-- 	<select id="adminUserList">
-		SELECT * FROM user ORDER BY user_date DESC LIMIT #{param1} OFFSET #{param2}
-	</select> -->
 	<select id="adminUserList" parameterType="map" resultType="com.sulbazi.member.UserDTO">
     	SELECT * FROM user
     	<where>
