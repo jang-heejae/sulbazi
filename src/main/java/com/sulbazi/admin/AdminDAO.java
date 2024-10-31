@@ -17,7 +17,7 @@ public interface AdminDAO {
 	AdminDTO adminChange(String admin_id);
 
 	int adminUpdate(Map<String, Object> param);
-
+ 
 	String getAdminNameById(String admin_id);
 
 	int userCount(int cnt);

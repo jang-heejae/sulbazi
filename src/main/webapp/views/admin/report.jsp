@@ -12,7 +12,7 @@
 		color: white;
 		background-color: #20290E;
 	} 
-	#newPW{
+	#newPW{ 
 		background-color: #E98D1C;
 		position: absolute;
 		top: 30px;
@@ -20,7 +20,7 @@
 		padding: 20px;
 		margin: 5px 10px;
 		border-radius: 20px;
-	}
+	} 
 	table, th, td{
 		border: 1px solid white;
 		border-collapse: collapse;

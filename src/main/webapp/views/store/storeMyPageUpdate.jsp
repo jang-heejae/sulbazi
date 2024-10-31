@@ -13,8 +13,8 @@ body {
     gap: 20px;
     margin: 20px;
 }
-
-.all {
+ 
+.all { 
 	position: relative;
 	z-index: 9999;
     width: 65%;

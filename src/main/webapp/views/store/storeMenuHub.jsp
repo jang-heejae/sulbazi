@@ -13,5 +13,5 @@ someDraw(content);
 
 	function someDraw() {
 	    $('#menuHub').append(content);
-	}	
+	}	  
 </script>
