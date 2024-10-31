@@ -262,7 +262,7 @@ width: 50px;
     </header>
     <div class="boardlist">
        <div class="bboard">
-       <form method="post" enctype="multipart/form-data">
+       <form id="boardForm" method="post" enctype="multipart/form-data">
          <table class="table">
             <tr class="what">
                <th>
@@ -405,23 +405,29 @@ document.getElementById('file').addEventListener('change', function(event) {
 });
 
 function save(event) {
-	var form = new FormData($('form')[0]);
-	form.append('loginId', $('#store_id').val()); // 로그인 ID 추가
-	$.ajax({
-		type:'POST',
-		url:'boardWrite.ajax',
-		enctype:'multipart/form-data',
-		processData:false,
-		contentType:false,
-		data:form,
-		dataType:'JSON',
-		success:function(data){
-			console.log(data);
-		},
-		error:function(e){
-			console.log(e);
-		}
-	})
+    var form = new FormData($('#boardForm')[0]);
+    form.append('loginId', $('#store_id').val());
+    var files = document.querySelector('input[type="file"]').files;
+
+    for (var i = 0; i < files.length; i++) {
+        form.append('file', files[i]);
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: 'boardWrite.ajax',
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        data: form,
+        dataType: 'JSON',
+        success: function(data) {
+            console.log(data);
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
 }
 </script>
 </html>

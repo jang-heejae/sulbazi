@@ -30,9 +30,9 @@
 		SELECT store_idx FROM store WHERE store_id = #{store_id}
 	</select>
 	
-	<insert id="boardwriteajax" parameterType="com.sulbazi.board.BoardDTO">
+	<insert id="boardWriteajax" parameterType="com.sulbazi.board.BoardDTO">
 		INSERT INTO 
-		board(store_idx, board_subject, board_content, board_date, board_bHit, like_count, board_category, board_state)
-			VALUES(#{store_idx}, #{board_subject}, #{board_content}, #{board_date}, #{board_bHit}, #{like_count}, #{board_category}, #{board_state}
+		board(store_idx, board_subject, board_content, board_category)
+			VALUES(#{store_idx}, #{board_subject}, #{board_content}, #{board_category}}
 	</insert>
 </mapper>
