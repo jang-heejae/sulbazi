@@ -13,6 +13,5 @@ public interface ReviewDAO {
 
 	List<ReviewDTO> getReviewAlluser(int storeIdx);
 
-	List<UserDTO> getUserName(List<ReviewDTO> reviewsOfStore);
-
+	
 }
