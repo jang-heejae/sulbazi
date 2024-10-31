@@ -1,6 +1,6 @@
 package com.sulbazi.report;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class ProcessDTO {
 	private int process_idx;
@@ -12,7 +12,7 @@ public class ProcessDTO {
 	private int revoke_idx;
 	public int getRevoke_idx() {
 		return revoke_idx;
-	}
+	} 
 	public void setRevoke_idx(int revoke_idx) {
 		this.revoke_idx = revoke_idx;
 	}

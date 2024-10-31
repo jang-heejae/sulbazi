@@ -7,14 +7,55 @@
 <link rel="stylesheet" href="resources/css/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
-	body{
-		color: white;
+	body {
+    	display: flex;
+    	flex-direction: column;
+    	align-items: center;
+    	justify-content: center; 
+    	gap: 20px;
+    	margin: 20px;
+    	font-weight: bold;
+    	color: #041d03;
+    	min-height: 100vh;
+    	background-color: #041d03;
+	}  
+	.chatBox2 {
+    	display: flex;
+    	justify-content: center;
+    	align-items: flex-start; /* 시작점에서부터 정렬 */
+    	width: 100%;
+    	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
+	}
+	.chatitems2 {
+		margin-top: 150px;
+    	width: 940px;
+    	min-height: 650px; /* 초기 최소 높이 설정 */
+    	height: auto; /* 내용에 따라 높이 자동 조절 */
+    	display: flex;
+    	flex-wrap: wrap;
+    	justify-content: center;
+    	align-items: center;
+    	align-content: center;
+    	background-color: #73734F;
+    	border-radius: 20px;
+    	padding: 20px; /* 내부 여백 추가 */
+    	margin-top: 140px; 
+    	    flex-direction: column;
+	}
+	button{
+		background-color: rgb(255, 140, 9);
+		color: #041d03;
+		padding: 5px;
+		border-radius: 5px;
+		font-size: 14;
+		font-weight: bold;
 	}
 	#category{
 		position: absolute;
 		width: 880px;
 		top: 200px;
 		left: 520px;
+		color: white;
 	}
 	#categoryInsert{
 		position: absolute;
@@ -22,8 +63,8 @@
 		border-radius: 20px;
 		width: 350px;
         height: 500px;
-		top: 90px;
-		left: 30px;
+		top: 151px;
+    	left: 5px;
 	}
 	#categoryDel{
 		position: absolute;
@@ -31,31 +72,28 @@
 		border-radius: 20px;
 		width: 350px;
         height: 500px;
-		top: 90px;
-		left: 510px;
+		top: 149px;
+    	left: 521px
 	}
-	#liveDel{
-		display: flex;
-		justify-content: space-around;
-	}
-	#delll{
-		margin-left: 150px;
+	.cateDell{
+		    left: 131px;
+    position: absolute;
+    top: -41px;
 	}
 	#liveee{
 		margin-left: 40px;
+		left: 121px;
+    position: absolute;
+    top: 108px;
 	}
 	#btn{
 		position: absolute;
-		top: 240px;
-		left: 395px;
+		top: 311px;
+    	left: 390px;
 		display: flex;
    		flex-direction: column;
     	flex-wrap: nowrap;
     	align-items: stretch;
-	}
-	button{
-		padding: 5px;
-		border-radius: 20px;
 	}
 	#optDrink{
 		position: absolute;
@@ -101,24 +139,54 @@
 		top: 350px;
 		width: 330px;
 	}
+	input[type="radio"] {
+        appearance: none; /* 기본 스타일 제거 */
+        width: 15px;
+        height: 15px;
+        background-color: #73734F; /* 원하는 배경색 */
+        border: 2px solid #041d03; /* 테두리 색 */
+        border-radius: 50%; /* 동그란 모양 */
+        cursor: pointer;
+        position: relative;
+    }
+
+    input[type="radio"]:checked {
+        background-color: #041d03; /* 체크 시 배경색 */
+        border: 0.1px solid #041d03; /* 체크 시 테두리 색 */
+    }
+
+    input[type="radio"]::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: transparent; /* 체크되지 않았을 때는 투명 */
+    }
+
+    input[type="radio"]:checked::after {
+        background-color: rgb(255, 140, 9); /* 체크 시 점 색상 */
+    }
 </style>
 </head>
 <body>
 	<c:import url="../main/adminMain.jsp"/>
-	<div id="category">
-		<h2>카테고리</h2>
-		<hr/>
-		<br/>
-		<div id="liveDel">
-			<div id="liveee"><h3>활성화</h3></div>
-			<div id="delll"><h3>비활성화</h3></div>
-		</div>
-		<div id="categoryInsert">
-		<br/>
-			<div id="optDrink">
-				<h4>&nbsp;&nbsp;&nbsp;주종</h4>
+		<section class="chatBox2">
+        	<div class="chatitems2">
+				<div id="category">
+				<h2 style="    margin-top: 39px;">카테고리</h2>
 				<hr/>
-					<div id="cateOptDrink">
+					<div class="cateInsert">
+					<div id="liveee"><h3>활성화</h3></div>
+					<div id="categoryInsert">
+						<br/>
+					<div id="optDrink">
+						<h4>&nbsp;&nbsp;&nbsp;주종</h4>
+						<hr/>
+						<div id="cateOptDrink">
 					</div>
 			</div>
 			<div id="optMenu">
@@ -139,16 +207,17 @@
 				<div id="cateOptVisit">
 				</div>
 			</div>
+			</div>
 		</div>
 		<div id="btn">
 			<button>활성화</button>
 			<br/>
 			<button>비활성화</button>
 			<br/>
-			<button onclick="window.open('<c:url value="categoryAdd.go"/>', 'popup', 'width=600,height=400'); return false;">카테고리 추가</button>
+			<button onclick="window.open('<c:url value="categoryAdd.go"/>', 'popup', 'width=600,height=330'); return false;">카테고리 추가</button>
 		</div>
 		<div id="categoryDel">
-		<br/>
+		<div class="cateDell"><h3>비활성화</h3></div>
 		<div id="optDrinkDel">
 				<h4>&nbsp;&nbsp;&nbsp;주종</h4>
 				<hr/>
@@ -175,6 +244,8 @@
 			</div>
 		</div>
 	</div>
+	</div>
+	</section>
 </body>
 <script>
 optListCall();
@@ -202,7 +273,7 @@ function optList(list){
     var contentMoodDel = '';
     var contentVisitDel = '';
 	for (var item of list) {
-		var option = '<input type="radio" name="category" value="'+item.opt_name+'"/>'+item.opt_name+'&nbsp;&nbsp;&nbsp;';
+		var option = '<input type="radio" name="category" value="'+item.opt_name+'"/>&nbsp;'+item.opt_name+'&nbsp;&nbsp;&nbsp;';
 		if(item.category_idx == '1' && item.category_state == 1){
 			contentDrink += option;
 		}else if(item.category_idx == '2' && item.category_state == 1){

@@ -1,6 +1,6 @@
 package com.sulbazi.report;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class ReportDTO {
 	private int report_idx;
@@ -12,6 +12,14 @@ public class ReportDTO {
 	private Date report_date;
 	private int report_state;
 	
+	public Date getReport_date() {
+		return report_date;
+	} 
+
+	public void setReport_date(Date report_date) {
+		this.report_date = report_date;
+	}
+
 	public int getReport_idx() {
 		return report_idx;
 	}
@@ -47,12 +55,6 @@ public class ReportDTO {
 	}
 	public void setReport_content(String report_content) {
 		this.report_content = report_content;
-	}
-	public Date getReport_date() {
-		return report_date;
-	}
-	public void setReport_date(Date report_date) {
-		this.report_date = report_date;
 	}
 	public int getReport_state() {
 		return report_state;
