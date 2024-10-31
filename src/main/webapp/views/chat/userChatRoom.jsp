@@ -47,7 +47,7 @@
 		var report_txt;
 		var reported_nick;
 		
-		// 신고, 강퇴 팝업창
+		// 신고, 강퇴 팝업창 - 메세지
 		$(document).off('click', '.usermsg');
 		
 		$(document).on('click', '.usermsg', function(event) {
@@ -109,6 +109,62 @@
 		    }
 		});
 		
+		
+		
+		// 방장은 프로필에서도 강퇴시킬거야 		
+		$(document).off('click', '.room2');
+		
+		$(document).on('click', '.room2', function(event) {
+			
+	        // 클릭한 위치 좌표
+	        var x = event.pageX;
+	        var y = event.pageY;
+	        
+	        // 강퇴 할 유저정보
+	        var chatroom_idx = ${idx};
+	        reported_id = $(this).find('.useridf').text();
+			reported_nick = $(this).find('.usernickf').text();
+	        
+		    console.log("강퇴할 놈: "+reported_id);
+		    console.log("강퇴 방번호 : "+chatroom_idx);
+	        
+	        $('.popup2').remove();
+	       
+		    if (reported_id.toString() !== loginId.toString()) {
+		    	var user = $('h2').data('userid').toString();
+				if (loginId === user) {
+					var popup2 = $(`
+						    <div class="popup2">
+						        <div class="kickuser"><i class="fas fa-crosshairs"></i> 강퇴</div>
+						    </div>
+						`);
+				}
+				
+				popup2.css({
+				    position: 'absolute',
+				    width: '100px',
+				    height: '30px',
+				    left: x + 'px',
+				    top: y + 'px',
+				    backgroundColor: '#f9f9f9',
+				    border: '1px solid #ccc',
+				    padding: '5px'
+				});
+				
+				
+				$('body').append(popup2);
+			}
+		
+	    });
+		
+		
+		// 팝업 제거
+		$(document).on('click', function(event) {
+		    if (!$(event.target).closest('.popup2, .room2').length) {
+		        $('.popup2').remove();
+		    }
+		});
+		
 		// 신고 할거야
 		$(document).on('click', '.reportuser', function() {
 			
@@ -166,9 +222,9 @@
 			var chatroom_idx = ${idx};
 			var kickmsg = '<div class="kick">' +reported_nick+ '님 강퇴</div>';
 			
-			
 		    console.log("강퇴당할 "+user_id);
 		    console.log("강퇴당할방 "+chatroom_idx);
+		    
 		    if (confirm(reported_nick+"를 내보낼거야?")) {
 			    $.ajax({
 			        url: '/SULBAZI/kickuser.ajax',
@@ -182,6 +238,7 @@
 			            alert(reported_nick +' 아웃');
 			            $('.chatlist').append(kickmsg);
 			            $('.popup').remove();
+			            $('.popup2').remove();
 			            loadMessages();
 			           
 			        },
@@ -201,47 +258,52 @@
 
 		
 		// 참여자 리스트
+		
 		var chatroom_idx = ${idx};
 		var ownerId = '${userid}';
+		setInterval(loadUserList, 3000);
 		
-	    function loadUserList() {
-	        $.ajax({
-	            url: '/SULBAZI/userlist.ajax',
-	            type: 'GET',
-	            data: { chatroom_idx: chatroom_idx },
-	            dataType: 'json',
-	            success: function(data) {
-	                $('.ajax').empty(); // 기존 사용자 목록 비우기
+		function loadUserList() {
+		    $.ajax({
+		        url: '/SULBAZI/userlist.ajax',
+		        type: 'GET',
+		        data: { chatroom_idx: chatroom_idx },
+		        dataType: 'json',
+		        success: function(data) {
+		            $('.ajax').empty(); // 기존 사용자 목록 비우기
 
-	                $.each(data, function (index, user) {
-	      	          
-	                	var userlist = '<div class="room2">';
-	                    userlist += '<img width="20" alt="프로필" src="/photo/' + user.user_photo + '">';
-	                    
-	                    if (user.user_id === loginId && user.user_id === ownerId) {
-	                        userlist += '<div class="user" style="font-weight: bold; color: blue;"><i class="fas fa-crown"></i>' + user.user_nickname + ' ㉯</div>';
-	                    } else if (user.user_id === loginId) {
-	                        userlist += '<div class="user" style="font-weight: bold;">' + user.user_nickname + '㉯</div>';
-	                    } else if (user.user_id === ownerId) {
-	                        userlist += '<div class="user" style="font-weight: bold; color: blue;"><i class="fas fa-crown"></i>' + user.user_nickname + '</div>';
-	                    } else {
-	                        userlist += '<div class="user">' + user.user_nickname + '</div>';
-	                    }
+		            $.each(data, function (index, user) {
+		                var userlist = '<div class="room2">';
+		                userlist += '<img width="20" alt="프로필" src="/photo/' + user.user_photo + '">';
 
-	                   
-	                    userlist += '</div>';
-	                	
-	                	$('.ajax').append(userlist);
-	                    
-	                });
-	            },
-	            error: function(xhr, status, error) {
-	                console.error('AJAX 요청 실패:', status, error);
-	            }
-	        });
-	    }
-		
-	    loadUserList();
+		                if (user.user_id === loginId && user.user_id === ownerId) {
+		                    userlist += '<div class="usernickf" style="font-weight: bold; color: blue;"><i class="fas fa-crown"></i>' + user.user_nickname + ' ㉯</div>';
+		                } else if (user.user_id === loginId) {
+		                    userlist += '<div class="usernickf" style="font-weight: bold;">' + user.user_nickname + '㉯</div>';
+		                } else if (user.user_id === ownerId) {
+		                    userlist += '<div class="usernickf" style="font-weight: bold; color: blue;"><i class="fas fa-crown"></i>' + user.user_nickname + '</div>';
+		                } else {
+		                    userlist += '<div class="usernickf">' + user.user_nickname + '</div>';
+		                }
+
+		                userlist += '</div>';
+		                $('.ajax').append(userlist);
+		            });
+		        },
+		        error: function(xhr, status, error) {
+		            console.error('AJAX 요청 실패:', status, error);
+		        }
+		    });
+		}
+
+		// 초기 로드
+		loadUserList();
+
+		// SSE 설정
+		const ssee = new EventSource("/sse/list");
+		ssee.addEventListener("newuser", function(event) {
+		    loadUserList(); 
+		});
 	    
 	    
 	    // 서버에서 새로운 메세지 확인 후 리로드
@@ -260,6 +322,7 @@
 	        console.log("메세지내용"+usermsg_content);
 	        console.log("로그인한 아이디"+loginId);
 	        console.log("현재방 번호 "+userchat_idx);
+	        console.log("user_id "+user_id);
 	        if (usermsg_content.trim() === "") {
 	            alert("메세지를 입력해주세요.");
 	            return;
@@ -287,7 +350,7 @@
 	    // 새 메세지를 불러오기
 	    var userchat_idx = ${idx};
 		var ownerId = '${userid}';
-	    setInterval(loadMessages, 10000);
+	    setInterval(loadMessages, 2000);
 
 	    function loadMessages() {
 	        $.ajax({
@@ -347,10 +410,8 @@
 
 	    // 페이지 로드 시 메세지 불러오기
 	    
-	    	loadMessages();
-	    
-
-	    
+	    loadMessages();
+	
 	});
 	
 </script>
@@ -366,7 +427,8 @@
     h2{
     	display: none;
     }
-    .popup div:hover {
+    .popup div:hover,
+	.popup2 div:hover {
 	    font-weight: bold;
 	    cursor: pointer;
 	}
@@ -470,6 +532,7 @@
 	    width: 200px;
 	    background-color: white;
 	    flex-direction: column;
+	    overflow-y: auto;
     }
     .room2{
         left: 10px;
@@ -487,6 +550,7 @@
     	width: 40px;
 	    height: 40px;
 	    border-radius: 25px;
+	    border: 1px solid;
     }
     .roomout{
 	    display: flex;
@@ -568,6 +632,9 @@
         height: 550px;
         overflow-y: auto;
     }
+    .usermsg img{
+    	border: 1px solid;
+    }
     .msgtxt:hover{
     	cursor: pointer;
     }
@@ -622,6 +689,8 @@
     }
     .textarea textarea{
    	    width: 100%;
+	    font-size: x-large;
+   	    align-content: center;
     }
     textarea{
         border: none;
@@ -747,7 +816,7 @@
                         <div class="chatlist">
                         </div>
                         <div class="textarea">
-                        	<%-- <input type="text" name="user_id" value="${sessionScope.loginId}" readonly> --%>
+                        	<input type="text" name="user_id" style="display:none;" value="${sessionScope.loginId}" readonly/>
                             <textarea name="usermsgcontent" placeholder="메세지 입력"></textarea>
                             <button type="button" class="sendmsg">전송</button>
                         </div>

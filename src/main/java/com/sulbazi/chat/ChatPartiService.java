@@ -11,18 +11,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import com.sulbazi.alarm.AlarmDAO;
+
 @Service
 public class ChatPartiService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired ChatPartiDAO chatparti_dao;
+	@Autowired AlarmDAO alarm_dao;
 	private Map<String, SseEmitter> sseEmitters = new ConcurrentHashMap<String, SseEmitter>();
 	
 	
 	/* 개인 채팅방 참여 */
 	public void userparti(String userId, int idx, String id) {
-		chatparti_dao.userparti(userId, idx);
-		chatparti_dao.partialarm(id);
+		int row = chatparti_dao.userparti(userId, idx);
+		
+		if(row>0) {			
+			alarm_dao.partialarm(id);
+		}
 	}
 	
 	/* 방에 참여중인 총 사용자 */
@@ -47,6 +53,10 @@ public class ChatPartiService {
 	public boolean kickuser(Map<String, String> params) {
 		int row = chatparti_dao.kickuser(params);
 		
+		// 퇴장 시키면 알람보내기
+		if(row>0) {
+			alarm_dao.kickuser(params);
+		}
 		return row > 0;
 	}
 	

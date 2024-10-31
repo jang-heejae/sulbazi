@@ -4,4 +4,16 @@
 >
 <mapper namespace="com.sulbazi.alarm.AlarmDAO">
 
+	<!-- 개인 채팅방 참여시 알림 -->
+	<insert id="partialarm" parameterType="com.sulbazi.alarm.AlamDTO">
+		INSERT INTO alarm(user_id, alarm_category_idx)
+							VALUES(#{id}, 1)
+	</insert>
+	
+	<!-- 강퇴 알림 -->
+	<insert id="kickuser" parameterType="com.sulbazi.alarm.AlamDTO">
+		INSERT INTO alarm(user_id, alarm_category_idx)
+							VALUES(#{user_id}, 2)
+	</insert>
+	
 </mapper>
