@@ -24,9 +24,10 @@ public class MessageController {
 	// SSE
 	private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
-    @GetMapping(value="/sse/connect")
+	
+    @GetMapping(value="/sse/all")
     @ResponseBody
-    public SseEmitter connect() {
+    public SseEmitter connectAll() {
         SseEmitter emitter = new SseEmitter(0L);
         emitters.add(emitter);
 
@@ -35,7 +36,6 @@ public class MessageController {
 
         return emitter;
     }
-	
 	// 개인 채팅방
 	// 메세지 전송
     @PostMapping(value="/sendMessage.ajax")
@@ -50,7 +50,7 @@ public class MessageController {
                     .name("newMessage")
                     .data("새 메시지가 도착했습니다."));
             } catch (Exception e) {
-                emitters.remove(emitter);
+            	emitters .remove(emitter);
             }
         }
         

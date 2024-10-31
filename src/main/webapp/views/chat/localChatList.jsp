@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <style>
     *{
@@ -78,8 +79,8 @@
                     <p>${localchat.local_category}</p>
                     <%-- <img src="${someImagePath}/${status.index + 1}.jpg" alt="Chat Image" /> --%>
                     <img src="resources/img/${status.index + 1}.png" alt="Chat Image" />
-                    <!-- <img src="resources/img/1.png" alt="Chat Image" /> -->
                 </div>
+                <div>인원 : <span class="total_${localchat.localchat_idx}"></span>명</div>
                 <div class="chatgo">
                     <button type="submit" class="gobtn">참가</button>
                 </div>
@@ -91,5 +92,31 @@
 </body>
 <script>
 
+	// 각 방에 참여한 사용자 수
+	$('.chatroom').each(function() {
+	    var chatroom_idx = $(this).find('input[name="localchat_idx"]').val();
+	    console.log(chatroom_idx);
+	    
+	    $.ajax({
+	        url: '/SULBAZI/localusertotal.ajax',
+	        method: 'GET',
+	        data: { chatroom_idx: chatroom_idx },
+	        success: function(count) {
+	            // 참여자 수를 표시할 DOM 요소에 업데이트
+	            console.log(count);
+	            $('.total_' + chatroom_idx).text(count);
+	
+	            // 참가 버튼 표시 조건
+	           /*  var currentPeople = parseInt('${userchat.current_people}');
+	            if (count < currentPeople) {
+	                $('#joinButton_' + chatroomId).show();
+	            } */
+	        },
+	        error: function() {
+	        	$('.total_' + chatroom_idx).text('Error');
+	        }
+	    });
+	    
+	});
 </script>
 </html>
