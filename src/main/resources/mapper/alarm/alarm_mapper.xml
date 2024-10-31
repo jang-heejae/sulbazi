@@ -4,7 +4,6 @@
 >
 <mapper namespace="com.sulbazi.alarm.AlarmDAO">
 
-<<<<<<< HEAD
 	
 
 	<!-- 즐겨찾기 정보 -->
@@ -36,6 +35,7 @@
 	<select id="partiinfo" parameterType="com.sulbazi.chat.PartiDTO"
 		resultType="com.sulbazi.chat.PartiDTO">
 		SELECT parti_idx, user_id, parti_state, chatroom_category, chatroom_idx
+			FROM parti
 			WHERE parti_state=#{parti_state} AND user_id=#{user_id}
 			AND chatroom_idx=#{chatroom_idx}   
 	</select>
@@ -44,6 +44,7 @@
 	<select id="partiexist" parameterType="com.sulbazi.chat.PartiDTO"
 		resultType="com.sulbazi.chat.PartiDTO">
 		SELECT parti_idx, user_id, parti_state, chatroom_category, chatroom_idx
+			FROM parti
 			WHERE user_id=#{user_id} AND chatroom_idx=#{chatroom_idx}   
 	</select>
 	
@@ -72,6 +73,10 @@
 		SELECT * FROM alarm WHERE alarm_read=#{param1}
 	</select>
 	
+	
+	<!-- 읾음 처리 -->
+	
+	
 	<!-- 대화방 알림 모음 -->
 	<select id="chatalarm" resultType="com.sulbazi.alarm.AlamDTO">
 		SELECT * FROM alarm WHERE alarm_category_idx=1
@@ -91,16 +96,19 @@
 	</select>
 	
 	<!-- 알림 insert -->
-	<insert id="alarminsert">
+	<insert id="alarminsert" 
+	  useGeneratedKeys="true"
+	  keyColumn="alarm_idx"
+	  keyProperty="alarm_idx" parameterType="com.sulbazi.alarm.AlamDTO">
 		INSERT INTO alarm(user_id, alarm_category_idx) 
 			VALUES(#{user_id}, #{alarm_category_idx})
 	</insert>
 	
-=======
+
 	<!-- 개인 채팅방 참여시 알림 -->
 	<insert id="partialarm" parameterType="com.sulbazi.alarm.AlamDTO">
 		INSERT INTO alarm(user_id, alarm_category_idx)
-							VALUES(#{id}, 1)
+			VALUES(#{user_id}, 1)
 	</insert>
 	
 	<!-- 강퇴 알림 -->
@@ -108,6 +116,6 @@
 		INSERT INTO alarm(user_id, alarm_category_idx)
 							VALUES(#{user_id}, 2)
 	</insert>
->>>>>>> origin/master
+
 	
 </mapper>

@@ -411,13 +411,13 @@
           loadMessages();
        
 
-<<<<<<< HEAD
+
 	       
        
        
    });
    
-=======
+
 		
 		// 방장 권한 준다
 		var userId = $('h2').data('userid').toString();
@@ -813,7 +813,7 @@
 	
 	});
 	
->>>>>>> origin/master
+
 </script>
 <style>
     *{
@@ -828,17 +828,17 @@
        display: none;
     }
     .popup div:hover,
-<<<<<<< HEAD
+
    .popup2 div:hover {
        font-weight: bold;
        cursor: pointer;
    }
-=======
+
 	.popup2 div:hover {
 	    font-weight: bold;
 	    cursor: pointer;
 	}
->>>>>>> origin/master
+
     .main{
         background-color: #041d03;
         width: 100%;
@@ -934,21 +934,21 @@
         color: darkgrey;
     }
     .userlist{
-<<<<<<< HEAD
+
        display: flex;
           justify-content: space-between;
        width: 200px;
        background-color: white;
        flex-direction: column;
        overflow-y: auto;
-=======
+
     	display: flex;
    	    justify-content: space-between;
 	    width: 200px;
 	    background-color: white;
 	    flex-direction: column;
 	    overflow-y: auto;
->>>>>>> origin/master
+
     }
     .room2{
         left: 10px;
@@ -963,17 +963,17 @@
         border: 1px solid black;
     }
     .room2 img{
-<<<<<<< HEAD
+
        width: 40px;
        height: 40px;
        border-radius: 25px;
        border: 1px solid;
-=======
+
     	width: 40px;
 	    height: 40px;
 	    border-radius: 25px;
 	    border: 1px solid;
->>>>>>> origin/master
+
     }
     .roomout{
        display: flex;
@@ -1056,11 +1056,11 @@
         overflow-y: auto;
     }
     .usermsg img{
-<<<<<<< HEAD
+
        border: 1px solid;
-=======
+
     	border: 1px solid;
->>>>>>> origin/master
+
     }
     .msgtxt:hover{
        cursor: pointer;
@@ -1115,15 +1115,15 @@
         height: 50px;
     }
     .textarea textarea{
-<<<<<<< HEAD
+
           width: 100%;
        font-size: x-large;
           align-content: center;
-=======
+
    	    width: 100%;
 	    font-size: x-large;
    	    align-content: center;
->>>>>>> origin/master
+
     }
     textarea{
         border: none;
@@ -1249,11 +1249,11 @@
                         <div class="chatlist">
                         </div>
                         <div class="textarea">
-<<<<<<< HEAD
+
                            <input type="text" name="user_id" style="display:none;" value="${sessionScope.loginId}" readonly/>
-=======
+
                         	<input type="text" name="user_id" style="display:none;" value="${sessionScope.loginId}" readonly/>
->>>>>>> origin/master
+
                             <textarea name="usermsgcontent" placeholder="메세지 입력"></textarea>
                             <button type="button" class="sendmsg">전송</button>
                         </div>
