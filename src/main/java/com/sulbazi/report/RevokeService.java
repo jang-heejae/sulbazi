@@ -1,8 +1,8 @@
 package com.sulbazi.report;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +23,13 @@ public class RevokeService {
 
 	    RevokeDTO revoke_dto = new RevokeDTO();
 	    revoke_dto.setAdmin_id(param.get("admin_id"));
-	    revoke_dto.setRevoke_start(Date.valueOf(param.get("revoke_start")));
-	    revoke_dto.setRevoke_stop(Date.valueOf(param.get("revoke_stop")));
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    try {
+			revoke_dto.setRevoke_start(dateFormat.parse(param.get("revoke_start")));
+			revoke_dto.setRevoke_stop(dateFormat.parse(param.get("revoke_stop")));
+		} catch (ParseException e) {
+			e.printStackTrace(); 
+		}
 	    revoke_dto.setUser_id(reported_id);
 
 	    revoke_dao.revoke(revoke_dto);

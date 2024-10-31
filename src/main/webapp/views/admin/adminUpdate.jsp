@@ -22,7 +22,7 @@
 		padding: 20px;
 		margin: 5px 10px;
 		border-radius: 20px;
-	}
+	} 
 	table, th, td{
 		border: 1px solid white;
 		border-collapse: collapse;

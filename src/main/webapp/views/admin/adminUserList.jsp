@@ -22,7 +22,7 @@
     	color: #041d03;
     	min-height: 100vh;
     	background-color: #041d03;
-	}
+	} 
 	.chatBox2 {
     	display: flex;
     	justify-content: center;

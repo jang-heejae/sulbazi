@@ -10,7 +10,7 @@
          INSERT INTO store(store_id, store_pw, store_number, store_name, store_phone, store_address, store_time, store_latitude, store_longitude)
          	VALUES(#{store_id}, #{store_pw}, #{store_number}, #{store_name}, #{store_phone}, #{store_address}, #{store_time}, #{store_latitude}, #{store_longitude})
    </insert>
-   
+    
    <insert 
    	useGeneratedKeys="true"
    	keyColumn="user_id"
