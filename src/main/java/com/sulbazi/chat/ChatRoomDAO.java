@@ -24,20 +24,24 @@ public interface ChatRoomDAO {
 	int updatenotice(String notice, int userchat_idx);
 	
 	/* 개인 채팅방 삭제(비공개) */
-	int deletechatroom(Map<String, String> params);
+	int deletechatroom(int userchat_idx);
 	
 	/* 개인 채팅방 참여 */
 	/* 내가 참여중인 채팅방 목록 */
-	List<UserChatroomDTO> myroomlist(String userId);
+	List<UserChatroomDTO> myroomlist(String user_id);
 	/* 방 정보 가져오기 */
 	List<UserChatroomDTO> roominfo(int idx);
-
+	/* 입장 가능 인원 수 */
+	int current(int idx);
+	
 	
 	/* 지역 채팅방 리스트 */
 	List<UserChatroomDTO> localchatlist();
 
 	/* 채팅룸 안에서 지역 채팅방 목록 */
-	List<LocalChatroomDTO> localroom(); 
+	List<LocalChatroomDTO> localroom();
+
+
 
 	
 

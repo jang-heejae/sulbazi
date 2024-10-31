@@ -5,6 +5,12 @@
 <mapper namespace="com.sulbazi.chat.ChatPartiDAO">
 
 	<!-- 개인 채팅방 참여 -->
+	<!-- 개인 채팅방 참여 상태 -->
+	<select id="roomin" resultType="com.sulbazi.chat.PartiDTO">
+		SELECT user_id from parti WHERE user_id = #{userId} AND parti_state = 1 AND chatroom_idx = #{idx} 
+	</select>
+	
+	<!-- 개인 채팅방 참여 신청 지금 1 나중에 0으로 바꾸기 -->
 	<insert id="userparti" parameterType="com.sulbazi.chat.PartiDTO">
 		INSERT INTO parti (user_id, parti_state, chatroom_category, chatroom_idx)
 	    SELECT #{userId}, 1, 'userchat', #{idx}
@@ -48,14 +54,10 @@
 	    )
 	</insert>
 	
-	<!-- 개인 채팅방에서 나가면 참여상태 false -->
-	<update id="userroomout">
-	    UPDATE parti
-	    SET parti_state = 0
-	    WHERE user_id = #{userId} 
-	      AND chatroom_idx = #{chatroom_idx} 
-	      AND chatroom_category = 'userchat'
-	</update>
+	<!-- 개인 채팅방에서 나가기 -->
+	<delete id="userroomout">
+		DELETE FROM parti WHERE user_id = #{user_id} AND chatroom_idx = #{chatroom_idx}
+	</delete>
 	
 	<!-- 개인 채팅방 강퇴 -->
 	<delete id="kickuser">
@@ -65,6 +67,14 @@
 	    AND chatroom_category = 'userchat'
 	</delete>
 	
+	
+	
+	
+	
+	<!-- 지역 채팅방 참여자 총 인원  -->
+	<select id="localtotal" parameterType="int" resultType="int">
+		SELECT COUNT(user_id) FROM parti WHERE chatroom_idx = #{chatroom_idx} AND chatroom_category = 'localchat' AND parti_state = 1
+	</select>
 	
 	<!-- 지역 채팅방 참여 상태 확인 -->
 	<update id="localreparti">

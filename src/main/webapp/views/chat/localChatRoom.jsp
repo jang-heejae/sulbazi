@@ -56,10 +56,111 @@
 		
 	    localloadUserList();
 		
+	 // 신고, 강퇴 팝업창 - 메세지
+		$(document).off('click', '.usermsg');
+		
+		$(document).on('click', '.usermsg', function(event) {
+			
+	        // 클릭한 위치 좌표
+	        var x = event.pageX;
+	        var y = event.pageY;
+	        
+	        // 신고 할 유저정보
+	        reported_id = $(this).find('.userid').text().trim();
+			reported_idx = $(this).find('.msgidx').text().trim();
+			report_txt = $(this).find('.msgtxt').text();
+			reported_nick = $(this).find('.usernick').text();
+	        
+		    console.log("메세지 쓴 사람 ID : "+reported_id);
+		    console.log("신고한 메세지 idx : "+reported_idx);
+		    console.log("신고한 메세지 txt : "+report_txt);
+	        console.log("현재 로그인한 사람 ID :"+loginId);
+	        console.log("신고할사용자 닉 :"+reported_nick);
+	        
+	        $('.popup').remove();
+	       
+		    if (reported_id.toString() !== loginId.toString()) {
+				
+				var popup = $(`
+				    <div class="popup">
+				        <div class="reportuser"><i class="fas fa-exclamation-circle"></i>신고</div>
+				    </div>
+				`);
+					
+				popup.css({
+				    position: 'absolute',
+				    width: '100px',
+				    height: '30px',
+				    left: x + 'px',
+				    top: y + 'px',
+				    backgroundColor: '#f9f9f9',
+				    border: '1px solid #ccc',
+				    padding: '5px'
+				});
+				
+				
+				$('body').append(popup);
+			}
+		
+	    });
+		
+		// 팝업 제거
+		$(document).on('click', function(event) {
+		    if (!$(event.target).closest('.popup, .msgtxt').length) {
+		        $('.popup').remove();
+		    }
+		});
 		
 		
-		
-		
+		// 신고 할거야
+		/* $(document).on('click', '.reportuser', function() {
+				
+			var display = $('.reportuserform, .reportcancel').css('display');
+			if (display == 'none'){
+		             $('.reportuserform').show();
+		             $('.reportuserform').css({'display':'flex'});
+		         }else{
+		             $('.reportuserform').hide();
+		         }
+			
+			$('.reportedit').click(function(){
+				
+				var reporting_id = '${sessionScope.loginId}';
+				var report_content = $('textarea[name="report_content"]').val();
+				var report_category = '개인 메시지';
+				
+			    console.log("아작스 신고 당할 사람 "+reported_id);
+			    console.log("아작스 신고 할 사람 "+reporting_id);
+				console.log("아작스 신고할 메세지 번호 "+reported_idx);
+				console.log("신고 내용" + report_content);
+				console.log("아작스 신고할사용자 닉 :"+reported_nick);
+				
+			    $.ajax({
+			        url: '/SULBAZI/reportuser.ajax',
+			        type: 'POST',
+			        data: {
+			        	reported_id: reported_id,
+			        	reporting_id: reporting_id,
+			        	report_category: report_category,
+			        	reported_idx: reported_idx,
+			        	report_content: report_content		        	
+			        },
+			        success: function(response) {
+			            
+			            alert(reported_nick +' 신고 완료');
+			            $('.reportuserform').hide();
+			            $('.popup').remove();
+			            loadMessages();
+			        },
+			        error: function() {
+			            alert(reported_nick +'신고 실패');
+			        }
+			    });
+				
+			});
+			
+		}); */
+
 		// 메세지 전송
 	    $('.sendmsg').click(function () {
 	        var localmsg_content = $('textarea[name="usermsgcontent"]').val();
@@ -110,10 +211,18 @@
 	                	var messageHtml = '<div class="usermsg">';
 	                	messageHtml += '<div class="user">';
 	                	messageHtml += '<img alt="프로필" src="/photo/' + msg.user_photo + '" class="user-photo">';
-				    	messageHtml += '<div class="usernick">' + msg.user_nickname + '</div>';
+	                	 
+	                	if (msg.user_id === loginId) {
+	                		messageHtml += '<div class="user" style="font-weight: bold;">' + msg.user_nickname + '㉯</div>';
+	                    } else {
+	                    	messageHtml += '<div class="user">' + msg.user_nickname + '</div>';
+	                    }
+       			
 	                	messageHtml += '</div>';
 	                	messageHtml += '<div class="txtbox">';
 	                	messageHtml += '<div class="msgtxt">' + msg.localmsg_content + '</div>';
+	                	messageHtml += '<div class="msgidx" style="display:none;">' + msg.usermsg_idx+ '</div>';
+	                	messageHtml += '<div class="userid" style="display:none;">' + msg.user_id + '</div>';
 	                	// msg.usermsg_time을 원하는 형식으로 변환
 	                	var date = new Date(msg.localmsg_time);
 	                	var formattedDate = date.getFullYear() + '-' 
@@ -154,6 +263,11 @@
 a{
     text-decoration: none;
     color: black;
+}
+.popup div:hover,
+.popup2 div:hover {
+    font-weight: bold;
+    cursor: pointer;
 }
 .main{
     background-color: #041d03;
@@ -265,6 +379,22 @@ a{
     	cursor: pointer;
     	font-weight: bold;
     }
+    .reportuserform{
+    	display: none;
+	    width: 250px;
+	    height: 200px;
+	    position: absolute;
+	    top: 400px;
+	    right: 0;
+	    background-color: brown;
+	    flex-direction: column;
+	    align-items: center;
+	    justify-content: center;
+    }
+    .reportuserform textarea{
+   	    width: 80%;
+    	height: 70%;
+    }
     .msgform{
         width: 580px;
         height: 600px;
@@ -351,8 +481,19 @@ a{
                         	<div class="roomoutbtn">
 	                        	<i class="fas fa-sign-out-alt"></i>
 	                        	<p>방 나가기</p>
-                        	</div>
+                        	</div>                  	
                         </div>
+                        <div class="reportuserform">
+                       		<h3>
+                       			<i class="fas fa-exclamation-circle"></i>
+                       			신고
+                       		</h3>
+                      		<textarea class="reportarea" name="report_content" placeholder="20자 이내로 신고내용을 입력하세요." maxlength="20"></textarea>
+                      		<div class="reportbtn">
+					            <button class="reportedit">신고</button>
+					            <button class="reportcancel">취소</button>
+					         </div>
+                       	</div>     
                     </div>
                     <div class="msgform">
                         <div class="chatlist">
