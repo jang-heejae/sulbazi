@@ -36,5 +36,8 @@ public interface PhotoDAO {
 
 	List<PhotoDTO> detail4(int store_idx, int photo_category_idx);
 
+	void updateajax(PhotoDTO photoDTO);
+
+
 }
  

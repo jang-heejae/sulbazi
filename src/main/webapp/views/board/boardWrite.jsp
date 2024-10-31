@@ -266,7 +266,7 @@ width: 50px;
          <table class="table">
             <tr class="what">
                <th>
-               		<select name="menu_category" id="category">
+               		<select name="board_category" id="board_category">
 	                    <option value="select">카테고리</option>
 	                    <option value="이벤트">이벤트</option>
 	                    <option value="홍보">홍보</option>
@@ -423,6 +423,10 @@ function save(event) {
         dataType: 'JSON',
         success: function(data) {
             console.log(data);
+            if (data.success) {
+            	alert(data.message);
+				location.href=data.link
+			}
         },
         error: function(e) {
             console.log(e);

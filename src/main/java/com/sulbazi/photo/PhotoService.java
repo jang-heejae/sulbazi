@@ -321,6 +321,16 @@ public class PhotoService {
 			return photo;
 		}
 
+		public void updateajax(MultipartFile[] file, int store_idxx, int i) throws IOException {
+			PhotoDTO photoDTO = new PhotoDTO();
+			String photo = storeFile(file);
+			logger.info(photo);
+			photoDTO.setNew_filename(photo);
+			photoDTO.setPhoto_folder_idx(store_idxx);
+			photoDTO.setPhoto_category_idx(i);
+			photo_dao.updateajax(photoDTO);
+		}
+
 
 
 }
