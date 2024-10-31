@@ -1,6 +1,5 @@
 package com.sulbazi.alarm;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,8 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpSession;
 
-=======
->>>>>>> origin/master
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import com.sulbazi.inquery.InqueryDTO;
 @Service
 public class AlarmService {
 
-<<<<<<< HEAD
 	
 	@Autowired AlarmDAO alarm_dao;
 	
@@ -156,17 +153,10 @@ public class AlarmService {
 		return inqueryanswer;
 	}
 
-
-
-	
-=======
-	Logger logger = LoggerFactory.getLogger(getClass());
-	@Autowired AlarmDAO alarm_dao;
-	
+	//채팅방 참여신청
 	public void partialarm(String id) {
 		alarm_dao.partialarm(id);		
 	}
 
->>>>>>> origin/master
 }
 
