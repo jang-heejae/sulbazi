@@ -34,12 +34,10 @@ public interface PhotoDAO {
 
 	int menuphotoinsert(PhotoDTO photo);
 
-<<<<<<< HEAD
-=======
 	List<PhotoDTO> detail1(int store_idx, int photo_category_idx);
 
 	List<PhotoDTO> detail4(int store_idx, int photo_category_idx);
 
->>>>>>> origin/master
+
 }
  
