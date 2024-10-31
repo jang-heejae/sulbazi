@@ -10,7 +10,6 @@ public interface ChatPartiDAO {
 
 	/* 개인 채팅방 참여 */
 	int userparti(String userId, int idx);
-	int partialarm(String id);
 	
 	/* 방에 참여중인 총 사용자 */
 	Integer usertotal(int idx);

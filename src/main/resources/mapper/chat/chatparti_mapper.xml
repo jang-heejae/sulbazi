@@ -16,12 +16,6 @@
 	    )
 	</insert>
 	
-	<!-- 개인 채팅방 참여시 알람 -->
-	<insert id="partialarm" parameterType="com.sulbazi.alarm.AlamDTO">
-		INSERT INTO alarm(user_id, alarm_category_idx)
-							VALUES(#{id}, 1)
-	</insert>
-	
 	<!-- 방에 참여중인 총 사용자 - 개인 -->
 	<select id="usertotal" parameterType="int" resultType="int">
 		SELECT COUNT(user_id) FROM parti WHERE chatroom_idx = #{idx} AND chatroom_category = 'userchat' AND parti_state = 1
