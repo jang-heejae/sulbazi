@@ -25,7 +25,7 @@ public class CategoryController {
 @Autowired StoreService store_ser;
 	
 Logger logger = LoggerFactory.getLogger(getClass());
-
+ 
 	@RequestMapping(value="/categoryUpdate.go")
 	public String goaddcate() {
 		return "admin/categoryUpdate";

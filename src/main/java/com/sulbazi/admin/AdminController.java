@@ -32,6 +32,11 @@ public class AdminController {
 	@Autowired PhotoService photo_ser;
 	Logger log= LoggerFactory.getLogger(getClass());
 	
+	@RequestMapping(value="/adminDetail.go")
+	public String adminDetail() {
+		return "admin/adminDetail";
+	}
+	 
 	// 관리자 리스트
 	@RequestMapping(value="/adminList.go")
 	public String adminListGo() {

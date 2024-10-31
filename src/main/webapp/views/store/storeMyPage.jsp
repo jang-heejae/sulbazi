@@ -16,7 +16,7 @@ body {
     color: white;
 }
 
-.all {
+.all { 
     width: 65%;
     display: flex;
     flex-direction: row;

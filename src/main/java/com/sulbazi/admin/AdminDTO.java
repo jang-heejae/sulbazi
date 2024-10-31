@@ -1,6 +1,6 @@
 package com.sulbazi.admin;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class AdminDTO {
 	private String admin_id;
@@ -9,7 +9,7 @@ public class AdminDTO {
 	private Date admin_doc;
 	public String getAdmin_id() {
 		return admin_id;
-	}
+	} 
 	public void setAdmin_id(String admin_id) {
 		this.admin_id = admin_id;
 	}
