@@ -30,4 +30,6 @@ public interface InqueryDAO {
 	List<AdminDTO> answeradmin(int inqueryIdx);
 
 	int adminanswerdo( int inqueryIdx,String loginId, String answer);
+
+	int inquerystateupdate(int inquery_idx);
 }

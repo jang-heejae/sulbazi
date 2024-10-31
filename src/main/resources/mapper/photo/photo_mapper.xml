@@ -42,9 +42,9 @@
     		LIMIT 5
 	</select>
 	
-	<insert id="storephotoupdate">
-		INSERT INTO photo(photo_category_idx, new_filename, photo_folder_idx)
-			VALUES(#{param1},#{param2},#{param3})
+	<insert id="storephotoinsert" parameterType="com.sulbazi.photo.PhotoDTO">
+		INSERT INTO photo(photo_category_idx,new_filename,photo_folder_idx)
+			VALUES(#{photo_category_idx},#{new_filename},#{photo_folder_idx})
 	</insert>
 
 	<!-- 매장 메뉴 사진 -->
@@ -66,10 +66,6 @@
 		DELETE FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=6
 	</delete>
 	
-	<insert id="menuphotoinsert">
-    	INSERT INTO photo(photo_category_idx, new_filename, photo_folder_idx)
-    		VALUES(#{photo_category_idx}, #{new_filename}, #{photo_folder_idx})
-	</insert>
 	
 	<select id="detail1" resultType="com.sulbazi.photo.PhotoDTO">
 	    SELECT * FROM photo
