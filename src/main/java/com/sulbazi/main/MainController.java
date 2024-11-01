@@ -9,11 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MainController {
 	@Autowired MainService main_ser;
 	
-	@RequestMapping(value={"/", "/main.go"})
-	public String main() {
-		return "main/main";
-	}
-	@RequestMapping(value="/mainPage.go")
+	@RequestMapping(value={"/", "/main.go", "/mainPage.go"})
 	public String mainPage(Model model) {
 		main_ser.mainPage(model);
 		return "main/mainPage";

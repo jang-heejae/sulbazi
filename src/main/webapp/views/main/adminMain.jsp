@@ -137,10 +137,11 @@
         <div class="fullbox">
             <div class="full">
                 <ul class="list1">
-                    <li><a href="">지역 대화방</a></li>
-                    <li><a href="">개인 대화방</a></li>
-                    <li><a href="">매장 리스트</a></li>
-                    <li><a href="">게시판</a></li>
+                    <li><a href="localChatRoom.go">지역 대화방</a></li>
+                    <li><a href="userchatlist.go">개인 대화방</a></li>
+                    <li><a href="storeList.go">매장 리스트</a></li>
+                    <li><a href="boardList.go">게시판</a></li>
+                    <li><a href="userinquery.go">고객센터</a></li>
                 </ul>
             </div>
             <div class="full2">
