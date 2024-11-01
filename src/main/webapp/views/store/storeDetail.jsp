@@ -224,9 +224,13 @@ h3 {
 	border: 4px solid #09f;
 }
 .review-write{
-	margin: 0px 30px
+	margin: 0px 30px;
 }
-
+img.preview{
+	width:100px;
+	margin:3px;
+	cursor: pointer;
+}
 			
 			
 
@@ -338,14 +342,13 @@ h3 {
                  <!-- 리뷰 작성-->
 		             <article>
 			            <h3>리뷰 작성</h3><button type="button" class="review-write btn btn-dark">리뷰 쓰기</button>
-			            <button type="button" class="review-exit btn btn-dark">닫기</button>
 			      		<%-- <button onclick="openWindowTab(${store.store_idx})">리뷰가기</button> --%>
 
 					    <div class="mypost">
 					        <div class="input-group mb-3">
 					            <label class="input-group-text" for="inputGroupSelect01">별점</label>
-					            <select class="form-select" id="inputGroupSelect01">
-					              <option selected>--선택하기--</option>
+					            <select class="form-select" id="ratingSelect">
+					              <option value="0" selected>--선택하기--</option>
 					              <option value="1">⭐</option>
 					              <option value="2">⭐⭐</option>
 					              <option value="3">⭐⭐⭐</option>
@@ -355,8 +358,8 @@ h3 {
 					        </div>
 					        <div class="input-group mb-3">
 					            <label class="input-group-text" for="inputGroupSelect01">방문목적</label>
-					            <select class="form-select" id="inputGroupSelect01">
-					           		<option value="" selected>--선택하기--</option>
+					            <select class="form-select" id="purposeSelect">
+					           		<option value="0" selected>--선택하기--</option>
 					               <c:forEach var="option" items="${options}">
 					                   <c:if test="${option.category_idx == 3}">
 					                       <option value="${option.opt_idx}">${option.opt_name}</option>
@@ -366,8 +369,8 @@ h3 {
 					        </div>
 					        <div class="input-group mb-3">
 					            <label class="input-group-text" for="inputGroupSelect01">분위기</label>
-					            <select class="form-select" id="inputGroupSelect01">
-					            	<option value="" selected>--선택하기--</option>
+					            <select class="form-select" id="moodSelect">
+					            	<option value="0" selected>--선택하기--</option>
 					               <c:forEach var="option" items="${options}">
 					                   <c:if test="${option.category_idx == 4}">
 					                       <option value="${option.opt_idx}">${option.opt_name}</option>
@@ -377,15 +380,15 @@ h3 {
 					        </div>
 					            <div class="bloom">
 					                <div class="form-floating">
-					                        <textarea class="form-control" placeholder="--내용--" id="floatingTextarea2" style="height: 100px"></textarea>
+					                        <textarea class="form-control" placeholder="--내용--" id="text-area" style="height: 100px"></textarea>
 					                    </div>
 					            </div>
 					
 					        <div class="mybtn">
-					
-					            <button type="button" class="btn btn-dark">글쓰기</button>
-					            <button type="button" class="btn btn-light">닫기</button>
-					
+								<input type="file" name="files" multiple="multiple" onchange="readFile(this)">
+								<div id="img_list"></div>
+					            <button type="button" class="btn review-write btn-dark" onclick="writeDo()">등록</button>
+					            <button type="button" class="btn review-close btn-light">닫기</button>
 					        </div>
 					    </div>
 
@@ -405,6 +408,8 @@ h3 {
 
     </body>
     <script>
+    	
+    
     /* 지도 영역 */
 		var container = document.getElementById('map');
     	var storeLatitude = '${store.store_latitude}'
@@ -454,14 +459,14 @@ h3 {
     	    });
     	}
     	
-    	//리뷰 글쓰기  아쟉
-function openWindowTab(storeIdx) {
+    	//리뷰 글쓰기  아쟉 
+/* function openWindowTab(storeIdx) {
     window.open(
         'review.go?storeidx=' + storeIdx, 
         '_blank', 
         'width=800,height=600,top=100,left=200,resizable=no'
     );
-}
+} */
     	// 리뷰 섹션 아쟉스
     	var storeIdx = '${store.store_idx}';
     	reviewShow(storeIdx);
@@ -476,11 +481,17 @@ function openWindowTab(storeIdx) {
  				},
  				dataType:'json',
  				success:function(data){
-					drawList(data.reviews);
+ 					if (data.reviews && data.reviews.length) {
+						drawList(data.reviews);
+						
+					}else{
+						 errorDraw(); 
+					}
  					
  				},
  				error:function(e){
  					console.log(e);	
+ 					errorDraw();
  				}
  			}); 
  			
@@ -524,8 +535,87 @@ function openWindowTab(storeIdx) {
  		});
 
  		// 리뷰 숨기기 버튼 클릭 시, 해당 영역을 부드럽게 사라지게 하기
- 		$('.review-exit').click(function() {
+ 		$('.review-close').click(function() {
  		    $('.mypost').slideUp(2000); 
  		});
+ 		
+
+ 		//글쓰기 이벤트
+ 		function writeDo() {
+ 			var listContainer = document.getElementById('review-section');
+
+ 		    var ratingValue = $('#ratingSelect').val(); 
+ 		    var purposeValue = $('#purposeSelect').val(); 
+ 		    var moodValue = $('#moodSelect').val(); 
+ 		    var reviewContent = $('#text-area').val();  
+ 		    
+	 		if (ratingValue != 0 && purposeValue != 0 && moodValue != 0 && reviewContent != 0 ) {
+	 			$.ajax({
+	 				type:'POST', 
+	 				url: 'storeReviewWrite.ajax',
+	 				data:{
+	 					'ratingValue':ratingValue,
+	 					'purposeValue':purposeValue,
+	 					'moodValue':moodValue,
+	 					'reviewContent':reviewContent,
+	 					'loginId':loginId,
+	 					'storeIdx':storeIdx
+	 					
+	 				},
+	 				dataType:'json',
+	 				success:function(data){
+						if (data) {
+							reviewShow(storeIdx)
+							
+						}else{
+							errorReviewWrite();
+							
+						}
+	 					
+	 				},
+	 				error:function(e){
+	 					console.log(e);
+	 					errorReviewWrite();
+	 					alert("글쓰기를 실패하셨습니다. 다시 확인해 주세요.");
+	 				}
+	 			}); 
+			}else
+				alert("별점, 방문목적, 분위기를 선택해 주세요!!");
+ 		}
+ 		
+  	   // 이미지 프리뷰
+ 		function readFile(input){
+ 			console.log( "온체인지 파일: "+input.files);
+ 			var reader;
+ 			$('#img_list').empty();
+ 			
+ 			for (var file of input.files) {
+ 				reader = new FileReader();
+ 				reader.readAsDataURL(file);
+ 				reader.onload = function(e){
+ 					$('#img_list').append('<img class = "preview" src="'+e.target.result+'"/>');
+ 				}
+ 			}
+ 			
+ 		}
+ 	   /* 노리뷰 */
+ 	   function errorDraw() {
+ 	       var listContainer = document.getElementById('review-section');
+ 	       
+ 	       var content = '<tr><td style="text-align: center; padding: 20px;">';
+ 	       		content +='리뷰가 없습니다 </td></tr>';
+ 	       	listContainer.innerHTML += content;
+ 	   }
+ 	   /* 글쓰기 오류 */
+ 	   function errorReviewWrite() {
+ 	       var listContainer = document.getElementById('review-section');
+ 	       
+ 	       var content = '<tr><td style="text-align: center; padding: 20px;">';
+ 	       		content +='리뷰가 없습니다 </td></tr>';
+ 	       	listContainer.innerHTML = content;
+ 	   }
+
+ 		
+ 		
     </script>
 </html>

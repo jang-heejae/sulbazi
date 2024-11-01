@@ -185,6 +185,7 @@ public class ReviewDTO {
 	public void setOpt_names(String opt_names) {
 		this.opt_names = opt_names;
 	}
+
     
 	
     

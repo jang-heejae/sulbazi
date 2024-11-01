@@ -92,6 +92,7 @@ public class PhotoService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		PhotoDTO photodto = new PhotoDTO();
 		photodto.setNew_filename(photo);
 		photodto.setPhoto_folder_idx(store_idx);

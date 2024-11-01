@@ -8,7 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.sulbazi.category.ReviewCategoryDTO;
 import com.sulbazi.member.UserDTO;
 
 @Service
@@ -42,5 +44,15 @@ public class ReviewService {
 //	        System.out.println("리뷰가 존재하지 않거나 조회 실패");
 //	    }
 //	}
+
+
+
+	public int reviewWriteDo(ReviewDTO insertReview) {
+		return review_dao.reviewWriteDo(insertReview);
+	}
+
+
+
+
 
 }

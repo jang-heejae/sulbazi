@@ -154,5 +154,8 @@ public class CategoryService {
 	        e.printStackTrace();
 	    }
 	}
+	public int insertOption(int purposeValue, int moodValue, int idx) {
+		return category_dao.insertOption(purposeValue,moodValue,idx);
+	}
 }
 

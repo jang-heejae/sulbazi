@@ -712,13 +712,13 @@
    /* 노매장 */
    function showNoStoresMessage() {
        var listContainer = document.getElementById('list');
-       listContainer.innerHTML = `
+       listContainer.innerHTML = '
            <tr>
                <td colspan="2" style="text-align: center; padding: 20px;">
                    매장 리스트가 없습니다.
                </td>
            </tr>
-       `;
+       ';
    }
    
    

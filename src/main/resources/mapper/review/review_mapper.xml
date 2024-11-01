@@ -46,8 +46,11 @@
 	ORDER BY 
 	    r.review_idx DESC;
 </select>
-
-	
+	<!-- 리뷰 쓰기 -->
+	<insert id="reviewWriteDo" parameterType="com.sulbazi.review.ReviewDTO">
+		INSERT INTO review (user_id, store_idx, review_content,starpoint)
+       		 VALUES (#{user_id}, #{store_idx}, #{review_content},#{starpoint});
+	</insert>
 	
 	
 </mapper>
