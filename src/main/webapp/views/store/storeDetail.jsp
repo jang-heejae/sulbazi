@@ -544,12 +544,12 @@ img.preview{
  		function writeDo() {
  			var listContainer = document.getElementById('review-section');
 
- 		    var ratingValue = $('#ratingSelect').val(); 
- 		    var purposeValue = $('#purposeSelect').val(); 
- 		    var moodValue = $('#moodSelect').val(); 
- 		    var reviewContent = $('#text-area').val();  
+ 		    var ratingValue = document.getElementById("#ratingValue").val(); 
+ 		    var purposeValue = document.getElementById("#purposeSelect").val(); 
+ 		    var moodValue = document.getElementById("#moodSelect").val(); 
+ 		    var reviewContent = document.getElementById("#text-area").val();  
  		    
-	 		if (ratingValue != 0 && purposeValue != 0 && moodValue != 0 && reviewContent != 0 ) {
+	 		if (ratingValue != 0 && purposeValue != 0 && moodValue != 0 && reviewContent != null ) {
 	 			$.ajax({
 	 				type:'POST', 
 	 				url: 'storeReviewWrite.ajax',
