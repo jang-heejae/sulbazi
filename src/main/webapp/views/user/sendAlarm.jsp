@@ -5,190 +5,15 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
 
+</style>
 </head>
 <body>
-
-	<h2>알림</h2>
-	<div id="notification"></div>
-	<button id="test" type="button" onclick="displayNotifications()">강퇴 테스트</button>
-	<!--<button id="test" type="button" onclick="roomdeny()">거절 테스트</button>
-	<button id="test" type="button" onclick="chatroommanager()">수락거절 테스트</button> -->
+	
 </body>
-<script>
-/* const loggedInUserId = localStorage.getItem('loggedInUserId'); // 현재 로그인한 사용자 ID*/
-
-
-/* var my_id = '${sessionScope.loginId}'; //내 아이디
-var chatroomboss = '1212'; //내가 보낸 채팅방에서의 방장
-var user_id='1212'; //나에게 신청 보내는 유저 */
-
-// 강퇴
-function roomout() {
-    $.ajax({
-        type: 'POST',
-        url: 'chatroomout.ajax',
-        data: {'my_id': my_id,  //나의 아이디 //알림 받는사람
-        		'chatroomboss': chatroomboss},  //내가 신청한 방 방장의 아이디
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-            const newAlarm = alarmresponse;
-            addAlarm(newAlarm); // 새로운 알림 추가 함수 호출
-        },
-        error: function(e) {
-            console.log("AJAX 요청 실패:", e); // 에러 메시지 출력
-        }
-    });
-}
-
-//거절
-function roomdeny() {
-    $.ajax({
-        type: 'POST',
-        url: 'chatroomdeny.ajax',
-        data: {'my_id':my_id, //알림 받는 사람
-        		'chatroomboss':chatroomboss}, //내가 신청한 방 방장의 아이디 알림 보내는 사람 
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-        	
-        	const newAlarm = alarmresponse;
-        	addAlarm(newAlarm);
-        },
-        error: function(e) {
-            console.log("AJAX 요청 실패:", e);
-        }
-    });
-}
-
-
-
-//수락/거절 선택
-function chatroommanager() {
-    $.ajax({
-        type: 'POST',
-        url: 'chatroommanager.ajax',
-        data: {'my_id':my_id, //알림 받는 사람
-        		'user_id':user_id}, //알림 주는 사람
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-
-        	const newAlarm = alarmresponse;
-        	addAlarm(newAlarm);
-        },
-        error: function(e) {
-            console.log("AJAX 요청 실패:", e);
-        }
-    });
-}
-
-
-
-
-
-//수락
-function chatroomin() {
-    $.ajax({
-        type: 'POST',
-        url: 'chatroomin.ajax',
-        data: {'my_id':my_id,
-        		'chatroomboss':chatroomboss},
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-
-        	const newAlarm = alarmresponse;
-        	addAlarm(newAlarm);
-        },
-        error: function(e) {
-            console.log("AJAX 요청 실패:", e);
-        }
-    });
-}
-
-
-
-
-
-//즐찾 새소식
-function bookmarknew() {
-    $.ajax({
-        type: 'POST',
-        url: 'bookmarknew.ajax',
-        data: {'my_id':my_id,
-        		'user_id':user_id},
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-
-        	const newAlarm = alarmresponse;
-        	addAlarm(newAlarm);
-        },
-        error: function(e) {
-            console.log("AJAX 요청 실패:", e);
-        }
-    });
-}
-
-
-
-
-
-//문의 답글 새소식
-/* function inquirynewanswer() {
-    $.ajax({
-        type: 'POST',
-        url: 'inquirynewanswer.ajax',
-        data: {'my_id':my_id,
-        		'user_id':user_id},
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-
-        	const newAlarm = alarmresponse;
-        	addAlarm(newAlarm);
-        },
-        error: function(e) {
-            console.log("AJAX 요청 실패:", e);
-        }
-    });
-} */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///////////건들지 말아주세요////////
-
-/* function addAlarm(newAlarm) {
+<!-- <script>
+function addAlarm(newAlarm) {
     newAlarm.id = Date.now(); // 고유 ID 생성
     
     const alarmresponse = localStorage.getItem('Alarmresponse');
@@ -284,19 +109,101 @@ window.addEventListener('storage', (event) => {
     if (event.key === 'Alarmresponse') {
         displayNotifications(); // 알림 업데이트
     }
-}); */
-<jsp:include page="../user/sendAlarm.jsp" />
+}); 
+</script> -->
+<script>
+/* function addAlarm(receiverId, newAlarm) {
+    // 알림에 고유 ID 생성
+    newAlarm.id = Date.now();
 
-/* const eventSource = new EventSource(`/notifications/connect/${loggedInUserId}`);
+    // 수신자 ID를 기반으로 로컬 스토리지에서 해당 사용자 알림 목록 가져오기
+    const alarmresponse = localStorage.getItem(receiverId);
+    let alarms = alarmresponse ? JSON.parse(alarmresponse) : [];
 
-eventSource.onmessage = function(event) {
-    const newAlarm = JSON.parse(event.data);
-    addAlarm(newAlarm); // 알림 추가 함수 호출
-    displayNotifications(); // 알림 표시 업데이트
+    // 새로운 알림 추가
+    alarms.push(newAlarm);
+    localStorage.setItem(receiverId, JSON.stringify(alarms));
+
+    // 로그인한 사용자에게만 알림 표시 (현재 사용자가 수신자인 경우만)
+    if (receiverId === loggedInUserId) {
+        displayNotifications(receiverId);
+    }
+} */
+
+
+
+
+
+
+// 알림을 저장할 배열
+const notificationsList = [];
+
+const loggedInUserId = '${sessionScope.loginId}'; // 현재 로그인된 사용자 ID
+const eventSource = new EventSource(`/notifications/connect/${loggedInUserId}`);
+
+
+//SSE 연결 시작
+ function startSseConnection() {
+ 	const eventSource = new EventSource(`/notifications/connect/${loggedInUserId}`); // userId 포함
+
+ 	eventSource.onmessage = function(event) {
+     	const newAlarm = JSON.parse(event.data); // 수신한 알림 데이터 파싱
+     	addAlarm(newAlarm); // 알림 추가 함수 호출
+     	displayNotifications(); // 알림 표시 업데이트
+ 	};
+
+ 	 eventSource.onerror = function(event) {
+     console.error("SSE 오류 발생:", event);
+ 	};
+} 
+
+// 알림 추가 함수
+function addAlarm(notification) {
+    notificationsList.push(notification); // 새로운 알림을 배열에 추가
+    console.log("새로운 알림 저장:", notification); // 디버깅: 저장된 알림 확인
+}
+
+// 알림을 화면에 표시하는 함수
+function displayNotifications() {
+    const notificationsElement = document.getElementById('notification');
+    notificationsElement.innerHTML = ''; // 기존 알림 초기화
+
+    notificationsList.forEach(notification => {
+        const notificationItem = document.createElement('div');
+        notificationItem.innerHTML = notification.chatroomname+'의'+notification.alarm;
+        notificationItem.setAttribute('data-alarm-idx', notification.alarm_idx); // 알림 인덱스를 데이터 속성으로 저장
+
+        // 특정 알림일 경우 수락/거절 버튼 추가
+        if (notification.alarm === "개설하신 대화방에 참여 신청이 왔습니다.") {
+            const acceptButton = document.createElement('button');
+            acceptButton.textContent = '수락';
+            acceptButton.onclick = () => handleAccept(notification);
+
+            const denyButton = document.createElement('button');
+            denyButton.textContent = '거절';
+            denyButton.onclick = () => handleDeny(notification);
+
+            notificationItem.appendChild(acceptButton);
+            notificationItem.appendChild(denyButton);
+        }
+
+        // 알림 클릭 시 읽음 처리 및 알림 삭제
+        notificationItem.addEventListener('click', function() {
+            markAsRead(notification); // 읽음 처리
+            notificationsElement.removeChild(notificationItem); // 화면에서 제거
+        });
+
+        notificationsElement.appendChild(notificationItem); // 화면에 추가
+    });
+}
+
+// 페이지 로드 시 SSE 연결 시작
+window.onload = () => {
+    startSseConnection(); // SSE 연결 시작
+    displayNotifications(); // 초기 알림 표시
 };
 
-eventSource.onerror = function(event) {
-    console.error("SSE 오류 발생:", event);
-}; */
+
+
 </script>
 </html>
