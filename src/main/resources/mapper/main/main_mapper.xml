@@ -6,4 +6,16 @@
 	<select id="mainStore" parameterType="com.sulbazi.member.StoreDTO">
 		SELECT * FROM store ORDER BY star_average DESC LIMIT 4
 	</select>
+	<select id="mainChat" parameterType="com.sulbazi.chat.UserChatroomDTO">
+		SELECT * FROM userchat ORDER BY userchat_date AND userchat_state = 1 DESC LIMIT 4
+	</select>
+	<select id="profile" parameterType="com.sulbazi.member.UserDTO">
+		SELECT user_photo, user_nickname FROM user WHERE user_id = #{user_id}
+	</select> 
+	<select id="mainBoard" parameterType="com.sulbazi.board.BoardDTO">
+		SELECT * FROM board ORDER BY board_date AND board_state = 1 DESC LIMIT 4 
+	</select>
+	<select id="storeInfo" parameterType="com.sulbazi.member.StoreDTO">
+		SELECT * FROM store WHERE store_idx = #{store_idx}
+	</select>
 </mapper>  

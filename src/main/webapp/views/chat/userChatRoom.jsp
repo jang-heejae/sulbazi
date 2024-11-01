@@ -782,7 +782,7 @@ $(document).ready(function() {
                    <div class="title">${roominfo.userchat_subject}</div>
                    <div class="people">${totaluser} / ${roominfo.current_people}</div>
                 </c:forEach>
-                </div>
+                </div> 
                 <div class="cont2">
                     <div class="userlist">
                        <div class="ajax">

@@ -11,7 +11,7 @@ import com.sulbazi.photo.PhotoDTO;
 public interface UserDAO {
 
 	List<UserDTO> files(String user_id);
-
+ 
 	UserDTO getUserInfo(String user_id);
 
 	List<HashMap<String, Object>> getUserCategories(String user_id);
@@ -32,5 +32,7 @@ public interface UserDAO {
 
 	// 신고당한 횟수
 	int reported(String reported_id);
+
+	List<BookMarkDTO> userBookmark(String userId);
 	
 }

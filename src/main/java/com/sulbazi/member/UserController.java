@@ -48,7 +48,24 @@ public class UserController {
 	    map.put("overlay", user_ser.overlay(user_nickname));
 	    return map;
 	}
-	
+	@RequestMapping(value="/userMyChat.go")
+	public String userMyChat(String user_id, Model model, HttpSession session) {
+		String userId = (String) session.getAttribute("loginId");
+		user_ser.userMyChat(userId, model);
+		return "user/userMyChat";
+	}
+	@RequestMapping(value="/userReview.go")
+	public String userReview(String user_id, Model model, HttpSession session) {
+		String userId = (String) session.getAttribute("loginId");
+		user_ser.userReview(userId, model);
+		return "user/userReview";
+	}
+	@RequestMapping(value="/Mybookmark.go")
+	public String MyBookmark(String user_id, Model model, HttpSession session) {
+		String userId = (String) session.getAttribute("loginId");
+		user_ser.userBookmark(userId, model);
+		return "user/userReview";
+	} 
     @RequestMapping(value="/userAlarm.go")
     public String useralarm() {
     	return "user/userAlarm";

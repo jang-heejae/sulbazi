@@ -12,7 +12,7 @@
 	</select>
 	<update id="adminUpdate" parameterType="map">
 		UPDATE admin SET admin_pw = #{new_password} WHERE admin_id = #{admin_id}
-	</update>
+	</update> 
 	<select id="adminChange" parameterType="String">
 		SELECT * FROM admin WHERE admin_id = #{admin_id}
 	</select>

@@ -13,7 +13,7 @@
 	body{
 		color: white;
 		background-color: #20290E;
-		overflow: hidden;
+		overflow: hidden; 
 	} 
 	table, th, td{
 		border-bottom: 1px solid white;

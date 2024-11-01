@@ -40,7 +40,7 @@
     		SELECT new_filename 
     			FROM photo 
     			WHERE photo_category_idx = 1 
-    			AND photo_folder_idx = #{store_idx} 
+    			AND photo_folder_idx = #{store_idx} ORDER BY photo_idx DESC LIMIT 1
 	</select>
 	<!-- 매장 내외부사진 -->
 	<select id="mystorephoto" 

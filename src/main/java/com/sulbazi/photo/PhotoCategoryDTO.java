@@ -12,7 +12,7 @@ public class PhotoCategoryDTO {
 	}
 	public String getPhoto_category() {
 		return photo_category;
-	}
+	} 
 	public void setPhoto_category(String photo_category) {
 		this.photo_category = photo_category;
 	}

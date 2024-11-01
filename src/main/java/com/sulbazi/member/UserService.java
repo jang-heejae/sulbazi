@@ -20,11 +20,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sulbazi.category.CategoryService;
+import com.sulbazi.chat.ChatRoomService;
+import com.sulbazi.chat.UserChatroomDTO;
+import com.sulbazi.main.MainDAO;
+import com.sulbazi.photo.PhotoDTO;
 
 @Service
 public class UserService {
 	@Autowired UserDAO user_dao;
 	@Autowired CategoryService category_ser;
+	@Autowired ChatRoomService chatroom_ser;
+	@Autowired MainDAO main_dao;
 	Logger log = LoggerFactory.getLogger(getClass());
 	@Value("${upload.path}") private String bpath;
 	
@@ -74,5 +80,40 @@ public class UserService {
 
 	public int overlay(String user_nickname) {
 		return user_dao.overlay(user_nickname);
+	}
+
+	public void userMyChat(String user_id, Model model) {
+		UserDTO userDto = user_dao.getUserInfo(user_id);
+	    model.addAttribute("info", userDto);
+		List<UserDTO> userList = user_dao.files(user_id);
+		model.addAttribute("files", userList);
+		List<UserChatroomDTO> userchatList = chatroom_ser.myroomlist(user_id);
+		model.addAttribute("chatRoom", userchatList);
+	}
+
+	public void userReview(String user_id, Model model) {
+		UserDTO userDto = user_dao.getUserInfo(user_id);
+	    model.addAttribute("info", userDto);
+		List<UserDTO> userList = user_dao.files(user_id);
+		model.addAttribute("files", userList);
+		
+	}
+
+	public void userBookmark(String user_id, Model model) {
+		UserDTO userDto = user_dao.getUserInfo(user_id);
+	    model.addAttribute("info", userDto);
+		List<UserDTO> userList = user_dao.files(user_id);
+		model.addAttribute("files", userList);
+		List<BookMarkDTO> bookList = user_dao.userBookmark(user_id);
+		Map<Integer, StoreDTO> store = new HashMap<Integer, StoreDTO>();
+		for (BookMarkDTO bmDto : bookList) {
+			int store_idx = bmDto.getStore_idx();
+			StoreDTO storeDto = main_dao.storeInfo(store_idx);
+			store.put(store_idx, storeDto);
+		}
+		model.addAttribute("storeInfo", store);
+		model.addAttribute("bookmark", bookList);
+		 
+		
 	}
 }

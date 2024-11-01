@@ -6,19 +6,23 @@
 	<select id="files" resultType="com.sulbazi.member.UserDTO">
 		SELECT * FROM user WHERE user_id = #{user_id}
 	</select>
+	<!-- 유저정보 -->
 	<select id="getUserInfo" resultType="com.sulbazi.member.UserDTO">
     	SELECT * FROM user WHERE user_id = #{user_id}
 	</select>
+	<!-- 유저가 선택한 카테고리 가져오기 -->
 	<select id="getUserCategories" resultType="hashMap">
-    	SELECT opt_idx
+    	SELECT opt_idx 
     	FROM user_category
     	WHERE user_id = #{user_id}
 	</select>
+	<!-- 모든 카테고리 가져오기 -->
 	<select id="getAllCategories" resultType="hashMap">
     	SELECT category_idx, opt_idx, opt_name
     	FROM category_opt
     	WHERE category_state = 1
 	</select>
+	<!-- 회원 정보수정 -->
 	<update id="userUpdate" parameterType="com.sulbazi.member.UserDTO">
     	UPDATE user
     	<set>
@@ -34,13 +38,16 @@
         	<if test="user_photo != null and user_photo != ''">
             	user_photo = #{user_photo},
         	</if>
-    	</set>
+    	</set> 
     	WHERE user_id = #{user_id}
 	</update>
+	<!-- 닉네임 중복확인 -->
 	<select id="overlay" resultType="int">
     	SELECT COUNT(user_nickname) FROM user WHERE user_nickname = #{param1}
 	</select>
-	
+	<select id="userBookmark" parameterType="com.sulbazi.member.BookMarkDTO">
+		SELECT * FROM bookmark WHERE user_id = #{user_id}
+	</select>
 	
 	
 	

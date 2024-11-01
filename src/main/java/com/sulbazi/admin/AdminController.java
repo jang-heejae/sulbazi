@@ -31,7 +31,7 @@ public class AdminController {
 	@Autowired StoreService store_ser;
 	@Autowired PhotoService photo_ser;
 	Logger log= LoggerFactory.getLogger(getClass());
-	
+	 
 	@RequestMapping(value="/adminDetail.go")
 	public String adminDetail() {
 		return "admin/adminDetail";

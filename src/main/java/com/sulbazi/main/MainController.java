@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  
 @Controller
 public class MainController {
-	@Autowired MainService main_ser; 
+	@Autowired MainService main_ser;
 	
 	@RequestMapping(value={"/", "/main.go"})
 	public String main() {
@@ -15,11 +15,17 @@ public class MainController {
 	}
 	@RequestMapping(value="/mainPage.go")
 	public String mainPage(Model model) {
+		main_ser.mainPage(model);
 		return "main/mainPage";
 	}
+	@RequestMapping(value="/storeMain.go")
+	public String storeMainPage(Model model) {
+		main_ser.mainPage(model);
+		return "main/storeMainPage";
+	}
 	@RequestMapping(value="/adminMain.go")
-	public String admin(Model model) {
-		main_ser.mainStore(model);
+	public String adminMainPage(Model model) {
+		main_ser.mainPage(model);
 		return "main/adminMainPage";
 	}
 	
