@@ -27,76 +27,48 @@
     	position: absolute;
     	cursor: pointer;
 	}
-	#bestStore{
-		position: absolute;
-		background-color: #73734F; 
-		width: 883px;
-    	height: 270px;
-		left: 498px;
-    	top: 228px;
+	.chatBox2 {
     	display: flex;
-    	flex-direction: row;
-    	border-radius: 10px;
-    	flex-wrap: nowrap;
-    	align-content: stretch;
-    	justify-content: space-evenly;
-    	align-items: flex-start;
+    	justify-content: center;
+    	align-items: flex-start; /* 시작점에서부터 정렬 */
+    	width: 100%;
+    	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
 	}
-	#bestStore div{
-		background-color: rgb(255, 140, 9);
-		width: 230px;
-    	height: 230px;
-    	margin: 10px;
-    	border-radius: 10px;
-	}
-	#bestChat{
-		position: absolute;
-		background-color: #73734F; 
-		width: 883px;
-    	height: 270px;
-		left: 498px;
-    	top: 500px;
+	.chatitems2 {
+		margin-top: 150px;
+    	width: 940px;
+    	min-height: 650px; /* 초기 최소 높이 설정 */
+    	height: auto; /* 내용에 따라 높이 자동 조절 */
     	display: flex;
-    	flex-direction: row;
-    	border-radius: 10px;
-    	flex-wrap: nowrap;
-    	align-content: stretch;
+    	flex-wrap: wrap;
+    	justify-content: center;
+    	align-items: center;
+    	align-content: center;
+    	background-color: #041d03;
+    	border-radius: 20px;
+    	padding: 20px; /* 내부 여백 추가 */
+    	margin-top: 200px; 
+	}
+	.store{
+		background-color: white;
+		width: 210px;
+		height: 210px;
+	    display: flex;
+   		flex-direction: column;
+    	align-items: center;
     	justify-content: space-evenly;
-    	align-items: flex-end;
 	}
-	#bestChat div{
-		background-color: rgb(255, 140, 9);
-		width: 230px;
-    	height: 230px;
-    	margin: 10px;
-    	border-radius: 10px;
-	}
-	#bestBoard{
-		position: absolute;
-		background-color: #73734F; 
-		width: 883px;
-    	height: 270px;
-		left: 498px;
-    	top: 772px;
+	#bestStore, #bestChat{
+	    flex-direction: row;
+    	justify-content: space-around;
+    	align-items: center;
     	display: flex;
-    	flex-direction: row;
-    	border-radius: 10px;
-    	flex-wrap: nowrap;
-    	align-content: stretch;
-    	justify-content: space-evenly;
-    	align-items: flex-end;
 	}
-	#bestBoard div{
-		background-color: rgb(255, 140, 9);
-		width: 862px;;
-    	height: 230px;
-    	margin: 10px;
-    	border-radius: 10px;
-	}
-	lable{
-		font-size: 24;
-		color: white;
-		font-weight: bold;
+	.storeDetail{
+		display: inline;
+		width: 190px;
+		height: 140px;
+		margin-top:  -9px;
 	}
 </style>
 </head>
@@ -115,21 +87,42 @@
            </li>
 		</ul>
 	</div>
-	<div id="bestStore"><label># 추천 술집</label>
-		<div>매장1</div>
-		<div>매장2</div>
-		<div>매장3</div>
-		<div>매장4</div>
-	</div>
-	<div id="bestChat"><label># 추천 대화방</label>
-		<div>대화방1</div>
-		<div>대화방2</div>
-		<div>대화방3</div>
-		<div>대화방4</div>
-	</div>
-	<div id="bestBoard"><label># 최신 게시글</label>
-		<div>매장 리스트</div>
-	</div>
+	<section class="chatBox2">
+        <div class="chatitems2"> 
+			<div id="bestStore" style="width:100%; height:230px; background-color:#041d03; margin:15px; border: 6px solid rgb(255, 140, 9);">
+				<c:forEach var="store" items="${info}">
+					<div class="store">
+           				<img class="storeDetail" src="/photo/${map[store.store_idx].new_filename}"/>
+						<div>${store.store_name}
+						<i class="fas fa-star" style="color: yellow;"></i>
+						${store.star_average}&nbsp;(<span class="span">${store.review_total}</span>)
+						</div>
+					</div>
+				</c:forEach>
+			</div>
+		<div id="bestChat" style="width:100%; height:230px; background-color:#041d03; margin:15px; border: 6px solid rgb(255, 140, 9);">
+			<div class="store">
+				<div style="background-color: gray; width: 190px; height: 140px; margin-top:  -9px;"></div>
+				<div></div>
+			</div>
+			<div class="store">
+				<div style="background-color: gray; width: 190px; height: 140px; margin-top:  -9px;"></div>
+				<div></div>
+			</div>
+			<div class="store">
+				<div style="background-color: gray; width: 190px; height: 140px; margin-top:  -9px;"></div>
+				<div></div>
+			</div>
+			<div class="store">
+				<div style="background-color: gray; width: 190px; height: 140px; margin-top:  -9px;"></div>
+				<div></div>
+			</div>
+		</div>
+		<div id="bestBoard" style="width:100%; height:230px; background-color:#041d03; margin:15px; border: 6px solid rgb(255, 140, 9);"><label># 최신 게시글</label>
+			<div>게시글 리스트</div>
+		</div>
+		</div>
+	</section>
 </body>
 <script>
 
