@@ -25,17 +25,23 @@
 			AND photo_folder_idx=#{param1};
 	</select>
 
-	<!-- 매장 대표사진 -->
+	<!-- 매장 대표사진 --> 
 	<select id="mystorebestphoto" 
 		resultType="com.sulbazi.photo.PhotoDTO">
     		SELECT new_filename 
-    			FROM photo 
+    			FROM photo  
     			WHERE photo_category_idx = 1 
     			AND photo_folder_idx = #{param1} 
    			 	ORDER BY photo_idx DESC  <!-- index를 내림차순으로 정렬 -->
     			LIMIT 1
 	</select>
-	
+	<select id="mainStore" 
+		resultType="com.sulbazi.photo.PhotoDTO">
+    		SELECT new_filename 
+    			FROM photo 
+    			WHERE photo_category_idx = 1 
+    			AND photo_folder_idx = #{store_idx} 
+	</select>
 	<!-- 매장 내외부사진 -->
 	<select id="mystorephoto" 
 		resultType="com.sulbazi.photo.PhotoDTO">
