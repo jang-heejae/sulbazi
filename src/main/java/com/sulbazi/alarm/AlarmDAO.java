@@ -32,5 +32,7 @@ public interface AlarmDAO {
 
 	int alarminsert(AlamDTO insertalarm);
 
+	int readalarm(int alarm_id);
+
 }
 
