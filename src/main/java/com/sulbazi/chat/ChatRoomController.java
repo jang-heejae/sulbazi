@@ -42,6 +42,7 @@ public class ChatRoomController {
 		List<UserChatroomDTO> userchat_list = chatroom_ser.chatlist();
 		model.addAttribute("list", userchat_list);
 		
+		
 		logger.info("userchat_list :"+ userchat_list);
 		logger.info("세션아이디 : "+session.getAttribute("loginId"));
 				
@@ -70,15 +71,11 @@ public class ChatRoomController {
 			int row = chatroom_ser.chatcreate(userchatroomdto, model, userId);
 			
 			if(row>0) {
-				int idx = userchatroomdto.getUserchat_idx(); // 생성된 방의 idx를 가져옴
-				model.addAttribute("create", "방이 개설되었습니다.");
-				model.addAttribute("idx", idx);
-//	            redirectAttributes.addAttribute("idx", chatroomIdx); // idx를 리다이렉트 URL에 추가
-	            page = "/chat/userChatRoom";
+	            page = "/chat/userChatList";
+	            
 			}else {
-				logger.info("세션에 설정된 값: " + session.getAttribute("session"));
-				page = "/chat/userChatList";
 				model.addAttribute("msg", "방 생성 불가 : 개설된 방이 있습니다.");
+				page ="/chat/userChatList";
 			}
 		}
 		return page;
@@ -127,8 +124,10 @@ public class ChatRoomController {
 			
 			int idx = userChatroomdto.getUserchat_idx();
 			String id = userChatroomdto.getUser_id();
-
-			int current = chatroom_ser.current(idx);
+			
+			Integer current = chatroom_ser.current(idx);
+			
+			logger.info("current"+current);
 			int total = chatparti_ser.usertotal(idx);
 			
 			logger.info("최대 인원수 = "+total);
@@ -149,6 +148,7 @@ public class ChatRoomController {
 	        		int row = chatparti_ser.userparti(user_id, idx);
 		        	if (row > 0) {
 		        		alarm_ser.partialarm(id);
+		        		model.addAttribute("msg", "참여 신청 완료");
 		        		page = "/chat/userChatList";
 		        	}
 	        	}

@@ -189,7 +189,7 @@
 	                    대화방 이름:<input type="text" name="userchat_subject" placeholder="방 제목을 입력하세요.">
 	                </li>
 	                <li class="roominp">
-	                     제한 인원:<input type="range" name="current_people" min="1" max="20" value="5" oninput="document.getElementById('value2').innerHTML=this.value;">
+	                     제한 인원:<input type="range" name="current_people" min="2" max="20" value="5" oninput="document.getElementById('value2').innerHTML=this.value;">
 	                     <p id="value2">5</p>
 	                </li>
 	                <li>
@@ -216,7 +216,7 @@
                         </li>
                         <li class="createduser">
                         	${userchat.user_id}
-                        	<input type="hidden" name="user_id" value="${userchat.user_id}" readonly/>	
+                        	<input type="hidden" name="user_id" class="boss" value="${userchat.user_id}" readonly/>	
                         </li>
                         <li>
                         	<span class="total_${userchat.userchat_idx}"></span> / ${userchat.current_people}
@@ -230,9 +230,11 @@
                             <li>${userchat.userchat_date}</li>
                         </ul>
                     </div>
-	                    <%-- <c:if test="${totaluser[userchat.userchat_idx] < userchat.current_people}"> --%>
-				            <button type="submit" class="join-button">참가</button>
-				        <%-- </c:if> --%>
+				    <button type="button" class="gobtn" 
+	                        data-user-id="${sessionScope.loginId}" 
+	                        data-chatroom-idx="${userchat.userchat_idx}">
+		                    참가 상태 확인 중...
+	                </button>
                 </div>
             </div>
           </form>
@@ -241,6 +243,7 @@
 	</section>
 </body>
 <script>
+
 $(document).ready(function() {
 	
 	
@@ -259,7 +262,9 @@ $(document).ready(function() {
 
     if(msg!=""){
         alert(msg);
+        location.replace('./userchatlist.go');
     }
+    
     
     // 서버에서 보내온 session alert
     var session = "${sessionScope.session}";
@@ -267,27 +272,107 @@ $(document).ready(function() {
     console.log(session);
     if(session!=""){
         alert(session);
-        window.location.href = '';
     }
-    
-	
-    
+ 
 
+    // 참가 상태를 확인    
+    $('.gobtn').each(function() {
+        var statusElement = $(this);
+        var user_id = statusElement.data('user-id');
+        var chatroom_idx = statusElement.data('chatroom-idx');
+        
+        // 참가 상태를 확인
+        $.ajax({
+            url: '/SULBAZI/userchek.ajax', 
+            type: 'POST',
+            data: {
+                user_id: user_id,
+                chatroom_idx: chatroom_idx
+            },
+            success: function(response) {
+              
+                if (response.partistate === 0) {
+                    statusElement.text("참가신청중");
+                } else if (response.partistate === 1) {
+                    statusElement.text("참가중");
+                    statusElement.closest('form').submit();
+                    
+                } else {
+                    statusElement.text("참가하기");
+                }
+            },
+            error: function() {
+                console.log("참가 여부 확인 중 오류가 발생했습니다.");
+                statusElement.text("오류 발생");
+            }
+        });
+    });  ///////
+/*     $('.gobtn').on('click', function(event) {
+    	statusElement.closest('form').submit();
+    } */
+    // 참가 신청   
+	/* $('.gobtn').on('click', function(event) {
+    	 
+         var form = this.closest('form'); 
+         var chatboss = form.querySelector('.boss').value;
+         var user_id = loginId;
+         var chatroomCategory = 'userchat';
+         var chatroom_idx = form.querySelector('input[name="userchat_idx"]').value; 
+        
+        $.ajax({
+            url: 'userchatroom.go', 
+            type: 'POST',
+            data: {
+            	chatroom_idx: chatroom_idx
+            	},
+            success: function(response) {
+            	// 기본 폼 제출 막기
+                event.preventDefault();
+            	
+                    if ($(this).text() === "참가") {
+                        $(this).closest('form').submit();
+                        $(this).text('참가신청중');
+                        
+                        // 알림 ajax
+                        function chatroommanager() {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'chatroommanager.ajax',
+                                data: {'my_id': loginId,
+                                		'user_id': chatboss},
+                                dataType: 'JSON',
+                                success: function(alarmresponse) {
+
+                                	const newAlarm = alarmresponse;
+                                	addAlarm(newAlarm);
+                                	console.log("신청 완료");
+                                },
+                                error: function(e) {
+                                    console.log("AJAX 요청 실패:", e);
+                                }
+                            });
+                        }
+                        
+                    } else if ($(this).text() === "참가신청중") {
+                    	
+                    }
+                }
+                console.log("입장");
+            },
+            error: function() {
+                console.log("참가 여부 확인 중 오류가 발생했습니다.");
+            }
+        });
+    }); */
     
-    	
-    	
-    	
     
-    // 참가 신청
-     /* $('.gobtn').on('click',function(event) {
-        event.preventDefault(); // 폼 제출 막기 (필요할 경우 사용)
-		if($(this).text() === "참가"){
-	        $(this).text('참가신청중');
-		}else if($(this).text() === "참가신청중"){
-			$(this).closest('form').submit();			
-		}
-    });
- */
+    
+    
+    
+    
+    
+    
+    
     
  	
     // 각 방에 참여한 사용자 수
