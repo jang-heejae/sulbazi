@@ -140,6 +140,7 @@
 <script>
 var my_id = '${sessionScope.loginId}';
 var inquery_idx = document.getElementById('inqueryIdx').value;
+var inquery_id = 
 var btn = document.getElementById('submitAnswer');
 var form = document.querySelector("form[action='adminanswer.do']");
 
