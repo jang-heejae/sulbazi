@@ -11,9 +11,19 @@
 	</select>
 	
 	<!-- 개인 채팅방 참여 신청 지금 1 나중에 0으로 바꾸기 -->
-	<insert id="userparti" parameterType="com.sulbazi.chat.PartiDTO">
+	<!-- <insert id="userparti" parameterType="com.sulbazi.chat.PartiDTO">
 		INSERT INTO parti (user_id, parti_state, chatroom_category, chatroom_idx)
 	    SELECT #{userId}, 1, 'userchat', #{idx}
+	    WHERE NOT EXISTS (
+	        SELECT 1 FROM parti 
+	        WHERE user_id = #{userId} 
+				AND chatroom_category = 'userchat' 
+				AND chatroom_idx = #{idx}
+	    )
+	</insert> -->
+	<insert id="userparti" parameterType="com.sulbazi.chat.PartiDTO">
+		INSERT INTO parti (user_id, chatroom_category, chatroom_idx)
+	    SELECT #{userId}, 'userchat', #{idx}
 	    WHERE NOT EXISTS (
 	        SELECT 1 FROM parti 
 	        WHERE user_id = #{userId} 
@@ -101,7 +111,7 @@
 	<update id="localroomout">
 	    UPDATE parti
 	    SET parti_state = 0
-	    WHERE user_id = #{userId} 
+	    WHERE user_id = #{user_id} 
 	      AND chatroom_idx = #{chatroom_idx} 
 	      AND chatroom_category = 'localchat'
 	</update>

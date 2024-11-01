@@ -59,8 +59,9 @@ public class ChatPartiController {
 	/* 개인 채팅방에서 나가기 */
 	@PostMapping(value="/userroomout.ajax")
 	@ResponseBody
-	public String userroomout(@RequestParam String user_id, @RequestParam int chatroom_idx) {
+	public String userroomout(HttpSession session, @RequestParam int chatroom_idx) {
 		
+		String user_id = (String) session.getAttribute("loginId");
 		chatparti_ser.userroomout(user_id, chatroom_idx);
 		
 		return "success";
