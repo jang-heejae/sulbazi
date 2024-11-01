@@ -5,127 +5,17 @@
 <head>
     <meta charset="UTF-8">
     <title>SULBAZI</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="resources/jquery.twbsPagination.js" type="text/javascript"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/6282a8ba62.js" crossorigin="anonymous"></script>
 </head>
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
-    img.icon{
-		width:25px;
-	}
-    *{
-        margin: 0;
-        padding: 0;
-    }
-    ol, ul, li{
-        list-style: none;
-    }
-    a{
-        text-decoration: none;
-        color: white;
-    }
-    body{
-        background-color: #041d03;
-    }
-    .navbar{
-        z-index: 99;
-        position: absolute;
-        left: 360px;
-        justify-items: center;
-        width: 1200px;
-        height: 120px;
-        background-color: #041d03;
-        color: rgb(255, 140, 9);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .icon{
-        display: flex;
-    }
-    .logo_text a{
-        font-family: "Irish Grover", system-ui;
-        font-weight: 400;
-        font-style: normal;
-        margin-left: 160px;
-        color: rgb(255, 140, 9);
-        font-size: 70px;
-        font-weight: bolder;
-    }
-    .icon li{
-        padding: 10px;
-    }
-    .fullbox{
-        display: flex;
-    }
-    .full{
-        z-index: 999;
-        display: flex;
-        width: 300px;
-        height: 100vh;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: rgb(255, 140, 9);
-        display: none;
-    }
-    .list1 li, .list2 li{
-        padding: 20px;
-    }
-    .full2{
-        z-index: 999;
-        position: absolute;
-        left: 1620px;
-        display: flex;
-        width: 300px;
-        height: 100vh;
-        flex-direction: column;
-        justify-content: flex-end;
-        align-items: center;
-        background-color: rgb(255, 140, 9);
-        display: none;
-    }
-    .list2{
-        position: absolute;
-        top: 200px;
-    }
-    .logout{
-        position: absolute;
-        left: 25px;
-        bottom: 25px;
-    }
-    i{
-        font-size: 25px;
-    }
-
-    .sub_, .sub_1{
-        position: absolute;
-        width: 200px;
-        height: 310px;
-        background-color: rgb(255, 140, 9);
-        border-radius: 10px;
-        display: none;
-    }
-    .sub_txt, .sub_txt1{
-        font-size: 20px;
-        color: white;
-        display: flex;
-        justify-content: center;
-        margin-top: 5px;
-    }
-    .sub, .sub1{
-        margin: 10px;
-        width: 180px;
-        height: 80px;
-        background-color: aliceblue;
-        display: flex;
-        justify-content: space-around;
-        border-radius: 10px;
-    }
     .boardlist{
         position: absolute;
         width: 1200px;
-        height: 600px;
+        height: auto;
         background-color: rgb(255, 140, 9);
         border-radius: 10px;
         margin-top: 10%;
@@ -155,10 +45,64 @@
     	top: 140px;
     	right: 327px;
     }
+    .pagination {
+    	display: flex; /* Flexbox로 설정 */
+    	justify-content: center; /* 중앙 정렬 */
+    	margin-top: 10px; /* 테이블과의 간격 */
+	}
+
+	.pagination li {
+    	list-style: none; /* 기본 리스트 스타일 제거 */
+    	margin: 0 5px; /* 버튼 간격 조정 */
+	}
+
+	.pagination a {
+		font-family: "Irish Grover", system-ui;
+		font-size: 20px;
+    	color: #041d03; /* 버튼 글자색 */
+    	background-color: #73734F; /* 버튼 배경색 */
+    	padding: 5px 10px; /* 버튼 안쪽 여백 */
+    	text-decoration: none; /* 밑줄 제거 */
+    	border-radius: 5px; /* 둥근 모서리 */
+    	border: 1px solid #73734F; /* 버튼 테두리 색 */
+	}
+
+	.pagination .active a {
+    	background-color: #73734F; /* 현재 페이지 강조 색 */
+    	color: rgb(255, 140, 9); /* 현재 페이지 글자색 */
+	}
+	.page-item.active .page-link {
+    	z-index: 1;
+    	color: rgb(255, 140, 9);
+    	background-color: #73734F;
+    	border-color: #73734F;
+	}
+	.page-item.disabled .page-link {
+    	color: #fff;;
+    	pointer-events: none;
+    	cursor: auto;
+    	background-color: #73734F;
+    	border-color: #73734F;
+	}
+	.page-item.disabled .page-link {
+    	color: rgb(255, 140, 9);
+    	pointer-events: none;
+    	cursor: auto;
+    	background-color: #73734F;
+    	border-color: #73734F;
 </style>
 <body>
     <jsp:include page="../main/main.jsp"/>
     <c:if test="${not empty sessionScope.opt && sessionScope.opt == 'store_log'}">
+    <div id="reportList">
+		<input type="radio" name="board_category" value="all" checked/> 전체 보기&nbsp;&nbsp;
+		<input type="radio" name="board_category" value="홍보"/>홍보&nbsp;&nbsp;
+		<input type="radio" name="board_category" value="이벤트"/>이벤트&nbsp;&nbsp;
+		<input type="radio" name="board_category" value="신메뉴"/>신메뉴&nbsp;&nbsp;
+		<input type="radio" name="board_category" value="신규오픈"/>신규오픈
+		<div><input type="text" name="board_search" value=""/></div>
+		<button id="searchButton">검색</button>
+	</div>
     <div class="writebutton" style="text-align: right; margin: 10px;">
         <a href="boardWrite.go" style="padding: 10px 20px; background-color: rgb(255, 140, 9); color: white; text-decoration: none; border-radius: 5px;">
             글쓰기
@@ -168,119 +112,58 @@
     <div class="boardlist">
         <table>
             <tbody id="list">
-
             </tbody>
         </table>
+            	<div class="container">
+	    				<nav aria-label="Page navigation">
+	        			<ul class="pagination" id="pagination"></ul>
+    				</nav>
+				</div>
     </div>
     
 </body>
 <script>
-//main_menu 클릭 이벤트
-var storeId = '<%= request.getAttribute("store_id") %>';
-console.log(storeId);
-document.querySelectorAll('.main_menu').forEach(function(menu) {
-    menu.addEventListener('click', function() {
-        var fullElement = document.querySelector('.full');
-        var displayfull = window.getComputedStyle(fullElement).display;
+var showPage = 1;
+pageCall(showPage);
 
-        if (displayfull === 'none') {
-            // .full2, .sub_, .sub_1 숨기기
-            document.querySelectorAll('.full2, .sub_, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .full 클래스 요소를 flex로 설정
-            fullElement.style.display = 'flex';
-        } else {
-            // .full 클래스 요소 숨기기
-            fullElement.style.display = 'none';
-        }
-    });
-});
-
-// mypage 클릭 이벤트
-document.querySelectorAll('.mypage').forEach(function(mypage) {
-    mypage.addEventListener('click', function() {
-        var full2Element = document.querySelector('.full2');
-        var displayfull2 = window.getComputedStyle(full2Element).display;
-
-        if (displayfull2 === 'none') {
-            // .full, .sub_, .sub_1 숨기기
-            document.querySelectorAll('.full, .sub_, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .full2 클래스 요소를 flex로 설정
-            full2Element.style.display = 'flex';
-        } else {
-            // .full2 클래스 요소 숨기기
-            full2Element.style.display = 'none';
-        }
-    });
-});
-
-// fa-message 클릭 이벤트
-document.querySelectorAll('.fa-message').forEach(function(message) {
-    message.addEventListener('click', function() {
-        var sub1Element = document.querySelector('.sub_1');
-        var displaysub_1 = window.getComputedStyle(sub1Element).display;
-
-        if (displaysub_1 === 'none') {
-            // .full, .full2, .sub_ 숨기기
-            document.querySelectorAll('.full, .full2, .sub_').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .sub_1 클래스 요소 보이기
-            sub1Element.style.display = 'block';
-        } else {
-            // .sub_1 클래스 요소 숨기기
-            sub1Element.style.display = 'none';
-        }
-    });
-});
-
-// fa-bell 클릭 이벤트
-document.querySelectorAll('.fa-bell').forEach(function(bell) {
-    bell.addEventListener('click', function() {
-        var subElement = document.querySelector('.sub_');
-        var displaysub = window.getComputedStyle(subElement).display;
-
-        if (displaysub === 'none') {
-            // .full, .full2, .sub_1 숨기기
-            document.querySelectorAll('.full, .full2, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .sub_ 클래스 요소 보이기
-            subElement.style.display = 'block';
-        } else {
-            // .sub_ 클래스 요소 숨기기
-            subElement.style.display = 'none';
-        }
-    });
-});
-
-$.ajax({
-    type: 'GET',
-    url: 'boardList.ajax',
-    data: {},
-    dataType: 'JSON',
-    success: function(data) {
-        console.log(data);
-        if (data.login) {
-            drawList(data.list); // 수정된 list로 drawList 호출
-        } else {
-            alert('로그인이 필요한 서비스입니다.');
-            location.href = './login.go';
-        }
-    },
-    error: function(e) {
-        console.log(e);
-    }
-});
+	function pageCall(page){
+		$.ajax({
+		    type: 'GET',
+		    url: 'boardList.ajax',
+		    data: {
+		    	page: page,
+		    	cnt: 15
+		    },
+		    dataType: 'JSON',
+		    success: function(data) {
+		        console.log(data);
+		        if (data.login) {
+		            drawList(data.list);
+		            $('.pagination').twbsPagination({
+		            	startPage: page,
+	                    totalPages: data.totalPages,
+	                    visiblePages: 5,
+	                    onPageClick: function(evt, page) {
+	                        console.log('Page:', page);
+	                        pageCall(page); 
+	                    }
+	                });
+		        } else {
+		            alert('로그인이 필요한 서비스입니다.');
+		            location.href = './login.go';
+		        }
+		    },
+		    error: function(e) {
+		        console.log(e);
+		    }
+		});
+	}
 
 function drawList(list) {
     var content = '';
     list.forEach(function(item) {
         // board_state가 0이 아닐 때만 테이블 행을 추가합니다.
-        if (item.board_state > 0) {
+        if (item.board_state) {
             content += '<tr>';
             content += '<td>' + item.board_category + '</td>';
             content += '<td class="subject"><a href="boardDetail.go?board_idx=' + item.board_idx + '" style="color: blue;">' + item.board_subject + '</a></td>';
@@ -299,6 +182,39 @@ function drawList(list) {
         }
     });
     $('#list').html(content);
+}
+
+$(document).ready(function() {
+	pageCall(showPage);
+    $('input[name="board_state"], input[name="board_category"]').change(function() {
+        board_filter('filter');
+    });
+    $('#searchButton').click(function() {
+    	board_filter('search');	
+    });   
+	});	
+
+
+function board_filter(action) {
+	var boardCategory = $('input[name="board_category"]:checked').val() || "all";
+	var boardSearch = $('input[name="board_search"]').val();
+	console.log("카테고리 누른 값 : " + boardCategory);
+	$.ajax({
+		type: 'GET',
+		url: 'board_category.ajax',
+		data: {
+			action: action,
+			boardCategory: boardCategory,
+			boardSearch: boardSearch
+		},
+		dataType: 'JSON',
+		success: function(data) {
+			drawList(data.list);
+		},
+		error: function(e) {
+			console.error('AJAX Error:', e);
+		}
+	});
 }
 </script>
 </html>

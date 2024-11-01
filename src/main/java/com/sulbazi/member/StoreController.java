@@ -58,6 +58,8 @@ public class StoreController {
 	
 	
 	
+=======
+>>>>>>> origin/master
 	//매장 상세보기
 	@RequestMapping(value="/storeDetail.do")
     public String getStoreDetail(int storeidx, Model model, HttpSession session) {
