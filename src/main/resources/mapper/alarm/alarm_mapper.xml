@@ -69,13 +69,15 @@
 	
 
 	<!-- 읽음& 안읽음 -->
-	<select id="alarmread" resultType="com.sulbazi.alarm.AlamDTO">
+	<select id="alarmreadornot" resultType="com.sulbazi.alarm.AlamDTO">
 		SELECT * FROM alarm WHERE alarm_read=#{param1}
 	</select>
 	
 	
 	<!-- 읾음 처리 -->
-	
+	<update id="readalarm">
+		UPDATE alarm SET alarm_read=1 WHERE alarm_idx=#{param1}
+	</update>
 	
 	<!-- 대화방 알림 모음 -->
 	<select id="chatalarm" resultType="com.sulbazi.alarm.AlamDTO">
