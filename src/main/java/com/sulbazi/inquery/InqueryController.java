@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -169,6 +170,7 @@ public class InqueryController {
 
 	//관리자 답변
 	@PostMapping(value="/adminanswer.do")
+	@Transactional
 	public String adminanswer(@RequestParam String answer, HttpSession session, @RequestParam int inqueryIdx) {
 	    logger.info("답변 등록 컨트롤러");
 	    String loginId = (String) session.getAttribute("loginId");

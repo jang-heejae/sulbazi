@@ -127,7 +127,7 @@
             </form>
 			<form action="adminanswer.do" method="post">
     			<div class="admin-response">
-    				 <input type="hidden" name="inqueryIdx" value="${userinquerydetail.inquery_idx}">
+    				 <input type="hidden" name="inqueryIdx" id="inqueryIdx" value="${userinquerydetail.inquery_idx}">
         			<textarea id="answer" name="answer" rows="3" style="width: 722px; max-width:722px;"></textarea>
     			</div>
     			<button type="submit" id="submitAnswer" style="margin-top: 5;">답변 등록</button>
@@ -138,20 +138,61 @@
 
 </body>
 <script>
-var loginId = '${sessionScope.loginId}';
+var my_id = '${sessionScope.loginId}';
+var inquery_idx = document.getElementById('inqueryIdx').value;
 var btn = document.getElementById('submitAnswer');
+var form = document.querySelector("form[action='adminanswer.do']");
+
 btn.addEventListener('click', function(event) {
     var result = confirm('등록하시겠습니까?');
     if (result == true) {
         alert('등록되었습니다');
-        // 폼을 직접 제출하도록 수정합니다.
-        document.querySelector("form[action='adminanswer.do']").submit();
+        event.preventDefault(); // 기본 제출 방지
+
+        // 폼 데이터 수집
+        var formData = new FormData(form); 
+
+        // Fetch API로 폼 제출
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('네트워크 응답이 좋지 않습니다.');
+            }
+            return response.json(); // JSON으로 응답 받기
+        })
+        .then(data => {
+            console.log("폼 제출 성공:", data);
+            // AJAX 호출
+            inquirynewanswer(); // 성공 후 AJAX 호출
+        })
+        .catch((error) => {
+            console.error("폼 제출 중 오류 발생:", error);
+        });
     } else {
         alert('등록이 취소되었습니다');
-        event.preventDefault(); // 등록이 취소되었을 때 폼 제출을 방지합니다.
+        event.preventDefault(); // 등록 취소 시 폼 제출 방지
     }
 });
 
-
+// AJAX 호출 함수
+function inquirynewanswer() {
+    $.ajax({
+        type: 'POST',
+        url: 'inquiryanswer.ajax',
+        data: {'my_id': my_id, 'inquery_idx': inquery_idx},
+        dataType: 'JSON',
+        success: function(alarmresponse) {
+            const newAlarm = alarmresponse;
+            addAlarm(newAlarm); // 알림 추가
+        },
+        error: function(e) {
+            console.log("AJAX 요청 실패:", e);
+            console.log("응답 내용:", e.responseText); // 응답 내용 출력
+        }
+    });
+}
 </script>
 </html>
