@@ -41,5 +41,7 @@ public interface CategoryDAO {
 
 	int getTotalPages(int idx_1, int idx_2, int idx_3, int idx_4);
 
+	int insertOption(int purposeValue, int moodValue, int idx);
+
 
 }

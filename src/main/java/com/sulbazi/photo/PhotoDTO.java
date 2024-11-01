@@ -8,6 +8,17 @@ public class PhotoDTO {
 	private String new_filename;
 	private int photo_folder_idx;
 
+
+    @Override
+    public String toString() {
+        return "Photo{" +
+                "photo_idx=" + photo_idx +
+                ", photo_category_idx=" + photo_category_idx +
+                ", new_filename='" + new_filename + '\'' +
+                ", photo_folder_idx=" + photo_folder_idx +
+                '}';
+    }
+    
 	public int getPhoto_idx() {
 		return photo_idx;
 	}

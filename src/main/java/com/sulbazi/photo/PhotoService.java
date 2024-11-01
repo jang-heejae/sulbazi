@@ -34,17 +34,17 @@ public class PhotoService {
 	
 	public void fileSave(MultipartFile[] files, int idx, int cti) throws IOException {
 		
-		logger.info("받은 idx 값: " + idx);
-		logger.info("받은 files 값: " + files);
-		logger.info("받은 cti 값: " + cti);
+//		logger.info("받은 idx 값: " + idx);
+//		logger.info("받은 files 값: " + files);
+//		logger.info("받은 cti 값: " + cti);
 		String filePath = storeFile(files);
         PhotoDTO photoDTO = new PhotoDTO();
         photoDTO.setPhoto_category_idx(cti);
         photoDTO.setPhoto_folder_idx(idx);
         photoDTO.setNew_filename(filePath);
         photo_dao.fileSave(photoDTO);
-        logger.info("{photoDTO}:"+photoDTO);
-        logger.info("받은 newfile 값: {}"+filePath);
+//        logger.info("{photoDTO}:"+photoDTO);
+//        logger.info("받은 newfile 값: {}"+filePath);
     }
 
     private String storeFile(MultipartFile[] files) throws IOException {
@@ -85,6 +85,7 @@ public class PhotoService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		PhotoDTO photodto = new PhotoDTO();
 		photodto.setNew_filename(photo);
 		photodto.setPhoto_folder_idx(store_idx);
