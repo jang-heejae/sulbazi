@@ -10,15 +10,22 @@ $(document).ready(function() {
    
    var loginId = '${sessionScope.loginId}';
    var msg = "${msg}";
+   var create = "${create}";
    var roomin = "${roomin}";
-   
-   if(msg!=""){
+
+    if(msg!=""){
       alert(msg);
       location.replace('./userchatlist.go');
    }
    
    
-   const sse = new EventSource("/sse/all");
+   if(create!=""){
+      alert(create);
+      location.replace('/userchatroom.go?idx='+${idx});
+   }
+
+   
+    const sse = new EventSource("/sse/all");
 
     sse.addEventListener("newMessage", function(event) {
         loadMessages();
@@ -29,7 +36,7 @@ $(document).ready(function() {
     });
    
 
- // SSE(EventSource) 객체 생성
+    // SSE(EventSource) 객체 생성
     var eventSource = new EventSource('/SULBAZI/subscribe');
 
     // 연결이 성공적으로 열리면 실행되는 핸들러
@@ -91,45 +98,44 @@ $(document).ready(function() {
       report_txt = $(this).find('.msgtxt').text();
       reported_nick = $(this).find('.usernick').text();
         
-       console.log("메세지 쓴 사람 ID : "+reported_id);
-       console.log("신고한 메세지 idx : "+reported_idx);
-       console.log("신고한 메세지 txt : "+report_txt);
+        console.log("메세지 쓴 사람 ID : "+reported_id);
+        console.log("신고한 메세지 idx : "+reported_idx);
+        console.log("신고한 메세지 txt : "+report_txt);
         console.log("현재 로그인한 사람 ID :"+loginId);
         console.log("신고할사용자 닉 :"+reported_nick);
         
         $('.popup').remove();
        
-       if (reported_id.toString() !== loginId.toString()) {
+        if (reported_id.toString() !== loginId.toString()) {
          
-         var popup = $(`
-             <div class="popup">
-                 <div class="reportuser"><i class="fas fa-exclamation-circle"></i>신고</div>
-             </div>
-         `);
-         
-         var user = $('h2').data('userid').toString();
-         
-         // 방장은 강퇴 옵션 추가해드림
-         if (loginId === user) {
-             popup.append('<div class="kickuser"><i class="fas fa-crosshairs"></i> 강퇴 </div>');
-         }
-         
-         popup.css({
-             position: 'absolute',
-             width: '100px',
-             height: '50px',
-             left: x + 'px',
-             top: y + 'px',
-             backgroundColor: '#f9f9f9',
-             border: '1px solid #ccc',
-             padding: '5px'
-         });
-         
+      var popup = $(`
+          <div class="popup">
+              <div class="reportuser"><i class="fas fa-exclamation-circle"></i>신고</div>
+          </div>
+      `);
+
+      var user = $('h2').data('userid').toString();
+      
+      // 방장은 강퇴 옵션 추가해드림
+      if (loginId === user) {
+          popup.append('<div class="kickuser"><i class="fas fa-crosshairs"></i> 강퇴 </div>');
+      }
+      
+      popup.css({
+          position: 'absolute',
+          width: '100px',
+          height: '50px',
+          left: x + 'px',
+          top: y + 'px',
+          backgroundColor: '#f9f9f9',
+          border: '1px solid #ccc',
+          padding: '5px'
+      });
          
          $('body').append(popup);
       }
-   
-    });
+
+   });
    
    // 팝업 제거
    $(document).on('click', function(event) {
@@ -150,25 +156,25 @@ $(document).ready(function() {
         var y = event.pageY;
         
         // 강퇴 할 유저정보
-        var chatroom_idx = ${idx};
-        reported_id = $(this).find('.useridf').text();
+      var chatroom_idx = ${idx};
+      reported_id = $(this).find('.useridf').text();
       reported_nick = $(this).find('.usernickf').text();
         
-       console.log("강퇴할 놈: "+reported_id);
-       console.log("나: "+loginId);
-       console.log("강퇴 방번호 : "+chatroom_idx);
+        console.log("강퇴할 놈: "+reported_id);
+        console.log("나: "+loginId);
+        console.log("강퇴 방번호 : "+chatroom_idx);
         
         $('.popup2').remove();
        
-       if (reported_id.toString() !== loginId.toString()) {
-          var user = $('h2').data('userid').toString();
+        if (reported_id.toString() !== loginId.toString()) {
+         var user = $('h2').data('userid').toString();
          if (loginId === user) {
             var popup2 = $(`
-                   <div class="popup2">
-                       <div class="kickuser"><i class="fas fa-crosshairs"></i> 강퇴</div>
-                   </div>
-               `);
-         }
+            <div class="popup2">
+                <div class="kickuser"><i class="fas fa-crosshairs"></i> 강퇴</div>
+            </div>
+            `);
+      }
          
          popup2.css({
              position: 'absolute',
@@ -212,33 +218,33 @@ $(document).ready(function() {
          var report_content = $('textarea[name="report_content"]').val();
          var report_category = '개인 메시지';
          
-          console.log("아작스 신고 당할 사람 "+reported_id);
-          console.log("아작스 신고 할 사람 "+reporting_id);
+         console.log("아작스 신고 당할 사람 "+reported_id);
+         console.log("아작스 신고 할 사람 "+reporting_id);
          console.log("아작스 신고할 메세지 번호 "+reported_idx);
          console.log("신고 내용" + report_content);
          console.log("아작스 신고할사용자 닉 :"+reported_nick);
          
-          $.ajax({
-              url: '/SULBAZI/reportuser.ajax',
-              type: 'POST',
-              data: {
-                 reported_id: reported_id,
-                 reporting_id: reporting_id,
-                 report_category: report_category,
-                 reported_idx: reported_idx,
-                 report_content: report_content                 
-              },
-              success: function(response) {
-                  
-                  alert(reported_nick +' 신고 완료');
-                  $('.reportuserform').hide();
-                  $('.popup').remove();
-                  loadMessages();
-              },
-              error: function() {
-                  alert(reported_nick +'신고 실패');
-              }
-          });
+         $.ajax({
+             url: '/SULBAZI/reportuser.ajax',
+             type: 'POST',
+             data: {
+                reported_id: reported_id,
+                reporting_id: reporting_id,
+                report_category: report_category,
+                reported_idx: reported_idx,
+                report_content: report_content                 
+             },
+             success: function(response) {
+                 
+                 alert(reported_nick +' 신고 완료');
+                 $('.reportuserform').hide();
+                 $('.popup').remove();
+                 loadMessages();
+             },
+             error: function() {
+                 alert(reported_nick +'신고 실패');
+             }
+         });
          
       });
       
@@ -255,6 +261,23 @@ $(document).ready(function() {
        console.log("강퇴당할 "+user_id);
        console.log("강퇴당할방 "+chatroom_idx);
        
+       function roomout() {
+             $.ajax({
+                 type: 'POST',
+                 url: 'chatroomout.ajax',
+                 data: {'my_id': user_id, 
+                       'chatroomboss': loginId},
+                 dataType: 'JSON',
+                 success: function(alarmresponse) {
+                     const newAlarm = alarmresponse;
+                     addAlarm(newAlarm); // 새로운 알림 추가 함수 호출
+                 },
+                 error: function(e) {
+                     console.log("AJAX 요청 실패:", e); // 에러 메시지 출력
+                 }
+             });
+         }
+       
        if (confirm(reported_nick+"를 내보낼거야?")) {
           $.ajax({
               url: '/SULBAZI/kickuser.ajax',
@@ -270,22 +293,26 @@ $(document).ready(function() {
                   $('.popup').remove();
                   $('.popup2').remove();
                   loadMessages();
-                 
+                  roomout();
               },
               error: function() {
                   alert(reported_nick +'강퇴 실패');
               }
           });
+          
        }
    });
    
-   
    var eventSource = new EventSource('/SULBAZI/subscribe');
+
    eventSource.addEventListener('kick', function(event) {
-       alert(event.data);
+       if (event && event.data) {
+           alert(event.data);
+       } else {
+           alert("강퇴 당했다~");
+       }
        window.location.href = '/SULBAZI/userchatlist.go';
    });
-
    
    
    // 참여자 리스트
@@ -372,7 +399,7 @@ $(document).ready(function() {
    
     // 새 메세지를 불러오기
     var userchat_idx = ${idx};
-   var ownerId = '${userid}';
+    var ownerId = '${userid}';
     setInterval(loadMessages, 2000);
 
     function loadMessages() {
@@ -440,7 +467,7 @@ $(document).ready(function() {
    
 </script>
 <style>
-    *{
+   *{
         margin: 0;
         padding: 0;
     }
@@ -452,10 +479,10 @@ $(document).ready(function() {
        display: none;
     }
     .popup div:hover,
-   .popup2 div:hover {
+    .popup2 div:hover {
        font-weight: bold;
        cursor: pointer;
-   }
+    }
     .main{
         background-color: #041d03;
         width: 100%;
@@ -463,8 +490,8 @@ $(document).ready(function() {
         display: flex;
         justify-content: center;
         align-items: center;
-    }
-    .section{
+   }
+   .section{
         position: absolute;
         top: 18%;
         display: flex;
@@ -483,7 +510,7 @@ $(document).ready(function() {
       height: 350px;
       background-color : #041d03;
       border-radius: 45px;
-   }
+    }
     .cont{
         width: 200px;
         height: 320px;
@@ -753,7 +780,7 @@ $(document).ready(function() {
                 <div class="roomtitle">
                <c:forEach items="${roominfo}" var="roominfo">
                    <div class="title">${roominfo.userchat_subject}</div>
-                   <div class="people">${usertotal}/${roominfo.current_people}</div>
+                   <div class="people">${totaluser} / ${roominfo.current_people}</div>
                 </c:forEach>
                 </div>
                 <div class="cont2">
@@ -857,16 +884,13 @@ $(document).ready(function() {
    $('.roomoutbtn').click(function() {
       if (confirm("방을 나가시겠?")) {
          var chatroom_idx = '${idx}';
-         var user_id = loginId;
+         
          $.ajax({
             url: '/SULBAZI/userroomout.ajax',
             type: 'POST',
-            data: {
-               chatroom_idx: chatroom_idx,
-               user_id: user_id,      
-            },
+            data: {chatroom_idx: chatroom_idx},
             success: function(response) {
-               alert("방을 나갔습니다.");
+               alert("잘가고~");
                window.location.href = "userchatlist.go";  // 로컬 채팅방 리스트로 이동
             },
             error: function(error) {
@@ -905,8 +929,8 @@ $(document).ready(function() {
               url:'./updatenotice.ajax',
               type:'POST',
               data:{
-                 notice:notice,
-                   userchat_idx: userchat_idx
+                  notice:notice,
+                  userchat_idx: userchat_idx
               },
               success: function(response){
                  location.reload();
@@ -965,25 +989,17 @@ $(document).ready(function() {
    // 방 삭제할거임
    $('.roomdelete').click(function() {
        if (confirm("방을 삭제하실것?")) {
-          var user_id = $('h2').data('userid');
-          var chatroom_idx = $('input[name="userchat_idx"]').val();
           var userchat_idx = $('input[name="userchat_idx"]').val();
           
-          console.log(user_id);
-          console.log(chatroom_idx);
           console.log(userchat_idx);
           
            $.ajax({
               url:'./deletechatroom.ajax',
               type:'POST',
-              data:{
-                   user_id: user_id,
-                   userchat_idx: userchat_idx,
-                 chatroom_idx: chatroom_idx
-              },
+              data:{userchat_idx: userchat_idx},
               success: function(response){
                  console.log("Response from server:", response); 
-                 if(response.status === "Success"){
+                 if(response === 1){
                     window.location.href = './userchatlist.go';
                     alert("잘가~");
                  }else{
