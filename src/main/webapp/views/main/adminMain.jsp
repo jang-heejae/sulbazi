@@ -56,6 +56,7 @@
     }
     .full{
         z-index: 999;
+        position: absolute;
         display: flex;
         width: 300px;
         height: 100vh;

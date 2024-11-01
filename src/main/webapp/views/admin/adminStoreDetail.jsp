@@ -208,10 +208,10 @@
 <jsp:include page="../main/storeMain.jsp"/>
     <section class="chatBox2">
         <div class="chatitems2">
-<div class="all">
+<div class="all"> 
 	<div class="store_name">
 		<div id="store_name" style="font-size: 36px; font-weight: bold; margin-bottom: 30px; color:rgb(255, 140, 9);">
-		${storedto.store_name}</div>
+		${storedto.store_name}</div> 
 		<div class="store_bookmark">
 			<i class="fas fa-star" style="color: yellow;"></i>
 			${storedto.star_average}&nbsp;(<span class="span">${storedto.review_total}</span>)

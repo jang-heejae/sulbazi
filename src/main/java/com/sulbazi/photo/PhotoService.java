@@ -5,13 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-
-import javax.servlet.http.HttpSession;
-import javax.swing.plaf.multi.MultiFileChooserUI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sulbazi.category.StoreCategoryDTO;
-import com.sulbazi.inquery.InqueryDTO;
 import com.sulbazi.member.StoreDAO;
 import com.sulbazi.member.StoreMenuDTO;
 
@@ -130,6 +123,10 @@ public class PhotoService {
 	public List<PhotoDTO> mystorephoto(int store_idx) {
 		return photo_dao.mystorephoto(store_idx);
 
+	}
+	public PhotoDTO mainStore(int store_idx) {
+		return photo_dao.mainStore(store_idx);
+		
 	}
 	
 	// 유저 이미지 가져오기
