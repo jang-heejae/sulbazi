@@ -34,7 +34,17 @@ public class ChatPartiController {
 	    return chatparti_ser.usertotal(chatroom_idx);
 	}
 	
-
+	/* 각 개인 채팅방의 참여 상태 - 채팅방 리스트 */
+	@PostMapping(value="/userchek.ajax")
+	@ResponseBody
+	public Map<String, Object> userchek(@RequestParam String user_id, @RequestParam int chatroom_idx) {
+        
+        Integer partistate = chatparti_ser.userchek(user_id, chatroom_idx);
+        Map<String, Object> response = new HashMap<>();
+        response.put("partistate", partistate);
+        
+        return response;
+    }
 	
 	/* 개인 채팅방 참여자 리스트 - ajax */
 	@GetMapping(value="/userlist.ajax")
@@ -91,8 +101,7 @@ public class ChatPartiController {
 	    String userId = (String) session.getAttribute("loginId");
 	    return chatparti_ser.registerSse(userId);
 	}
-	
-	
+
 	
 	
 	

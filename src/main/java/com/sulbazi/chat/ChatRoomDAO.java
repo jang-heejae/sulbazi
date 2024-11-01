@@ -32,7 +32,7 @@ public interface ChatRoomDAO {
 	/* 방 정보 가져오기 */
 	List<UserChatroomDTO> roominfo(int idx);
 	/* 입장 가능 인원 수 */
-	int current(int idx);
+	Integer current(int idx);
 	
 	
 	/* 지역 채팅방 리스트 */
