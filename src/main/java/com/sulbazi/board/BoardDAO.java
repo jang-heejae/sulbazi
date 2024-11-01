@@ -8,11 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface BoardDAO {
 
-
-	List<HashMap<String, Object>> boardlistgo();
-
-	int count(int cnt);
-
+	List<HashMap<String, Object>> boardlistgo(int limit, int offset);
+	
 	BoardDTO detail(String board_idx);
 
 	boolean isLiked(BoardLikeDTO likeDTO);
@@ -32,6 +29,13 @@ public interface BoardDAO {
 	int bHit(String board_idx);
 
 	int del(String board_idx);
+
+	List<BoardDTO> getAllcategory();
+
+	int allCount(int cnt_);
+
+	List<BoardDTO> getSearch(String boardCategory, String boardSearch);
+
 
 
 

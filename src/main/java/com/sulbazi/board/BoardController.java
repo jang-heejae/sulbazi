@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sulbazi.member.StoreDTO;
 import com.sulbazi.photo.PhotoDAO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
@@ -45,31 +48,60 @@ public class BoardController {
 	
 	@GetMapping(value="/boardList.ajax")
 	@ResponseBody
-	public Map<String, Object> boardlistgo(HttpSession session) {
+	public Map<String, Object> boardlistgo(HttpSession session, String page, String cnt) {
+		int page_ = Integer.parseInt(page);
+		int cnt_ = Integer.parseInt(cnt);
+		/*
+		 * Map<String, Object> map = new HashMap<String, Object>(); if
+		 * (session.getAttribute("loginId") != null) { List<HashMap<String,Object>> list
+		 * = board_ser.boardlistgo(page_, cnt_); map.put("login", true); map.put("list",
+		 * list); }else { map.put("login", false); }
+		 */
+		return board_ser.boardlistgo(page_, cnt_, session);
+	}
+	
+	@GetMapping(value="/board_category.ajax")
+	@ResponseBody
+	public Map<String, Object> boardFilter(
+			@RequestParam String boardCategory,
+			@RequestParam String boardSearch,
+			HttpServletRequest request) {
+		logger.info("넘어온 카테고리 값 : " + boardCategory);
+		List<BoardDTO> boardList = board_ser.getAllcategory();
+		String action = request.getParameter("action");
+		logger.info("실행되는 액션기능 : " + action);
+		if("filter".equals(action)) {
+			boardList = boardList.stream()
+					.filter(board -> board.getBoard_category().equals(boardCategory))
+					.collect(Collectors.toList());
+		}else if("search".equals(action)) {
+			boardList = board_ser.getSearch(boardCategory, boardSearch);
+		}
+		List<BoardDTO> limitedBoardList = boardList.stream()
+	            .limit(15)
+	            .collect(Collectors.toList());
 		Map<String, Object> map = new HashMap<String, Object>();
-		if (session.getAttribute("loginId") != null) {
-			map.put("login", true);
-			List<HashMap<String, Object>> list = board_ser.boardlistgo();
-			for (HashMap<String, Object> boardData : list) {
-	            int store_idx = (int) boardData.get("store_idx"); // store_idx 값 추출
-	            logger.info("List store_idx : {}", store_idx);
-	            String store_id = board_ser.selectidx(store_idx);
-	            logger.info("Store ID: {}", store_id);
-	            boardData.put("store_id", store_id); // store_id를 boardData에 추가
-	        }
-			map.put("list", list);
-			logger.info("list : {}", list);
-		}else {
-			map.put("login", false);
-		}	
+		map.put("list", boardList);
+		map.put("list", limitedBoardList);
 		return map;
 	}
 	
+	/*
+	 * @GetMapping(value="/board_search.ajax")
+	 * 
+	 * @ResponseBody public {
+	 * 
+	 * }
+	 */
+	
 	@RequestMapping(value="/delete.go")
-	public String del(String board_idx) {
+	public String del(String board_idx, Model model) {
 		logger.info("삭제할 idx : {}", board_idx);
-		board_ser.del(board_idx);
-		String page = "redirect:/boardList.go";
+		String page = "";
+		if(board_ser.del(board_idx) > 0) {
+			model.addAttribute("message", "게시글을 삭제하시겠습니까?");
+			page = "redirect:/boardList.go";
+		}
 		return page;
 	}
 
@@ -77,24 +109,6 @@ public class BoardController {
 	public String detail(String board_idx, Model model) {
 		board_ser.detail(board_idx, model, true);
 		return "board/boardDetail";
-	}
-	
-	@PostMapping(value="/boardlike.ajax")
-	@ResponseBody
-	public BoardLikeDTO boardlike(int user_id, String store_idx) {
-		logger.info("좋아요 parmas : ", user_id + store_idx);
-		return null;
-	}
-	
-	@RequestMapping(value="/test.go")
-	public String testgo() {
-		return "member/test";
-	}
-	
-	@PostMapping(value="/test.ajax")
-	public ResponseEntity<?> test(@RequestParam Map<String, Object> params) {
-		logger.info("params : {} ", params);
-		return null;
 	}
 	
 	@RequestMapping(value="/boardWrite.go")
@@ -186,4 +200,5 @@ public class BoardController {
 		board_ser.update(board_idx, model);
 		return "board/boardUpdate";
 	}
+	
 }

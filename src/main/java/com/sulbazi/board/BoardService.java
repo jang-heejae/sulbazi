@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,16 @@ public class BoardService {
 	@Autowired PhotoDAO photo_dao;
 	Logger logger = LoggerFactory.getLogger(getClass());
 
-	public List<HashMap<String, Object>> boardlistgo() {
-		return board_dao.boardlistgo();
+	
+	public Map<String, Object> boardlistgo(int page, int cnt, HttpSession session) {
+		int limit = cnt;
+		int offset = (page-1) * cnt;
+		int totalPages = board_dao.allCount(cnt);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("login", true);
+		map.put("list", board_dao.boardlistgo(limit, offset));
+		map.put("totalPages", totalPages);
+		return map;
 	}
 
 	public void detail(String board_idx, Model model, boolean flag) {
@@ -95,9 +105,24 @@ public class BoardService {
 		return board_dao.updateajax(boardDTO);
 	}
 
-	public void del(String board_idx) {
-		board_dao.del(board_idx);	
+	public int del(String board_idx) {
+		int row = board_dao.del(board_idx);
+		return row;
 	}
+
+	public List<BoardDTO> stream() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<BoardDTO> getAllcategory() {
+		return board_dao.getAllcategory();
+	}
+
+	public List<BoardDTO> getSearch(String boardCategory, String boardSearch) {
+		return board_dao.getSearch(boardCategory, boardSearch);
+	}
+
 
 
 	
