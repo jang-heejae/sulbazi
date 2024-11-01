@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sulbazi.admin.AdminDAO;
+import com.sulbazi.member.UserDAO;
 
 @Service
 public class ReportService {
@@ -24,6 +25,7 @@ public class ReportService {
 	@Autowired RevokeService revoke_ser;
 	@Autowired RevokeDAO revoke_dao;
 	@Autowired AdminDAO admin_dao;
+	@Autowired UserDAO user_dao;
 	Logger log = LoggerFactory.getLogger(getClass());
 	
  
@@ -136,9 +138,15 @@ public class ReportService {
 	
 	
 	
-	// 개인 채팅방 메세지 신고
+	// 채팅 신고 기능
+	// 개인, 지역 채팅방 메세지 신고
+	@Transactional
 	public void usermsgreport(String reported_id, String reporting_id, String report_category, int reported_idx, String report_content) {
-		report_dao.usermsgreport(reported_id,reporting_id,report_category, reported_idx,report_content);
+		int row = report_dao.usermsgreport(reported_id, reporting_id, report_category, reported_idx, report_content);
+		if(row>0) {
+			user_dao.report(reporting_id);
+			user_dao.reported(reported_id);
+		}
 	}
 
 }

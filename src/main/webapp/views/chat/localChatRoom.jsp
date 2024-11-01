@@ -56,7 +56,7 @@
 		
 	    localloadUserList();
 		
-	 // 신고, 강퇴 팝업창 - 메세지
+	 // 신고 팝업창 - 메세지
 		$(document).off('click', '.usermsg');
 		
 		$(document).on('click', '.usermsg', function(event) {
@@ -69,7 +69,7 @@
 	        reported_id = $(this).find('.userid').text().trim();
 			reported_idx = $(this).find('.msgidx').text().trim();
 			report_txt = $(this).find('.msgtxt').text();
-			reported_nick = $(this).find('.usernick').text();
+			reported_nick = $(this).find('.user').text();
 	        
 		    console.log("메세지 쓴 사람 ID : "+reported_id);
 		    console.log("신고한 메세지 idx : "+reported_idx);
@@ -113,7 +113,7 @@
 		
 		
 		// 신고 할거야
-		/* $(document).on('click', '.reportuser', function() {
+		$(document).on('click', '.reportuser', function() {
 				
 			var display = $('.reportuserform, .reportcancel').css('display');
 			if (display == 'none'){
@@ -127,7 +127,7 @@
 				
 				var reporting_id = '${sessionScope.loginId}';
 				var report_content = $('textarea[name="report_content"]').val();
-				var report_category = '개인 메시지';
+				var report_category = '지역 메시지';
 				
 			    console.log("아작스 신고 당할 사람 "+reported_id);
 			    console.log("아작스 신고 할 사람 "+reporting_id);
@@ -136,7 +136,7 @@
 				console.log("아작스 신고할사용자 닉 :"+reported_nick);
 				
 			    $.ajax({
-			        url: '/SULBAZI/reportuser.ajax',
+			        url: '/SULBAZI/localreportuser.ajax',
 			        type: 'POST',
 			        data: {
 			        	reported_id: reported_id,
@@ -159,7 +159,7 @@
 				
 			});
 			
-		}); */
+		});
 
 		// 메세지 전송
 	    $('.sendmsg').click(function () {
@@ -217,12 +217,13 @@
 	                    } else {
 	                    	messageHtml += '<div class="user">' + msg.user_nickname + '</div>';
 	                    }
-       			
+       					
 	                	messageHtml += '</div>';
 	                	messageHtml += '<div class="txtbox">';
 	                	messageHtml += '<div class="msgtxt">' + msg.localmsg_content + '</div>';
-	                	messageHtml += '<div class="msgidx" style="display:none;">' + msg.usermsg_idx+ '</div>';
+	                	messageHtml += '<div class="msgidx" style="display:none;">' + msg.localmsg_idx+ '</div>';
 	                	messageHtml += '<div class="userid" style="display:none;">' + msg.user_id + '</div>';
+	                	
 	                	// msg.usermsg_time을 원하는 형식으로 변환
 	                	var date = new Date(msg.localmsg_time);
 	                	var formattedDate = date.getFullYear() + '-' 
@@ -528,7 +529,7 @@ a{
 			type: 'POST',
 			data: {chatroom_idx: chatroom_idx},
 			success: function(response) {
-				alert("방을 나갔습니다.");
+				alert("잘가고~");
 				window.location.href = "localchatlist.go";  // 로컬 채팅방 리스트로 이동
 			},
 			error: function(error) {
