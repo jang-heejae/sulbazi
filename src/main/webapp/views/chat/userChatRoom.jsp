@@ -10,20 +10,12 @@ $(document).ready(function() {
    
    var loginId = '${sessionScope.loginId}';
    var msg = "${msg}";
-   var create = "${create}";
-   var roomin = "${roomin}";
 
     if(msg!=""){
       alert(msg);
       location.replace('./userchatlist.go');
    }
    
-   
-   if(create!=""){
-      alert(create);
-      location.replace('/userchatroom.go?idx='+${idx});
-   }
-
    
     const sse = new EventSource("/sse/all");
 
@@ -94,9 +86,9 @@ $(document).ready(function() {
         
         // 신고, 강퇴 할 유저정보
         reported_id = $(this).find('.userid').text().trim();
-      reported_idx = $(this).find('.msgidx').text().trim();
-      report_txt = $(this).find('.msgtxt').text();
-      reported_nick = $(this).find('.usernick').text();
+        reported_idx = $(this).find('.msgidx').text().trim();
+        report_txt = $(this).find('.msgtxt').text();
+        reported_nick = $(this).find('.usernick').text();
         
         console.log("메세지 쓴 사람 ID : "+reported_id);
         console.log("신고한 메세지 idx : "+reported_idx);
@@ -156,9 +148,9 @@ $(document).ready(function() {
         var y = event.pageY;
         
         // 강퇴 할 유저정보
-      var chatroom_idx = ${idx};
-      reported_id = $(this).find('.useridf').text();
-      reported_nick = $(this).find('.usernickf').text();
+        var chatroom_idx = ${idx};
+        reported_id = $(this).find('.useridf').text();
+        reported_nick = $(this).find('.usernickf').text();
         
         console.log("강퇴할 놈: "+reported_id);
         console.log("나: "+loginId);
@@ -303,9 +295,9 @@ $(document).ready(function() {
        }
    });
    
-   var eventSource = new EventSource('/SULBAZI/subscribe');
+   var eventsource = new EventSource('/SULBAZI/subscribe');
 
-   eventSource.addEventListener('kick', function(event) {
+   eventsource.addEventListener('kick', function(event) {
        if (event && event.data) {
            alert(event.data);
        } else {
@@ -383,8 +375,8 @@ $(document).ready(function() {
             type: 'POST',
             data: {
                user_id: user_id,
-                usermsg_content: usermsg_content,
-                userchat_idx: userchat_idx
+               usermsg_content: usermsg_content,
+               userchat_idx: userchat_idx
             },
             success: function () {
                 loadMessages();  // 메세지를 다시 로드
@@ -755,7 +747,7 @@ $(document).ready(function() {
 </head>
 <body>
    <jsp:include page="../main/main.jsp"/>
-   <h2 data-userid="${userid}">${userid}님의 ${idx} ${roomidx}번 채팅방</h2>
+   <h2 data-userid="${userid}">${userid}님의 ${idx}번 채팅방</h2>
     <div class="main">
         <div class="section">
             <div class="content">
@@ -778,7 +770,7 @@ $(document).ready(function() {
             </div>
             <div class="chatroom">
                 <div class="roomtitle">
-               <c:forEach items="${roominfo}" var="roominfo">
+                <c:forEach items="${roominfo}" var="roominfo">
                    <div class="title">${roominfo.userchat_subject}</div>
                    <div class="people">${totaluser} / ${roominfo.current_people}</div>
                 </c:forEach>

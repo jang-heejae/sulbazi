@@ -38,7 +38,8 @@ public class ChatRoomService {
 	
 			int idx = userchatroomdto.getUserchat_idx();
 		
-			model.addAttribute("roomidx", idx);
+			model.addAttribute("idx", idx);
+			model.addAttribute("msg", "방이 개설되었습니다.");
 			logger.info("방금 insert한 idx : "+idx);
 			
 			chatparti_dao.createparti(idx, userId);
@@ -83,7 +84,7 @@ public class ChatRoomService {
 		return chatroom_dao.roominfo(idx);
 	}
 	/* 입장 가능 인원 수 */
-	public int current(int idx) {
+	public Integer current(int idx) {
 		return chatroom_dao.current(idx);
 	}
 	

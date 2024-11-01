@@ -55,6 +55,7 @@ public class StoreController {
 	@Autowired BoardService board_ser;
 	@Autowired CategoryService category_ser;
 	@Autowired ReviewService review_ser;
+
 	
 	
 	

@@ -97,7 +97,7 @@
 	</select>
 	
 	<!-- 입장 가능 인원 수 -->
-	<select id="current" parameterType="int">
+	<select id="current" resultType="java.lang.Integer">
 		SELECT current_people FROM userchat WHERE userchat_idx = #{idx}
 	</select>
 	

@@ -8,6 +8,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ChatPartiDAO {
 
+	/* 각 개인 채팅방의 참여 상태 - 채팅방 리스트 */
+	Integer userchek(String user_id, int chatroom_idx);
+
 	/* 개인 채팅방 참여 여부 */
 	List<PartiDTO> roomin(String userId, int idx);
 	
@@ -50,6 +53,7 @@ public interface ChatPartiDAO {
 	/* 방에 참여중인 사용자 - 지역 */
 	List<PartiDTO> localuserlist(int idx);
 	List<PartiDTO> localuserlistajax(int localchat_idx);
+
 
 	
 
