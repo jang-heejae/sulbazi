@@ -14,6 +14,13 @@ public class BoardDTO {
 	private int like_count;
 	private String board_category;
 	private boolean board_state;
+	private String store_id;
+	public String getStore_id() {
+		return store_id;
+	}
+	public void setStore_id(String store_id) {
+		this.store_id = store_id;
+	}
 	public int getBoard_idx() {
 		return board_idx;
 	}
