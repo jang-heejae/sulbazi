@@ -28,6 +28,44 @@ public class AlarmService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 
+	
+	
+	
+	
+	//결국 sse
+    private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
+
+    public SseEmitter connect(String userId) {
+        SseEmitter emitter = new SseEmitter();
+        emitters.put(userId, emitter);
+
+        emitter.onCompletion(() -> emitters.remove(userId));
+        emitter.onTimeout(() -> emitters.remove(userId));
+
+        return emitter;
+    }
+
+    public void sendNotification(String userId, Map<String, Object> notification) {
+        SseEmitter emitter = emitters.get(userId);
+        if (emitter != null) {
+            try {
+                emitter.send(notification);
+            } catch (Exception e) {
+                emitters.remove(userId);
+            }
+        }
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//즐겨찾기 매장 홍보게시물 알림
 	public void bookmarknew() {
 		
@@ -156,6 +194,13 @@ public class AlarmService {
 		if(answerinquery != null) {
 		AlarmCategoryDTO alarm = alarm_dao.categoryalarminfo(6);
 		String inqueryalarm = alarm.getAlarm_content();//알림내용
+		AlamDTO insertalarm = new AlamDTO();
+		insertalarm.setAlarm_category_idx(6);
+		insertalarm.setUser_id(id_write);
+		alarm_dao.alarminsert(insertalarm);
+		insertalarm.getAlarm_idx();
+		int alarm_idx= insertalarm.getAlarm_idx();
+		chatroom.put("alarm_idx", alarm_idx);
 		chatroom.put("chatroomname", inquerysubject) ;//문의 이름
 		chatroom.put("alarm", inqueryalarm) ;//알림 내용
 		}

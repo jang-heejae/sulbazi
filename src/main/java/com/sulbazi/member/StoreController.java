@@ -57,11 +57,6 @@ public class StoreController {
 	@Autowired ReviewService review_ser;
 	
 	
-	@RequestMapping(value="/storeMain.go")
-	public String storeMain() {
-		return "main/storeMain";
-	}
-	
 	
 	//매장 상세보기
 	@RequestMapping(value="/storeDetail.do")
