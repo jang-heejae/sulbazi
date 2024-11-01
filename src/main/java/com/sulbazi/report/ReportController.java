@@ -119,7 +119,7 @@ public class ReportController {
 	
 	
 	
-	
+	// 채팅 신고 기능
 	// 개인 채팅방 메세지 신고
 	@PostMapping(value="/reportuser.ajax")
 	@ResponseBody
@@ -131,6 +131,16 @@ public class ReportController {
 		return "success";
 	}
 	
+	// 지역 채팅방 메세지 신고
+	@PostMapping(value="/localreportuser.ajax")
+	@ResponseBody
+	public String localmsgreport(@RequestParam String reported_id, @RequestParam String reporting_id, 
+			@RequestParam String report_category, @RequestParam int reported_idx, @RequestParam String report_content){
+		
+		report_ser.usermsgreport(reported_id,reporting_id,report_category,reported_idx,report_content);
+		
+		return "success";
+	}
 	
 }
 

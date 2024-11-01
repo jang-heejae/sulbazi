@@ -25,7 +25,7 @@ public interface ChatPartiDAO {
 	int createparti(int idx, String userId);
 	
 	/* 개인 채팅방에서 나가기 */
-	int userroomout(String user_id, int chatroom_idx);
+	boolean userroomout(String user_id, int chatroom_idx);
 	
 	/* 개인 채팅방 강퇴 */
 	int kickuser(Map<String, String> params);

@@ -82,14 +82,14 @@ public class ChatPartiService {
         SseEmitter emitter = sseEmitters.get(userId);
         if (emitter != null) {
             try {
-                emitter.send(SseEmitter.event().name("kick").data("강퇴 당했다~~"));
+                emitter.send(SseEmitter.event().name("kick").data("강퇴 당했찌~"));
                 emitter.complete();
             } catch (Exception e) {
+                sseEmitters.remove(userId); // 에러 발생 시 Emitter 제거
                 emitter.completeWithError(e);
             }
         }
     }
-	
 	
 	
 	

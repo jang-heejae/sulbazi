@@ -30,7 +30,9 @@ public interface ReportDAO {
 	List<ReportDTO> getReportsByState(int state);
 
 	
-	// 개인 채팅방 메세지 신고
+	
+	// 채팅 신고 기능
+	// 개인, 지역 채팅방 메세지 신고
 	int usermsgreport(String reported_id, String reporting_id, String report_category, int reported_idx,
 			String report_content);
 

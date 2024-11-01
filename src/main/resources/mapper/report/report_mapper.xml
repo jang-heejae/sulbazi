@@ -39,9 +39,11 @@
     
     
     
-    <!-- 개인 채팅방 메세지 신고 -->
+    <!-- 채팅 신고 기능 -->
+    <!-- 개인, 지역 채팅방 메세지 신고 -->
     <insert id="usermsgreport" parameterType="com.sulbazi.report.ReportDTO">
     	INSERT INTO report (reported_id, reporting_id, report_category, reported_idx, report_content)
     				VALUES(#{reported_id}, #{reporting_id}, #{report_category}, #{reported_idx}, #{report_content})
     </insert>
+    
 </mapper>
