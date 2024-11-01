@@ -17,6 +17,8 @@ public interface ReviewDAO {
 
 	int reviewWriteDo(ReviewDTO insertReview);
 
+	int reply(Map<String, String> params);
+
 	
 
 	

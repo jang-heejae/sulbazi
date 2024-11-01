@@ -40,6 +40,9 @@ public class ReviewDTO {
     // 리뷰에 등록된 카테고리 이름들 가져오는 컬럼
     private String opt_names;
     
+    // 리뷰 안에 있는 사진 불러오는 컬럼
+    private String review_photos;
+    
     
 	public int getReview_idx() {
 		return review_idx;
@@ -184,6 +187,12 @@ public class ReviewDTO {
 	}
 	public void setOpt_names(String opt_names) {
 		this.opt_names = opt_names;
+	}
+	public String getReview_photos() {
+		return review_photos;
+	}
+	public void setReview_photos(String review_photos) {
+		this.review_photos = review_photos;
 	}
 
     

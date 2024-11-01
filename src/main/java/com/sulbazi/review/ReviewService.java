@@ -51,6 +51,13 @@ public class ReviewService {
 		return review_dao.reviewWriteDo(insertReview);
 	}
 
+	public Map<String, Object> reply(Map<String, String> params) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int row = review_dao.reply(params);
+		
+		return null;
+	}
+
 
 
 
