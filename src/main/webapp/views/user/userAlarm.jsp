@@ -16,9 +16,9 @@
 </body>
 <script>
 
-var my_id = '${sessionScope.loginId}'; //내 아이디
+/* var my_id = '${sessionScope.loginId}'; //내 아이디
 var chatroomboss = '1212'; //내가 보낸 채팅방에서의 방장
-var user_id='1212'; //나에게 신청 보내는 유저
+var user_id='1212'; //나에게 신청 보내는 유저 */
 
 
 function roomout() {

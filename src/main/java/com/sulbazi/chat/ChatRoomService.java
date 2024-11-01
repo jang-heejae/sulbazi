@@ -59,15 +59,22 @@ public class ChatRoomService {
 	
 	/* 개인 채팅방 삭제(비공개) */
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void deleteroom(String user_id, int userchat_idx, int chatroom_idx) {
+	public boolean deleteroom(int userchat_idx, String user_id) {
 		
+		boolean success = false;
 		int row = chatroom_dao.deletechatroom(userchat_idx);
+		
 		if(row>0) {
+			int chatroom_idx = userchat_idx;
 			logger.info("방 비공개 됨");
-			chatparti_dao.userroomout(user_id, chatroom_idx);
+			if(chatparti_dao.userroomout(user_id, chatroom_idx)) {
+				success = true;
+			}
+			
 		}else {
 			logger.info("비공개 안됨");
 		}
+		return success;
 	}
 	
 	/* 개인 채팅방 참여 */
