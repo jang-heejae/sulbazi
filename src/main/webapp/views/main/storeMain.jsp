@@ -56,6 +56,7 @@
     }
     .full{
         z-index: 999;
+    	position: absolute;
         display: flex;
         width: 300px;
         height: 100vh;
@@ -144,19 +145,12 @@
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
             <div class="logo_text">
-                <a href="./#">SULBAZI</a>
+                <a href="storeMain.go">SULBAZI</a>
             </div>
             <div>
                 <ul class="icon">
                     <li><a href="login.go">로그인</a></li>
-                    <li>
-                        <i class="fa-regular fa-message"></i>
-                        <div class="sub_1">
-                            <div class="sub_txt1">대화중인 대화방</div>
-                            <div class="sub1">알림1</div>
-                            <div class="sub1">알림2</div>
-                        </div>
-                    </li>
+                    <li style="visibility: hidden;"><i class="fa-regular fa-message"></i></li>
                     <li>
                         <i class="fa-regular fa-bell"></i>
                         <div class="sub_">
@@ -177,8 +171,8 @@
                     <li><a href="userchatlist.go">개인 대화방</a></li>
                     <li><a href="storeList.go">매장 리스트</a></li>
                     <li><a href="boardList.go">게시판</a></li>
+                	<li><a href="userinquery.go">고객센터</a></li>
                 </ul>
-                <a href="userinquery.go">고객센터</a>
             </div>
             <div class="full2">
                 <ul class="list2">

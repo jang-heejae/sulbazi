@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.sulbazi.photo.PhotoDTO;
+import com.sulbazi.review.ReviewDTO;
 
 @Mapper
 public interface UserDAO {
@@ -34,5 +35,6 @@ public interface UserDAO {
 	int reported(String reported_id);
 
 	List<BookMarkDTO> userBookmark(String userId);
+
 	
 }

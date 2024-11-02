@@ -125,11 +125,13 @@
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
             <div class="logo_text">
-                <a href="./">SULBAZI</a>
+                <a href="adminMain.go">SULBAZI</a>
             </div>
             <div>
                 <ul class="icon">
-                    <li><a href="">로그인</a></li>
+                    <li><a href="login.go">로그인</a></li>
+                    <li style="visibility: hidden;"><i class="fa-regular fa-message"></i></li>
+                    <li style="visibility: hidden;"><i class="fa-regular fa-bell"></i></li>
                     <li class="mypage"><i class="fa-regular fa-user"></i></li>
                 </ul>
             </div>
@@ -137,10 +139,10 @@
         <div class="fullbox">
             <div class="full">
                 <ul class="list1">
-                    <li><a href="">지역 대화방</a></li>
-                    <li><a href="">개인 대화방</a></li>
-                    <li><a href="">매장 리스트</a></li>
-                    <li><a href="">게시판</a></li>
+                    <li><a href="localchatlist.go">지역 대화방</a></li>
+                    <li><a href="userchatlist.go">개인 대화방</a></li>
+                    <li><a href="storeList.go">매장 리스트</a></li>
+                    <li><a href="boardList.go">게시판</a></li>
                 </ul>
             </div>
             <div class="full2">

@@ -54,7 +54,8 @@
     .fullbox{
         display: flex;
     }
-    .full{
+    .full{	
+    	position: absolute;
         z-index: 999;
         display: flex;
         width: 300px;
@@ -124,7 +125,7 @@
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
             <div class="logo_text">
-                <a href="./">SULBAZI</a>
+                <a href="main.go">SULBAZI</a>
             </div>
             <div>
                 <ul class="icon">
@@ -155,8 +156,8 @@
                     <li><a href="userchatlist.go">개인 대화방</a></li>
                     <li><a href="storeList.go">매장 리스트</a></li>
                     <li><a href="boardList.go">게시판</a></li>
+                    <li><a href="userinquery.go">고객센터</a></li>
                 </ul>
-                <a href="userinquery.go">고객센터</a>
             </div>
             <div class="full2">
                 <ul class="list2">

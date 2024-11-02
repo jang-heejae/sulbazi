@@ -8,12 +8,16 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="resources/css/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 </head>
 <style>
 	body{
 		color: white;
 		background-color: #20290E;
 		overflow: hidden; 
+		font-family: "Yeon Sung", system-ui;
 	} 
 	table, th, td{
 		border-bottom: 1px solid white;
@@ -30,6 +34,7 @@
     	border-bottom: 2px solid #041d03;
 		background-color: white;
 		color:#041d03;
+		font-family: "Yeon Sung", system-ui;
 	}
 	button{
 		background-color: rgb(255, 140, 9);
@@ -37,7 +42,7 @@
 		padding: 5px;
 		border-radius: 5px;
 		font-size: 14;
-		font-weight: bold;
+		font-family: "Yeon Sung", system-ui;
 	}
 	#wcb{
 		position: absolute;

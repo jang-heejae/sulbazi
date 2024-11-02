@@ -6,19 +6,10 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="resources/css/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<style>
-	body {
-    	display: flex;
-    	flex-direction: column;
-    	align-items: center;
-    	justify-content: center; 
-    	gap: 20px;
-    	margin: 20px;
-    	font-weight: bold;
-    	color: #041d03;
-    	min-height: 100vh;
-    	background-color: #041d03;
-	}  
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
+<style>  
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -40,7 +31,8 @@
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 140px; 
-    	    flex-direction: column;
+   	    flex-direction: column;
+    	font-family: "Yeon Sung", system-ui;
 	}
 	button{
 		background-color: rgb(255, 140, 9);
@@ -48,7 +40,7 @@
 		padding: 5px;
 		border-radius: 5px;
 		font-size: 14;
-		font-weight: bold;
+		font-family: "Yeon Sung", system-ui;
 	}
 	#category{
 		position: absolute;
@@ -76,15 +68,15 @@
     	left: 521px
 	}
 	.cateDell{
-		    left: 131px;
-    position: absolute;
-    top: -41px;
+	    left: 131px;
+    	position: absolute;
+    	top: -41px;
 	}
 	#liveee{
 		margin-left: 40px;
 		left: 121px;
-    position: absolute;
-    top: 108px;
+    	position: absolute;
+    	top: 108px;
 	}
 	#btn{
 		position: absolute;

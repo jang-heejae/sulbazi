@@ -8,20 +8,11 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="resources/jquery.twbsPagination.js" type="text/javascript"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
-	body {
-    	display: flex;
-    	flex-direction: column;
-    	align-items: center;
-    	justify-content: center; 
-    	gap: 20px;
-    	margin: 20px;
-    	font-weight: bold;
-    	color: #041d03;
-    	min-height: 100vh;
-    	background-color: #041d03;
-	} 
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -43,6 +34,7 @@
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 140px; 
+    	font-family: "Yeon Sung", system-ui;
 	}
 	#store{
 		position: absolute;
@@ -70,8 +62,8 @@
 		border: 1px solid #20290E;;
 		border-collapse: collapse;
 		padding: 3px;
-		font-family: "Irish Grover", system-ui;
 		font-weight: bold;
+		font-family: "Yeon Sung", system-ui;
 	}
 	#storeDiv{
 		position: absolute;
@@ -207,6 +199,10 @@ $('#searchIcon').on('click', function(){
                     startPage: page,
                     totalPages: data.totalPages,
                     visiblePages: 5,
+                    first: '<<',     
+                    prev: '<',       
+                    next: '>',       
+                    last: '>>', 
                     onPageClick: function(evt, page) {
                         console.log('Page:', page);
                         pageCall(page, category, keyword); 

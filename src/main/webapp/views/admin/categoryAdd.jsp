@@ -6,11 +6,15 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="resources/css/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 <style>
 	body{
 		color: white;
 		background-color: #20290E;
 		overflow: hidden;
+		font-family: "Yeon Sung", system-ui;
 	} 
 	#newCate{
 		background-color: #E98D1C;
@@ -41,10 +45,13 @@
 	input{
 		border-radius: 10px;
 		padding: 4px;
+		font-family: "Yeon Sung", system-ui;
 	}
 	#opt_bar{
 		border-radius: 10px;
 		padding: 4px;
+		width: 100%;
+		font-family: "Yeon Sung", system-ui;
 	}
 	button{
 		background-color: #73734F;
@@ -53,6 +60,10 @@
 		border-radius: 5px;
 		font-size: 14;
 		font-weight: bold;
+		font-family: "Yeon Sung", system-ui;
+	}
+	option{
+		font-family: "Yeon Sung", system-ui;
 	}
 </style>
 </head> 

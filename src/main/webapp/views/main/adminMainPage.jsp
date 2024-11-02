@@ -5,6 +5,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 <style>
 	#mainSearchBar{
 		position: absolute;
@@ -48,6 +51,7 @@
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 200px; 
+    	font-family: "Yeon Sung", system-ui;
 	}
 	.store{
 		background-color: #73734F;
@@ -164,6 +168,13 @@
 		font-size: 40px;
 		font-weight: bold;
 	}
+	.store-name {
+    	white-space: nowrap;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    	max-width: 54%;
+    	display: inline-block;
+	}
 </style>
 </head>
 <body>
@@ -189,7 +200,7 @@
 					<div class="store">
            				<img class="storeDetail" src="/photo/${files[store.store_idx].new_filename}"
            				onclick="location.href='storeDetail.do?storeidx=${store.store_idx}'"/>
-						<div>${store.store_name}
+						<div><span class="store-name">${store.store_name}</span>
 						<i class="fas fa-star" style="color: yellow;"></i>
 						${store.star_average}&nbsp;(<span>${store.review_total}</span>)
 						</div>

@@ -74,21 +74,21 @@
     flex-direction: column;
     align-items: center;
 	}
-	.chatList{
-		border-radius: 10px;
-	 	margin: 10px;
-	 	background-color: white;
-	 	    display: flex;
-    flex-direction: column;
-    align-items: center;
+	.storeDetail{
+		display: inline;
+		width: 190px;
+		height: 140px;
+		margin-top:  -9px;
 	}
-	.parti{
+	.chatList{
+		background-color: rgb(255, 140, 9);
+		border-radius: 30px;
+		width: 210px;
+		height: 210px;
 	    display: flex;
-   		width: 100%;
-    	justify-content: flex-end;
+   		flex-direction: column;
     	align-items: center;
-    	flex-direction: row;
-}
+    	justify-content: space-evenly;
 	}
 </style>
 </head>
@@ -110,21 +110,23 @@
 					<div id="userLike" style="margin: 18px;">
 						<img class="likeIcon" src="resources/img/userLike.png"/>
 						<ul> 
-							<li></li>
+							<li>${info.user_likecount}</li>
 						</ul>
 					</div>
 				</div>
 				</div>
 			<div class="userChat" style="width:45%; height:45%;">
 				<div class="userChat2" style="width:100%; height:20%;">
-					<c:forEach var="chat" items="${chatRoom}">
-						<div class="chatList">
-							<div class="chatList2"></div>
-							<div class="parti">
-								<div class="count" style="width: 13%;"></div>
-							</div>
-						</div>
-					</c:forEach>
+					<c:forEach var="store" items="${storeInfo}">
+        				<div class="chatList">
+            				<img class="storeDetail" src="/photo/${storePhoto[store.store_idx].new_filename}"
+                 			onclick="location.href='storeDetail.do?storeidx=${store.store_idx}'"/>
+            				<div>${store.store_name}
+                				<i class="fas fa-star" style="color: yellow;"></i>
+               				 	${store.star_average}&nbsp;(<span>${store.review_total}</span>)
+            				</div>
+        				</div>
+    				</c:forEach>
 				</div>
 			</div>	
 			</div>

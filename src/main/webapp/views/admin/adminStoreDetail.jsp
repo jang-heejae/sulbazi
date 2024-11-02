@@ -8,19 +8,11 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=4ae2258b561b1a937e5d3f2c155e60f9"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 <style>
-	body {
-    	display: flex;
-    	flex-direction: column;
-    	align-items: center;
-    	justify-content: center; 
-    	gap: 20px;
-    	margin: 20px;
-    	font-weight: bold;
-    	color: #041d03;
-    	min-height: 100vh;
-    	background-color: #041d03;
-	}  
+
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -42,6 +34,7 @@
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 140px; 
+    	font-family: "Yeon Sung", system-ui;
 	}
 	.mapwhatname{
 		border-radius: 8px;
@@ -205,7 +198,7 @@
 </style>
 </head>
 <body>
-<jsp:include page="../main/storeMain.jsp"/>
+<jsp:include page="../main/adminMain.jsp"/>
     <section class="chatBox2">
         <div class="chatitems2">
 <div class="all"> 

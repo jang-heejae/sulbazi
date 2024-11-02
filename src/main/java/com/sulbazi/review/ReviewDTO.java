@@ -3,6 +3,9 @@ package com.sulbazi.review;
 import java.sql.Date; 
 import java.sql.Timestamp;
 
+import com.sulbazi.category.StoreCategoryDTO;
+import com.sulbazi.member.StoreDTO;
+
 public class ReviewDTO {
 	// 공통 컬럼 review_idx 3테이블 조인용 리뷰 ,유저 , 매장댓글 
 	
@@ -43,7 +46,24 @@ public class ReviewDTO {
     // 리뷰 안에 있는 사진 불러오는 컬럼
     private String review_photos;
     
+    // store 정보
+    private String store_name;
+    private String store_address;
     
+    
+    
+	public String getStore_name() {
+		return store_name;
+	}
+	public void setStore_name(String store_name) {
+		this.store_name = store_name;
+	}
+	public String getStore_address() {
+		return store_address;
+	}
+	public void setStore_address(String store_address) {
+		this.store_address = store_address;
+	}
 	public int getReview_idx() {
 		return review_idx;
 	}

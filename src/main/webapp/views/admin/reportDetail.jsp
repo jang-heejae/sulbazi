@@ -10,19 +10,10 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="resources/css/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 <style>
-	body { 
-    	display: flex;
-    	flex-direction: column;
-    	align-items: center;
-    	justify-content: center; 
-    	gap: 20px;
-    	margin: 20px;
-    	font-weight: bold;
-    	color: #041d03;
-    	min-height: 100vh;
-    	background-color: #041d03;
-	} 
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -43,6 +34,7 @@
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 140px; 
+    	font-family: "Yeon Sung", system-ui;
 	}
 	#reportDiv{
 		display: block;
@@ -79,13 +71,15 @@
 		background-color: rgba(255, 255, 255, 0.1);
 		color:#041d03;
 		outline: none;
+		font-family: "Yeon Sung", system-ui;
 	}
 	textarea{
 		width: 83%;
 		padding: 10px;
 		border-radius: 10px;
-		    margin-bottom: 10px;
-		    border-bottom: 2px solid #041d03;
+		margin-bottom: 10px;
+	    border-bottom: 2px solid #041d03;
+	    font-family: "Yeon Sung", system-ui;
 	}
 	#textA {
 		margin-right: -1366px;
@@ -116,10 +110,12 @@
 	input[name="revoke_start"], input[name="revoke_stop"]{
 		width: 79px;
 		border-radius: 10px;
+		font-family: "Yeon Sung", system-ui;
 	}
 	input[name="process_content"]{
 		width: 130px;
 		border-radius: 10px;
+		font-family: "Yeon Sung", system-ui;
 	}
 	select{
 		border-radius: 10px;

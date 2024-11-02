@@ -6,23 +6,14 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="resources/css/common.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="resources/jquery.twbsPagination.js" type="text/javascript"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
-		body { 
-    	display: flex;
-    	flex-direction: column;
-    	align-items: center;
-    	justify-content: center; 
-    	gap: 20px;
-    	margin: 20px;
-    	font-weight: bold;
-    	color: #041d03;
-    	min-height: 100vh;
-    	background-color: #041d03;
-	} 
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -44,6 +35,7 @@
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 140px; 
+    	font-family: "Yeon Sung", system-ui;
 	}
 	input[type="radio"] {
         appearance: none; /* 기본 스타일 제거 */
@@ -205,6 +197,10 @@ pageCall(showPage);
                     startPage: page,
                     totalPages: data.totalPages,
                     visiblePages: 5,
+                    first: '<<',     
+                    prev: '<',       
+                    next: '>',       
+                    last: '>>', 
                     onPageClick: function(evt, page) {
                         console.log('Page:', page);
                         pageCall(page); 
