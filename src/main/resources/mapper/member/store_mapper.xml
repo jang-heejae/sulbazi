@@ -198,7 +198,7 @@
 
 
 
- 	<!-- 매장 마이페이지  정보 수정 -->
+
 
 	<!-- 매장 마이페이지  정보 수정 -->
 	<update id="mystoreupdate" parameterType="com.sulbazi.member.StoreDTO">
@@ -207,17 +207,6 @@
 	</update>
 
 
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
-
-	
->>>>>>> origin/master
 	<!-- 매장 마이페이지  내 댓글 보기 -->
 	
 	

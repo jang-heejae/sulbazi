@@ -20,13 +20,11 @@ public interface PhotoDAO {
 
 	List<PhotoDTO> mystorephoto(int store_idx);
 
-<<<<<<< HEAD
 	List<PhotoDTO> storemenualcholphoto(int photofolderidx);
 
 	int storephotoupdate(int photocategory, String newFileName, int photofolderidx);
-=======
+
 	int storephotoinsert(int photo_category_idx, String new_filename, int photo_folder_idx);
->>>>>>> origin/master
 	
 	List<PhotoDTO> alcholmenuphoto(int photofolderidx);
 
@@ -42,11 +40,9 @@ public interface PhotoDAO {
 
 	List<PhotoDTO> detail4(int store_idx, int photo_category_idx);
 
-<<<<<<< HEAD
-=======
 	void updateajax(PhotoDTO photoDTO);
 
->>>>>>> origin/master
+
 
 }
  

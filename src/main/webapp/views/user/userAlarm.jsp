@@ -75,99 +75,147 @@ function chatroommanager() {
     });
 }
 
-function addAlarm(newAlarm) {
-    newAlarm.id = Date.now(); // 고유 ID 생성 (UUID를 사용하는 것이 좋을 수 있음)
-    
-    const alarmresponse = localStorage.getItem('Alarmresponse');
-    let alarms = alarmresponse ? JSON.parse(alarmresponse) : []; // 기존 알림 배열 가져오기
-    
-    alarms.push(newAlarm); // 새로운 알림 추가
-    localStorage.setItem('Alarmresponse', JSON.stringify(alarms)); // localStorage 업데이트
-    displayNotifications(); // 알림 표시 함수 호출
+
+
+function sendNotification(senderId, receiverId, message) {
+    // 수신자 ID를 키로 사용해 로컬 스토리지에서 해당 사용자의 알림 목록 가져오기
+    const notifications = JSON.parse(localStorage.getItem(receiverId)) || [];
+    const newNotification = {
+        id: Date.now().toString(), // 고유 ID 생성
+        message: message,           // 알림 메시지
+        timestamp: new Date().toISOString(), // 타임스탬프
+        isRead: false               // 읽음 여부
+    };
+
+    // 새로운 알림 추가
+    notifications.push(newNotification);
+    // 수신자 ID를 키로 로컬 스토리지에 업데이트
+    localStorage.setItem(receiverId, JSON.stringify(notifications));
 }
 
-function displayNotifications() {
-    const alarmresponse = localStorage.getItem('Alarmresponse');
+// 사용 예시: 특정 이벤트 발생 시 알림 전송
+const loggedInUserId = localStorage.getItem('loggedInUserId'); // 현재 로그인된 사용자 ID
+const receiverUserId = '1212'; // 알림을 받을 수신자 ID
+
+sendNotification(loggedInUserId, receiverUserId, 'Hello from ' + loggedInUserId);
+
+
+
+
+
+
+
+
+
+
+
+function addAlarm(receiverId, newAlarm) {
+    // 알림에 고유 ID 생성
+    newAlarm.id = Date.now();
+
+    // 수신자 ID를 기반으로 로컬 스토리지에서 해당 사용자 알림 목록 가져오기
+    const alarmresponse = localStorage.getItem(receiverId);
+    let alarms = alarmresponse ? JSON.parse(alarmresponse) : [];
+
+    // 새로운 알림 추가
+    alarms.push(newAlarm);
+    localStorage.setItem(receiverId, JSON.stringify(alarms));
+
+    // 로그인한 사용자에게만 알림 표시 (현재 사용자가 수신자인 경우만)
+    if (receiverId === loggedInUserId) {
+        displayNotifications(receiverId);
+    }
+}
+
+function displayNotifications(receiverId) {
+    // 현재 사용자 ID를 기준으로 알림 목록 가져오기
+    const alarmresponse = localStorage.getItem(receiverId);
     const notificationsElement = document.getElementById("notification");
-    notificationsElement.innerHTML = ''; // 기존 내용 초기화
+    notificationsElement.innerHTML = ''; // 기존 알림 초기화
 
     if (alarmresponse) {
-        const alarms = JSON.parse(alarmresponse); // 알림 배열 파싱
-        
+        const alarms = JSON.parse(alarmresponse);
+
+        // 각 알림을 화면에 표시
         alarms.forEach(alarm => {
             const notificationItem = document.createElement('div');
             notificationItem.className = 'notification-item';
-            notificationItem.innerHTML = alarm.chatroomname + '의 ' + alarm.alarm;
-            
-            // 특정 알림이면 수락/거절 버튼 추가
+            notificationItem.innerHTML = alarm.chatroomname+의+alarm.alarm;
+
+            // 특정 알림일 경우 수락/거절 버튼 추가
             if (alarm.alarm === "개설하신 대화방에 참여 신청이 왔습니다.") {
                 const acceptButton = document.createElement('button');
                 acceptButton.textContent = '수락';
-                acceptButton.onclick = () => handleAccept(alarm); // 수락 처리
+                acceptButton.onclick = () => handleAccept(receiverId, alarm);
 
                 const denyButton = document.createElement('button');
                 denyButton.textContent = '거절';
-                denyButton.onclick = () => handleDeny(alarm); // 거절 처리
+                denyButton.onclick = () => handleDeny(receiverId, alarm);
 
                 notificationItem.appendChild(acceptButton);
                 notificationItem.appendChild(denyButton);
             }
-            
-            // 클릭 이벤트 리스너 추가
+
+            // 알림 클릭 시 읽음 처리 AJAX 호출 및 알림 삭제
             notificationItem.addEventListener('click', function() {
                 $.ajax({
                     type: 'POST',
-                    url: 'readAlarm.ajax', // 서버의 해당 요청 URL로 변경
+                    url: 'readAlarm.ajax',
                     data: {
-                        'alarmId': alarm.id, // 알림 ID를 서버로 전송
-                        'my_id': my_id // 필요한 추가 데이터 전송 (예: 사용자 ID)
+                        'alarm_id': alarm.id,
+                        'my_id': receiverId // 현재 사용자 ID 전달
                     },
                     dataType: 'JSON',
                     success: function(data) {
                         console.log("서버 응답:", data);
                     },
                     error: function(e) {
-                        console.log("AJAX 요청 실패:", e); // 에러 메시지 출력
+                        console.log("AJAX 요청 실패:", e);
                     }
                 });
-                removeAlarm(alarm.id); // 고유 ID로 특정 알림 삭제
-                notificationsElement.removeChild(notificationItem); // 화면에서 삭제
+
+                removeAlarm(receiverId, alarm.id); // 알림 삭제
+                notificationsElement.removeChild(notificationItem); // 화면에서 제거
             });
-            
-            notificationsElement.appendChild(notificationItem); // 알림 화면에 추가
+
+            notificationsElement.appendChild(notificationItem);
         });
     }
-} 
+}
 
-function removeAlarm(alarmId) {
-    const alarmresponse = localStorage.getItem('Alarmresponse');
+function removeAlarm(receiverId, alarmId) {
+    // 수신자 ID를 기반으로 해당 사용자 알림 목록 가져오기
+    const alarmresponse = localStorage.getItem(receiverId);
     let alarms = alarmresponse ? JSON.parse(alarmresponse) : [];
 
-    // 해당 알림 ID에 일치하는 것만 삭제
-    alarms = alarms.filter(alarm => alarm.id !== alarmId); // 필터링하여 삭제
+    // 해당 알림 ID를 가진 알림만 삭제
+    alarms = alarms.filter(alarm => alarm.id !== alarmId);
 
-    localStorage.setItem('Alarmresponse', JSON.stringify(alarms)); // 업데이트된 배열 저장
+    // 업데이트된 알림 목록 저장
+    localStorage.setItem(receiverId, JSON.stringify(alarms));
 }
 
-function handleAccept(alarm) {
-    console.log(alarm.chatroomname, '수락'); // 수락된 대화방 이름 출력
-    removeAlarm(alarm.id); // 수락 후 알림 제거
+function handleAccept(receiverId, alarm) {
+    console.log(`${alarm.chatroomname} 수락`);
+    removeAlarm(receiverId, alarm.id);
 }
 
-function handleDeny(alarm) {
-    console.log(alarm.chatroomname, '거절'); // 거절된 대화방 이름 출력
-    removeAlarm(alarm.id); // 거절 후 알림 제거
+function handleDeny(receiverId, alarm) {
+    console.log(`${alarm.chatroomname} 거절`);
+    removeAlarm(receiverId, alarm.id);
 }
 
-// 페이지 로드 시 기존 알림 표시
-window.onload = displayNotifications;
+// 페이지 로드 시 로그인한 사용자의 알림 표시
+const loggedInUserId = localStorage.getItem('loggedInUserId'); // 현재 로그인된 사용자 ID
+window.onload = () => displayNotifications(loggedInUserId);
 
-// storage 이벤트 리스너
+// storage 변경 감지 이벤트 리스너 (다른 탭이나 창에서 변경된 알림 표시)
 window.addEventListener('storage', (event) => {
-    if (event.key === 'Alarmresponse') {
-        displayNotifications(); // 알림 업데이트
+    if (event.key === loggedInUserId) {
+        displayNotifications(loggedInUserId);
     }
 });
+
 
 </script>
 </html>

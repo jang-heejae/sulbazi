@@ -330,8 +330,7 @@ public class PhotoService {
 			return photo;
 		}
 
-<<<<<<< HEAD
-=======
+
 		public void updateajax(MultipartFile[] file, int store_idxx, int i) throws IOException {
 			PhotoDTO photoDTO = new PhotoDTO();
 			String photo = storeFile(file);
@@ -344,5 +343,5 @@ public class PhotoService {
 
 
 
->>>>>>> origin/master
+
 }
