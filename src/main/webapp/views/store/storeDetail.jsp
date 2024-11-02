@@ -224,9 +224,17 @@ h3 {
 	border: 4px solid #09f;
 }
 .review-write{
-	margin: 0px 30px
+	margin: 0px 30px;
 }
-
+img.preview{
+	width:100px;
+	margin:3px;
+	cursor: pointer;
+}
+img.review-photo{
+	max-width: 100px;
+	max-height: 100px;
+}
 			
 			
 
@@ -338,57 +346,56 @@ h3 {
                  <!-- 리뷰 작성-->
 		             <article>
 			            <h3>리뷰 작성</h3><button type="button" class="review-write btn btn-dark">리뷰 쓰기</button>
-			            <button type="button" class="review-exit btn btn-dark">닫기</button>
 			      		<%-- <button onclick="openWindowTab(${store.store_idx})">리뷰가기</button> --%>
-
-					    <div class="mypost">
-					        <div class="input-group mb-3">
-					            <label class="input-group-text" for="inputGroupSelect01">별점</label>
-					            <select class="form-select" id="inputGroupSelect01">
-					              <option selected>--선택하기--</option>
-					              <option value="1">⭐</option>
-					              <option value="2">⭐⭐</option>
-					              <option value="3">⭐⭐⭐</option>
-					              <option value="4">⭐⭐⭐⭐</option>
-					              <option value="5">⭐⭐⭐⭐⭐</option>
-					            </select>
-					        </div>
-					        <div class="input-group mb-3">
-					            <label class="input-group-text" for="inputGroupSelect01">방문목적</label>
-					            <select class="form-select" id="inputGroupSelect01">
-					           		<option value="" selected>--선택하기--</option>
-					               <c:forEach var="option" items="${options}">
-					                   <c:if test="${option.category_idx == 3}">
-					                       <option value="${option.opt_idx}">${option.opt_name}</option>
-					                   </c:if>
-					               </c:forEach>
-					            </select>
-					        </div>
-					        <div class="input-group mb-3">
-					            <label class="input-group-text" for="inputGroupSelect01">분위기</label>
-					            <select class="form-select" id="inputGroupSelect01">
-					            	<option value="" selected>--선택하기--</option>
-					               <c:forEach var="option" items="${options}">
-					                   <c:if test="${option.category_idx == 4}">
-					                       <option value="${option.opt_idx}">${option.opt_name}</option>
-					                   </c:if>
-					               </c:forEach>
-					            </select>
-					        </div>
-					            <div class="bloom">
-					                <div class="form-floating">
-					                        <textarea class="form-control" placeholder="--내용--" id="floatingTextarea2" style="height: 100px"></textarea>
-					                    </div>
-					            </div>
-					
-					        <div class="mybtn">
-					
-					            <button type="button" class="btn btn-dark">글쓰기</button>
-					            <button type="button" class="btn btn-light">닫기</button>
-					
-					        </div>
-					    </div>
-
+						<form enctype="multipart/form-data">
+						    <div class="mypost">
+						        <div class="input-group mb-3">
+						            <label class="input-group-text" for="inputGroupSelect01">별점</label>
+						            <select class="form-select" id="ratingSelect">
+						              <option value="0" selected>--선택하기--</option>
+						              <option value="1">⭐</option>
+						              <option value="2">⭐⭐</option>
+						              <option value="3">⭐⭐⭐</option>
+						              <option value="4">⭐⭐⭐⭐</option>
+						              <option value="5">⭐⭐⭐⭐⭐</option>
+						            </select>
+						        </div>
+						        <div class="input-group mb-3">
+						            <label class="input-group-text" for="inputGroupSelect01">방문목적</label>
+						            <select class="form-select" id="purposeSelect">
+						           		<option value="0" selected>--선택하기--</option>
+						               <c:forEach var="option" items="${options}">
+						                   <c:if test="${option.category_idx == 3}">
+						                       <option value="${option.opt_idx}">${option.opt_name}</option>
+						                   </c:if>
+						               </c:forEach>
+						            </select>
+						        </div>
+						        <div class="input-group mb-3">
+						            <label class="input-group-text" for="inputGroupSelect01">분위기</label>
+						            <select class="form-select" id="moodSelect">
+						            	<option value="0" selected>--선택하기--</option>
+						               <c:forEach var="option" items="${options}">
+						                   <c:if test="${option.category_idx == 4}">
+						                       <option value="${option.opt_idx}">${option.opt_name}</option>
+						                   </c:if>
+						               </c:forEach>
+						            </select>
+						        </div>
+						            <div class="bloom">
+						                <div class="form-floating">
+						                        <textarea class="form-control" placeholder="--내용--" id="text-area" style="height: 100px"></textarea>
+						                </div>
+						            </div>
+						
+						        <div class="mybtn">
+									<input type="file" name="files" multiple="multiple" onchange="readFile(this)">
+									<div id="img_list"></div>
+						            <button type="button" class="btn review-write btn-dark" onclick="writeDo()">등록</button>
+						            <button type="button" class="btn review-close btn-light">닫기</button>
+						        </div>
+						    </div>
+						</form>
 		             </article>
 		                <!-- 리뷰  사용자 일경우 신고 수정 삭제 
 		                 매장일 경우 신고 답글 -->
@@ -405,6 +412,8 @@ h3 {
 
     </body>
     <script>
+    	
+    
     /* 지도 영역 */
 		var container = document.getElementById('map');
     	var storeLatitude = '${store.store_latitude}'
@@ -454,14 +463,14 @@ h3 {
     	    });
     	}
     	
-    	//리뷰 글쓰기  아쟉
-function openWindowTab(storeIdx) {
+    	//리뷰 글쓰기  아쟉 
+/* function openWindowTab(storeIdx) {
     window.open(
         'review.go?storeidx=' + storeIdx, 
         '_blank', 
         'width=800,height=600,top=100,left=200,resizable=no'
     );
-}
+} */
     	// 리뷰 섹션 아쟉스
     	var storeIdx = '${store.store_idx}';
     	reviewShow(storeIdx);
@@ -476,11 +485,17 @@ function openWindowTab(storeIdx) {
  				},
  				dataType:'json',
  				success:function(data){
-					drawList(data.reviews);
+ 					if (data.reviews && data.reviews.length) {
+						drawList(data.reviews);
+						
+					}else{
+						 errorDraw(); 
+					}
  					
  				},
  				error:function(e){
  					console.log(e);	
+ 					errorDraw();
  				}
  			}); 
  			
@@ -488,11 +503,16 @@ function openWindowTab(storeIdx) {
     	
  		function drawList(reviews){
  			var listContainer = document.getElementById('review-section');
- 			
+ 			listContainer.innerHTML = '';
  			
  			reviews.forEach(function(review,idx){
+ 			   console.log("reviews img:", review.review_photos);
  				var reviewDate = review.review_date.split('T')[0];
- 				
+ 			    if (review.review_photos) {
+ 			        const photoArray = review.review_photos.split(',');  // 쉼표를 기준으로 문자열 분리
+ 			       review.photos = photoArray;
+ 			    }
+ 			    
  			var content = '<tr>'
  			 	content += '<td colspan="3" class = "profile">'
  			 	content +='<img src="/photo/'+review.user_photo+'" alt="user" class="profile-image">'
@@ -505,16 +525,42 @@ function openWindowTab(storeIdx) {
  			 	content +='<td class="likes-cell">'
  			 	content +='<img src="resources/img/종원리뷰좋아요전.png" alt="좋아요" class="icon-review"> '+review.like_count+' </td>'
  			 	content +='<td class="category-cell">'+review.opt_names+'</td></tr>'
+ 			 	content += '<tr class="review-imgs hide"><td colspan="3" class="photo-cell">';
+ 			    if (review.photos && review.photos.length > 0 ) {
+ 			    	
+ 			    	review.photos.forEach(function(photo) {
+ 			            content += '<img  src="/photo/' + photo + '" alt="review photo" class="review-photo">';
+ 			        });
+ 			    }else{
+ 			    	content += '<p>이미지가 없습니다</p>'
+ 			    }
+ 			    	
+		        content += '</td></tr>';
  			 	content +='<tr> <td colspan="3" class="review-content-cell">'
  			 	content += review.review_content+' </td></tr>'
  			 	content +='<tr><td colspan="3" class="action-cell">'+reviewDate
  			 	content +='<span class="report-section"><img src="resources/img/yellow.png" alt="좋아요" class="icon-review"></span>'
- 			 	content +='<button class="action-button">답글</button>'
+ 			 	content +='<button class="action-button replyDown">답글</button>'
  			 	content +='<button class="action-button">수정</button>'
  			 	content +='<button class="action-button">신고</button>'
  			 	content +='<button class="action-button">삭제</button>'
  			 	content +='</td></tr>'
- 			 	
+ 			 	content +='<tr class="reply-show"><td colspan="3" class="text-area">'
+ 			 	content +=review.comm_content
+ 			 	content +='</td></tr>'
+ 			 	content +='<tr class="reply-show"><td colspan="3">'
+ 			 	content +='<button class="action-button replyUp">닫기</button>'
+ 			 	content +='<button class="action-button" onclick="reply('+review.review_idx+')">확인</button>'
+ 			 	content +='</td></tr>'
+ 			
+
+ 		   
+ 			 		
+ 		        
+ 		    
+ 		            
+ 		        
+ 		    
  			 	listContainer.innerHTML += content;
  			});
  		}
@@ -524,8 +570,134 @@ function openWindowTab(storeIdx) {
  		});
 
  		// 리뷰 숨기기 버튼 클릭 시, 해당 영역을 부드럽게 사라지게 하기
- 		$('.review-exit').click(function() {
+ 		$('.review-close').click(function() {
  		    $('.mypost').slideUp(2000); 
  		});
+ 		
+
+ 		//글쓰기 이벤트
+ 		function writeDo() {
+
+ 		    var ratingValue = document.getElementById("ratingSelect").value; 
+ 		    var purposeValue = document.getElementById("purposeSelect").value;  
+ 		    var moodValue = document.getElementById("moodSelect").value;  
+ 		    var reviewContent = document.getElementById("text-area").value; 
+ 		    
+ 		   var form = new FormData($('form')[0]);
+ 		  form.append('loginId', loginId);
+ 		  form.append('storeIdx', storeIdx);
+ 		  form.append('ratingValue', ratingValue);
+ 		  form.append('purposeValue', purposeValue);
+ 		  form.append('moodValue', moodValue);
+ 		  form.append('reviewContent', reviewContent);
+ 		  
+ 		    
+	 		if (ratingValue != 0 && purposeValue != 0 && moodValue != 0 && reviewContent.trim() !== "" ) {
+	 			$.ajax({
+	 				type:'POST', 
+	 				url: 'storeReviewWrite.ajax',
+	 				processData:false,
+	 				contentType: false,
+	 				enctype:'multipart/form-data',
+	 				data:form,
+	 				dataType:'JSON',
+	 				success:function(data){
+						if (data.success) {
+							reviewShow(storeIdx)
+							
+						}else{
+							errorReviewWrite();
+							
+						}
+	 					
+	 				},
+	 				error:function(e){
+	 					console.log(e);
+	 					errorReviewWrite();
+	 					alert("글쓰기를 실패하셨습니다. 다시 확인해 주세요.");
+	 				}
+	 			}); 
+			}else
+				alert("별점, 방문목적, 분위기를 선택해 주세요!!");
+ 		}
+ 		
+  	   // 이미지 프리뷰
+ 		function readFile(input){
+ 			console.log( "온체인지 파일: "+input.files);
+ 			var reader;
+ 			$('#img_list').empty();
+ 			
+ 			for (var file of input.files) {
+ 				reader = new FileReader();
+ 				reader.readAsDataURL(file);
+ 				reader.onload = function(e){
+ 					$('#img_list').append('<img class = "preview" src="'+e.target.result+'"/>');
+ 				}
+ 			}
+ 			
+ 		}
+ 	   /* 노리뷰 */
+ 	   function errorDraw() {
+ 	       var listContainer = document.getElementById('review-section');
+ 	       
+ 	       var content = '<tr><td style="text-align: center; padding: 20px;">';
+ 	       		content +='리뷰가 없습니다 </td></tr>';
+ 	       	listContainer.innerHTML += content;
+ 	   }
+ 	   /* 글쓰기 오류 */
+ 	   function errorReviewWrite() {
+ 	       var listContainer = document.getElementById('review-section');
+ 	       
+ 	       var content = '<tr><td style="text-align: center; padding: 20px;">';
+ 	       		content +='글쓰기 오류 </td></tr>';
+ 	       	listContainer.innerHTML = content;
+ 	   }
+		
+ 	   //답글 영역 이벤트 
+ 		$('.replyDown').click(function() {
+ 		    $('.reply-show').slideDown(500); 
+ 		});
+
+ 		$('.replyUp').click(function() {
+ 		    $('.reply-show').slideUp(500); 
+ 		});
+ 		
+ 	   
+ 	   
+ 	   
+ 	   
+ 	   //답글 디비 넣기
+ 	   function reply(review_idx){
+		    var commContent = document.getElementById("text-area").value; 
+
+ 		   
+			$.ajax({
+ 				type:'POST', 
+ 				url: 'storeReviewReply.ajax',
+ 				data:{
+ 					'comm_content':commContent ,
+ 					'review_idx':review_idx,
+ 					'store_idx':storeIdx
+ 				},
+ 				dataType:'JSON',
+ 				success:function(data){
+					if (data.success) {
+						reviewShow(storeIdx)
+						
+					}else{
+						errorReviewWrite();
+						
+					}
+ 					
+ 				},
+ 				error:function(e){
+ 					console.log(e);
+ 					errorReviewWrite();
+ 					alert("글쓰기를 실패하셨습니다. 다시 확인해 주세요.");
+ 				}
+ 			}); 
+ 	   }
+ 		
+ 		
     </script>
 </html>

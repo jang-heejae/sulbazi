@@ -24,11 +24,17 @@ public class ChatPartiService {
 	
 	
 	/* 개인 채팅방 참여 */
-	/* 개인 채팅방 참여 상태 */
+	/* 개인 채팅방 참여 여부 */
 	public int roomin(String userId, int idx) {
 	    List<PartiDTO> result = chatparti_dao.roomin(userId, idx);
 	    logger.info("참여 상태 : "+result);
 	    return (result != null && !result.isEmpty()) ? 1 : 0; // 결과가 있으면 1, 없으면 0
+	}
+	
+	/* 각 개인 채팅방의 참여 상태 - 채팅방 리스트 */
+	public Integer userchek(String user_id, int chatroom_idx) {
+		 Integer partistate = chatparti_dao.userchek(user_id, chatroom_idx);
+		 return partistate;
 	}
 	
 	/* 개인 채팅방 참여 신청 */
@@ -82,14 +88,14 @@ public class ChatPartiService {
         SseEmitter emitter = sseEmitters.get(userId);
         if (emitter != null) {
             try {
-                emitter.send(SseEmitter.event().name("kick").data("강퇴 당했다~~"));
+                emitter.send(SseEmitter.event().name("kick").data("강퇴 당했찌~"));
                 emitter.complete();
             } catch (Exception e) {
+                sseEmitters.remove(userId); // 에러 발생 시 Emitter 제거
                 emitter.completeWithError(e);
             }
         }
     }
-	
 	
 	
 	
@@ -122,6 +128,7 @@ public class ChatPartiService {
 	public void localroomout(String user_id, int chatroom_idx) {
 		chatparti_dao.localroomout(user_id, chatroom_idx);
 	}
+	
 
 	
 

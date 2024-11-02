@@ -47,7 +47,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class StoreController {
-
+ 
 
 	@Autowired StoreService store_ser;
 	Logger logger = LoggerFactory.getLogger(getClass());
@@ -55,12 +55,8 @@ public class StoreController {
 	@Autowired BoardService board_ser;
 	@Autowired CategoryService category_ser;
 	@Autowired ReviewService review_ser;
+
 	
-	
-	@RequestMapping(value="/storeMain.go")
-	public String storeMain() {
-		return "main/storeMain";
-	}
 	
 	
 	//매장 상세보기

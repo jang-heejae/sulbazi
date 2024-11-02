@@ -13,7 +13,7 @@
     	width: 514px;
 	} 
 	#mainSearch{
-		width: 283px;
+		width: 283px; 
 		padding: 10px;
 		border-radius: 20px;
 	}
@@ -167,7 +167,7 @@
 </style>
 </head>
 <body>
-	<c:import url="../main/adminMain.jsp"/>
+	<c:import url="../main/storeMain.jsp"/>
 		<div id="mainSearchBar">
 		<ul>
 			<li>

@@ -5,28 +5,31 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<title>Real-time Notifications</title>
+
 </head>
 <body>
+
 	<h2>알림</h2>
 	<div id="notification"></div>
-	<button id="test" type="button" onclick="roomout()">강퇴 테스트</button>
-	<button id="test" type="button" onclick="roomdeny()">거절 테스트</button>
-	<button id="test" type="button" onclick="chatroommanager()">수락거절 테스트</button>
+	<button id="test" type="button" onclick="displayNotifications()">강퇴 테스트</button>
+	<!--<button id="test" type="button" onclick="roomdeny()">거절 테스트</button>
+	<button id="test" type="button" onclick="chatroommanager()">수락거절 테스트</button> -->
 </body>
 <script>
+/* const loggedInUserId = localStorage.getItem('loggedInUserId'); // 현재 로그인한 사용자 ID*/
 
-var my_id = '${sessionScope.loginId}'; //내 아이디
+
+/* var my_id = '${sessionScope.loginId}'; //내 아이디
 var chatroomboss = '1212'; //내가 보낸 채팅방에서의 방장
-var user_id='1212'; //나에게 신청 보내는 유저
+var user_id='1212'; //나에게 신청 보내는 유저 */
 
-
+// 강퇴
 function roomout() {
     $.ajax({
         type: 'POST',
         url: 'chatroomout.ajax',
-        data: {'my_id': my_id, 
-        		'chatroomboss': chatroomboss},
+        data: {'my_id': my_id,  //나의 아이디 //알림 받는사람
+        		'chatroomboss': chatroomboss},  //내가 신청한 방 방장의 아이디
         dataType: 'JSON',
         success: function(alarmresponse) {
             const newAlarm = alarmresponse;
@@ -38,13 +41,13 @@ function roomout() {
     });
 }
 
-
+//거절
 function roomdeny() {
     $.ajax({
         type: 'POST',
         url: 'chatroomdeny.ajax',
-        data: {'my_id':my_id,
-        		'chatroomboss':chatroomboss},
+        data: {'my_id':my_id, //알림 받는 사람
+        		'chatroomboss':chatroomboss}, //내가 신청한 방 방장의 아이디 알림 보내는 사람 
         dataType: 'JSON',
         success: function(alarmresponse) {
         	
@@ -57,10 +60,59 @@ function roomdeny() {
     });
 }
 
+
+
+//수락/거절 선택
 function chatroommanager() {
     $.ajax({
         type: 'POST',
         url: 'chatroommanager.ajax',
+        data: {'my_id':my_id, //알림 받는 사람
+        		'user_id':user_id}, //알림 주는 사람
+        dataType: 'JSON',
+        success: function(alarmresponse) {
+
+        	const newAlarm = alarmresponse;
+        	addAlarm(newAlarm);
+        },
+        error: function(e) {
+            console.log("AJAX 요청 실패:", e);
+        }
+    });
+}
+
+
+
+
+
+//수락
+function chatroomin() {
+    $.ajax({
+        type: 'POST',
+        url: 'chatroomin.ajax',
+        data: {'my_id':my_id,
+        		'chatroomboss':chatroomboss},
+        dataType: 'JSON',
+        success: function(alarmresponse) {
+
+        	const newAlarm = alarmresponse;
+        	addAlarm(newAlarm);
+        },
+        error: function(e) {
+            console.log("AJAX 요청 실패:", e);
+        }
+    });
+}
+
+
+
+
+
+//즐찾 새소식
+function bookmarknew() {
+    $.ajax({
+        type: 'POST',
+        url: 'bookmarknew.ajax',
         data: {'my_id':my_id,
         		'user_id':user_id},
         dataType: 'JSON',
@@ -77,6 +129,7 @@ function chatroommanager() {
 
 
 
+<<<<<<< HEAD
 function sendNotification(senderId, receiverId, message) {
     // 수신자 ID를 키로 사용해 로컬 스토리지에서 해당 사용자의 알림 목록 가져오기
     const notifications = JSON.parse(localStorage.getItem(receiverId)) || [];
@@ -91,6 +144,79 @@ function sendNotification(senderId, receiverId, message) {
     notifications.push(newNotification);
     // 수신자 ID를 키로 로컬 스토리지에 업데이트
     localStorage.setItem(receiverId, JSON.stringify(notifications));
+=======
+
+
+//문의 답글 새소식
+/* function inquirynewanswer() {
+    $.ajax({
+        type: 'POST',
+        url: 'inquirynewanswer.ajax',
+        data: {'my_id':my_id,
+        		'user_id':user_id},
+        dataType: 'JSON',
+        success: function(alarmresponse) {
+
+        	const newAlarm = alarmresponse;
+        	addAlarm(newAlarm);
+        },
+        error: function(e) {
+            console.log("AJAX 요청 실패:", e);
+        }
+    });
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////건들지 말아주세요////////
+
+/* function addAlarm(newAlarm) {
+    newAlarm.id = Date.now(); // 고유 ID 생성
+    
+    const alarmresponse = localStorage.getItem('Alarmresponse');
+    let alarms = alarmresponse ? JSON.parse(alarmresponse) : [];
+    
+    alarms.push(newAlarm); // 새로운 알림 추가
+    localStorage.setItem('Alarmresponse', JSON.stringify(alarms)); // localStorage 업데이트
+    
+    console.log("현재 알림 데이터:", localStorage.getItem('Alarmresponse'));
+    
+    displayNotifications(); // 즉시 알림을 화면에 반영
+>>>>>>> origin/master
 }
 
 // 사용 예시: 특정 이벤트 발생 시 알림 전송
@@ -158,12 +284,18 @@ function displayNotifications(receiverId) {
 
             // 알림 클릭 시 읽음 처리 AJAX 호출 및 알림 삭제
             notificationItem.addEventListener('click', function() {
+            	var alarm_id = alarm.alarm_idx;
+            	console.log(alarm_id);
                 $.ajax({
                     type: 'POST',
                     url: 'readAlarm.ajax',
                     data: {
+<<<<<<< HEAD
                         'alarm_id': alarm.id,
                         'my_id': receiverId // 현재 사용자 ID 전달
+=======
+                        'alarm_id': alarm_id // 알림 ID를 서버로 전송// 필요한 추가 데이터 전송 (예: 사용자 ID)
+>>>>>>> origin/master
                     },
                     dataType: 'JSON',
                     success: function(data) {
@@ -214,8 +346,23 @@ window.addEventListener('storage', (event) => {
     if (event.key === loggedInUserId) {
         displayNotifications(loggedInUserId);
     }
-});
+}); */
+<jsp:include page="../user/sendAlarm.jsp" />
 
+<<<<<<< HEAD
 
+=======
+/* const eventSource = new EventSource(`/notifications/connect/${loggedInUserId}`);
+
+eventSource.onmessage = function(event) {
+    const newAlarm = JSON.parse(event.data);
+    addAlarm(newAlarm); // 알림 추가 함수 호출
+    displayNotifications(); // 알림 표시 업데이트
+};
+
+eventSource.onerror = function(event) {
+    console.error("SSE 오류 발생:", event);
+}; */
+>>>>>>> origin/master
 </script>
 </html>

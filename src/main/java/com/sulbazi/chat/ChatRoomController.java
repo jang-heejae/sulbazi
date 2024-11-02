@@ -42,6 +42,7 @@ public class ChatRoomController {
 		List<UserChatroomDTO> userchat_list = chatroom_ser.chatlist();
 		model.addAttribute("list", userchat_list);
 		
+		
 		logger.info("userchat_list :"+ userchat_list);
 		logger.info("세션아이디 : "+session.getAttribute("loginId"));
 				
@@ -70,12 +71,11 @@ public class ChatRoomController {
 			int row = chatroom_ser.chatcreate(userchatroomdto, model, userId);
 			
 			if(row>0) {
-				model.addAttribute("msg", "방이 개설되었습니다.");
-				page = "/chat/userChatRoom";
+	            page = "/chat/userChatList";
+	            
 			}else {
-				logger.info("세션에 설정된 값: " + session.getAttribute("session"));
-				page = "/chat/userChatList";
 				model.addAttribute("msg", "방 생성 불가 : 개설된 방이 있습니다.");
+				page ="/chat/userChatList";
 			}
 		}
 		return page;
@@ -100,9 +100,11 @@ public class ChatRoomController {
 	/* 개인 채팅방 삭제(비공개) */
 	@PostMapping(value="/deletechatroom.ajax")
 	@ResponseBody
-	 public ResponseEntity<String> deleteChatroom(@RequestParam String user_id, @RequestParam int userchat_idx, @RequestParam int chatroom_idx) {
-		chatroom_ser.deleteroom(user_id, userchat_idx, chatroom_idx);
-		return ResponseEntity.ok("Success");
+	 public int deleteChatroom(HttpSession session, @RequestParam int userchat_idx) {
+		
+		String user_id = (String) session.getAttribute("loginId");
+		
+		return chatroom_ser.deleteroom(userchat_idx, user_id) ? 1 : 0;
     }
 	
 	/* 개인 채팅방 참여 */
@@ -122,8 +124,10 @@ public class ChatRoomController {
 			
 			int idx = userChatroomdto.getUserchat_idx();
 			String id = userChatroomdto.getUser_id();
-
-			int current = chatroom_ser.current(idx);
+			
+			Integer current = chatroom_ser.current(idx);
+			
+			logger.info("current"+current);
 			int total = chatparti_ser.usertotal(idx);
 			
 			logger.info("최대 인원수 = "+total);
@@ -144,11 +148,12 @@ public class ChatRoomController {
 	        		int row = chatparti_ser.userparti(user_id, idx);
 		        	if (row > 0) {
 		        		alarm_ser.partialarm(id);
-		        		page = "/chat/userChatRoom";
+		        		model.addAttribute("msg", "참여 신청 완료");
+		        		page = "/chat/userChatList";
 		        	}
 	        	}
 	        }else {
-	        	page = "/chat/userChatRoom";
+	        	page = "/chat/userChatList";
 	        	
 	        }
 	    
@@ -201,7 +206,9 @@ public class ChatRoomController {
 			
 			// 방 정보 가져오기
 			List<UserChatroomDTO> roominfo = chatroom_ser.roominfo(idx);
-			System.out.print(roominfo);
+			
+			int totaluser = chatparti_ser.usertotal(idx);
+			
 			
 			model.addAttribute("list", userchat_list);
 			model.addAttribute("idx", idx);
@@ -211,6 +218,7 @@ public class ChatRoomController {
 //			model.addAttribute("userNickname", userNickname);
 //			model.addAttribute("userNicknames", userNicknames);
 			model.addAttribute("roominfo",roominfo);
+			model.addAttribute("totaluser",totaluser);
 //			model.addAttribute("userlist",userlist); 
 //			model.addAttribute("userPhoto",userPhoto);
 //			model.addAttribute("userPhotos",userPhotos);

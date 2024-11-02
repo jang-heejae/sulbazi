@@ -13,7 +13,7 @@ public interface AdminDAO {
 	int adminAdd(Map<String, String> param);
 
 	List<AdminDTO> adminList();
-
+ 
 	AdminDTO adminChange(String admin_id);
 
 	int adminUpdate(Map<String, Object> param);

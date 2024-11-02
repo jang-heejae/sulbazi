@@ -123,4 +123,9 @@
     	INSERT INTO user_category (user_id, opt_idx)
     	VALUES (#{user_id}, #{opt_idx})
 	</insert>
+	<!-- 리뷰 -->
+	<insert id="insertOption" >
+	INSERT INTO review_category (review_idx,opt_idx)
+		VALUES (#{param3},#{param1}), (#{param3},#{param2})
+	</insert>
 </mapper>

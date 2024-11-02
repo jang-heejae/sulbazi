@@ -11,7 +11,7 @@
 		color: white;
 		font-weight: bold;
 	}
-	.chatBox{
+	.chatBox{ 
       display: flex;
          justify-content: space-around;
          align-items: center;

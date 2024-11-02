@@ -127,7 +127,7 @@
             </form>
 			<form action="adminanswer.do" method="post">
     			<div class="admin-response">
-    				 <input type="hidden" name="inqueryIdx" value="${userinquerydetail.inquery_idx}">
+    				 <input type="hidden" name="inqueryIdx" id="inqueryIdx" value="${userinquerydetail.inquery_idx}">
         			<textarea id="answer" name="answer" rows="3" style="width: 722px; max-width:722px;"></textarea>
     			</div>
     			<button type="submit" id="submitAnswer" style="margin-top: 5;">답변 등록</button>
@@ -138,20 +138,181 @@
 
 </body>
 <script>
-var loginId = '${sessionScope.loginId}';
-var btn = document.getElementById('submitAnswer');
+// 로그인된 사용자 ID와 문의 ID 변수
+const my_id = '${sessionScope.loginId}';
+const inquery_idx = document.getElementById('inqueryIdx').value;
+const inquery_id = document.getElementById('inquiryId').value;
+
+const form = document.querySelector("form[action='adminanswer.do']");
+const btn = document.getElementById('submitAnswer');
+
+// 폼 제출 처리
 btn.addEventListener('click', function(event) {
-    var result = confirm('등록하시겠습니까?');
-    if (result == true) {
+    const result = confirm('등록하시겠습니까?');
+    if (result) {
         alert('등록되었습니다');
-        // 폼을 직접 제출하도록 수정합니다.
-        document.querySelector("form[action='adminanswer.do']").submit();
+        event.preventDefault(); // 기본 폼 제출 이벤트 방지
+
+        const formData = new FormData(form);
+
+        // Fetch API로 폼 제출
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('네트워크 응답이 좋지 않습니다.');
+
+            // 데이터 반환이 필요 없는 경우
+            // JSON으로 응답을 처리하지 않고 그냥 response를 반환하도록 수정
+            return response.text(); // 텍스트 응답으로 변경
+        })
+        .then(text => {
+            console.log("폼 제출 성공:", text); // 서버에서 반환한 응답을 로그에 출력
+            inquirynewanswer(); // 성공 후 AJAX 호출
+        })
+        .catch(error => console.error("폼 제출 중 오류 발생:", error));
     } else {
         alert('등록이 취소되었습니다');
-        event.preventDefault(); // 등록이 취소되었을 때 폼 제출을 방지합니다.
+        event.preventDefault(); // 기본 폼 제출 이벤트 방지
     }
 });
 
 
+
+
+
+//AJAX 호출 함수
+function inquirynewanswer() {
+    $.ajax({
+        type: 'POST',
+        url: 'inquiryanswer.ajax',
+        data: { 'my_id': my_id, 'inquery_idx': inquery_idx },
+        dataType: 'JSON',
+        success: function(alarmresponse) {
+            // 알림 데이터 객체 생성
+            const newAlarm = {
+                receiverId: inquery_id,
+                chatroomname: alarmresponse.chatroomname,
+                alarm: alarmresponse.alarm,
+                alarm_idx: alarmresponse.alarm_idx
+            };
+            sendNotification(newAlarm); // 알림 전송 함수 호출
+            saveNotification(newAlarm); // 알림 저장 함수 호출
+        },
+        error: function(e) {
+            console.error("AJAX 요청 실패:", e);
+            console.log("응답 내용:", e.responseText);
+        }
+    });
+}
+
+// 서버에 알림 전송 함수
+function sendNotification(newAlarm) {
+    const receiverId = newAlarm.receiverId;
+
+    // AJAX POST 요청을 통해 서버에 알림 전송
+    $.ajax({
+        type: 'POST',
+        url: '/notifications/send', // 알림을 전송할 서버 엔드포인트
+        data: JSON.stringify(newAlarm),
+        contentType: 'application/json',
+        success: function(response) {
+            console.log("알림이 성공적으로 전송되었습니다:", response);
+        },
+        error: function(e) {
+            console.error("알림 전송 실패:", e);
+        }
+    });
+}
+
+
+
+function saveNotification(notification) {
+    notificationsList.push(notification); // 새로운 알림을 배열에 추가
+    console.log("저장된 알림:", notificationsList); // 디버깅: 저장된 알림 확인
+    displayNotification(notification); // 화면에 알림 표시
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// AJAX 호출 함수
+/*function inquirynewanswer() {
+    $.ajax({
+        type: 'POST',
+        url: 'inquiryanswer.ajax',
+        data: { 'my_id': my_id, 'inquery_idx': inquery_idx },
+        dataType: 'JSON',
+        success: function(alarmresponse) {
+            // 알림 데이터를 객체로 정의하여 localStorage에 저장
+            console.log(alarmresponse);
+            const newAlarm = {
+                receiverId: inquery_id,
+                chatroomname: alarmresponse.chatroomname,
+                alarm: alarmresponse.alarm,
+                alarm_idx:alarmresponse.alarm_idx
+            };
+            addAlarm(newAlarm.receiverId, newAlarm); // addAlarm 함수를 호출하여 알림 추가
+        },
+        error: function(e) {
+            console.error("AJAX 요청 실패:", e);
+            console.log("응답 내용:", e.responseText);
+        }
+    });
+}
+
+function addAlarm(receiverId, newAlarm) {
+    if (!receiverId || !newAlarm) {
+        console.error("유효하지 않은 수신자 ID 또는 알림 데이터입니다.");
+        return;
+    }
+
+    // 알림에 고유 ID 생성
+    newAlarm.id = Date.now();
+
+    // 수신자 ID를 기반으로 로컬 스토리지에서 해당 사용자 알림 목록 가져오기
+    const alarmresponse = localStorage.getItem(receiverId);
+    let alarms = alarmresponse ? JSON.parse(alarmresponse) : [];
+
+    // 새로운 알림 추가
+    alarms.push(newAlarm);
+    
+    // 수신자 ID로 알림 저장
+    localStorage.setItem(receiverId, JSON.stringify(alarms)); // receiverId를 키로 사용해야 함
+
+    console.log("알림이 로컬 스토리지에 저장되었습니다:", newAlarm);
+
+    // 알림 표시 함수 호출 (필요한 경우)
+    //displayNotifications(receiverId); // 추가된 알림을 화면에 표시
+}
+     // 로그인한 사용자에게만 알림 표시 (현재 사용자가 수신자인 경우만)
+    if (receiverId === loggedInUserId) {
+        displayNotifications(receiverId);
+    } 
+}*/
 </script>
 </html>

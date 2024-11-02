@@ -4,8 +4,16 @@
 >
 <mapper namespace="com.sulbazi.board.BoardDAO">
 
-	<select id="boardlistgo" resultType="map">
-		SELECT * FROM board ORDER BY board_idx DESC
+	<select id="boardlistgo">
+		SELECT b.*, s.store_id
+		 FROM board b
+		 LEFT JOIN store s ON b.store_idx = s.store_idx
+		 ORDER BY b.board_idx DESC
+    	 LIMIT #{param1} OFFSET #{param2}
+	</select>
+	
+	<select id="allCount" resultType="int">
+		SELECT CEIL(COUNT(board_idx)/#{param1}) FROM board
 	</select>
 	
 	<select id="detail" resultType="com.sulbazi.board.BoardDTO">
@@ -28,7 +36,19 @@
         DELETE FROM board_like WHERE board_idx = #{board_idx} AND user_id = #{user_id}
     </delete>
     
+    <select id="getAllcategory" resultType="com.sulbazi.board.BoardDTO">
+    	SELECT b.*, s.store_id
+		 FROM board b
+		 LEFT JOIN store s ON b.store_idx = s.store_idx
+    </select>
     
+    <select id="getSearch" resultType="com.sulbazi.board.BoardDTO">
+    	SELECT b.*, s.store_id
+	    FROM board b
+	    LEFT JOIN store s ON b.store_idx = s.store_idx
+	    WHERE b.board_category = #{boardCategory}
+	      AND b.board_subject LIKE CONCAT('%', #{boardSearch}, '%')
+    </select>
 
     <select id="isLiked" parameterType="com.sulbazi.board.BoardLikeDTO" resultType="boolean">
 	    SELECT COUNT(*) > 0

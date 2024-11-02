@@ -10,44 +10,63 @@
 	
 	<!-- 리뷰 가져오기 내림차순 조인 4 개 리뷰 좋아요 까지 포함됨  -->
 <select id="getReviewAlluser" parameterType="int" resultType="com.sulbazi.review.ReviewDTO">
-	SELECT 
-	    r.review_idx,
-	    r.store_idx,
-	    r.review_content,
-	    r.review_date,
-	    r.starpoint,
-	    r.review_state,
-	    u.user_nickname,
-	    u.user_likecount,
-	    u.user_photo,
-	    rc.comm_date,
-	    rc.comm_content,
-	    COUNT(rl.user_id) AS like_count,
-	    (
-	        SELECT GROUP_CONCAT(co.opt_name) 
-	        FROM review_category AS rcg 
-	        JOIN category_opt AS co ON rcg.opt_idx = co.opt_idx 
-	        WHERE rcg.review_idx = r.review_idx
-	    ) AS opt_names
-	FROM 
-	    review AS r
-	INNER JOIN 
-	    user AS u ON r.user_id = u.user_id
-	LEFT JOIN 
-	    review_comm AS rc ON r.review_idx = rc.review_idx
-	LEFT JOIN 
-	    review_like AS rl ON r.review_idx = rl.review_idx
-	WHERE 
-	    r.store_idx = #{param1}
-	    AND r.review_state = 1
-	GROUP BY 
-	    r.review_idx, r.store_idx, r.review_content, r.review_date, r.starpoint, r.review_state, 
-	    u.user_nickname, u.user_likecount, u.user_photo, rc.comm_date, rc.comm_content
-	ORDER BY 
-	    r.review_idx DESC;
+    SELECT 
+        r.review_idx,
+        r.store_idx,
+        r.review_content,
+        r.review_date,
+        r.starpoint,
+        r.review_state,
+        u.user_nickname,
+        u.user_likecount,
+        u.user_photo,
+        rc.comm_date,
+        rc.comm_content,
+        COUNT(rl.user_id) AS like_count,
+        (
+            SELECT GROUP_CONCAT(co.opt_name SEPARATOR ', ') 
+            FROM review_category AS rcg 
+            JOIN category_opt AS co ON rcg.opt_idx = co.opt_idx 
+            WHERE rcg.review_idx = r.review_idx
+        ) AS opt_names,
+        (
+            SELECT GROUP_CONCAT(p.new_filename) 
+            FROM photo AS p
+            WHERE p.photo_category_idx = 3 
+            AND p.photo_folder_idx = r.review_idx
+        ) AS review_photos
+    FROM 
+        review AS r
+    INNER JOIN 
+        user AS u ON r.user_id = u.user_id
+    LEFT JOIN 
+        review_comm AS rc ON r.review_idx = rc.review_idx
+    LEFT JOIN 
+        review_like AS rl ON r.review_idx = rl.review_idx
+    WHERE 
+        r.store_idx = #{param1}
+        AND r.review_state = 1
+    GROUP BY 
+        r.review_idx, r.store_idx, r.review_content, r.review_date, r.starpoint, r.review_state, 
+        u.user_nickname, u.user_likecount, u.user_photo, rc.comm_date, rc.comm_content
+    ORDER BY 
+        r.review_idx DESC;
 </select>
-
+	<!-- 리뷰 쓰기 -->
+	<insert 
+	useGeneratedKeys="true"
+	keyColumn="review_idx"
+	keyProperty="review_idx"
+	id="reviewWriteDo" parameterType="com.sulbazi.review.ReviewDTO">
+		INSERT INTO review (user_id, store_idx, review_content,starpoint)
+       		 VALUES (#{user_id}, #{store_idx}, #{review_content},#{starpoint});
+	</insert>
 	
+	<!-- 리뷰 답글 -->
+	 <insert id="reply" parameterType="map">
+	 	insert into review_comm (review_idx,store_idx,comm_content)
+	 		values(#{review_idx},#{store_idx},#{comm_content})
+	 </insert>
 	
 	
 </mapper>

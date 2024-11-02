@@ -12,7 +12,7 @@
     *{
         margin: 0;
         padding: 0;
-    } 
+    }  
     ol, ul, li{
         list-style: none;
     }
@@ -56,6 +56,7 @@
     }
     .full{
         z-index: 999;
+        position: absolute;
         display: flex;
         width: 300px;
         height: 100vh;

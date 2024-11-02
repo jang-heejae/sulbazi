@@ -6,14 +6,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+
 import java.util.HashMap;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
-import javax.servlet.http.HttpSession;
-import javax.swing.plaf.multi.MultiFileChooserUI;
+import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +25,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
+
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.inquery.InqueryDTO;
+
 import com.sulbazi.member.StoreDAO;
 import com.sulbazi.member.StoreMenuDTO;
 
@@ -44,17 +44,17 @@ public class PhotoService {
 	
 	public void fileSave(MultipartFile[] files, int idx, int cti) throws IOException {
 		
-		logger.info("받은 idx 값: " + idx);
-		logger.info("받은 files 값: " + files);
-		logger.info("받은 cti 값: " + cti);
+//		logger.info("받은 idx 값: " + idx);
+//		logger.info("받은 files 값: " + files);
+//		logger.info("받은 cti 값: " + cti);
 		String filePath = storeFile(files);
         PhotoDTO photoDTO = new PhotoDTO();
         photoDTO.setPhoto_category_idx(cti);
         photoDTO.setPhoto_folder_idx(idx);
         photoDTO.setNew_filename(filePath);
         photo_dao.fileSave(photoDTO);
-        logger.info("{photoDTO}:"+photoDTO);
-        logger.info("받은 newfile 값: {}"+filePath);
+//        logger.info("{photoDTO}:"+photoDTO);
+//        logger.info("받은 newfile 값: {}"+filePath);
     }
 
     private String storeFile(MultipartFile[] files) throws IOException {
@@ -95,6 +95,7 @@ public class PhotoService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		PhotoDTO photodto = new PhotoDTO();
 		photodto.setNew_filename(photo);
 		photodto.setPhoto_folder_idx(store_idx);
@@ -132,6 +133,10 @@ public class PhotoService {
 	public List<PhotoDTO> mystorephoto(int store_idx) {
 		return photo_dao.mystorephoto(store_idx);
 
+	}
+	public PhotoDTO mainStore(int store_idx) {
+		return photo_dao.mainStore(store_idx);
+		
 	}
 	
 	// 유저 이미지 가져오기
