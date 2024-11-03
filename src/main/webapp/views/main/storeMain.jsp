@@ -55,11 +55,14 @@
         display: flex;
     }
     .full{
-    	position: absolute;
+        position: fixed;
+    	top: 0;
+    	left: 0; 
         z-index: 999;
         display: flex;
         width: 300px;
-        height: 100vh;
+        min-height: 100vh;
+        height: auto;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -71,7 +74,8 @@
     }
     .full2{
         z-index: 999;
-        position: absolute;
+        position: fixed;
+    	top: 0;
         left: 1620px;
         display: flex;
         width: 300px;
@@ -119,45 +123,18 @@
         justify-content: space-around;
         border-radius: 10px;
     }
-    .chatBox{
-      display: flex;
-         justify-content: space-around;
-         align-items: center;
-      width : 100%;
-      height: 100%;
-   }
-   .chatitems{
-      position: absolute;
-      top: 20%;
-       width: 940px;
-       height: 650px;
-       display: flex;
-       flex-wrap: wrap;
-       justify-content: center;
-       align-items: center;
-       align-content: center;
-       background-color: #73734F;
-       border-radius: 20px;
-   }
 </style>
 <body>
     <header>
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
             <div class="logo_text">
-                <a href="./#">SULBAZI</a>
+                <a href="storeMain.go">SULBAZI</a>
             </div>
             <div>
                 <ul class="icon">
                     <li><a href="login.go">로그인</a></li>
-                    <li>
-                        <i class="fa-regular fa-message"></i>
-                        <div class="sub_1">
-                            <div class="sub_txt1">대화중인 대화방</div>
-                            <div class="sub1">알림1</div>
-                            <div class="sub1">알림2</div>
-                        </div>
-                    </li>
+                    <li style="visibility: hidden;"><i class="fa-regular fa-message"></i></li>
                     <li>
                         <i class="fa-regular fa-bell"></i>
                         <div class="sub_">
@@ -194,10 +171,6 @@
                 </div>
             </div>
         </div>  
-        <section class="chatBox">
-        <div class="chatitems">
-        </div>
-   </section>
     </header>
 </body>
 <script>

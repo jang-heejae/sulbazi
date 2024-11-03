@@ -55,11 +55,18 @@
         display: flex;
     }
     .full{
+<<<<<<< HEAD
     	position: absolute;
+=======
+        position: fixed;
+    	top: 0;
+    	left: 0; 
+>>>>>>> origin/master
         z-index: 999;
         display: flex;
         width: 300px;
-        height: 100vh;
+        min-height: 100vh;
+        height: auto;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -71,7 +78,8 @@
     }
     .full2{
         z-index: 999;
-        position: absolute;
+        position: fixed;
+    	top: 0;
         left: 1620px;
         display: flex;
         width: 300px;
@@ -125,7 +133,7 @@
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
             <div class="logo_text">
-                <a href="./">SULBAZI</a>
+                <a href="main.go">SULBAZI</a>
             </div>
             <div>
                 <ul class="icon">

@@ -6,23 +6,14 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="resources/css/common.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="resources/jquery.twbsPagination.js" type="text/javascript"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
-		body { 
-    	display: flex;
-    	flex-direction: column;
-    	align-items: center;
-    	justify-content: center; 
-    	gap: 20px;
-    	margin: 20px;
-    	font-weight: bold;
-    	color: #041d03;
-    	min-height: 100vh;
-    	background-color: #041d03;
-	} 
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -44,6 +35,7 @@
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 140px; 
+    	font-family: "Yeon Sung", system-ui;
 	}
 	input[type="radio"] {
         appearance: none; /* 기본 스타일 제거 */
@@ -77,21 +69,22 @@
         background-color: rgb(255, 140, 9); /* 체크 시 점 색상 */
     }
 	#reportTable{
-		background-color: rgb(255, 140, 9);
-		border: 1px solid rgb(255, 140, 9);
+		color: rgb(255, 140, 9);
+		background-color: #20290E;
+		border: 1px solid #20290E;
 		border-collapse: collapse;
 		padding: 3px;
-		font-family: "Irish Grover", system-ui;
-		font-weight: bold;
+		font-family: "Yeon Sung", system-ui;
 	}
 	td{
 		padding: 5px;
 		width: 151px;
 		text-align: center;
-		border-bottom: 2px solid white;
+		border-bottom: 1px solid rgb(255, 140, 9);
 	}
 	#reportList{
-	    margin-bottom: 25px
+	    margin-bottom: 25px;
+	    position: relative;
 	}
 	.pagination {
     	display: flex; /* Flexbox로 설정 */
@@ -138,6 +131,18 @@
     	cursor: auto;
     	background-color: #73734F;
     	border-color: #73734F;
+    }
+    .reportSub {
+    	white-space: nowrap;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    	max-width: 54%;
+    	display: inline-block;
+	}
+	hr{
+	    background-color: white;
+    	width: 297%;
+	}
 </style>
 </head>
 <body>
@@ -186,71 +191,80 @@
 </body>
 <script>
 var showPage = 1;
-pageCall(showPage);
+var paginationInitialized = false; // 페이지네이션 초기화 여부 확인 변수
 
- function pageCall(page) {
+$(document).ready(function() {
+    // 페이지네이션 및 첫 페이지 데이터 로드
+    initPagination();
+
+    // 필터 변경 시 첫 페이지부터 데이터 로드
+    $('input[name="report_state"], input[name="report_category"]').change(function() {
+        paginationInitialized = false; // 필터 변경 시 다시 초기화 가능하게 설정
+        initPagination(); // 페이지네이션 재초기화
+    });
+});
+
+function initPagination() {
+    if (!paginationInitialized) {
+        $('#pagination').twbsPagination('destroy'); // 기존 페이지네이션 제거
+        $('#pagination').twbsPagination({
+            startPage: showPage,
+            totalPages: 1,  // 초기 totalPages 값을 1로 설정
+            visiblePages: 5,
+            first: '<<',
+            prev: '<',
+            next: '>',
+            last: '>>',
+            onPageClick: function(evt, page) {
+                pageCall(page); // 페이지 클릭 시 데이터 로드
+            }
+        });
+        paginationInitialized = true; // 페이지네이션이 한 번만 초기화되도록 설정
+    }
+    pageCall(showPage); // 첫 페이지 데이터 로드
+}
+
+function pageCall(page) {
+    var reportState = $('input[name="report_state"]:checked').val() || "all";
+    var reportCategory = $('input[name="report_category"]:checked').val() || "all";
+
     $.ajax({
         type: 'GET',
         url: 'reportList.ajax',
         data: {
             page: page,
-            cnt: 15
-        },
-        dataType: 'JSON',
-        success: function(data) {
-            console.log(data); 
-            if (data.list && data.totalPages) {
-                listPrint(data.list);
-                $('.pagination').twbsPagination({
-                    startPage: page,
-                    totalPages: data.totalPages,
-                    visiblePages: 5,
-                    onPageClick: function(evt, page) {
-                        console.log('Page:', page);
-                        pageCall(page); 
-                    }
-                });
-            } else {
-                console.error('twbsPagination is not available');
-            }
-    },
-    error: function(e) {
-        console.error('AJAX Error:', e);
-    }
-});
-} 
-$(document).ready(function() {
-    // 초기 목록 로드
-   	pageCall(showPage);
-
-    // 라디오 버튼 클릭 시 목록 업데이트
-    $('input[name="report_state"], input[name="report_category"]').change(function() {
-        report_filter();
-    });
-});
-
-// 목록 업데이트 함수
-function report_filter() {
-    var reportState = $('input[name="report_state"]:checked').val() || "all";
-    var reportCategory = $('input[name="report_category"]:checked').val() || "all";
-    console.log("Selected report state: " + reportState);
-    console.log("Selected report category: " + reportCategory);
-    $.ajax({
-        type: 'GET',
-        url: 'report_filter.ajax',
-        data: {
+            cnt: 15,
             reportState: reportState,
             reportCategory: reportCategory
         },
         dataType: 'JSON',
         success: function(data) {
-        	listPrint(data.list);
+            listPrint(data.list);
+
+            // 서버에서 받은 totalPages가 페이지네이션과 다르면 업데이트
+            if (data.totalPages !== $('#pagination').data('totalPages')) {
+                $('#pagination').twbsPagination('destroy');
+                $('#pagination').twbsPagination({
+                    startPage: page,
+                    totalPages: data.totalPages,
+                    visiblePages: 5,
+                    first: '<<',
+                    prev: '<',
+                    next: '>',
+                    last: '>>',
+                    onPageClick: function(evt, page) {
+                        pageCall(page);
+                    }
+                });
+                $('#pagination').data('totalPages', data.totalPages);
+            }
         },
         error: function(e) {
             console.error('AJAX Error:', e);
         }
     });
 }
+
 function formatDate(dateString) {
     // Date 객체 생성
     const date = new Date(dateString);
@@ -270,7 +284,7 @@ function listPrint(list) {
         content += '<td>' + item.reporting_id + '</td>';
         content += '<td>' + item.reported_id + '</td>';
         content += '<td>' + item.report_category + '</td>';
-        content += '<td><a href="reportDetail.go?report_idx=' + item.report_idx + '">' + item.report_content + '</a></td>';
+        content += '<td><span class="reportSub"><a href="reportDetail.go?report_idx=' + item.report_idx + '">' + item.report_content + '</a></span></td>';
         content += '<td>' + formatDate(item.report_date) + '</td>';
         content += '<td>' + (item.report_state == 1 ? '처리완료' : '처리중') + '</td>';
         content += '</tr>';

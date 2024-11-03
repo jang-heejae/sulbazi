@@ -37,7 +37,8 @@
         align-items: center;
     }
     .icon{
-        display: flex;
+     	display: flex;
+    	flex-direction: row;
     }
     .logo_text a{
         font-family: "Irish Grover", system-ui;
@@ -55,11 +56,14 @@
         display: flex;
     }
     .full{
+        position: fixed;
+    	top: 0;
+    	left: 0; 
         z-index: 999;
-        position: absolute;
         display: flex;
         width: 300px;
-        height: 100vh;
+        min-height: 100vh;
+        height: auto;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -71,7 +75,8 @@
     }
     .full2{
         z-index: 999;
-        position: absolute;
+        position: fixed;
+    	top: 0;
         left: 1620px;
         display: flex;
         width: 300px;
@@ -125,11 +130,13 @@
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
             <div class="logo_text">
-                <a href="./">SULBAZI</a>
+                <a href="adminMain.go">SULBAZI</a>
             </div>
             <div>
                 <ul class="icon">
-                    <li><a href="">로그인</a></li>
+                    <li><a href="login.go">로그인</a></li>
+                    <li style="visibility: hidden;"><i class="fa-regular fa-message"></i></li>
+                    <li style="visibility: hidden;"><i class="fa-regular fa-bell"></i></li>
                     <li class="mypage"><i class="fa-regular fa-user"></i></li>
                 </ul>
             </div>
@@ -137,11 +144,18 @@
         <div class="fullbox">
             <div class="full">
                 <ul class="list1">
+<<<<<<< .merge_file_fwZO4P
                     <li><a href="localChatRoom.go">지역 대화방</a></li>
                     <li><a href="userchatlist.go">개인 대화방</a></li>
                     <li><a href="storeList.go">매장 리스트</a></li>
                     <li><a href="boardList.go">게시판</a></li>
                     <li><a href="userinquery.go">고객센터</a></li>
+=======
+                    <li><a href="localchatlist.go">지역 대화방</a></li>
+                    <li><a href="userchatlist.go">개인 대화방</a></li>
+                    <li><a href="storeList.go">매장 리스트</a></li>
+                    <li><a href="boardList.go">게시판</a></li>
+>>>>>>> .merge_file_PtBhky
                 </ul>
             </div>
             <div class="full2">
