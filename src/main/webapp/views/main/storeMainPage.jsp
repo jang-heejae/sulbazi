@@ -47,7 +47,6 @@
     	background-color: #041d03;
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
-    	margin-top: 200px; 
 	}
 	.store{
 		background-color: #73734F;

@@ -35,13 +35,19 @@ public class ReportController {
 	public String report() {
 		return "admin/reportList";
 	}
-	@GetMapping(value="/reportList.ajax")  
+	// 신고목록 페이지네이션 + 필터링 리스트
+	@GetMapping(value="/reportList.ajax")
 	@ResponseBody
-	public Map<String, Object> reportList(String page, String cnt){
-		int page_ = Integer.parseInt(page);
-		int cnt_ = Integer.parseInt(cnt);
-		return report_ser.reportList(page_, cnt_); 
+	public Map<String, Object> reportList(
+	    String page, String cnt,
+	    @RequestParam(required = false, defaultValue = "all") String reportState,
+	    @RequestParam(required = false, defaultValue = "all") String reportCategory
+	) {
+	    int page_ = Integer.parseInt(page);
+	    int cnt_ = Integer.parseInt(cnt);
+	    return report_ser.reportList(page_, cnt_, reportState, reportCategory);
 	}
+	// 신고 상세보기
 	@GetMapping(value="/reportDetail.go")
 	public String reportDetail(Model model, String report_idx, HttpSession session) {
 		ReportDTO report_dto = report_ser.reportDetail(report_idx);
@@ -63,6 +69,7 @@ public class ReportController {
 	    }
 		return "admin/reportDetail";
 	}
+	// 신고에 관리자 답변달기
 	@GetMapping(value="/processWrite.do")
 	public String processWrite(@RequestParam Map<String, String> param, Model model, HttpSession session, int report_idx, String reported_id) {
 	    String admin_id = (String) session.getAttribute("loginId");
@@ -77,40 +84,13 @@ public class ReportController {
 
 	    return "redirect:/reportDetail.go?report_idx=" + report_idx;
 	}
-
+	// 관리자 답변 실시간으로 list 쌓기
 	@GetMapping(value="/process.ajax")
 	@ResponseBody
 	public Map<String, Object> process(int report_idx) {
 	    log.info("proajax report_idx: " + report_idx); 
 	    return report_ser.process(report_idx);
 	}
-	@GetMapping(value="/report_filter.ajax")
-    @ResponseBody
-    public Map<String, Object> reportFilter(@RequestParam String reportState, @RequestParam String reportCategory) {
-        log.info("Selected report state: " + reportState);
-        log.info("Selected report category: " + reportCategory);
-        
-        List<ReportDTO> reportList;
-
-        if ("all".equals(reportState)) {
-            reportList = report_ser.getAllReports(); // 모든 리포트 가져오기
-        } else {
-            int state = Integer.parseInt(reportState);
-            reportList = report_ser.getReportsByState(state); // 특정 상태에 따른 리포트 가져오기
-        }
-
-        // 카테고리에 따라 필터링
-        if (!"all".equals(reportCategory)) {
-            reportList = reportList.stream()
-                .filter(report -> report.getReport_category().equals(reportCategory))
-                .collect(Collectors.toList());
-        }
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("list", reportList);
-        return map;
-    }
-	
 	
 	
 	

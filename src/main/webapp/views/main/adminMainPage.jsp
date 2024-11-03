@@ -50,7 +50,6 @@
     	background-color: #041d03;
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
-    	margin-top: 200px; 
     	font-family: "Yeon Sung", system-ui;
 	}
 	.store{
@@ -175,6 +174,15 @@
     	max-width: 54%;
     	display: inline-block;
 	}
+	.chatsub {
+    	font-size: 24px;
+    	display: -webkit-box;
+    	-webkit-line-clamp: 2;  
+    	-webkit-box-orient: vertical;  
+    	overflow: hidden;     
+    	text-overflow: ellipsis;  
+    	max-width: 100%;
+	}
 </style>
 </head>
 <body>
@@ -211,9 +219,9 @@
 		<div id="bestChat" style="width:100%; height:230px; background-color:#041d03; margin:15px; border: 6px solid rgb(255, 140, 9);">
 			<c:forEach var="chat" items="${chatRoom}">
 				<div class="chatList">
-					<div class="chatList2">${chat.userchat_subject}</div>
+					<div class="chatList2"><span class="chatsub">${chat.userchat_subject}</span></div>
 					<div class="userProfile">
-						<img class="userImg" src="/photo/${profiles[chat.user_id].user_photo}"/>
+						<img class="userImg" src="/photo/${profiles[chat.user_id].user_photo}"/>&nbsp;
 						<div class="chatUser">${profiles[chat.user_id].user_nickname}</div>
 						<div class="count">${chat.current_people} / ${chat.max_people}</div>
 					</div>

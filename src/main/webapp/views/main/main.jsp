@@ -54,12 +54,15 @@
     .fullbox{
         display: flex;
     }
-    .full{	
-    	position: absolute;
+    .full{
+        position: fixed;
+    	top: 0;
+    	left: 0; 
         z-index: 999;
         display: flex;
         width: 300px;
-        height: 100vh;
+        min-height: 100vh;
+        height: auto;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -71,7 +74,8 @@
     }
     .full2{
         z-index: 999;
-        position: absolute;
+        position: fixed;
+    	top: 0;
         left: 1620px;
         display: flex;
         width: 300px;

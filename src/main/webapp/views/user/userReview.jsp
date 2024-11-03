@@ -9,6 +9,7 @@
     <script src="resources/jquery.twbsPagination.js" type="text/javascript"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -30,6 +31,7 @@
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 140px; 
+    	font-family: "Yeon Sung", system-ui;
 	}
 	.pagination {
     	display: flex; /* Flexbox로 설정 */
@@ -81,6 +83,7 @@
    		margin-left: 31px;
    	 	margin-bottom: 12px;
    	 	color: rgb(255, 140, 9);
+   	 	-webkit-text-stroke: 2px #20290E;
     }
     #userLike{
     	display: flex;
@@ -109,27 +112,54 @@
 	}
 	.userProfile2{
 		display: flex;
-    width: 100%;
-    height: 100%;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
+    	width: 100%;
+    	height: 100%;
+    	flex-direction: row;
+    	justify-content: space-evenly;
+    	align-items: center;
 	}
 	.userProfile1{
 		display: flex;
-    width: 45%;
-    height: 45%;
-    flex-direction: column;
-    align-items: center;
+    	width: 45%;
+    	height: 45%;
+    	flex-direction: column;
+    	align-items: center;
 	}
-	.reviewList{
-		border-radius: 10px;
-	 	margin: 10px;
-	 	background-color: white;
-	 	    display: flex;
-    flex-direction: column;
-    align-items: center;
+	#ajaxdiv{
+        border-radius: 10px;
+    	margin: 10px;
+    	background-color: white;
+    	display: flex;
+    	align-items: flex-start;
+    	flex-direction: column;
+    	background-color: #20290E;
+		border: 2px solid rgb(255, 140, 9);
+		color: white;
 	}
+	.userUl{
+		display: flex;
+    	align-items: center;
+   	 	margin-left: 10px;
+    	margin-top: 10px;
+	}
+	.storeUl{
+	    width: 95%;
+    	display: flex;
+    	flex-direction: row;
+    	justify-content: space-between;
+    	margin-left: 10px;
+    	margin-right: 10px;
+	}
+	#userpho{
+		border-radius: 50%;
+		width: 25px;
+    	height: 25px;
+    	display: inline;
+	}
+	.date{
+        display: flex;
+    	width: 25%;
+    	flex-direction: row-reverse;
 	}
 </style>
 </head>
@@ -151,19 +181,17 @@
 					<div id="userLike" style="margin: 18px;">
 						<img class="likeIcon" src="resources/img/userLike.png"/>
 						<ul>
-							<li></li>
+							<li>${info.user_likecount}</li>
 						</ul>
 					</div>
 				</div>
 				</div>
 			<div class="userReview" style="width:45%; height:45%;">
 				<div class="userReview2" style="width:100%; height:20%;">
-					<div class="reviewList">
 						<input type="hidden" class="ucIdx" value="${review.review_idx}"/>
-						<div class="reviewList2">
+						<div class="reviewList">
 
 						</div>
-					</div>
 				</div>
 
 				<div class="container">
@@ -188,7 +216,7 @@ pageCall(showPage);
         url: 'userReview.ajax',
         data: {
         	page: page,
-            cnt: 5,
+            cnt: 4,
             user_id : '${info.user_id}'
         },
         dataType: 'JSON',
@@ -233,15 +261,27 @@ pageCall(showPage);
 	function listPrint(list) {
 	    var content = '';
 	    for (var item of list) {
-	        content += '<ul>';
-	        content += '<li><i class="fas fa-star" style="color: yellow;"></i>'+item.starpoint+'</li>';
-	        content += '<li>'+item.review_content+'</li>';
-	        content += '<li>'+item.store_name+'</li>';
-	        content += '<li>'+item.store_address+'</li>';
-	        content += '<li>'+formatDate(item.review_date)+'</li>';
+	        content += '<div id="ajaxdiv">';
+	        content += '<ul class="userUl">';
+	        content += '<li><img id="userpho" src="/photo/' + item.user_photo + '" alt="User Photo" class="user-photo"></li>';
+	        content += '<li>'+'\u00A0'+item.user_nickname+'\u00A0'+'\u00A0'+'</li>';
+	        content += '<li><img src="resources/img/종원리뷰별.png" style="width:25px; height:25px;"/>'+'\u00A0'+item.starpoint+'\u00A0'+'\u00A0'+'</li>';
+	        content += '<li><img src="resources/img/thumb.png" style="width:25px; height:25px;"/>'+'\u00A0'+item.like_count+'\u00A0'+'\u00A0'+'</li>';
+	        content += '<li style="color : gray"><span>#</span>'+item.opt_names+'</li>';
 	        content += '</ul>';
+	        content += '<ul style="margin: 10px;">';
+	        content += '<li>'+item.review_content+'</li>';
+	        content += '</ul>';
+	        content += '<ul style="margin: 10px; margin-bottom: 0px;">';	        
+	        content += '<li onclick="location.href=\'storeDetail.do?storeidx=' + item.store_idx + '\'" style="cursor: pointer;">' + item.store_name + '</li>';
+	        content += '</ul>';
+	        content += '<ul class="storeUl">';
+	        content += '<li style="width: 66%;">'+item.store_address+'</li>';
+	        content += '<li class="date">'+formatDate(item.review_date)+'</li>';
+	        content += '</ul>';
+	        content += '</div>';
 	    }
-	    $('.reviewList2').html(content); 
+	    $('.reviewList').html(content); 
 	}
 </script>
 </html>

@@ -49,6 +49,22 @@
 	<select id="userBookmark" parameterType="com.sulbazi.member.BookMarkDTO">
 		SELECT store_idx FROM bookmark WHERE user_id = #{user_id} ORDER BY bookmark_date DESC
 	</select>
+	<!-- store 카테고리 뽑아오기 -->
+	<select id="storeOptName" parameterType="map" resultType="map">
+    SELECT 
+        b.store_idx,
+        co.opt_name
+    FROM 
+        bookmark b
+    JOIN 
+        store_category sc ON b.store_idx = sc.store_idx
+    JOIN 
+        category_opt co ON sc.opt_idx = co.opt_idx
+    WHERE 
+        b.user_id = #{user_id}
+    ORDER BY 
+        b.bookmark_date DESC
+</select>
 	<!-- user_id 가 작성한 리뷰 뽑기 -->
 	<select id="userReview" parameterType="com.sulbazi.review.ReviewDTO">
 		SELECT * FROM review WHERE user_id = #{user_id} ANd review_state = 1 ORDER BY review_date DESC

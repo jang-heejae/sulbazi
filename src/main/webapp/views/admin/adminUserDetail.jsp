@@ -7,10 +7,8 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="resources/css/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -31,6 +29,7 @@
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 140px; 
     	font-family: "Yeon Sung", system-ui;
+    	font-weight: normal;
 	}
 	.userProfile {
         display: flex;
@@ -62,6 +61,11 @@
     	flex-direction: column;
     	align-items: flex-end;
     }
+    .userProfile3 li{
+   	    display: flex;
+    	flex-direction: row;
+    	align-items: center;
+    }
     .userProfile3 label{
     	width: 100px;
     }
@@ -72,17 +76,22 @@
     	margin-bottom: 5px;
     	border-radius: 10px;
     	border: none; /* 전체 테두리 제거 */
-    	border-bottom: 2px solid #041d03;
+    	border-bottom: 2px solid rgb(255, 140, 9);
 		background-color: rgba(255, 255, 255, 0.1);
 		color:#041d03;
 		outline: none;
 		font-family: "Yeon Sung", system-ui;
+    }
+    label{
+    	color: #20290E;
+    	font-size: 20px;
     }
     .userNickname{
    		font-size: 96px;
    		margin-left: 31px;
    	 	margin-bottom: 12px;
    	 	color: rgb(255, 140, 9);
+   	 	-webkit-text-stroke: 2px #20290E;
     }
     #userLike{
     	display: flex;
@@ -103,6 +112,7 @@
 	}
 	.userCate{
 	    margin-top: 36px;
+	    color: #20290E;
 	}
 	.userCate li{
 	    display: flex;
@@ -125,6 +135,7 @@
         border-radius: 50%; /* 동그란 모양 */
         cursor: pointer;
         position: relative;
+        font-weight: normal;
     }
 
     .userCate input[type="radio"]:checked {
@@ -151,7 +162,7 @@
 </style>
 </head>
 <body>
-	<c:import url="../main/adminMain.jsp"/>
+<jsp:include page="../main/adminMain.jsp"/>
 	    <section class="chatBox2">
         	<div class="chatitems2">
         	<div class="userProfile">
@@ -170,14 +181,14 @@
 			<div id="userLike">
 				<img class="likeIcon" src="resources/img/userLike.png"/>
 				<ul>
-					<li>${info.user_likecount}</li>
+					<li style="color: #20290E;">${info.user_likecount}</li>
 				</ul>
 			</div>
 			<div id="userRevoke">
 				<ul>
-					<li>신고 당한 횟수 ${info.user_reportedcases}</li>
-					<li>신고 한 횟수 ${info.user_reportno}</li>
-					<li>이용 상태
+					<li style="color: #20290E;">신고 당한 횟수 ${info.user_reportedcases}</li>
+					<li style="color: #20290E;">신고 한 횟수 ${info.user_reportno}</li>
+					<li style="color: #20290E;">이용 상태
 						<c:choose>
         					<c:when test="${info.user_revoke == 0}">
             					<span style="color: #32CD32; font-weight: bold;">정상</span>

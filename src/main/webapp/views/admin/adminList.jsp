@@ -8,11 +8,9 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="resources/css/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 </head>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -21,7 +19,7 @@
     	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
 	}
 	.chatitems2 {
-		margin-top: 150px;
+		margin-top: 140px;
     	width: 940px;
     	min-height: 650px; /* 초기 최소 높이 설정 */
     	height: auto; /* 내용에 따라 높이 자동 조절 */
@@ -33,21 +31,16 @@
     	background-color: #73734F;
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
-    	margin-top: 140px; 
     	font-family: "Yeon Sung", system-ui;
+    	color: #20290E;
+    	font-weight: normal;
 	}
-		table, th, td{
-		border-bottom: 1px solid white;
+	table, th, td{
+		border-bottom: 1px solid rgb(255, 140, 9);
 		border-collapse: collapse;
+		text-align: center;
 		padding: 10px;
-	}
-	.adminList{
-		    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-	}
-
+	} 
 	button{
 		background-color: rgb(255, 140, 9);
 		color: #041d03;
@@ -56,39 +49,36 @@
 		font-size: 14;
 		font-family: "Yeon Sung", system-ui;
 	}
-	.btn{
-		margin-top: 10px;
-		margin-left: 274px;
-		font-family: "Yeon Sung", system-ui;
+	.adminList{
+	    display: flex;
+    	flex-direction: column;
 	}
-
 </style>
 <body>
-	<c:import url="../main/adminMain.jsp"/>
+<jsp:include page="../main/adminMain.jsp"/>
 	    <section class="chatBox2">
-        <div class="chatitems2">
-        <div class="adminList">
-	<div id="adminList">
-	<h1>관리자 리스트</h1>
-	<hr/>
-	<br/>
-	<table id="adminListTable">
-		<thead  id="thead">
-			<tr>
-				<th>관리자 아이디</th>
-				<th>관리자 이름</th>
-				<th>관리자 생성날짜</th>
-			</tr>
-		</thead> 
-		<tbody id="list">
+        	<div class="chatitems2">
+        		<div class="adminList">
+					<table id="adminListTable">
+						<thead  id="thead">
+							<tr>
+								<th colspan="3" style="font-size:36px;">관리자 리스트</th>
+							</tr>
+							<tr>
+								<th>관리자 아이디</th>
+								<th>관리자 이름</th>
+								<th>관리자 생성날짜</th>
+							</tr>
+						</thead> 
+						<tbody id="list">
 			
-		</tbody>
-	</table>
-	<div class="btn"><button onclick="window.open('<c:url value="adminDetail.go"/>', 'popup', 'width=600,height=330'); return false;">관리자 추가</button></div>
-	</div>
-	</div>
-	</div>
-	</section>
+						</tbody>
+					</table>
+					<button onclick="window.open('<c:url value="adminDetail.go"/>', 'popup', 
+							'width=600,height=330'); return false;">관리자 추가</button>
+				</div>
+			</div>
+		</section>
 </body>
 <script>
 function refresh() {

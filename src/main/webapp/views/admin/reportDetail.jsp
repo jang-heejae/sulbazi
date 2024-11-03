@@ -32,9 +32,10 @@
     	align-content: center;
     	background-color: #73734F;
     	border-radius: 20px;
-    	padding: 20px; /* 내부 여백 추가 */
-    	margin-top: 140px; 
+    	padding: 20px;
     	font-family: "Yeon Sung", system-ui;
+    	color:#20290E;
+		font-weight: normal;
 	}
 	#reportDiv{
 		display: block;
@@ -61,6 +62,7 @@
 	label{
 		display: block;
     	width: 154px;
+    	font-weight: bold;
 	}
 	#ul input[type="text"]{
 		width: 50%;
@@ -89,23 +91,17 @@
 		margin-bottom: 10px;
 	}
 	#processDiv2 {
-    display: block;
-    position: relative;
-    width: 100%;
-}
-
-#processList {
-    position: relative;
-    width: 100%;
-    margin-top: 20px;
-}
-	table, td{
-		border: none;
-		padding: 3px;
-		border-collapse: collapse;
-		width: 926px;
-		text-align: center;
-		border-radius: 20px;
+    	display: block;
+    	position: relative;
+    	width: 100%;
+	}
+	#processList {
+    	position: relative;
+    	width: 100%;
+    	margin-top: 20px;
+	}
+	input[name="reporting_id"], input[name="reported_id"]{
+		cursor: pointer;
 	}
 	input[name="revoke_start"], input[name="revoke_stop"]{
 		width: 79px;
@@ -117,24 +113,51 @@
 		border-radius: 10px;
 		font-family: "Yeon Sung", system-ui;
 	}
-	select{
-		border-radius: 10px;
-	}
+
 	button{
-		background-color: #20290E;
-		color: white;
+		background-color: rgb(255, 140, 9);
+		color: #041d03;
 		padding: 5px;
 		border-radius: 5px;
 		font-size: 14;
-		font-weight: bold;
+		font-family: "Yeon Sung", system-ui;
+		width: 46px;
 	}
-	.processList2 td{
-		font-weight: bold;
-		font-size: 16px;
+	.processList2{
+		color: rgb(255, 140, 9);
+		background-color: #20290E;
+		border-collapse: collapse;
+		padding: 3px;
+		font-size: 20px;
+		font-family: "Yeon Sung", system-ui;
+		border: 1px solid #20290E;
+	}
+	td{
+		padding: 5px;
+		width: 143px;
+		text-align: center;
+		border-bottom: 2px solid rgb(255, 140, 9);
+	}
+	#report_cate, option{
+		color:#20290E;
+		font-weight: normal;
+		font-family: "Yeon Sung", system-ui;
+		padding: 5px;
+		border: 1px solid #20290E;
+		border-radius: 10px;
+	}
+	#list{
+		color:#20290E;
+		font-weight: normal;
 	}
 	#processDiv input{
 		padding: 3px;
 	}
+	hr{
+    	border: none;
+    	height: 2px;
+   		background-color: rgb(255, 140, 9);
+    }
 </style>
 </head>
 <body>
@@ -143,9 +166,10 @@
         <div class="chatitems2">
     <div id="reportDiv">
         <input type="hidden" name="report_idx" value="${info.report_idx}"/>
-        <h1 style="color:rgb(255, 140, 9);">신고 상세보기</h1>
+        <h1 style="color:rgb(255, 140, 9); font-size:48px;">신고 상세보기</h1>
         <hr/>
     </div>
+    <br/>
     <div id="ul">
         <ul>
             <li><label>신고자 아이디 : </label><input type="text" name="reporting_id" value="${info.reporting_id}" onclick="location.href='adminUserDetail.go?user_id=${info.reporting_id}'" readonly="readonly"/></li>

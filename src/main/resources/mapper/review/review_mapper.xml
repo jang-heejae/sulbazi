@@ -89,7 +89,7 @@
         	s.store_name,        
         	s.store_address,    
         	(
-            	SELECT GROUP_CONCAT(co.opt_name SEPARATOR ', ') 
+            	SELECT GROUP_CONCAT(co.opt_name SEPARATOR ' #') 
             	FROM review_category AS rcg 
             	JOIN category_opt AS co ON rcg.opt_idx = co.opt_idx 
             	WHERE rcg.review_idx = r.review_idx

@@ -131,10 +131,12 @@ public class UserService {
 	    model.addAttribute("info", userDto);
 		List<UserDTO> userList = user_dao.files(user_id);
 		model.addAttribute("files", userList);
+		
 		List<BookMarkDTO> bookList = user_dao.userBookmark(user_id);
 		log.info("bookList: {}", bookList);
 		List<StoreDTO> storeList = new ArrayList<StoreDTO>();
 		Map<Integer, PhotoDTO> photo = new HashMap<Integer, PhotoDTO>();
+		Map<Integer, List<String>> storeOpt = new HashMap<Integer, List<String>>();
 		for (BookMarkDTO bmDto : bookList) {
 			int store_idx = bmDto.getStore_idx();
 			log.info("store_idx: {}"+ store_idx);
@@ -142,11 +144,14 @@ public class UserService {
 			storeList.add(storeDto);
 			PhotoDTO photoDto = photo_ser.mainStore(store_idx);
 			photo.put(store_idx, photoDto);
-		}		
-		log.info("storeList: {}"+ storeList);
-		log.info("photoMap: {}"+ photo);
-		log.info("storeList: {}", storeList);
-		log.info("photoMap: {}", photo);
+		}
+		List<Map<String, Object>> optName = user_dao.storeOptName(user_id);
+		for (Map<String, Object> map : optName) {
+			int store_idx = (int) map.get("store_idx");
+			String opt_name = (String) map.get("opt_name");
+			storeOpt.computeIfAbsent(store_idx, k -> new ArrayList<>()).add(opt_name);
+		}
+		model.addAttribute("storeOpt", storeOpt);
 		model.addAttribute("storePhoto", photo);
 		model.addAttribute("storeInfo", storeList);
 	}

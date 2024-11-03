@@ -8,10 +8,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="resources/jquery.twbsPagination.js" type="text/javascript"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
 	.chatBox2 {
     	display: flex;
@@ -21,31 +19,20 @@
     	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
 	}
 	.chatitems2 {
-		margin-top: 150px;
     	width: 940px;
-    	min-height: 650px; /* 초기 최소 높이 설정 */
-    	height: auto; /* 내용에 따라 높이 자동 조절 */
+    	min-height: 650px;
+    	height: auto;
     	display: flex;
     	flex-wrap: wrap;
-    	justify-content: center;
+    	justify-content: space-between;
     	align-items: center;
     	align-content: center;
     	background-color: #73734F;
     	border-radius: 20px;
-    	padding: 20px; /* 내부 여백 추가 */
-    	margin-top: 140px; 
+    	padding: 20px;
+    	margin-top: 140px;
     	font-family: "Yeon Sung", system-ui;
-	}
-	#store{
-		position: absolute;
-		top: 120px;
-    	left: 525px;
-	}
-	#storeSearch{
-		position: absolute;
-		top: 120px;
-    	left: 799px;
-    	width: 514px;
+    	flex-direction: row;
 	}
 	#storeSearch2{
 		width: 283px;
@@ -59,25 +46,22 @@
 	#storeTable{
 		color: rgb(255, 140, 9);
 		background-color: #20290E;
-		border: 1px solid #20290E;;
+		border: 1px solid #20290E;
 		border-collapse: collapse;
 		padding: 3px;
-		font-weight: bold;
+		font-size: 16px;
 		font-family: "Yeon Sung", system-ui;
-	}
-	#storeDiv{
-		position: absolute;
-		top: 256px;
-    	left: 507px;
-    	height: 200px;
-    	width: 896px;
-    	
 	}
 	td{
 		padding: 5px;
 		width: 143px;
 		text-align: center;
-		border-bottom: 2px solid white;
+		border-bottom: 2px solid rgb(255, 140, 9);
+	}
+	.store_name{
+    	white-space: nowrap;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
 	}
 	.pagination {
     	display: flex; /* Flexbox로 설정 */
@@ -124,10 +108,11 @@
     	cursor: auto;
     	background-color: #73734F;
     	border-color: #73734F;
+    }
 </style>
 </head>
 <body>
-	<c:import url="../main/adminMain.jsp"/>
+<jsp:include page="../main/adminMain.jsp"/>
 	    <section class="chatBox2">
         <div class="chatitems2">
 	<div id="store"><h1>매장 사용자</h1></div>
@@ -139,7 +124,7 @@
                     <option value="store_name">매장 이름</option>
                	</select>
            		<input type="text" id="storeSearch2" name="storeSearch" value=""/>
-           		<i class="fas fa-search" id="searchIcon" style="cursor: pointer;"></i>
+           		<i class="fas fa-search" id="searchIcon" style="cursor: pointer; color:rgb(255, 140, 9);"></i>
            </li>
 		</ul>
 	</div>
@@ -222,7 +207,7 @@ $('#searchIcon').on('click', function(){
 	    for (var item of list) {
 	        content += '<tr>';
 	        content += '<td style="color:#041d03;"><a href="adminStoreDetail.go?store_idx=' + item.store_idx + '">'+ item.store_id +'</a></td>';
-	        content += '<td>' + item.store_name + '</td>';
+	        content += '<td class="store_name">' + item.store_name + '</td>';
 	        content += '<td>' + item.store_number + '</td>';
 	        content += '<td>' + item.review_total + '</td>';
 	        content += '<td>' + item.star_average + '</td>';

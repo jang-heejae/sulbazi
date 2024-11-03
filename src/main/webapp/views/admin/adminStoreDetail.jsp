@@ -8,11 +8,8 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=4ae2258b561b1a937e5d3f2c155e60f9"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 <style>
-
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -36,6 +33,36 @@
     	margin-top: 140px; 
     	font-family: "Yeon Sung", system-ui;
 	}
+		input[type="radio"] {
+        appearance: none; /* 기본 스타일 제거 */
+        width: 15px;
+        height: 15px;
+        background-color: #041d03; /* 원하는 배경색 */
+        border: 2px solid #041d03; /* 테두리 색 */
+        border-radius: 50%; /* 동그란 모양 */
+        cursor: pointer;
+        position: relative;
+    }
+
+    input[type="radio"]:checked {
+        background-color: #041d03; /* 체크 시 배경색 */
+        border: 0.1px solid #041d03; /* 체크 시 테두리 색 */
+    }
+
+    input[type="radio"]::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: transparent; /* 체크되지 않았을 때는 투명 */
+    }
+    input[type="radio"]:checked::after {
+        background-color: rgb(255, 140, 9); /* 체크 시 점 색상 */
+    }
 	.mapwhatname{
 		border-radius: 8px;
 	}
@@ -101,16 +128,6 @@
 	.form-group3 div{
 		margin: 3px;
 	}
-	input[type="text"], input[type="password"]{
-		border: none; /* 전체 테두리 제거 */
-    	border-bottom: 2px solid #041d03;
-		padding: 4px;
-		border-radius: 10px;
-		width: 250px;
-		background-color: rgba(255, 255, 255, 0.1);
-		color:#041d03;
-		outline: none;
-	}
 	textarea {
 		outline: none;
 		border: none; /* 전체 테두리 제거 */
@@ -125,6 +142,16 @@
     	display: flex; /* flex 컨테이너로 설정 */
    		gap: 10px; /* 요소 간 간격 설정 */
    		margin: 10px
+	}
+	input[type="text"], input[type="password"]{
+		border: none; /* 전체 테두리 제거 */
+    	border-bottom: 2px solid #041d03;
+		padding: 4px;
+		border-radius: 10px;
+		width: 250px;
+		background-color: rgba(255, 255, 255, 0.1);
+		color:#041d03;
+		outline: none;
 	}
 	#mainPhoto{
 		width: 215px;
@@ -150,8 +177,7 @@
 	.span {
     	margin-left: -9px;
     	margin-right: -9px;
-    	padding: 0;
-    	font-size: inherit; /* 상위 요소와 동일한 글자 크기 사용 */
+    	padding: 0;/* 상위 요소와 동일한 글자 크기 사용 */
 	}
 	#store_menu {
     	display: flex;
@@ -194,6 +220,9 @@
     	align-items: flex-end; /* 텍스트를 오른쪽 정렬 */
     	text-align: right;/* 이름과 가격을 왼쪽으로 정렬 */
     	gap: 5px; /* 이름과 가격 사이의 간격 */
+	}
+	label {
+		font-size:  20px;
 	}
 </style>
 </head>
