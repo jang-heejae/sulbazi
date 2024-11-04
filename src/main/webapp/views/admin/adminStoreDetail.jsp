@@ -368,8 +368,8 @@ $(document).ready(function() {
 });
 
 var container = document.getElementById('map');
-var storeLatitude = '${storedto.store_latitude}'
-var storeLongitude = '${storedto.store_longitude}'
+var storeLatitude = '${storedto.store_latitude}';
+var storeLongitude = '${storedto.store_longitude}';
 	 
 var options = {
 	center: new kakao.maps.LatLng(storeLatitude, storeLongitude),

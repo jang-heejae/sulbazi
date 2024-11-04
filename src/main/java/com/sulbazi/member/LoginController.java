@@ -44,6 +44,7 @@ public class LoginController {
 	            }
 	        }
 	    }
+	    logger.info("로그옵션:{}"+ session.getAttribute("opt"));
 	    model.addAttribute("msg", msg);
 	    return page;
 	}

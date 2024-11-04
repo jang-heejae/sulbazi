@@ -63,7 +63,7 @@
     	align-items: flex-end;
     }
     .userProfile3 li{
-   	    display: flex;
+    	    display: flex;
     	flex-direction: row;
     	align-items: center;
     }
@@ -87,9 +87,9 @@
     .userNickname{
    		font-size: 96px;
    		margin-left: 31px;
-   	 	margin-bottom: 12px;
-   	 	color: rgb(255, 140, 9);
-   	 	-webkit-text-stroke: 1px #20290E;
+    	 	margin-bottom: 12px;
+    	 	color: rgb(255, 140, 9);
+    	 	-webkit-text-stroke: 1px #20290E;
     }
     #userLike{
     	display: flex;
@@ -120,7 +120,7 @@
 	.userCate div{
 		display: flex;
     	flex-direction: row;
-   	    margin-bottom: 28px;
+    	    margin-bottom: 28px;
    		margin-top: -14px;
    		display: inline-block;
 	}
@@ -170,9 +170,66 @@
 	label{
 		font-size: 20px;
 	}
+.modal_madal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: auto;
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px #041d03;
+    color: #041d03;
+    text-align: center;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.modal-content_madal {
+    padding: 20px;
+    text-align: center;
+    color: #041d03;
+    background-color: #fefefe;
+    border-radius: 10px;
+}
+
+.btn_madal {
+    background-color: rgb(255, 140, 9);
+    color: #041d03;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 10px;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.btn_madal:hover {
+    background-color: #20290E;
+    color: white;
+}
+
+.close_madal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close_madal:hover,
+.close_madal:focus {
+    color: black;
+}
 </style>
 </head>
 <body>
+<form action="userUpdate.do" method="post" id="userForm" enctype="multipart/form-data">
 	<c:import url="../main/main.jsp"/>
 	    <section class="chatBox2">
         	<div class="chatitems2">
@@ -196,8 +253,8 @@
 					<li>${info.user_likecount}</li>
 				</ul>
 			</div>
-			<button type="submit" id="updateBtn">수정 하기</button>
-			<button type="button" onclick="location.href='/SULBAZI/userMyPage.go'">취소 하기</button>
+			<button type="button" id="updateBtn">수정 하기</button>
+			<button type="button" id="cancelBtn">취소 하기</button>
 			</div>
 			<div class="userInfo">
 			<div class="userProfile3">
@@ -218,103 +275,124 @@
 			</div>
 			<div class="userCate">
 		    	<ul>
-        		<!-- 주종 카테고리 -->
-        			<li>
-            			<label>주종</label>&nbsp;&nbsp;&nbsp;
-                		<div><c:forEach var="category" items="${allCategories}">
-                    		<c:if test="${category.category_idx == 1}">
-                        		<c:set var="isChecked" value="false" />
-                        	<!-- 사용자가 선택한 항목인지 확인 -->
-                        <c:forEach var="userCategory" items="${categories}">
-                            <c:if test="${category.opt_idx == userCategory.opt_idx}">
-                                <c:set var="isChecked" value="true" />
-                            </c:if>
-                        </c:forEach>
-                        <!-- 주종 카테고리 옵션 출력 -->
-                			<input type="radio" name="opt_name1" value="${category.opt_name}"
-                        		<c:if test="${isChecked}">checked="checked"</c:if>/>
-                            	${category.opt_name}&nbsp;&nbsp;
-                    			</c:if>
-                		</c:forEach></div>
-        			</li>
+				<!-- 주종 카테고리 -->
+					<li>
+						<label>주종</label>&nbsp;&nbsp;&nbsp;
+						<div><c:forEach var="category" items="${allCategories}">
+							<c:if test="${category.category_idx == 1}">
+								<c:set var="isChecked" value="false" />
+							<!-- 사용자가 선택한 항목인지 확인 -->
+							<c:forEach var="userCategory" items="${categories}">
+								<c:if test="${category.opt_idx == userCategory.opt_idx}">
+									<c:set var="isChecked" value="true" />
+								</c:if>
+							</c:forEach>
+							<!-- 주종 카테고리 옵션 출력 -->
+							<input type="radio" name="opt_name1" value="${category.opt_name}"
+								<c:if test="${isChecked}">checked="checked"</c:if>/>
+									${category.opt_name}&nbsp;&nbsp;
+							</c:if>
+						</c:forEach></div>
+					</li>
 
-        		<!-- 안주 카테고리 -->
-        			<li>
-            			<label>안주</label>&nbsp;&nbsp;&nbsp;
-                			<div><c:forEach var="category" items="${allCategories}">
-                    			<c:if test="${category.category_idx == 2}">
-                        			<c:set var="isChecked" value="false" />
-                        		<!-- 사용자가 선택한 항목인지 확인 -->
-                        	<c:forEach var="userCategory" items="${categories}">
-                            	<c:if test="${category.opt_idx == userCategory.opt_idx}">
-                                	<c:set var="isChecked" value="true" />
-                            	</c:if>
-                        	</c:forEach>
-                        		<!-- 안주 카테고리 옵션 출력 -->
-                            <input type="radio" name="opt_name2" value="${category.opt_name}"
-                            	<c:if test="${isChecked}">checked="checked"</c:if>/>
-                            	${category.opt_name}&nbsp;&nbsp;
-                    			</c:if>
-                			</c:forEach></div>
-        			</li>
+				<!-- 안주 카테고리 -->
+					<li>
+						<label>안주</label>&nbsp;&nbsp;&nbsp;
+							<div><c:forEach var="category" items="${allCategories}">
+								<c:if test="${category.category_idx == 2}">
+									<c:set var="isChecked" value="false" />
+								<!-- 사용자가 선택한 항목인지 확인 -->
+								<c:forEach var="userCategory" items="${categories}">
+									<c:if test="${category.opt_idx == userCategory.opt_idx}">
+										<c:set var="isChecked" value="true" />
+									</c:if>
+								</c:forEach>
+								<!-- 안주 카테고리 옵션 출력 -->
+								<input type="radio" name="opt_name2" value="${category.opt_name}"
+								<c:if test="${isChecked}">checked="checked"</c:if>/>
+								${category.opt_name}&nbsp;&nbsp;
+							</c:if>
+						</c:forEach></div>
+					</li>
 
-        		<!-- 분위기 카테고리 -->
-        			<li>
-            			<label>분위기</label>&nbsp;&nbsp;&nbsp;
-                			<div><c:forEach var="category" items="${allCategories}">
-                    			<c:if test="${category.category_idx == 3}">
-                        			<c:set var="isChecked" value="false" />
-                        <!-- 사용자가 선택한 항목인지 확인 -->
-                        <c:forEach var="userCategory" items="${categories}">
-                            <c:if test="${category.opt_idx == userCategory.opt_idx}">
-                                <c:set var="isChecked" value="true" />
-                            </c:if>
-                        </c:forEach>
-                        <!-- 분위기 카테고리 옵션 출력 -->
-                        <input type="radio" name="opt_name3" value="${category.opt_name}"
-                        	<c:if test="${isChecked}">checked="checked"</c:if>/>
-                            ${category.opt_name}&nbsp;&nbsp;
-                    	</c:if>
-                	</c:forEach></div>
-        		</li>
+				<!-- 분위기 카테고리 -->
+					<li>
+						<label>분위기</label>&nbsp;&nbsp;&nbsp;
+							<div><c:forEach var="category" items="${allCategories}">
+								<c:if test="${category.category_idx == 3}">
+									<c:set var="isChecked" value="false" />
+						<!-- 사용자가 선택한 항목인지 확인 -->
+						<c:forEach var="userCategory" items="${categories}">
+							<c:if test="${category.opt_idx == userCategory.opt_idx}">
+								<c:set var="isChecked" value="true" />
+							</c:if>
+						</c:forEach>
+						<!-- 분위기 카테고리 옵션 출력 -->
+						<input type="radio" name="opt_name3" value="${category.opt_name}"
+							<c:if test="${isChecked}">checked="checked"</c:if>/>
+							${category.opt_name}&nbsp;&nbsp;
+						</c:if>
+					</c:forEach></div>
+				</li>
 
-        		<!-- 방문목적 카테고리 -->
-        		<li>
-            		<label>방문목적</label>&nbsp;&nbsp;&nbsp;
-                		<div><c:forEach var="category" items="${allCategories}">
-                    		<c:if test="${category.category_idx == 4}">
-                        		<c:set var="isChecked" value="false" />
-                        <!-- 사용자가 선택한 항목인지 확인 -->
-                        <c:forEach var="userCategory" items="${categories}">
-                            <c:if test="${category.opt_idx == userCategory.opt_idx}">
-                                <c:set var="isChecked" value="true" />
-                            </c:if>
-                        </c:forEach>
-                        <!-- 방문목적 카테고리 옵션 출력 -->
-                            <input type="radio" name="opt_name4" value="${category.opt_name}"
-                                   <c:if test="${isChecked}">checked="checked"</c:if>/>
-                            			${category.opt_name}&nbsp;&nbsp;
-                    		</c:if>
-                		</c:forEach></div>
-        		</li>
+				<!-- 방문목적 카테고리 -->
+				<li>
+					<label>방문목적</label>&nbsp;&nbsp;&nbsp;
+						<div><c:forEach var="category" items="${allCategories}">
+							<c:if test="${category.category_idx == 4}">
+								<c:set var="isChecked" value="false" />
+					<!-- 사용자가 선택한 항목인지 확인 -->
+					<c:forEach var="userCategory" items="${categories}">
+						<c:if test="${category.opt_idx == userCategory.opt_idx}">
+							<c:set var="isChecked" value="true" />
+						</c:if>
+					</c:forEach>
+					<!-- 방문목적 카테고리 옵션 출력 -->
+						<input type="radio" name="opt_name4" value="${category.opt_name}"
+						   <c:if test="${isChecked}">checked="checked"</c:if>/>
+								${category.opt_name}&nbsp;&nbsp;
+						</c:if>
+					</c:forEach></div>
+			</li>
     		</ul>
 		</div>
 		</div>
 	</div>
 	</div>
 </section>
+
+<!-- 수정 및 취소 확인 모달 -->
+<div id="confirmationModal" class="modal_madal">
+    <div class="modal-content_madal">
+        <span class="close_modal" id="closeModal">&times;</span>
+        <p id="confirmationMessage"></p>
+        <button type="button" class="btn_madal" id="confirmAction">확인</button>
+        <button type="button" class="btn_madal" id="cancelAction">취소</button>
+    </div>
+</div>
+
+</form>
 </body>
 <script>
 $(document).ready(function() {
-    // 이미지 클릭 시 파일 입력 창 열기
-    $('#profileImage').on('click', function() {
+    var originalImageSrc = $('#previewContainer img').attr('src'); // 원래 이미지의 경로를 저장
+
+    // 이미지 클릭 시 파일 입력 창 열기 - 이벤트 위임 방식 사용
+    $(document).on('click', '#profileImage, .profile-image', function() {
         $('#fileInput').click();
     });
-});
-$(document).ready(function() {
+
     $('#fileInput').on('change', function(event) {
         var files = event.target.files;
         var $previewContainer = $('#previewContainer');
+
+        if (files.length === 0) {
+            // 파일 선택을 취소한 경우 원래 이미지로 복원
+            if (originalImageSrc) {
+                $previewContainer.html('<img class="profile-image" src="' + originalImageSrc + '"/>');
+            }
+            return;
+        }
 
         // 기존 미리보기 이미지 제거
         $previewContainer.empty();
@@ -333,8 +411,13 @@ $(document).ready(function() {
             }
         });
     });
-});
-$(document).ready(function() {
+
+    // 파일 선택 취소 시 원래 이미지를 복원하기 위한 input reset 처리
+    $('#fileInput').on('click', function() {
+        originalImageSrc = $('#previewContainer img').attr('src'); // 파일 선택 전 원래 이미지를 저장
+    });
+    
+    // 비밀번호 확인
     $('#user_pwCheck, #user_pw').on('keyup blur', function() {
         var password = $('#user_pw').val();
         var passwordCheck = $('#user_pwCheck').val();
@@ -350,8 +433,7 @@ $(document).ready(function() {
             message.text('');
         }
     });
-});
-$(document).ready(function() {
+
     // 중복확인 버튼 클릭 이벤트
     $('#overlay').on('click', function() {
         var user_nickname = $('#user_nickname').val();
@@ -360,9 +442,8 @@ $(document).ready(function() {
             type: 'GET',
             data: { user_nickname: user_nickname },
             success: function(data) {
-                // 서버에서 중복 여부에 대한 결과를 응답 (예: 사용 가능 여부)
                 if (data.overlay > 0) {
-                	$('#checkNickname').text('이미 사용 중인 닉네임입니다.').css('color', 'rgb(255, 140, 9)');
+                    $('#checkNickname').text('이미 사용 중인 닉네임입니다.').css('color', 'rgb(255, 140, 9)');
                 } else {
                     $('#checkNickname').text('사용 가능한 닉네임입니다.').css('color', '#20290E');
                 }
@@ -372,20 +453,61 @@ $(document).ready(function() {
             }
         });
     });
-});
-$('#updateBtn').on('click', function() {
-    var password = $('#user_pw').val();
-    var passwordCheck = $('#user_pwCheck').val();
-    var nickname = $('#user_nickname').val();
 
-    // 비밀번호 일치 여부 확인
-    if (password !== passwordCheck) {
-        alert('비밀번호가 일치하지 않습니다. 수정이 불가능합니다.');
-        return;
-    }
+    // 수정하기 버튼 클릭 이벤트
+    $('#updateBtn').on('click', function() {
+        $('#confirmationMessage').text('수정하시겠습니까?');
+        $('#confirmationModal').show();
 
-    // 모든 조건을 만족하면 폼 제출
-    $('#userForm').submit();
+        // 확인 버튼 클릭 이벤트 설정 (수정 작업 수행)
+        $('#confirmAction').off('click').on('click', function() {
+            var password = $('#user_pw').val();
+            var passwordCheck = $('#user_pwCheck').val();
+
+            // 비밀번호 일치 여부 확인
+            if (password !== passwordCheck) {
+                alert('비밀번호가 일치하지 않습니다. 수정이 불가능합니다.');
+                $('#confirmationModal').hide();
+                return;
+            }
+
+            // 모든 조건을 만족하면 폼 제출
+            $('#userForm').submit();
+            $('#confirmationModal').hide();
+        });
+
+        // 취소 버튼 클릭 시 모달 닫기 (확인 버튼과 이벤트 겹치지 않도록 함)
+        $('#cancelAction').off('click').on('click', function() {
+            $('#confirmationModal').hide();
+        });
+
+        // 모달 닫기 버튼 클릭 시 모달 닫기
+        $('#closeModal').off('click').on('click', function() {
+            $('#confirmationModal').hide();
+        });
+    });
+
+    // 취소하기 버튼 클릭 이벤트
+    $('#cancelBtn').on('click', function() {
+        $('#confirmationMessage').text('취소하시겠습니까?');
+        $('#confirmationModal').show();
+
+        // 확인 버튼 클릭 이벤트 설정 (취소 작업 수행)
+        $('#confirmAction').off('click').on('click', function() {
+            // 취소 확인 시 페이지 이동
+            location.href = '/SULBAZI/userMyPage.go';
+        });
+
+        // 취소 버튼 클릭 시 모달 닫기 (확인 버튼과 이벤트 겹치지 않도록 함)
+        $('#cancelAction').off('click').on('click', function() {
+            $('#confirmationModal').hide();
+        });
+
+        // 모달 닫기 버튼 클릭 시 모달 닫기
+        $('#closeModal').off('click').on('click', function() {
+            $('#confirmationModal').hide();
+        });
+    });
 });
 </script>
 </html>

@@ -92,7 +92,17 @@
     	border-color: #73734F;
 </style>
 <body>
-    <jsp:include page="../main/main.jsp"/>
+<c:choose>
+    <c:when test="${sessionScope.opt == 'admin_log'}">
+        <jsp:include page="../main/adminMain.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.opt == 'user_log'}">
+        <jsp:include page="../main/main.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.opt == 'store_log'}">
+        <jsp:include page="../main/storeMain.jsp" />
+    </c:when>
+</c:choose>
     <c:if test="${not empty sessionScope.opt && sessionScope.opt == 'store_log'}">
     <div id="reportList">
 		<input type="radio" name="board_category" value="all" checked/> 전체 보기&nbsp;&nbsp;

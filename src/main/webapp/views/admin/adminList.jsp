@@ -81,9 +81,6 @@
 		</section>
 </body>
 <script>
-function refresh() {
-    window.opener.location.reload();
-}
 listCall();
 	function listCall(){
 		$.ajax({

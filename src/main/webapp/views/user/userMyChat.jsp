@@ -53,7 +53,7 @@
     	border-radius: 50%; /* 동그란 모양으로 만들기 */
     	object-fit: cover; /* 이미지의 비율을 유지하면서 크기를 맞춤 */
 	}
-	button{
+	.roomoutbtn{
 		background-color: rgb(255, 140, 9);
 		color: #20290E;
 		padding: 5px;
@@ -88,6 +88,7 @@
         padding: 10px;
         height: 88px;
         color: white;
+        cursor: pointer;
 	}
 	.parti{
 	    display: flex;
@@ -95,6 +96,62 @@
     	justify-content: flex-end;
     	align-items: center;
     	flex-direction: row;
+	}
+	.modal_madal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: auto;
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px #041d03;
+    color: #041d03;
+    text-align: center;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.modal-content_madal {
+    padding: 20px;
+    text-align: center;
+    color: #041d03;
+    background-color: #fefefe;
+    border-radius: 10px;
+}
+
+.btn_madal {
+    background-color: rgb(255, 140, 9);
+    color: #041d03;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 10px;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.btn_madal:hover {
+    background-color: #20290E;
+    color: white;
+}
+
+.close_madal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close_madal:hover,
+.close_madal:focus {
+    color: black;
 }
 </style>
 </head>
@@ -124,14 +181,16 @@
 			<div class="userChat" style="width:45%; height:45%;">
 				<div class="userChat2" style="width:100%; height:20%;">
 					<c:forEach var="chat" items="${chatRoom}">
+						<form action="userchatroom.go?userchat_idx=${chat.userchat_idx}" method="post">
 						<div class="chatList">
-						<input type="hidden" class="ucIdx" value="${chat.userchat_idx}"/>
+						<input type="hidden" name="userchat_idx" value="${chat.userchat_idx}"/>
 							<div class="chatList2"><span style="font-size:24px;">${chat.userchat_subject}</span></div>
 							<div class="parti">
 								<div class="count" style="width: 13%;">${chat.current_people} / ${chat.max_people}</div>
 								<div class="chatParti" style="width: 12%"><button type="button" class="roomoutbtn">퇴장</button></div>
 							</div>
 						</div>
+						</form>
 					</c:forEach>
 				</div>
 			</div>	
@@ -139,7 +198,33 @@
        	</div>
     </section>
 </body>
+<div id="confirmationModal" class="modal_madal">
+    <div class="modal-content_madal">
+        <span class="close_modal" id="closeModal">&times;</span>
+        <p id="confirmationMessage"></p>
+        <button type="button" class="btn_madal" id="confirmAction">확인</button>
+        <button type="button" class="btn_madal" id="cancelAction">취소</button>
+    </div>
+</div>
 <script>
+$(document).ready(function() {
+    // 모달을 표시하는 이벤트 등록
+    $('.chatList').click(function(){
+        $('#confirmationMessage').text('이동하시겠습니까?');
+        $('#confirmationModal').css('display', 'block'); // 모달을 보이도록 설정
+
+        // 확인 버튼 클릭 시 폼 제출
+        $('#confirmAction').off('click').on('click', function() {
+        	$('form').submit();
+            $('#confirmationModal').css('display', 'none'); // 모달 숨기기
+        });
+    });
+
+    // 취소 버튼 클릭 시 모달 닫기
+    $('#cancelAction, #closeModal').off('click').on('click', function() {
+        $('#confirmationModal').css('display', 'none'); // 모달 숨기기
+    });
+});
 $('.roomoutbtn').click(function() {
     if (confirm("방을 나가시겠?")) {
        var chatroom_idx = $('.ucIdx').val();
@@ -149,6 +234,7 @@ $('.roomoutbtn').click(function() {
           type: 'POST',
           data: {chatroom_idx: chatroom_idx},
           success: function(response) {
+        	  location.reload();
           },
           error: function(error) {
              console.error("에러 발생:", error);

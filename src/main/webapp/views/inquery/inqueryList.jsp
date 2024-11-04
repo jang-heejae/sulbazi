@@ -143,7 +143,17 @@ div.inquerypage{
 </head>
 <body>
 <div class="include" >
-    <jsp:include page="../main/adminMain.jsp"/>
+    <c:choose>
+    <c:when test="${sessionScope.opt == 'admin_log'}">
+        <jsp:include page="../main/adminMain.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.opt == 'user_log'}">
+        <jsp:include page="../main/main.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.opt == 'store_log'}">
+        <jsp:include page="../main/storeMain.jsp" />
+    </c:when>
+</c:choose>
 </div >
 <div class="inquerypage">
         <form class="something">

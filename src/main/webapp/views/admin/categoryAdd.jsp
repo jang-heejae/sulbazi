@@ -50,7 +50,7 @@
 		width: 100%;
 		font-family: "Yeon Sung", system-ui;
 	}
-	button{
+	.acp{
 		background-color: rgb(255, 140, 9);
 		color: #041d03;
 		padding: 5px;
@@ -61,6 +61,62 @@
 	option{
 		font-family: "Yeon Sung", system-ui;
 	}
+		.modal_madal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: auto;
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px #041d03;
+    color: #041d03;
+    text-align: center;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.modal-content_madal {
+    padding: 20px;
+    text-align: center;
+    color: #041d03;
+    background-color: #fefefe;
+    border-radius: 10px;
+}
+
+.btn_madal {
+    background-color: rgb(255, 140, 9);
+    color: #041d03;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 10px;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.btn_madal:hover {
+    background-color: #20290E;
+    color: white;
+}
+
+.close_madal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close_madal:hover,
+.close_madal:focus {
+    color: black;
+}
 </style>
 </head> 
 <body>
@@ -86,14 +142,47 @@
 			<td><input type="text" name="keyword" id="new_categoryOpt" value=""/></td>
 		</tr>
 	</table>
-		<button type="submit">카테고리 추가</button>
-		<button onclick="window.close();">닫기</button>
+		<button type="button" id="acps" class="acp">카테고리 추가</button>
+		<button class="acp" onclick="window.close();">닫기</button>
 	</div>
 	</form>
 </body>
+<div id="confirmationModal" class="modal_madal">
+    <div class="modal-content_madal">
+        <span class="close_modal" id="closeModal">&times;</span>
+        <p id="confirmationMessage"></p>
+        <button type="button" class="btn_madal" id="confirmAction">확인</button>
+        <button type="button" class="btn_madal" id="cancelAction">취소</button>
+    </div>
+</div>
 <script>
-function refresh() {
-       window.opener.location.reload();
-}
+$(document).ready(function() {
+    // 모달을 표시하는 이벤트 등록
+    $('#acps').on('click', function() {
+        $('#confirmationMessage').text('추가하시겠습니까?');
+        $('#confirmationModal').css('display', 'block'); // 모달을 보이도록 설정
+    });
+
+    // 확인 버튼 클릭 시 폼 제출
+    $('#confirmAction').off('click').on('click', function() {
+        // 모달 숨기기
+        $('#confirmationModal').css('display', 'none');
+
+         // 폼을 제출하고, 부모 창을 새로고침한 후 현재 창 닫기
+        $('form')[0].submit(); // 폼 제출
+
+        window.opener.location.reload();
+
+         // 현재 창 닫기
+        setTimeout(function() {
+            window.close();
+        }, 200); 
+    });
+
+    // 취소 버튼 클릭 시 모달 닫기
+    $('#cancelAction, #closeModal').off('click').on('click', function() {
+        $('#confirmationModal').css('display', 'none'); // 모달 숨기기
+    });
+});
 </script>
 </html>

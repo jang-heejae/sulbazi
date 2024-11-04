@@ -161,6 +161,62 @@
     	width: 25%;
     	flex-direction: row-reverse;
 	}
+.modal_madal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: auto;
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px #041d03;
+    color: #041d03;
+    text-align: center;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.modal-content_madal {
+    padding: 20px;
+    text-align: center;
+    color: #041d03;
+    background-color: #fefefe;
+    border-radius: 10px;
+}
+
+.btn_madal {
+    background-color: rgb(255, 140, 9);
+    color: #041d03;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 10px;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.btn_madal:hover {
+    background-color: #20290E;
+    color: white;
+}
+
+.close_madal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close_madal:hover,
+.close_madal:focus {
+    color: black;
+}
 </style>
 </head>
 <body>
@@ -205,6 +261,16 @@
        	</div>
     </section>
 </body>
+
+<div id="confirmationModal" class="modal_madal">
+    <div class="modal-content_madal">
+        <span class="close_modal" id="closeModal">&times;</span>
+        <p id="confirmationMessage"></p>
+        <button type="button" class="btn_madal" id="confirmAction">확인</button>
+        <button type="button" class="btn_madal" id="cancelAction">취소</button>
+    </div>
+</div>
+
 <script>
 var showPage = 1;
 pageCall(showPage);
@@ -273,7 +339,7 @@ pageCall(showPage);
 	        content += '<li>'+item.review_content+'</li>';
 	        content += '</ul>';
 	        content += '<ul style="margin: 10px; margin-bottom: 0px;">';	        
-	        content += '<li onclick="location.href=\'storeDetail.do?storeidx=' + item.store_idx + '\'" style="cursor: pointer;">' + item.store_name + '</li>';
+	        content += '<li class="storeDetailName" data-storeidx="' + item.store_idx + '" style="cursor: pointer;">' + item.store_name + '</li>';
 	        content += '</ul>';
 	        content += '<ul class="storeUl">';
 	        content += '<li style="width: 66%;">'+item.store_address+'</li>';
@@ -283,5 +349,30 @@ pageCall(showPage);
 	    }
 	    $('.reviewList').html(content); 
 	}
+	$(document).ready(function() {
+	    // AJAX로 받은 리스트를 클릭했을 때 모달을 표시하는 이벤트 등록
+	    $(document).on('click', '.storeDetail, .storeDetailName', function() {
+	        // 해당 클릭한 요소의 데이터를 기반으로 store_idx 추출
+	        var storeIdx = $(this).data('storeidx'); // data 속성을 사용하여 가져옴
+	        if (!storeIdx) {
+	            console.error('store_idx를 찾을 수 없습니다.');
+	            return;
+	        }
+
+	        $('#confirmationMessage').text('이동하시겠습니까?');
+	        $('#confirmationModal').css('display', 'block'); // 모달을 보이도록 설정
+
+	        // 확인 버튼 클릭 시 폼 제출
+	        $('#confirmAction').off('click').on('click', function() {
+	            location.href = 'storeDetail.do?storeidx=' + storeIdx;
+	            $('#confirmationModal').css('display', 'none'); // 모달 숨기기
+	        });
+	    });
+
+	    // 취소 버튼 클릭 시 모달 닫기
+	    $('#cancelAction, #closeModal').off('click').on('click', function() {
+	        $('#confirmationModal').css('display', 'none'); // 모달 숨기기
+	    });
+	});
 </script>
 </html>

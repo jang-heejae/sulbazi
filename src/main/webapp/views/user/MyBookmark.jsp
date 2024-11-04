@@ -99,6 +99,62 @@
 	    height: 82%;
     	width: 58%;
 	}
+.modal_madal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: auto;
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px #041d03;
+    color: #041d03;
+    text-align: center;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.modal-content_madal {
+    padding: 20px;
+    text-align: center;
+    color: #041d03;
+    background-color: #fefefe;
+    border-radius: 10px;
+}
+
+.btn_madal {
+    background-color: rgb(255, 140, 9);
+    color: #041d03;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 10px;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.btn_madal:hover {
+    background-color: #20290E;
+    color: white;
+}
+
+.close_madal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close_madal:hover,
+.close_madal:focus {
+    color: black;
+}
 </style>
 </head>
 <body>
@@ -128,11 +184,11 @@
 				<div class="bookmark2" style="width:100%; height:20%;">
 					<c:forEach var="store" items="${storeInfo}">
         				<div class="bookmark3">
-            				<img class="storeDetail" src="/photo/${storePhoto[store.store_idx].new_filename}"
-                 			onclick="location.href='storeDetail.do?storeidx=${store.store_idx}'"/>
+        				<input type="hidden" name="store_idx" value="${store.store_idx}"/>
+            				<img class="storeDetail" style="cursor: pointer;" src="/photo/${storePhoto[store.store_idx].new_filename}"/>
             				<div>
             					<ul>
-            						<li onclick="location.href='storeDetail.do?storeidx=${store.store_idx}'" style="cursor: pointer;">${store.store_name}</li>
+            						<li id="storeDetail" style="cursor: pointer;">${store.store_name}</li>
             						<li>
             							<img src="resources/img/종원리뷰별.png" style="width:25px; height:25px;"/>
                				 			${store.star_average}&nbsp;(<span>${store.review_total}</span>)
@@ -152,8 +208,35 @@
 			</div>
        	</div>
     </section>
-</body>
-<script>
+    
+<div id="confirmationModal" class="modal_madal">
+    <div class="modal-content_madal">
+        <span class="close_modal" id="closeModal">&times;</span>
+        <p id="confirmationMessage"></p>
+        <button type="button" class="btn_madal" id="confirmAction">확인</button>
+        <button type="button" class="btn_madal" id="cancelAction">취소</button>
+    </div>
+</div>
 
+<script>
+$(document).ready(function() {
+    // 모달을 표시하는 이벤트 등록
+    $(document).on('click', '.storeDetail, #storeDetail', function() {
+        var storeIdx = $(this).closest('.bookmark3').find('input[name="store_idx"]').val(); // 숨겨진 필드에서 store_idx 가져오기
+        $('#confirmationMessage').text('이동하시겠습니까?');
+        $('#confirmationModal').css('display', 'block'); // 모달을 보이도록 설정
+
+        // 확인 버튼 클릭 시 폼 제출
+        $('#confirmAction').off('click').on('click', function() {
+            location.href = 'storeDetail.do?storeidx=' + storeIdx;
+            $('#confirmationModal').css('display', 'none'); // 모달 숨기기
+        });
+    });
+
+    // 취소 버튼 클릭 시 모달 닫기
+    $('#cancelAction, #closeModal').off('click').on('click', function() {
+        $('#confirmationModal').css('display', 'none'); // 모달 숨기기
+    });
+});
 </script>
 </html>
