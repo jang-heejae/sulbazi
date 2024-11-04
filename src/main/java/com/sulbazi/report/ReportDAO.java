@@ -9,11 +9,20 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ReportDAO {
 	
-	 int allCount(int cnt_);
-	 
-	 List<HashMap<String, Object>> reportList(int limit, int offset);
+	int countReports(Map<String, Object> params);
+	
+    List<ReportDTO> getReports(Map<String, Object> params);
+	/*
+	 * int allCount(int cnt_);
+	 * 
+	 * List<HashMap<String, Object>> reportList(int limit, int offset);
+	 * 
+	 * List<ReportDTO> getAllReports();
+	 * 
+	 * List<ReportDTO> getReportsByState(int state);
+	 */
 
-	ReportDTO reportDetail(String report_idx);
+	 ReportDTO reportDetail(String report_idx);
 
 	int processWrite(ProcessDTO processDTO);
 
@@ -25,9 +34,6 @@ public interface ReportDAO {
 
 	void updateReportResult(int report_idx, boolean result);
 
-	List<ReportDTO> getAllReports();
-
-	List<ReportDTO> getReportsByState(int state);
 
 	
 	

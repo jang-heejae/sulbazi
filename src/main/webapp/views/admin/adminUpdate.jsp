@@ -10,9 +10,11 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 	body{
 		color: white;
 		background-color: #20290E;
+		font-family: "Yeon Sung", system-ui;
 	} 
 	#newPW{
 		background-color: #E98D1C;
@@ -27,6 +29,7 @@
 		border: 1px solid white;
 		border-collapse: collapse;
 		padding: 10px;
+		font-family: "Yeon Sung", system-ui;
 	}
 	#acp{
 		position: absolute;
@@ -37,6 +40,17 @@
 		top: 350px;
 		left: 500px;
 	}
+	button{
+		background-color: rgb(255, 140, 9);
+		color: #041d03;
+		padding: 5px;
+		border-radius: 5px;
+		font-size: 14;
+		font-family: "Yeon Sung", system-ui;
+	}
+	input{
+		font-family: "Yeon Sung", system-ui;
+		}
 </style>
 <body>
 	<form action="adminUpdate.do">

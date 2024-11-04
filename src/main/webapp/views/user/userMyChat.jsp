@@ -6,6 +6,7 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -14,7 +15,6 @@
     	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
 	}
 	.chatitems2 {
-		margin-top: 150px;
     	width: 940px;
     	min-height: 650px; /* 초기 최소 높이 설정 */
     	height: auto; /* 내용에 따라 높이 자동 조절 */
@@ -27,12 +27,14 @@
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 140px; 
+    	font-family: "Yeon Sung", system-ui;
 	}
     .userNickname{
    		font-size: 96px;
    		margin-left: 31px;
    	 	margin-bottom: 12px;
    	 	color: rgb(255, 140, 9);
+   	 	-webkit-text-stroke: 2px #20290E;
     }
     #userLike{
     	display: flex;
@@ -52,35 +54,40 @@
     	object-fit: cover; /* 이미지의 비율을 유지하면서 크기를 맞춤 */
 	}
 	button{
-		background-color: #20290E;
-		color: white;
+		background-color: rgb(255, 140, 9);
+		color: #20290E;
 		padding: 5px;
 		border-radius: 5px;
-		font-size: 14;
-		font-weight: bold;
+		font-size: 16px;
+		font-family: "Yeon Sung", system-ui;
+		width: 49px;
 	}
 	.userProfile2{
 		display: flex;
-    width: 100%;
-    height: 100%;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
+    	width: 100%;
+    	height: 100%;
+    	flex-direction: row;
+    	justify-content: space-evenly;
+    	align-items: center;
 	}
 	.userProfile1{
 		display: flex;
-    width: 45%;
-    height: 45%;
-    flex-direction: column;
-    align-items: center;
+    	width: 45%;
+    	height: 45%;
+    	flex-direction: column;
+    	align-items: center;
 	}
 	.chatList{
 		border-radius: 10px;
 	 	margin: 10px;
-	 	background-color: white;
-	 	    display: flex;
-    flex-direction: column;
-    align-items: center;
+	 	background-color: #20290E;
+		border: 2px solid rgb(255, 140, 9);
+ 	    display: flex;
+    	flex-direction: column;
+   	    justify-content: space-between;
+        padding: 10px;
+        height: 88px;
+        color: white;
 	}
 	.parti{
 	    display: flex;
@@ -89,7 +96,6 @@
     	align-items: center;
     	flex-direction: row;
 }
-	}
 </style>
 </head>
 <body>
@@ -120,10 +126,10 @@
 					<c:forEach var="chat" items="${chatRoom}">
 						<div class="chatList">
 						<input type="hidden" class="ucIdx" value="${chat.userchat_idx}"/>
-							<div class="chatList2">${chat.userchat_subject}</div>
+							<div class="chatList2"><span style="font-size:24px;">${chat.userchat_subject}</span></div>
 							<div class="parti">
 								<div class="count" style="width: 13%;">${chat.current_people} / ${chat.max_people}</div>
-								<div class="chatParti" style="width: 25%"><button type="button" class="roomoutbtn">퇴장</button></div>
+								<div class="chatParti" style="width: 12%"><button type="button" class="roomoutbtn">퇴장</button></div>
 							</div>
 						</div>
 					</c:forEach>

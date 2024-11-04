@@ -5,6 +5,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 <style>
 	#mainSearchBar{
 		position: absolute;
@@ -47,7 +50,7 @@
     	background-color: #041d03;
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
-    	margin-top: 200px; 
+    	font-family: "Yeon Sung", system-ui;
 	}
 	.store{
 		background-color: #73734F;
@@ -164,6 +167,22 @@
 		font-size: 40px;
 		font-weight: bold;
 	}
+	.store-name {
+    	white-space: nowrap;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    	max-width: 54%;
+    	display: inline-block;
+	}
+	.chatsub {
+    	font-size: 24px;
+    	display: -webkit-box;
+    	-webkit-line-clamp: 2;  
+    	-webkit-box-orient: vertical;  
+    	overflow: hidden;     
+    	text-overflow: ellipsis;  
+    	max-width: 100%;
+	}
 </style>
 </head>
 <body>
@@ -189,7 +208,7 @@
 					<div class="store">
            				<img class="storeDetail" src="/photo/${files[store.store_idx].new_filename}"
            				onclick="location.href='storeDetail.do?storeidx=${store.store_idx}'"/>
-						<div>${store.store_name}
+						<div><span class="store-name">${store.store_name}</span>
 						<i class="fas fa-star" style="color: yellow;"></i>
 						${store.star_average}&nbsp;(<span>${store.review_total}</span>)
 						</div>
@@ -200,9 +219,9 @@
 		<div id="bestChat" style="width:100%; height:230px; background-color:#041d03; margin:15px; border: 6px solid rgb(255, 140, 9);">
 			<c:forEach var="chat" items="${chatRoom}">
 				<div class="chatList">
-					<div class="chatList2">${chat.userchat_subject}</div>
+					<div class="chatList2"><span class="chatsub">${chat.userchat_subject}</span></div>
 					<div class="userProfile">
-						<img class="userImg" src="/photo/${profiles[chat.user_id].user_photo}"/>
+						<img class="userImg" src="/photo/${profiles[chat.user_id].user_photo}"/>&nbsp;
 						<div class="chatUser">${profiles[chat.user_id].user_nickname}</div>
 						<div class="count">${chat.current_people} / ${chat.max_people}</div>
 					</div>

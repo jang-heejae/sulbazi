@@ -55,11 +55,15 @@
         display: flex;
     }
     .full{
+        position: fixed;
+    	top: 0;
+    	left: 0; 
         z-index: 999;
         position:absolute;
         display: flex;
         width: 300px;
-        height: 100vh;
+        min-height: 100vh;
+        height: auto;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -71,7 +75,8 @@
     }
     .full2{
         z-index: 999;
-        position: absolute;
+        position: fixed;
+    	top: 0;
         left: 1620px;
         display: flex;
         width: 300px;
@@ -156,8 +161,8 @@
                     <li><a href="userchatlist.go">개인 대화방</a></li>
                     <li><a href="storeList.go">매장 리스트</a></li>
                     <li><a href="boardList.go">게시판</a></li>
+                	<li><a href="userinquery.go">고객센터</a></li>
                 </ul>
-                <a href="userinquery.go">고객센터</a>
             </div>
             <div class="full2">
                 <ul class="list2">

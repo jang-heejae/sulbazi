@@ -6,19 +6,10 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="resources/css/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<style>
-	body {
-    	display: flex;
-    	flex-direction: column;
-    	align-items: center;
-    	justify-content: center; 
-    	gap: 20px;
-    	margin: 20px;
-    	font-weight: bold;
-    	color: #041d03;
-    	min-height: 100vh;
-    	background-color: #041d03;
-	}  
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
+<style>  
 	.chatBox2 {
     	display: flex;
     	justify-content: center;
@@ -27,6 +18,7 @@
     	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
 	}
 	.chatitems2 {
+		color: #041d03;
 		margin-top: 150px;
     	width: 940px;
     	min-height: 650px; /* 초기 최소 높이 설정 */
@@ -40,7 +32,9 @@
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 140px; 
-    	    flex-direction: column;
+   	    flex-direction: column;
+    	font-family: "Yeon Sung", system-ui;
+    	font-weight: normal;
 	}
 	button{
 		background-color: rgb(255, 140, 9);
@@ -48,48 +42,49 @@
 		padding: 5px;
 		border-radius: 5px;
 		font-size: 14;
-		font-weight: bold;
+		font-family: "Yeon Sung", system-ui;
 	}
 	#category{
 		position: absolute;
 		width: 880px;
-		top: 200px;
+		top: 240px;
 		left: 520px;
-		color: white;
 	}
 	#categoryInsert{
 		position: absolute;
-		background-color: #20290E;
+		background-color: #73734F;
+		border: 2px solid rgb(255, 140, 9);
 		border-radius: 20px;
 		width: 350px;
         height: 500px;
-		top: 151px;
+		top: 130px;
     	left: 5px;
 	}
 	#categoryDel{
 		position: absolute;
-		background-color: #20290E;
+		background-color: #73734F;
+		border: 2px solid rgb(255, 140, 9);
 		border-radius: 20px;
 		width: 350px;
         height: 500px;
-		top: 149px;
+		top: 131px;
     	left: 521px
 	}
 	.cateDell{
-		    left: 131px;
-    position: absolute;
-    top: -41px;
+        left: 141px;
+    	position: absolute;
+    	top: -46px;
 	}
 	#liveee{
 		margin-left: 40px;
 		left: 121px;
-    position: absolute;
-    top: 108px;
+    	position: absolute;
+    	top: 86px;
 	}
 	#btn{
 		position: absolute;
 		top: 311px;
-    	left: 390px;
+    	left: 401px;
 		display: flex;
    		flex-direction: column;
     	flex-wrap: nowrap;
@@ -170,40 +165,49 @@
     input[type="radio"]:checked::after {
         background-color: rgb(255, 140, 9); /* 체크 시 점 색상 */
     }
+    hr{
+    	border: none;
+    	height: 2px;
+   		background-color: rgb(255, 140, 9);
+    }
 </style>
 </head>
 <body>
-	<c:import url="../main/adminMain.jsp"/>
+<jsp:include page="../main/adminMain.jsp"/>
 		<section class="chatBox2">
         	<div class="chatitems2">
 				<div id="category">
-				<h2 style="    margin-top: 39px;">카테고리</h2>
+				<span style="margin-top: 39px; font-size:36px;">카테고리</span>
 				<hr/>
 					<div class="cateInsert">
-					<div id="liveee"><h3>활성화</h3></div>
+					<div id="liveee"><h1>활성화</h1></div>
 					<div id="categoryInsert">
 						<br/>
 					<div id="optDrink">
-						<h4>&nbsp;&nbsp;&nbsp;주종</h4>
+						<h2>&nbsp;&nbsp;&nbsp;주종</h2>
 						<hr/>
+						<br/>
 						<div id="cateOptDrink">
 					</div>
 			</div>
 			<div id="optMenu">
-				<h4>&nbsp;&nbsp;&nbsp;안주</h4>
+				<h2>&nbsp;&nbsp;&nbsp;안주</h2>
 				<hr/>
+				<br/>
 				<div id="cateOptMenu">
 				</div>
 			</div>
 			<div id="optMood">
-				<h4>&nbsp;&nbsp;&nbsp;분위기</h4>
+				<h2>&nbsp;&nbsp;&nbsp;분위기</h2>
 				<hr/>
+				<br/>
 				<div id="cateOptMood">
 				</div>
 			</div>
 			<div id="optVisit">
-				<h4>&nbsp;&nbsp;&nbsp;방문목적</h4>
+				<h2>&nbsp;&nbsp;&nbsp;방문목적</h2>
 				<hr/>
+				<br/>
 				<div id="cateOptVisit">
 				</div>
 			</div>
@@ -217,28 +221,32 @@
 			<button onclick="window.open('<c:url value="categoryAdd.go"/>', 'popup', 'width=600,height=330'); return false;">카테고리 추가</button>
 		</div>
 		<div id="categoryDel">
-		<div class="cateDell"><h3>비활성화</h3></div>
+		<div class="cateDell"><h1>비활성화</h1></div>
 		<div id="optDrinkDel">
-				<h4>&nbsp;&nbsp;&nbsp;주종</h4>
+				<h2>&nbsp;&nbsp;&nbsp;주종</h2>
 				<hr/>
+				<br/>
 					<div id="cateOptDrinkDel">
 					</div>
 			</div>
 			<div id="optMenuDel">
-				<h4>&nbsp;&nbsp;&nbsp;안주</h4>
+				<h2>&nbsp;&nbsp;&nbsp;안주</h2>
 				<hr/>
+				<br/>
 				<div id="cateOptMenuDel">
 				</div>
 			</div>
 			<div id="optMoodDel">
-				<h4>&nbsp;&nbsp;&nbsp;분위기</h4>
+				<h2>&nbsp;&nbsp;&nbsp;분위기</h2>
 				<hr/>
+				<br/>
 				<div id="cateOptMoodDel">
 				</div>
 			</div>
 			<div id="optVisitDel">
-				<h4>&nbsp;&nbsp;&nbsp;방문목적</h4>
+				<h2>&nbsp;&nbsp;&nbsp;방문목적</h2>
 				<hr/>
+				<br/>
 				<div id="cateOptVisitDel">
 				</div>
 			</div>
