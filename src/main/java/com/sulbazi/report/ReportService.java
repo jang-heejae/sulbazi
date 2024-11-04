@@ -28,17 +28,26 @@ public class ReportService {
 	@Autowired UserDAO user_dao;
 	Logger log = LoggerFactory.getLogger(getClass());
 	
- 
-	 public Map<String, Object> reportList(int page, int cnt) { 
-		 int limit = cnt;
-		 int offset = (page-1) * cnt;
-		 int totalPages = report_dao.allCount(cnt);
-	   
-		 Map<String, Object> map = new HashMap<String, Object>();
-		 map.put("totalPages", totalPages);
-		 map.put("list", report_dao.reportList(limit, offset));
-		 return map;
-	 }
+	// 신고목록 페이지네이션 + 필터링
+	public Map<String, Object> reportList(int page, int cnt, String reportState, String reportCategory) {
+	    int limit = cnt;
+	    int offset = (page - 1) * cnt;
+
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("limit", limit);
+	    params.put("offset", offset);
+	    params.put("reportState", reportState);
+	    params.put("reportCategory", reportCategory);
+
+	    int totalReports = report_dao.countReports(params);
+	    int totalPages = (int) Math.ceil((double) totalReports / cnt);
+
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("totalPages", totalPages);
+	    map.put("list", report_dao.getReports(params));
+
+	    return map;
+	}
 
 	public ReportDTO reportDetail(String report_idx) {
 		return report_dao.reportDetail(report_idx);
@@ -88,7 +97,8 @@ public class ReportService {
 	    log.info("pro_write service revoke_idx: " + revokeIdx);
 	    return pro_dto;
 	}
-
+	
+	// 작성한 관리자 답변 히스토리 쌓기
 	public Map<String, Object> process(int report_idx) { 
 	    // ProcessDTO 가져오기
 	    List<ProcessDTO> processList = report_dao.getProcessesByReportIdx(report_idx);
@@ -124,15 +134,6 @@ public class ReportService {
 	    map.put("list", combinedList); // 통합 리스트 반환
 	    log.info("뿌리는 정보: " + map);
 	    return map; 
-	}
-
-
-	public List<ReportDTO> getAllReports() {
-		return report_dao.getAllReports();
-	}
-
-	public List<ReportDTO> getReportsByState(int state) {
-		return report_dao.getReportsByState(state);
 	}
 
 	

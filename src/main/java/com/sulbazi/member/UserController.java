@@ -55,16 +55,23 @@ public class UserController {
 		return "user/userMyChat";
 	}
 	@RequestMapping(value="/userReview.go")
-	public String userReview(String user_id, Model model, HttpSession session) {
+	public String userReviewGo(String user_id, Model model, HttpSession session) {
 		String userId = (String) session.getAttribute("loginId");
-		user_ser.userReview(userId, model);
+		user_ser.userReviewGo(userId, model);
 		return "user/userReview";
 	}
-	@RequestMapping(value="/Mybookmark.go")
+	@GetMapping(value="/userReview.ajax")
+	@ResponseBody
+	public Map<String, Object> userReview(String user_id, String cnt, String page) {
+		int page_ = Integer.parseInt(page);
+		int cnt_ = Integer.parseInt(cnt);
+		return user_ser.userReview(user_id, cnt_, page_);
+	}
+	@RequestMapping(value="/MyBookmark.go")
 	public String MyBookmark(String user_id, Model model, HttpSession session) {
 		String userId = (String) session.getAttribute("loginId");
 		user_ser.userBookmark(userId, model);
-		return "user/userReview";
+		return "user/MyBookmark";
 	} 
     @RequestMapping(value="/userAlarm.go")
     public String useralarm() {

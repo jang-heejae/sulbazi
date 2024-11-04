@@ -7,61 +7,69 @@
 <link rel="stylesheet" href="resources/css/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 	body{
-		color: white;
+		color:#20290E;
+		font-weight: normal;
 		background-color: #20290E;
-		overflow: hidden;
+		overflow: hidden; 
+		font-family: "Yeon Sung", system-ui;
 	} 
 	#newCate{
-		background-color: #E98D1C;
+		background-color: #73734F;
+		border-radius: 10px;
 		position: absolute;
-		top: 30px;
-		left: 100px;
-		padding: 20px;
-		margin: 5px 10px;
-		border-radius: 20px;
+		top: 27px;
+    	left: 116px;
+    	display: flex;
+    	flex-direction: column;
 	} 
 	table, th, td{
-		border: 1px solid white;
+		border-bottom: 1px solid rgb(255, 140, 9);
 		border-collapse: collapse;
 		padding: 10px;
-	}
-	#acp{
-		position: absolute;
-		left: 250px;
-	}
-	#wcb{
-		position: absolute;
-		top: 294px;
-    	left: 457px;
 	}
 	#opt_bar{
 		width: 100%;
 	}
 	input{
-		border-radius: 10px;
-		padding: 4px;
+		margin-left: 2px;
+    	width: 224px;
+    	padding: 8px;
+    	margin-bottom: 5px;
+    	border-radius: 10px;
+    	border: none; /* 전체 테두리 제거 */
+    	border-bottom: 2px solid #041d03;
+		background-color: white;
+		color:#041d03;
+		font-family: "Yeon Sung", system-ui;
 	}
 	#opt_bar{
 		border-radius: 10px;
 		padding: 4px;
+		width: 100%;
+		font-family: "Yeon Sung", system-ui;
 	}
 	button{
-		background-color: #73734F;
-		color: white;
+		background-color: rgb(255, 140, 9);
+		color: #041d03;
 		padding: 5px;
 		border-radius: 5px;
 		font-size: 14;
-		font-weight: bold;
+		font-family: "Yeon Sung", system-ui;
+	}
+	option{
+		font-family: "Yeon Sung", system-ui;
 	}
 </style>
 </head> 
 <body>
 	<form action="categoryAdd.do" method="post" onsubmit="refresh();">
 	<div id="newCate">
-	<h3>카테고리 추가</h3>
-	<hr/>
 	<table>
+		<tr>
+			<th colspan="2">카테고리 추가</th>
+		</tr>
 		<tr>
 			<th>카테고리 분류</th>
 			<td>
@@ -74,17 +82,11 @@
 			</td>
 		</tr>
 		<tr>
-			<th>카테고리 선택사항</th>
+			<th>카테고리 옵션</th>
 			<td><input type="text" name="keyword" id="new_categoryOpt" value=""/></td>
 		</tr>
 	</table>
-	<br/>
-	<div id="acp">
 		<button type="submit">카테고리 추가</button>
-	</div>
-	<br/>
-	</div>
-	<div id="wcb">
 		<button onclick="window.close();">닫기</button>
 	</div>
 	</form>
