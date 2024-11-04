@@ -54,6 +54,7 @@
     				VALUES(#{reported_id}, #{reporting_id}, #{report_category}, #{reported_idx}, #{report_content})
     </insert>
     
+
     <!-- 신고한사람 -->
     <select id="reportingcount" resultType="int">
     	SELECT COUNT(reporting_id) FROM report WHERE reporting_id = #{reporting_id}
@@ -63,4 +64,18 @@
     <select id="reportedcount" resultType="int">
     	SELECT COUNT(reported_id) FROM report WHERE reported_id = #{reported_id}
     </select>
+
+    <!-- 리뷰 신고 -->
+    <insert id="reportReview" parameterType="map">
+    	INSERT INTO report (reported_id, reporting_id, report_category, reported_idx, report_content)
+    				VALUES(#{reportedId}, #{reportingId}, #{reportCategory}, #{reportedIdx}, #{reportReason})
+    </insert>
+    <!-- 유저 테이블 신고 업데이트 -->
+    <update id="userReportedCount" parameterType="map">
+		UPDATE user
+		SET user_reportno = (SELECT COUNT(reporting_id) from report where reporting_id = #{reportingId}), user_reportedcases = (SELECT COUNT(reported_id) from report where reported_id=#{reportedId} )
+		WHERE user_id = #{reportedId} or user_id = #{reportingId} 
+    </update>
+    
+
 </mapper>

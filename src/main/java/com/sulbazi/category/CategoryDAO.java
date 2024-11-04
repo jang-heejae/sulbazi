@@ -43,5 +43,13 @@ public interface CategoryDAO {
 
 	int insertOption(int purposeValue, int moodValue, int idx);
 
+	int selectCategory(Map<String, String> params);
+
+	int categoryUpdate(int optFirst, int moodValue, int reviewIdx);
+
+	int categoryUpdateTwo(int optSecond, int purposeValue, int reviewIdx);
+
+	int insertCategory(Map<String, String> params);
+
 
 }

@@ -156,6 +156,14 @@ public class ReportService {
 			
 		}
 	}
+	//리뷰 신고
+	public int reportReview(Map<String, String> params) {
+		int row = report_dao.reportReview(params);
+		//유저 테이블 신고횟수 업데이트
+		int dao = report_dao.userReportedCount(params);
+		
+		return row;
+	}
 
 
 }

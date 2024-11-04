@@ -48,5 +48,11 @@ public interface ReportDAO {
 	// 신고당한사람
 	int reportedcount(String reported_id);
 
+	//리뷰 신고
+	int reportReview(Map<String, String> params);
+	//유저테이블 신고횟수 업데이트
+	int userReportedCount(Map<String, String> params);
+
+
 
 }
