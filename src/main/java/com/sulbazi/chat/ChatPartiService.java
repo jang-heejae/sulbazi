@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +55,13 @@ public class ChatPartiService {
 	}
 	
 	/* 개인 채팅방에서 나가기 */
+	@Transactional
 	public void userroomout(String user_id, int chatroom_idx) {
-		chatroom_dao.userroomout(chatroom_idx);
-		chatparti_dao.userroomout(user_id, chatroom_idx);
+		int row = chatparti_dao.userroomout(user_id, chatroom_idx);
+		if(row > 0) {
+			Integer total = chatparti_dao.usertotal(chatroom_idx);
+			chatroom_dao.userroomout(total, chatroom_idx);
+		}
 	}
 	
 	

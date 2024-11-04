@@ -21,28 +21,7 @@
 
 </body>
 <script>
-function chatroommanager() {
-    $.ajax({
-        type: 'POST',
-        url: '/SULBAZI/notifications/chatroommanager.ajax',
-        data: {'getuser_id':11, //수신자 ID
-        		'user_id':'테스트'}, //발신자 ID
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-            // 알림 데이터 객체 생성
-            const newAlarm = {
-                receiverId: '11', //수신자 id
-                chatroomname: alarmresponse.chatroomname,  //문의 제목
-                alarm: alarmresponse.alarm, //알림 내용
-                alarm_idx: alarmresponse.alarm_idx //알림 idx
-            };
-            sendNotification(newAlarm); // 알림 전송 함수 호출
-        },
-        error: function(e) {
-            console.log("AJAX 요청 실패:", e);
-        }
-    });
-}
+
 /* const loggedInUserId = localStorage.getItem('loggedInUserId'); // 현재 로그인한 사용자 ID*/
 
 /* var my_id = '${sessionScope.loginId}'; //내 아이디
@@ -53,7 +32,7 @@ var user_id='1212'; //나에게 신청 보내는 유저 */
 function roomout() {
     $.ajax({
         type: 'POST',
-        url: 'chatroomout.ajax',
+        url: '/SULBAZI/notifications/chatroomout.ajax',
         data: {'user_id': user_id,  //수신자ID
         		'chatroomboss': chatroomboss},  //대화방 방장ID
         dataType: 'JSON',
@@ -78,7 +57,7 @@ function roomout() {
 function roomdeny() {
     $.ajax({
         type: 'POST',
-        url: 'chatroomdeny.ajax',
+        url: '/SULBAZI/notifications/chatroomdeny.ajax',
         data: {'user_id':user_id, //수신자 ID
         		'chatroomboss':chatroomboss}, //대화방 방장ID 
         dataType: 'JSON',
@@ -103,7 +82,7 @@ function roomdeny() {
 function chatroomin() {
     $.ajax({
         type: 'POST',
-        url: 'chatroomin.ajax',
+        url: '/SULBAZI/notifications/chatroomin.ajax',
         data: {'user_id':user_id,  //수신자ID
         		'chatroomboss':chatroomboss}, //채팅방 방장
         dataType: 'JSON',

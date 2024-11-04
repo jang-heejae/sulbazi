@@ -112,12 +112,26 @@ public class ChatRoomController {
 	/* 개인 채팅방 삭제(비공개) */
 	@PostMapping(value="/deletechatroom.ajax")
 	@ResponseBody
-	 public int deleteChatroom(HttpSession session, @RequestParam int userchat_idx) {
+	public ResponseEntity<Map<String, String>> deletechatroom(@RequestParam int userchat_idx, @RequestParam String user_id, @RequestParam int current_people){
 		
-		String user_id = (String) session.getAttribute("loginId");
+		Map<String, String> response = new HashMap<String, String>();
+		if(current_people <= 1) {
+			int row = chatroom_ser.deletechatroom(user_id, userchat_idx);
+			
+			if(row==0) {
+				response.put("status", "error");
+				response.put("message", "방 삭제 대실패.");
+			} else {
+				response.put("status", "success");
+				response.put("message", "삭제 완료");
+			}
+		}else {
+			response.put("status", "error");
+			response.put("message", "퇴장하지 않은 유저 있음 방 삭제 불가.");
+		}
+		return ResponseEntity.ok(response);
 		
-		return chatroom_ser.deleteroom(userchat_idx, user_id) ? 1 : 0;
-    }
+	}
 	
 	/* 개인 채팅방 참여 */
 	@RequestMapping(value="/userchatroom.go")
@@ -136,46 +150,27 @@ public class ChatRoomController {
 			
 			int idx = userChatroomdto.getUserchat_idx();
 			String id = userChatroomdto.getUser_id();
-			
-			int current = userChatroomdto.getCurrent_people();
-			int max = userChatroomdto.getMax_people();
 						
 			logger.info("idx = "+idx);
-			logger.info("최대 인원수 = "+max);
-			logger.info("현재 인원수 = "+current);
-			
 			model.addAttribute("roomin", user_id);
 
-			// 참여 테이블에 사용자 인서트
-	    	int roomin = chatparti_ser.roomin(user_id, idx);
-	        
-	        if(roomin == 0) {
-	        	if (current >= max) {
-	        		redirectAttributes.addFlashAttribute("msg", "입장 인원 초과");
-				    return "redirect:/userchatlist.go";
-	        	}else {
-	        		int row = chatparti_ser.userparti(user_id, idx);
-		        	if (row > 0) {
-		        		// current 추가 (수락시)
-//	        			chatroom_ser.roomin(idx);
-		        		alarm_ser.partialarm(id);
-		        		redirectAttributes.addFlashAttribute("msg", "참여 신청 완료");
-					    return "redirect:/userchatlist.go";
-		        	}
-	        	}
-	        }
-	    
 			// 방 정보 가져오기
 			List<UserChatroomDTO> roominfo = chatroom_ser.roominfo(idx);
 			
-//			Integer totaluser = chatparti_ser.usertotal(idx);
+    		int row = chatparti_ser.userparti(user_id, idx);
+        	if (row > 0) {
+        		redirectAttributes.addFlashAttribute("msg", "참여 신청 완료");
+			    return "redirect:/userchatlist.go";
+        	}
+			
+			String userid = userChatroomdto.getUser_id();
+			logger.info("방장 아이디:"+userid);
 			
 			model.addAttribute("list", userchat_list);
 			model.addAttribute("idx", idx);
-			model.addAttribute("userid", userChatroomdto.getUser_id());
+			model.addAttribute("userid", userid);
 			model.addAttribute("current", userChatroomdto.getCurrent_people());
 			model.addAttribute("roominfo",roominfo);
-//			model.addAttribute("totaluser",totaluser);
 
 			page = "/chat/userChatRoom";
 		}
