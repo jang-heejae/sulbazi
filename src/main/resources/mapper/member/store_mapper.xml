@@ -54,22 +54,22 @@
 	<select id="getBoard" parameterType="int" resultType="com.sulbazi.board.BoardDTO">
 		select * from board where store_idx=#{param1} ORDER BY board_date DESC LIMIT 1
 	</select>
-	
-	<insert id="bookmarkCheck" >
+	<!-- 북마크 인서트 -->
+	<insert id="bookmarkCheck" parameterType="map" >
 		insert into bookmark (user_id,store_idx)
-			values(#{user_id},#{store_idx})
+			values(#{loginId},#{storeIdx})
 	</insert>
 	
 	<select id="bookmarkCheckCount" parameterType="map" resultType="int">
-		select count(user_id) from bookmark where store_idx=#{store_idx} and user_id=#{user_id}
+		select count(user_id) from bookmark where store_idx=#{storeIdx} and user_id=#{loginId}
 	</select>
 	
 	<select id="storeBookmarkCheck" parameterType="int" resultType="int">
 		select count(store_idx) from bookmark where store_idx=#{param1}
 	</select>
 	
-	<delete id="delBookmark">
-		DELETE FROM bookmark WHERE user_id = #{user_id} and store_idx = #{store_idx};
+	<delete id="delBookmark" parameterType="map">
+		DELETE FROM bookmark WHERE user_id = #{loginId} and store_idx = #{storeIdx};
 	</delete>
 	
 	<update id="updateStoreFavoriteCount" parameterType="int">

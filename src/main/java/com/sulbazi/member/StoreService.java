@@ -232,35 +232,6 @@ public class StoreService {
 		return store_dao.getStoreAlcohol(idx);
 	}
 
-	public Map<String, Object> bookmarkCheck(String loginId, int storeidx) {
-		int store_idx = storeidx;
-		String user_id= loginId;
-		System.out.println(store_idx);
-		System.out.println(user_id);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("user_id", user_id);
-		map.put("store_idx", store_idx);
-		int s = store_dao.bookmarkCheckCount(map);
-		System.out.println(s);
-		if ( s == 0) {
-			
-			map.put("bookmark",store_dao.bookmarkCheck(map));
-			
-			
-		}else {
-			int del = store_dao.delBookmark(map);
-		}
-		
-		
-		int bookmark_user = store_dao.storeBookmarkCheck(store_idx);
-		if ( bookmark_user >= 0) {
-			store_dao.updateStoreFavoriteCount(store_idx,bookmark_user);
-		}
-		
-		return map;
-	}
-
 
 	public List<PhotoDTO> getStorePhotos(int idx) {
 		return store_dao.getStorePhotos(idx);
@@ -421,25 +392,52 @@ public class StoreService {
 	}
 
 
+	//북마크 영역
+	public Map<String, Object> bookmarkCheck(Map<String, Object> params) {
+		
+			int row = store_dao.bookmarkCheckCount(params);
+			if (row >= 1) {
+				int dow = store_dao.delBookmark(params);
+			}else{
+				int sow = store_dao.bookmarkCheck(params);
+			}
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("success", row);
+
+		return map;
+	}
+
+
+	public Map<String, Object> firstMark(Map<String, Object> params) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int row = store_dao.bookmarkCheckCount(params);
+		map.put("success",row );
+		return map;
+	}
 
 
 
-	/*
-	 * public Map<String, Object> storefiltering(Map<String, String> params) {
-	 * 
-	 * int idx_1= Integer.parseInt(params.get("alchol")) ; int
-	 * idx_2=Integer.parseInt(params.get("food")); int
-	 * idx_3=Integer.parseInt(params.get("mood")); int
-	 * idx_4=Integer.parseInt(params.get("visit"));
-	 * 
-	 * int cnt = Integer.parseInt(params.get("cnt")); int page =
-	 * Integer.parseInt(params.get("page"));
-	 * 
-	 * List<StoreDTO> filteringstoreidx= .storefiltering(idx_1,idx_2,idx_3,idx_4);
-	 * 
-	 * 
-	 * return null; }
-	 */
+
+
+
+
+	
+//	  public Map<String, Object> storefiltering(Map<String, String> params) {
+//	  
+//		  int idx_1= Integer.parseInt(params.get("alchol")) ; int
+//		  idx_2=Integer.parseInt(params.get("food")); int
+//		  idx_3=Integer.parseInt(params.get("mood")); int
+//		  idx_4=Integer.parseInt(params.get("visit"));
+//		  
+//		  int cnt = Integer.parseInt(params.get("cnt")); int page =
+//		  Integer.parseInt(params.get("page"));
+//		  
+//		  List<StoreDTO> filteringstoreidx= .storefiltering(idx_1,idx_2,idx_3,idx_4);
+//	  
+//	  
+//		  return null; 
+//	  }
+	 
 
 }
 
