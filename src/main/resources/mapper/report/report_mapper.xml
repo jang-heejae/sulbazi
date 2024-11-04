@@ -3,33 +3,48 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.report.ReportDAO">
-	<select id="reportList">
-		SELECT report_idx, reported_id, reporting_id, report_category, report_content, report_date, report_state
-		FROM report ORDER BY report_idx DESC LIMIT #{param1} OFFSET #{param2}
+	<!-- 신고 목록 리스트 뿌리기 / 필터링 -->
+	<select id="countReports" parameterType="map" resultType="int">
+    	SELECT COUNT(*)
+    	FROM report
+    	WHERE (#{reportState} = 'all' OR report_state = #{reportState})
+      	AND (#{reportCategory} = 'all' OR report_category = #{reportCategory})
+	</select>	
+	<select id="getReports" parameterType="map" resultType="com.sulbazi.report.ReportDTO">
+    	SELECT report_idx, reported_id, reporting_id, report_category, report_content, report_date, report_state
+    	FROM report
+    	WHERE (#{reportState} = 'all' OR report_state = #{reportState})
+      	AND (#{reportCategory} = 'all' OR report_category = #{reportCategory})
+    	ORDER BY report_idx DESC
+    	LIMIT #{limit} OFFSET #{offset}
 	</select>
-	<select id="allCount" resultType="int">
-		SELECT CEIL(COUNT(report_idx)/#{param1}) FROM report
-	</select>
+	
+	<!-- 신고 상세보기 -->
 	<select id="reportDetail" parameterType="String">
 		SELECT * FROM report WHERE report_idx = #{report_idx}
 	</select>  
  
+ 	<!-- 신고 답변달기 -->
 	<insert id="processWrite" parameterType="com.sulbazi.report.ProcessDTO"
     	useGeneratedKeys="true" keyProperty="process_idx" keyColumn="process_idx">
     	INSERT INTO process (report_idx, admin_id, process_content, process_result, revoke_idx)
     	VALUES (#{report_idx}, #{admin_id}, #{process_content}, #{process_result}, #{revoke_idx})
 	</insert>
+	<!-- 답변 달고나면 신고 상태 처리완료로 변경 -->
 	<update id="updateReportResult" parameterType="map">
     	UPDATE report
     	SET report_state = #{result, jdbcType=INTEGER}
     	WHERE report_idx = #{report_idx}
 	</update>
+	<!-- report_idx 뽑기 -->
 	<select id="getProcessesByReportIdx" parameterType="int" resultType="com.sulbazi.report.ProcessDTO">
     	SELECT * FROM process WHERE report_idx = #{report_idx} ORDER BY process_idx DESC
 	</select>
+	<!-- 뽑은 report_idx 갖고 신고당한 user_id 뽑기 -->
 	<select id="getReportedIdByReportIdx" parameterType="int" resultType="com.sulbazi.report.ReportDTO">
     	SELECT * FROM report WHERE report_idx = #{report_idx}
 	</select>
+<<<<<<< HEAD
 	
 	<select id="getAllReports" resultType="com.sulbazi.report.ReportDTO">
         SELECT * FROM report
@@ -38,6 +53,8 @@
     <select id="getReportsByState" parameterType="int" resultType="com.sulbazi.report.ReportDTO">
         SELECT * FROM report WHERE report_state = #{state}
     </select>
+=======
+>>>>>>> origin/master
     
     
     

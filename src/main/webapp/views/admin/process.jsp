@@ -6,6 +6,9 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="resources/css/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 <style>
 	table, td{
 		border: none;
@@ -14,6 +17,7 @@
 		width: 926px;
 		text-align: center;
 		border-radius: 20px;
+		font-family: "Yeon Sung", system-ui;
 	} 
 	input[name="revoke_start"], input[name="revoke_stop"]{
 		width: 79px;

@@ -2,10 +2,12 @@ package com.sulbazi.member;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.sulbazi.photo.PhotoDTO;
+import com.sulbazi.review.ReviewDTO;
 
 @Mapper
 public interface UserDAO {
@@ -23,7 +25,8 @@ public interface UserDAO {
 	int userUpdate(UserDTO userDto);
 
 	int overlay(String user_nickname);
-
+	
+	List<Map<String, Object>> storeOptName(String user_id);
 	
 	
 	// 채팅 신고 기능
@@ -34,5 +37,6 @@ public interface UserDAO {
 	int reported(String reported_id);
 
 	List<BookMarkDTO> userBookmark(String userId);
+
 	
 }

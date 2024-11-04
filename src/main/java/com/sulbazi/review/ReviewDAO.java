@@ -19,6 +19,10 @@ public interface ReviewDAO {
 
 	int reply(Map<String, String> params);
 
+	int allCount(Map<String, Object> param);
+
+	List<ReviewDTO> userReview(Map<String, Object> param);
+
 	
 
 	

@@ -5,255 +5,265 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="resources/css/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
 <style>
-	body{
-		color: white;
-		font-weight: bold;
+	.chatBox2 {
+    	display: flex;
+    	justify-content: center;
+    	align-items: flex-start; /* 시작점에서부터 정렬 */
+    	width: 100%;
+    	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
 	}
-	.chatBox{ 
-      display: flex;
-         justify-content: space-around;
-         align-items: center;
-      width : 100%;
-      height: 100%;
-   } 
-   .chatitems{
-      position: absolute;
-      top: 20%;
-       width: 940px;
-       height: 650px;
-       display: flex;
-       flex-wrap: wrap;
-       justify-content: center;
-       align-items: center;
-       align-content: center;
-       background-color: #73734F;
-       border-radius: 20px;
-   }
-	.userNickname{
-		position: absolute;
-		top: 185px;
-   		left: 953px;
-    	font-size: 55px;
-	}
-	.userProfile{
-		position: absolute;
-		top: 258px;
-    	left: 840px;
-    	width: 373px;
-	}
-	.userProfile li{
-		padding: 3px;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-	}
-	.userProfile input{
-		padding: 4px;
-		border-radius: 15px;
-		width: 200px;
-	}
-	#userProfile{
-		background-color: rgb(255, 140, 9);
-		position: absolute;
-		top: 226px;
-    	left: 542px;
-    	width: 250px;
-    	height: 270px;
+	.chatitems2 {
+    	width: 940px;
+    	min-height: 650px; /* 초기 최소 높이 설정 */
+    	height: auto; /* 내용에 따라 높이 자동 조절 */
+    	display: flex;
+    	justify-content: center;
+    	align-items: flex-start;
+    	align-content: center;
+    	background-color: #73734F;
     	border-radius: 20px;
+    	padding: 20px; /* 내부 여백 추가 */
+    	margin-top: 140px; 
+    	font-family: "Yeon Sung", system-ui;
 	}
-	#userProfile div{
-		position: absolute;
-		top: 25px;
-    	left: 31px;
-    	width: 190px;
-    	height: 218px;
-		background-color: white;
-		border-radius: 20px;
-	}
-	#userProfile input{
-		position: absolute;
-    	top: 163px;
-	}
-	.userCate{
-		position: absolute;
-		top: 555px;
-    	left: 535px;
-    	width: 707px;
-	}
-	.userCate li{
-		padding: 10px;
-	}
-	.userCate input[type="radio"] {
-    	transform: scale(1.5); /* 라디오 버튼 크기를 1.5배로 확대 */
-    	margin-right: 10px; /* 레이블과 버튼 사이 간격 조정 */
-	}
-	#userLike{
-		position: absolute;
-		top: 370px;
-    	left: 691px;
-    	width: 30px;
-   		padding: 10px;
-	}
-	#userLike li{
-		color: black;
-		font-size: 48;
-	}
-	.userLike{
-		position: absolute;
-		top: 392px;
-    	left: 589px;
-    	width: 157px;
-    	height: 47px;
-    	border-radius: 15px;
-    	background-color: #FFFAD4;
-    	border: 1px solid black;
-	}
+	.userProfile {
+        display: flex;
+        width: 100%;
+        align-items: flex-start; /* 상단 정렬 */
+        justify-content: center;
+    }
+
+    .userProfile2 {
+        width: 45%; /* 왼쪽에 위치 */
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        margin-top:14px;
+    	margin-left: -25px;
+    }
+    .userInfo {
+        width: 45%; /* 오른쪽에 위치 */
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+        margin-top: 23px;
+        margin-left: 77px;
+    }
+    .userProfile3 ul{
+    	display: flex;
+    	flex-direction: column;
+    	align-items: flex-end;
+    }
+    .userProfile3 li{
+   	    display: flex;
+    	flex-direction: row;
+    	align-items: center;
+    }
+    .userProfile3 label{
+    	width: 100px;
+    	color:#041d03;
+    }
+    .userProfile3 input[type="text"], input[type="password"]{
+    	margin-left: 73px;
+    	width: 255px;
+    	padding: 8px;
+    	margin-bottom: 5px;
+    	border-radius: 10px;
+    	border: none; /* 전체 테두리 제거 */
+    	border-bottom: 2px solid  rgb(255, 140, 9);
+		background-color: rgba(255, 255, 255, 0.1);
+		color:#041d03;
+		outline: none;
+		font-family: "Yeon Sung", system-ui;
+    }
+    .userNickname{
+   		font-size: 96px;
+   		margin-left: 31px;
+   	 	margin-bottom: 12px;
+   	 	color: rgb(255, 140, 9);
+   	 	-webkit-text-stroke: 1px #20290E;
+    }
+    #userLike{
+    	display: flex;
+    	flex-direction: row;
+    	align-items: center;
+    }
 	.likeIcon{
-		position: absolute;
-		top: 26px;
-    	left: -80px;
-    	width: 40px;
-    	height: 40px;
+    	width: 50px;
+    	height: 50px;
     	object-fit: cover;
+    	margin-right: 17px;
 	}
 	.profile-image {
-    	width: 100px;  /* 너비 설정 */
-    	height: 100px; /* 높이 설정 */
+    	width: 250px;
+    	height: 250px;
     	border-radius: 50%; /* 동그란 모양으로 만들기 */
     	object-fit: cover; /* 이미지의 비율을 유지하면서 크기를 맞춤 */
-    	border: 2px solid #fff; /* 이미지 주변에 흰색 테두리 (선택 사항) */
-    	position: absolute;
-    	top: 13px;
-    	left: 40px;
 	}
-	#button{
-		position: absolute;
-		top: 452px;
-    	left: 632px;
+	.userCate{
+	    margin-top: 36px;
+	    color:#041d03;
 	}
+	.userCate li{
+	    display: flex;
+    	flex-direction: column;
+    	align-items: center;
+	}
+	.userCate div{
+		display: flex;
+    	flex-direction: row;
+   	    margin-bottom: 28px;
+   		margin-top: -14px;
+   		display: inline-block;
+	}
+	.userCate input[type="radio"] {
+        appearance: none; /* 기본 스타일 제거 */
+        width: 15px;
+        height: 15px;
+        background-color: #041d03; /* 원하는 배경색 */
+        border: 2px solid #041d03; /* 테두리 색 */
+        border-radius: 50%; /* 동그란 모양 */
+        cursor: pointer;
+        position: relative;
+    }
+
+    .userCate input[type="radio"]:checked {
+        background-color: #041d03; /* 체크 시 배경색 */
+        border: 0.1px solid #041d03; /* 체크 시 테두리 색 */
+    }
+
+    .userCate input[type="radio"]::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: transparent; /* 체크되지 않았을 때는 투명 */
+    }
+
+    .userCate input[type="radio"]:checked::after {
+        background-color: rgb(255, 140, 9); /* 체크 시 점 색상 */
+    }
 	button{
-		background-color: #20290E;
-		color: white;
+		background-color: rgb(255, 140, 9);
+		color: #041d03;
 		padding: 5px;
 		border-radius: 5px;
 		font-size: 14;
-		font-weight: bold;
+		font-family: "Yeon Sung", system-ui;
 	}
-	.file{
-		position: absolute;
-		top: 504px;
-    	left: 572px;
+	input:not([readonly]) {
+    	background-color: white !important;
+    	color: #041d03 !important; /* 텍스트 색상 */
 	}
-	#pwCheckMessage{
-		margin-left: 172px;
-    	font-size: 0.8em;
-   	 	margin-top: -5px;
-	}
-	#checkNickname{
-		margin-left: 172px;
-    	font-size: 0.8em;
-    	margin-top: -5px;
-	}
-	.overlay{
-		position: absolute;
-		top: 139px;
-    	left: 379px;
-    	width: 100px;
+	label{
+		font-size: 20px;
 	}
 </style>
 </head>
 <body>
-<form action="userUpdate.do" method="post" id="userForm" enctype="multipart/form-data">
 	<c:import url="../main/main.jsp"/>
-	<section class="chatBox">
-        <div class="chatitems">
-        </div>
-   </section>
-	<div id="userProfile">
-		<div id="previewContainer">
-			<c:if test="${files.size()>0}">
-				<c:forEach items="${files}" var="file">
-					<img class="profile-image" alt="${file.user_photo}" src="/photo/${file.user_photo}"/>
-				</c:forEach>
-			</c:if>
-		</div>
-	</div>
-	<div class="userLike"></div>
-	<div id="userLike">
-			<img class="likeIcon" src="resources/img/userLike.png"/>
-		<ul>
-			<li>${info.user_likecount}</li>
-		</ul>
-	</div>
-	<div class="file"><input type="file" name="files" multiple="multiple" id="fileInput"></div>
-	<div id="button"><button type="submit" id="updateBtn">수정 확인</button></div>
-	<div class="userNickname">${info.user_nickname}</div>
-	<div class="userProfile">
-		<ul>
-			<li>아이디 <input type="text" name="user_id" value="${info.user_id}" readonly="readonly"/></li>
-			<li>비밀번호 <input type="password" id="user_pw" name="user_pw" value="${info.user_pw}"/></li>
-			<li>비밀번호 확인 <input type="password" id="user_pwCheck" name="user_pwCheck" value=""/></li>
-			<li><span id="pwCheckMessage"></span></li>
-			<li>이름 <input type="text" name="user_name" value="${info.user_name}" readonly="readonly"/></li>
-			<li>닉네임 <input type="text" name="user_nickname" value="${info.user_nickname}"/>
-				<div class="overlay"><button type="button" id="overlay">중복확인</button></div>
-			</li>
-			<li><span id="checkNickname"></span></li>
-			<li>생년월일 <input type="text" name="user_birth" value="${info.user_birth}" readonly="readonly"/></li>
-			<li>전화번호 <input type="text" name="user_phone" value="${info.user_phone}"/></li>
-			<li>이메일 <input type="text" name="user_email" value="${info.user_email}" readonly="readonly"/></li>
-		</ul>
-	</div>
-<div class="userCate">
-    <ul>
-        <!-- 주종 카테고리 -->
-        <li>
-            <label>주종</label>&nbsp;&nbsp;&nbsp;
-                <c:forEach var="category" items="${allCategories}">
-                    <c:if test="${category.category_idx == 1}">
-                        <c:set var="isChecked" value="false" />
-                        <!-- 사용자가 선택한 항목인지 확인 -->
+	    <section class="chatBox2">
+        	<div class="chatitems2">
+        	<div class="userProfile">
+        		<div class="userProfile2">
+				<div id="userProfile">
+				<div class="userNickname">${info.user_nickname}</div>
+					<div id="previewContainer">
+						<c:if test="${files.size()>0}">
+							<c:forEach items="${files}" var="file">
+								<img id="profileImage" class="profile-image" alt="${file.user_photo}" src="/photo/${file.user_photo}"/>
+							</c:forEach>
+						</c:if>
+					</div>
+				</div>
+			<input type="file" name="files" multiple="multiple" id="fileInput" style="display: none;"/>
+			<div class="userLike"></div>
+			<div id="userLike">
+				<img class="likeIcon" src="resources/img/userLike.png"/>
+				<ul>
+					<li>${info.user_likecount}</li>
+				</ul>
+			</div>
+			<button type="submit" id="updateBtn">수정 하기</button>
+			<button type="button" onclick="location.href='/SULBAZI/userMyPage.go'">취소 하기</button>
+			</div>
+			<div class="userInfo">
+			<div class="userProfile3">
+				<ul>
+					<li><label>아이디</label> <input type="text" name="user_id" value="${info.user_id}" readonly="readonly"/></li>
+					<li><label>비밀번호</label> <input type="password" id="user_pw" name="user_pw" value="${info.user_pw}" /></li>
+					<li><label>비밀번호 확인</label> <input type="password" id="user_pwCheck" name="user_pwCheck" value=""/></li>
+					<li><span id="pwCheckMessage"></span></li>
+					<li><label>이름</label> <input type="text" name="user_name" value="${info.user_name}" readonly="readonly"/></li>
+					<li><label>닉네임</label> 
+                			<input type="text" name="user_nickname" value="${info.user_nickname}"/>
+					</li>
+                	<li><div><span id="checkNickname"></span><button type="button" id="overlay">중복확인</button></div></li>
+					<li><label>생년월일</label> <input type="text" name="user_birth" value="${info.user_birth}"/></li>
+					<li><label>전화번호</label> <input type="text" name="user_phone" value="${info.user_phone}"/></li>
+					<li><label>이메일</label> <input type="text" name="user_email" value="${info.user_email}" readonly="readonly"/></li>
+				</ul>
+			</div>
+			<div class="userCate">
+		    	<ul>
+        		<!-- 주종 카테고리 -->
+        			<li>
+            			<label>주종</label>&nbsp;&nbsp;&nbsp;
+                		<div><c:forEach var="category" items="${allCategories}">
+                    		<c:if test="${category.category_idx == 1}">
+                        		<c:set var="isChecked" value="false" />
+                        	<!-- 사용자가 선택한 항목인지 확인 -->
                         <c:forEach var="userCategory" items="${categories}">
                             <c:if test="${category.opt_idx == userCategory.opt_idx}">
                                 <c:set var="isChecked" value="true" />
                             </c:if>
                         </c:forEach>
                         <!-- 주종 카테고리 옵션 출력 -->
-                            <input type="radio" name="opt_name1" value="${category.opt_name}"
-                                   <c:if test="${isChecked}">checked="checked"</c:if>/>
-                            ${category.opt_name}&nbsp;&nbsp;
-                    </c:if>
-                </c:forEach>
-        </li>
+                			<input type="radio" name="opt_name1" value="${category.opt_name}"
+                        		<c:if test="${isChecked}">checked="checked"</c:if>/>
+                            	${category.opt_name}&nbsp;&nbsp;
+                    			</c:if>
+                		</c:forEach></div>
+        			</li>
 
-        <!-- 안주 카테고리 -->
-        <li>
-            <label>안주</label>&nbsp;&nbsp;&nbsp;
-                <c:forEach var="category" items="${allCategories}">
-                    <c:if test="${category.category_idx == 2}">
-                        <c:set var="isChecked" value="false" />
-                        <!-- 사용자가 선택한 항목인지 확인 -->
-                        <c:forEach var="userCategory" items="${categories}">
-                            <c:if test="${category.opt_idx == userCategory.opt_idx}">
-                                <c:set var="isChecked" value="true" />
-                            </c:if>
-                        </c:forEach>
-                        <!-- 안주 카테고리 옵션 출력 -->
+        		<!-- 안주 카테고리 -->
+        			<li>
+            			<label>안주</label>&nbsp;&nbsp;&nbsp;
+                			<div><c:forEach var="category" items="${allCategories}">
+                    			<c:if test="${category.category_idx == 2}">
+                        			<c:set var="isChecked" value="false" />
+                        		<!-- 사용자가 선택한 항목인지 확인 -->
+                        	<c:forEach var="userCategory" items="${categories}">
+                            	<c:if test="${category.opt_idx == userCategory.opt_idx}">
+                                	<c:set var="isChecked" value="true" />
+                            	</c:if>
+                        	</c:forEach>
+                        		<!-- 안주 카테고리 옵션 출력 -->
                             <input type="radio" name="opt_name2" value="${category.opt_name}"
-                                   <c:if test="${isChecked}">checked="checked"</c:if>/>
-                            ${category.opt_name}&nbsp;&nbsp;
-                    </c:if>
-                </c:forEach>
-        </li>
+                            	<c:if test="${isChecked}">checked="checked"</c:if>/>
+                            	${category.opt_name}&nbsp;&nbsp;
+                    			</c:if>
+                			</c:forEach></div>
+        			</li>
 
-        <!-- 분위기 카테고리 -->
-        <li>
-            <label>분위기</label>&nbsp;&nbsp;&nbsp;
-                <c:forEach var="category" items="${allCategories}">
-                    <c:if test="${category.category_idx == 3}">
-                        <c:set var="isChecked" value="false" />
+        		<!-- 분위기 카테고리 -->
+        			<li>
+            			<label>분위기</label>&nbsp;&nbsp;&nbsp;
+                			<div><c:forEach var="category" items="${allCategories}">
+                    			<c:if test="${category.category_idx == 3}">
+                        			<c:set var="isChecked" value="false" />
                         <!-- 사용자가 선택한 항목인지 확인 -->
                         <c:forEach var="userCategory" items="${categories}">
                             <c:if test="${category.opt_idx == userCategory.opt_idx}">
@@ -261,19 +271,19 @@
                             </c:if>
                         </c:forEach>
                         <!-- 분위기 카테고리 옵션 출력 -->
-                            <input type="radio" name="opt_name3" value="${category.opt_name}"
-                                   <c:if test="${isChecked}">checked="checked"</c:if>/>
+                        <input type="radio" name="opt_name3" value="${category.opt_name}"
+                        	<c:if test="${isChecked}">checked="checked"</c:if>/>
                             ${category.opt_name}&nbsp;&nbsp;
-                    </c:if>
-                </c:forEach>
-        </li>
+                    	</c:if>
+                	</c:forEach></div>
+        		</li>
 
-        <!-- 방문목적 카테고리 -->
-        <li>
-            <label>방문목적</label>&nbsp;&nbsp;&nbsp;
-                <c:forEach var="category" items="${allCategories}">
-                    <c:if test="${category.category_idx == 4}">
-                        <c:set var="isChecked" value="false" />
+        		<!-- 방문목적 카테고리 -->
+        		<li>
+            		<label>방문목적</label>&nbsp;&nbsp;&nbsp;
+                		<div><c:forEach var="category" items="${allCategories}">
+                    		<c:if test="${category.category_idx == 4}">
+                        		<c:set var="isChecked" value="false" />
                         <!-- 사용자가 선택한 항목인지 확인 -->
                         <c:forEach var="userCategory" items="${categories}">
                             <c:if test="${category.opt_idx == userCategory.opt_idx}">
@@ -283,15 +293,24 @@
                         <!-- 방문목적 카테고리 옵션 출력 -->
                             <input type="radio" name="opt_name4" value="${category.opt_name}"
                                    <c:if test="${isChecked}">checked="checked"</c:if>/>
-                            ${category.opt_name}&nbsp;&nbsp;
-                    </c:if>
-                </c:forEach>
-        </li>
-    </ul>
-</div>
-</form>
+                            			${category.opt_name}&nbsp;&nbsp;
+                    		</c:if>
+                		</c:forEach></div>
+        		</li>
+    		</ul>
+		</div>
+		</div>
+	</div>
+	</div>
+</section>
 </body>
 <script>
+$(document).ready(function() {
+    // 이미지 클릭 시 파일 입력 창 열기
+    $('#profileImage').on('click', function() {
+        $('#fileInput').click();
+    });
+});
 $(document).ready(function() {
     $('#fileInput').on('change', function(event) {
         var files = event.target.files;
