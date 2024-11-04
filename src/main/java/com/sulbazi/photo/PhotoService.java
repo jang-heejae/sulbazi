@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -333,6 +334,10 @@ public class PhotoService {
 			photoDTO.setPhoto_folder_idx(store_idxx);
 			photoDTO.setPhoto_category_idx(i);
 			photo_dao.updateajax(photoDTO);
+		}
+
+		public int reviewPhotoDel(Map<String, String> params) {
+			return photo_dao.reviewPhotoDel(params);
 		}
 
 

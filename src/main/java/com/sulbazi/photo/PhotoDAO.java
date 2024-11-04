@@ -40,6 +40,8 @@ public interface PhotoDAO {
 
 	PhotoDTO mainStore(int store_idx);
 
+	int reviewPhotoDel(Map<String, String> params);
+
 
 }
  

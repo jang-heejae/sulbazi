@@ -55,7 +55,7 @@
 		select * from board where store_idx=#{param1} ORDER BY board_date DESC LIMIT 1
 	</select>
 	
-	<insert id="bookmarkCheck" parameterType="map">
+	<insert id="bookmarkCheck" >
 		insert into bookmark (user_id,store_idx)
 			values(#{user_id},#{store_idx})
 	</insert>
@@ -68,7 +68,7 @@
 		select count(store_idx) from bookmark where store_idx=#{param1}
 	</select>
 	
-	<delete id="delBookmark" parameterType="map">
+	<delete id="delBookmark">
 		DELETE FROM bookmark WHERE user_id = #{user_id} and store_idx = #{store_idx};
 	</delete>
 	

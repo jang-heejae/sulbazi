@@ -43,7 +43,16 @@ public class ReviewDTO {
     // 리뷰 안에 있는 사진 불러오는 컬럼
     private String review_photos;
     
+    //좋아요 누른 아이디들 
+    private String like_user_ids;
     
+    
+	public String getLike_user_ids() {
+		return like_user_ids;
+	}
+	public void setLike_user_ids(String like_user_ids) {
+		this.like_user_ids = like_user_ids;
+	}
 	public int getReview_idx() {
 		return review_idx;
 	}

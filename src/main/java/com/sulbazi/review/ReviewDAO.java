@@ -19,6 +19,22 @@ public interface ReviewDAO {
 
 	int reply(Map<String, String> params);
 
+	int replyUpdate(Map<String, String> params);
+
+	int replyDel(Map<String, String> params);
+
+	int storeAvg(Map<String, String> params);
+
+	int reviewUpdate(Map<String, String> params);
+
+	int reviewDelUpdate(Map<String, String> params);
+
+	int reviewLike(Map<String, String> params);
+
+	int reviewCount(Map<String, String> params);
+
+	int reviewLikeDel(Map<String, String> params);
+
 	
 
 	

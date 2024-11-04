@@ -128,13 +128,13 @@ public class StoreController {
   
     }
 	
-	@PostMapping(value="/bookmark.ajax")
-	@ResponseBody
-	public Map<String, Object> bookmarkCheck(String loginId,int storeidx ){
-		System.out.println(storeidx);
-		System.out.println(loginId);
-		return store_ser.bookmarkCheck(loginId,storeidx);
-	}
+//	@PostMapping(value="/bookmark.ajax")
+//	@ResponseBody
+//	public Map<String, Object> bookmarkCheck(String loginId,String storeidx ){
+//		System.out.println(storeidx);
+//		System.out.println(loginId);
+//		return store_ser.bookmarkCheck(loginId,storeidx);
+//	}
 
 
     @GetMapping(value = "/list.ajax")
