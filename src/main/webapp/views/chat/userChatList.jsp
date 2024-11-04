@@ -347,24 +347,93 @@ $(document).ready(function() {
         });
     }); 
     
+    // 알림 아작스
+    function sendNotification(newAlarm) {
+	    const receiverId = newAlarm.receiverId;
 
+	    // AJAX POST 요청을 통해 서버에 알림 전송
+	    $.ajax({
+	        type: 'POST',
+	        url: '/SULBAZI/notifications/send', // 알림을 전송할 서버 엔드포인트
+	        data: JSON.stringify(newAlarm),
+	        contentType: 'application/json',
+	        success: function(response) {
+	            console.log("알림이 성공적으로 전송되었습니다:", response);
+	        },
+	        error: function(e) {
+	            console.error("알림 전송 실패:", e);
+	        }
+	    });
+	}
+    
+    var getuser_id;
     // 참가 신청   
 	$('.gobtn').on('click', function(event) {
 		event.preventDefault();
 		 
 		var form = $(this).closest('form');
 		
-		chatboss = $(this).closest('form').find('input[name="user_id"]').val(); 
-        console.log(" 방장 "+chatboss);
+		getuser_id = $(this).closest('form').find('input[name="user_id"]').val(); 
+        console.log(" 방장 "+getuser_id);
         var chatroom_idx = form.find('input[name="userchat_idx"]').val(); 
         console.log(" 방 "+chatroom_idx);
         var buttonText = $(this).text();
-		
+    
+        
 		if(buttonText === "참가중") {
 			$(this).closest('form').submit();
+			
 		}else if(buttonText === "참가하기"){     
-			$(this).closest('form').submit();
-			chatroommanager();
+	       
+			var current = $(this).closest('form').find('input[name="current_people"]').val();
+	        var max = $(this).closest('form').find('input[name="max_people"]').val();
+	        console.log("current"+current);
+	        console.log("max"+max);
+			
+	        if(current < max){
+				
+				// 폼 데이터 전송을 AJAX로 처리
+				const form = $(this).closest('form');
+				const formData = form.serialize(); // 폼 데이터를 직렬화
+				
+				$.ajax({
+				    type: form.attr('method'), // 폼의 전송 방식을 가져옴 (POST or GET)
+				    url: form.attr('action'),   // 폼의 action URL
+				    data: formData,
+				    success: function(response) {
+				        // 폼 제출이 성공한 경우 실행
+				        console.log("폼 제출 성공:", response);
+				        location.reload();
+				        // 폼 제출 후 성공 시 AJAX 실행
+				        $.ajax({
+				            type: 'POST',
+				            url: '/SULBAZI/notifications/chatroommanager.ajax',
+				            data: {'getuser_id': getuser_id, 'user_id': user_id}, // 수신자 및 발신자 ID 데이터
+				            dataType: 'JSON',
+				            success: function(alarmresponse) {
+				                // 알림 데이터 객체 생성
+				                const newAlarm = {
+				                    receiverId: getuser_id,  // 수신자 id
+				                    sendId: user_id, // 발신자 id
+				                    chatroom_idx: chatroom_idx, // 방 idx
+				                    chatroomname: alarmresponse.chatroomname, // 방 이름
+				                    alarm: alarmresponse.alarm, // 알림 내용
+				                    alarm_idx: alarmresponse.alarm_idx // 알림 idx
+				                };
+				                sendNotification(newAlarm); // 알림 전송 함수 호출
+				            },
+				            error: function(e) {
+				                console.log("AJAX 요청 실패:", e);
+				            }
+				        });
+				    },
+				    error: function(e) {
+				        console.log("폼 제출 실패:", e);
+				    }
+				});
+			}else{
+				alert("참가가능 인원 초과핑");
+			}
 		}else if(buttonText === "참가신청중") {
 			console.log("내아이디"+user_id);
 	    	console.log("취소할 방"+chatroom_idx);
@@ -389,27 +458,8 @@ $(document).ready(function() {
 
     });
     
-	// 알림 ajax
-	function chatroommanager() {
-
-		$.ajax({
-			type: 'POST',
-            url: 'chatroommanager.ajax',
-            data: {'my_id': user_id,
-             		'user_id': chatboss},
-            dataType: 'JSON',
-            success: function(alarmresponse) {
-            	const newAlarm = alarmresponse;
-             	addAlarm(newAlarm);
-             	console.log("신청 완료");
-             },
-             error: function(e) {
-                console.log("AJAX 요청 실패:", e);
-             }
-         });
-	}
-       
- 
+	
+    
     // 페이지 로드 시 검색어가 있을 경우
     var storedQuery = localStorage.getItem('searchQuery'); // 로컬 스토리지에서 검색어 가져오기
     if (storedQuery) {

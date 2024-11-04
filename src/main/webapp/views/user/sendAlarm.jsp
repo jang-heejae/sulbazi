@@ -99,6 +99,7 @@ function markAsRead(notification) {
             console.error("알림 읽음 처리 실패:", error);
         }
     });
+    
 }
 
 //페이지 로드 시 SSE 연결 시작
@@ -106,6 +107,59 @@ window.onload = () => {
  startSseConnection(); // SSE 연결 시작
  displayNotifications(); // 초기 알림 표시
 };
+
+// 수락
+function handleAccept(notification){
+	 $.ajax({
+	        type: 'POST',
+	        url: '/SULBAZI/notifications/chatroomin.ajax',
+	        data: {'user_id':notification.sendId,  //수신자ID
+	        		'chatroomboss':notification.receiverId // 방장
+	        }, //채팅방 방장
+	        dataType: 'JSON',
+	        success: function(alarmresponse) {
+	            // 알림 데이터 객체 생성
+	            const newAlarm = {
+	                receiverId: user_id, //수신자 id
+	                chatroomname: alarmresponse.chatroomname,  //문의 제목
+	                alarm: alarmresponse.alarm, //알림 내용
+	                alarm_idx: alarmresponse.alarm_idx //알림 idx
+	            };
+	            sendNotification(newAlarm); // 알림 전송 함수 호출
+	            saveNotification(newAlarm); // 알림 저장 함수 호출
+	        },
+	        error: function(e) {
+	            console.log("AJAX 요청 실패:", e);
+	        }
+	    });
+	
+}
+
+// 거절
+function handleDeny(notification){
+    $.ajax({
+        type: 'POST',
+        url: '/SULBAZI/notifications/chatroomdeny.ajax',
+        data: {'user_id':notification.sendId, //수신자 ID
+        		'chatroomboss':notification.receiverId}, //대화방 방장ID 
+        dataType: 'JSON',
+        success: function(alarmresponse) {
+            // 알림 데이터 객체 생성
+            const newAlarm = {
+                receiverId: user_id, //수신자 id
+                chatroomname: alarmresponse.chatroomname,  //문의 제목
+                alarm: alarmresponse.alarm, //알림 내용
+                alarm_idx: alarmresponse.alarm_idx //알림 idx
+            };
+            sendNotification(newAlarm); // 알림 전송 함수 호출
+            saveNotification(newAlarm); // 알림 저장 함수 호출
+        },
+        error: function(e) {
+            console.log("AJAX 요청 실패:", e);
+        }
+    });
+}
+
 </script>
 
 

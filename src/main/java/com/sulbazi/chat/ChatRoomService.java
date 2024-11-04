@@ -59,33 +59,16 @@ public class ChatRoomService {
 	}
 	
 	/* 개인 채팅방 삭제(비공개) */
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public boolean deleteroom(int userchat_idx, String user_id) {
+	public int deletechatroom(String user_id, int userchat_idx) {
+		return chatroom_dao.deletechatroom(user_id, userchat_idx);
 		
-		boolean success = false;
-		int row = chatroom_dao.deletechatroom(userchat_idx);
-		
-		if(row>0) {
-			int chatroom_idx = userchat_idx;
-			logger.info("방 비공개 됨");
-			if(chatparti_dao.userroomout(user_id, chatroom_idx)) {
-				success = true;
-			}
-			
-		}else {
-			logger.info("비공개 안됨");
-		}
-		return success;
 	}
+
 	
 	/* 개인 채팅방 참여 */
 	/* 방 정보 가져오기 */
 	public List<UserChatroomDTO> roominfo(int idx) {
 		return chatroom_dao.roominfo(idx);
-	}
-	/* 현재 인원수 추가 */
-	public void roomin(int idx) {
-		chatroom_dao.roomin(idx);
 	}
 	/* 입장 가능 인원 수 */
 	public Integer current(int idx) {
@@ -111,6 +94,7 @@ public class ChatRoomService {
 		return chatroom_dao.localroominfo(idx);
 	}
 
+	
 
 	
 
