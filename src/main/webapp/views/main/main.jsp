@@ -59,6 +59,7 @@
     	top: 0;
     	left: 0; 
         z-index: 999;
+        position:absolute;
         display: flex;
         width: 300px;
         min-height: 100vh;
@@ -129,7 +130,7 @@
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
             <div class="logo_text">
-                <a href="main.go">SULBAZI</a>
+                <a href="./mainPage.go">SULBAZI</a>
             </div>
             <div>
                 <ul class="icon">

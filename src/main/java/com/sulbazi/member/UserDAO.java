@@ -31,11 +31,16 @@ public interface UserDAO {
 	
 	// 채팅 신고 기능
 	// 신고한 횟수
-	int report(String reporting_id);
+	int report(String reporting_id, int reporting);
 
 	// 신고당한 횟수
-	int reported(String reported_id);
+	int reported(String reported_id, int reported);
 
+	// 채팅방 주인(닉네임, 사진)
+	UserDTO user(String user_id);
+	
+	
+	
 	List<BookMarkDTO> userBookmark(String userId);
 
 	

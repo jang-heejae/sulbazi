@@ -76,13 +76,17 @@
 	<!-- 채팅 신고 기능 -->
 	<!-- 신고한 횟수 -->
 	<update id="report">
-		UPDATE user SET user_reportno = user_reportno + 1 WHERE user_id = #{reporting_id}
+		UPDATE user SET user_reportno = #{reporting} WHERE user_id = #{reporting_id}
 	</update>
 	
 	<!-- 신고당한 횟수 -->
 	<update id="reported">
-		UPDATE user SET user_reportedcases = user_reportedcases + 1 WHERE user_id = #{reported_id}
+		UPDATE user SET user_reportedcases = #{reported} WHERE user_id = #{reported_id}
 	</update>
 	
+	<!-- 채팅방 주인(닉네임, 사진) -->
+	<select id="user" resultType="com.sulbazi.member.UserDTO">
+		SELECT user_nickname, user_photo FROM user WHERE user_id = #{user_id}
+	</select>
 	
 </mapper>

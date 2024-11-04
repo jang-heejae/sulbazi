@@ -21,7 +21,6 @@ public interface ChatPartiDAO {
 	Integer usertotal(int idx);
 	
 	/* 방에 참여중인 사용자 - 개인 */
-	List<PartiDTO> userlist(int idx);
 	List<PartiDTO> userlistajax(int chatroom_idx);
 	
 	/* 채팅방 개설 후 참여 */
@@ -33,6 +32,9 @@ public interface ChatPartiDAO {
 	/* 개인 채팅방 강퇴 */
 	int kickuser(Map<String, String> params);
 	
+	/* 참여 신청 취소 */
+	int cancelparti(String user_id, int chatroom_idx);
+
 
 	
 	
@@ -51,9 +53,9 @@ public interface ChatPartiDAO {
 	int localroomout(String user_id, int chatroom_idx);
 	
 	/* 방에 참여중인 사용자 - 지역 */
-	List<PartiDTO> localuserlist(int idx);
 	List<PartiDTO> localuserlistajax(int localchat_idx);
 
+	
 
 	
 

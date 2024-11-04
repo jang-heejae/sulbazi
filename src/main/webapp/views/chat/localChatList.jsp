@@ -49,17 +49,27 @@
 		margin : 5px;
 		width: 230px;
 		height: 230px;
-		background-color : 73734F;
+		background-color : #032502;
 		border-radius: 45px;
+	}
+	.chatroom div:nth-child(2){
+		color: white;
+		margin-left: 15px;
 	}
     .roomname{
 	    display: flex;
-	    justify-content: space-around;
-        background-color: aquamarine;
+	    align-items: center;
+	    justify-content: flex-end;
+	    color: white;
     }
     .gobtn{
         width: 50px;
         height: 30px;
+        border-radius : 50px;
+	    background: #80f109;
+	    outline: none;      
+	    padding: 0;
+        margin-left: 15px;
     }
     .gobtn:hover{
     	cursor: pointer;
@@ -82,7 +92,7 @@
                 </div>
                 <div>인원 : <span class="total_${localchat.localchat_idx}"></span>명</div>
                 <div class="chatgo">
-                    <button type="submit" class="gobtn">참가</button>
+                    <button type="submit" class="gobtn">참여</button>
                 </div>
             </div>
             </form>

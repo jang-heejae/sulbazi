@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.w3c.dom.html.HTMLModElement;
 
 import com.sulbazi.alarm.AlarmService;
 import com.sulbazi.member.UserDTO;
-import com.sulbazi.message.LocalMsgDTO;
+import com.sulbazi.member.UserService;
 import com.sulbazi.message.MessageService;
-import com.sulbazi.message.UserMsgDTO;
 
 @Controller
 public class ChatRoomController {
@@ -34,6 +33,7 @@ public class ChatRoomController {
 	@Autowired MessageService message_ser;
 	@Autowired ChatPartiService chatparti_ser;
 	@Autowired AlarmService alarm_ser;
+	@Autowired UserService user_ser;
 	
 	/* 개인 채팅방 리스트 */
 	@RequestMapping(value ="/userchatlist.go")
@@ -42,7 +42,19 @@ public class ChatRoomController {
 		List<UserChatroomDTO> userchat_list = chatroom_ser.chatlist();
 		model.addAttribute("list", userchat_list);
 		
+		// 닉네임, 사진
+		Map<String, UserDTO> userinfo = new HashMap<>();
 		
+        for (UserChatroomDTO userlist : userchat_list) {
+        	UserDTO user = user_ser.user(userlist.getUser_id());
+            if (user != null) {
+            	userinfo.put(userlist.getUser_id(), user);
+                logger.info("방장 id : {}", userlist.getUser_id());
+                logger.info("방장 사진: {}", user.getUser_photo());
+                logger.info("방장 닉 : {}", user.getUser_nickname());
+            }
+        }
+        model.addAttribute("userinfo", userinfo);
 		logger.info("userchat_list :"+ userchat_list);
 		logger.info("세션아이디 : "+session.getAttribute("loginId"));
 				
@@ -74,8 +86,8 @@ public class ChatRoomController {
 	            page = "/chat/userChatList";
 	            
 			}else {
-				model.addAttribute("msg", "방 생성 불가 : 개설된 방이 있습니다.");
-				page ="/chat/userChatList";
+				redirectAttributes.addFlashAttribute("msg", "방 생성 불가 : 개설된 방이 있습니다.");
+			    return "redirect:/userchatlist.go";
 			}
 		}
 		return page;
@@ -109,7 +121,7 @@ public class ChatRoomController {
 	
 	/* 개인 채팅방 참여 */
 	@RequestMapping(value="/userchatroom.go")
-	public String chatroom(HttpSession session, Model model, UserChatroomDTO userChatroomdto) {
+	public String chatroom(HttpSession session, Model model, UserChatroomDTO userChatroomdto, RedirectAttributes redirectAttributes) {
 		
 		String page;
 		String user_id = (String) session.getAttribute("loginId");
@@ -125,103 +137,45 @@ public class ChatRoomController {
 			int idx = userChatroomdto.getUserchat_idx();
 			String id = userChatroomdto.getUser_id();
 			
-			Integer current = chatroom_ser.current(idx);
-			
-			logger.info("current"+current);
-			int total = chatparti_ser.usertotal(idx);
-			
-			logger.info("최대 인원수 = "+total);
+			int current = userChatroomdto.getCurrent_people();
+			int max = userChatroomdto.getMax_people();
+						
+			logger.info("idx = "+idx);
+			logger.info("최대 인원수 = "+max);
 			logger.info("현재 인원수 = "+current);
 			
 			model.addAttribute("roomin", user_id);
 
 			// 참여 테이블에 사용자 인서트
-		    	
 	    	int roomin = chatparti_ser.roomin(user_id, idx);
 	        
 	        if(roomin == 0) {
-	        	
-	        	if (current <= total) {
-	        		model.addAttribute("msg", "입장 인원 초과");
-	        		page = "/chat/userChatList";
+	        	if (current >= max) {
+	        		redirectAttributes.addFlashAttribute("msg", "입장 인원 초과");
+				    return "redirect:/userchatlist.go";
 	        	}else {
 	        		int row = chatparti_ser.userparti(user_id, idx);
 		        	if (row > 0) {
+		        		// current 추가 (수락시)
+//	        			chatroom_ser.roomin(idx);
 		        		alarm_ser.partialarm(id);
-		        		model.addAttribute("msg", "참여 신청 완료");
-		        		page = "/chat/userChatList";
+		        		redirectAttributes.addFlashAttribute("msg", "참여 신청 완료");
+					    return "redirect:/userchatlist.go";
 		        	}
 	        	}
-	        }else {
-	        	page = "/chat/userChatList";
-	        	
 	        }
 	    
-		
-		
-			
-			
-			// 방에 참여중인 총 사용자 
-//			logger.info("idx :" + idx);
-//			Integer usertotal =chatparti_ser.usertotal(idx);
-//			logger.info("total:"+usertotal);
-//			
-//			model.addAttribute("usertotal", usertotal);
-			
-			// 방에 참여중인 사용자
-//			List<PartiDTO> userlist =chatparti_ser.userlist(idx);
-//			
-//			Map<String, String> userNickname = new HashMap<String, String>();
-//			Map<String, String> userPhoto = new HashMap<String, String>();
-//			
-//			for (PartiDTO list : userlist) {
-//				String userlists = list.getUser_id();
-//				if (!userNickname.containsKey(userlists)) {
-//					UserDTO user = message_ser.getUserById(userlists);
-//					if (user != null) {
-//						userNickname.put(userlists, user.getUser_nickname());
-//						userPhoto.put(userlists, user.getUser_photo());
-//					}
-//				}
-//			}
-//			
-//			// 방에 해당하는 메세지 가져오기
-//			List<UserMsgDTO> usermsg = message_ser.usermsg(idx);
-//			
-//			// 사용자 닉네임을 저장할 맵 생성
-//			Map<String, String> userNicknames = new HashMap<String, String>();
-//			Map<String, String> userPhotos = new HashMap<String, String>();
-//			
-//			// 메시지에서 user_id를 가져와서 닉네임 조회, 프로필사진
-//			for (UserMsgDTO msg : usermsg) {
-//				String messageUserId = msg.getUser_id();
-//				if (!userNicknames.containsKey(messageUserId)) {
-//					UserDTO user = message_ser.getUserById(messageUserId);
-//					if (user != null) {
-//						userNicknames.put(messageUserId, user.getUser_nickname());
-//						userPhotos.put(messageUserId, user.getUser_photo());
-//					}
-//				}
-//			}
-			
 			// 방 정보 가져오기
 			List<UserChatroomDTO> roominfo = chatroom_ser.roominfo(idx);
 			
-			int totaluser = chatparti_ser.usertotal(idx);
-			
+//			Integer totaluser = chatparti_ser.usertotal(idx);
 			
 			model.addAttribute("list", userchat_list);
 			model.addAttribute("idx", idx);
 			model.addAttribute("userid", userChatroomdto.getUser_id());
 			model.addAttribute("current", userChatroomdto.getCurrent_people());
-//			model.addAttribute("usermsg", usermsg);
-//			model.addAttribute("userNickname", userNickname);
-//			model.addAttribute("userNicknames", userNicknames);
 			model.addAttribute("roominfo",roominfo);
-			model.addAttribute("totaluser",totaluser);
-//			model.addAttribute("userlist",userlist); 
-//			model.addAttribute("userPhoto",userPhoto);
-//			model.addAttribute("userPhotos",userPhotos);
+//			model.addAttribute("totaluser",totaluser);
 
 			page = "/chat/userChatRoom";
 		}
@@ -231,12 +185,13 @@ public class ChatRoomController {
 	
 	
 	
-	/* 지역 채팅방 리스트 */
+	/* ************************  지역 채팅  *************************** */
 	
+	/* 지역 채팅방 리스트 */
 	@RequestMapping(value ="/localchatlist.go")
 	public String localchatlist(Model model) {
 		
-		List<UserChatroomDTO> localchat_list = chatroom_ser.localchatlist();
+		List<LocalChatroomDTO> localchat_list = chatroom_ser.localchatlist();
 		model.addAttribute("list", localchat_list);
 		logger.info("userchat_list :"+ localchat_list);
 		
@@ -244,7 +199,6 @@ public class ChatRoomController {
 	}
 	
 	/* 지역 채팅방 참여 */
-	
 	@PostMapping(value="/localchatroom.go")
 	public String localchatgo(HttpSession session, Model model, LocalChatroomDTO localChatroomdto) {
 		
@@ -258,60 +212,20 @@ public class ChatRoomController {
 			
 			int idx = localChatroomdto.getLocalchat_idx();
 			
-			System.out.print("idx:"+idx);
+			// 방 정보
+			List<LocalChatroomDTO> roominfo = chatroom_ser.localroominfo(idx);
+			
+			List<PartiDTO> localtotal = chatparti_ser.localtotal(idx);
 			
 			// 지역 채팅방 입장
 			chatparti_ser.localparti(userId, idx);
 			
-			List<UserChatroomDTO> localchat_list = chatroom_ser.localchatlist();
+			List<LocalChatroomDTO> localchat_list = chatroom_ser.localchatlist();
 			model.addAttribute("list", localchat_list);
-//			// 방에 참여중인 사용자
-//			List<PartiDTO> localuserlist =chatparti_ser.localuserlist(idx);
-//			
-//
-//			Map<String, String> userNickname = new HashMap<String, String>();
-//			Map<String, String> userPhoto = new HashMap<String, String>();
-//			
-//			for (PartiDTO list : localuserlist) {
-//				String userlists = list.getUser_id();
-//				if (!userNickname.containsKey(userlists)) {
-//					UserDTO user = message_ser.getUserById(userlists);
-//					if (user != null) {
-//						userNickname.put(userlists, user.getUser_nickname());
-//						userPhoto.put(userlists, user.getUser_photo());
-//					}
-//				}
-//			}
-//			
-//			// 방에 해당하는 메세지 가져오기
-//			List<LocalMsgDTO> localmsg = message_ser.localmsg(idx);
-//			
-//		    // 사용자 닉네임을 저장할 맵 생성
-//		    Map<String, String> userNicknames = new HashMap<String, String>();
-//		    Map<String, String> userPhotos = new HashMap<String, String>();
-//		    
-//		    // 메시지에서 user_id를 가져와서 닉네임 조회
-//		    for (LocalMsgDTO msg : localmsg) {
-//		        String messageUserId = msg.getUser_id();
-//		        if (!userNicknames.containsKey(messageUserId)) {
-//		            UserDTO user = message_ser.getUserById(messageUserId);
-//		            if (user != null) {
-//		                userNicknames.put(messageUserId, user.getUser_nickname());
-//		                userPhotos.put(messageUserId, user.getUser_photo());
-//		            }
-//		        }
-//		    }
-//		
-		
-			
 			model.addAttribute("roomidx", idx);
-//			model.addAttribute("userNickname", userNickname);
-//			model.addAttribute("userNicknames", userNicknames);
-//			model.addAttribute("userPhoto", userPhoto);
-//			model.addAttribute("userPhotos", userPhotos);
-//			model.addAttribute("localmsg",localmsg);
-//			model.addAttribute("localuserlist",localuserlist);
-			
+			model.addAttribute("roominfo", roominfo);
+			model.addAttribute("localtotal", localtotal);
+
 			page ="/chat/localChatRoom";
 		}
 		return page;

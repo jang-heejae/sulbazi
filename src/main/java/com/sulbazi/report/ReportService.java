@@ -144,9 +144,16 @@ public class ReportService {
 	@Transactional
 	public void usermsgreport(String reported_id, String reporting_id, String report_category, int reported_idx, String report_content) {
 		int row = report_dao.usermsgreport(reported_id, reporting_id, report_category, reported_idx, report_content);
+		
 		if(row>0) {
-			user_dao.report(reporting_id);
-			user_dao.reported(reported_id);
+			// 신고한사람
+			int reporting = report_dao.reportingcount(reporting_id);
+			user_dao.report(reporting_id, reporting);
+			
+			// 신고 받은사람
+			int reported = report_dao.reportedcount(reported_id);
+			user_dao.reported(reported_id, reported);
+			
 		}
 	}
 	//리뷰 신고
@@ -157,5 +164,6 @@ public class ReportService {
 		
 		return row;
 	}
+
 
 }
