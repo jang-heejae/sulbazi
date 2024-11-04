@@ -270,21 +270,28 @@ $(document).ready(function() {
        console.log("강퇴당할방 "+chatroom_idx);
        
        function roomout() {
-             $.ajax({
-                 type: 'POST',
-                 url: 'chatroomout.ajax',
-                 data: {'my_id': user_id, 
-                       'chatroomboss': loginId},
-                 dataType: 'JSON',
-                 success: function(alarmresponse) {
-                     const newAlarm = alarmresponse;
-                     addAlarm(newAlarm); // 새로운 알림 추가 함수 호출
-                 },
-                 error: function(e) {
-                     console.log("AJAX 요청 실패:", e); // 에러 메시지 출력
-                 }
-             });
-         }
+    	    $.ajax({
+    	        type: 'POST',
+    	        url: '/SULBAZI/notifications/chatroomout.ajax',
+    	        data: {'user_id': user_id,  //수신자ID
+    	        		'chatroomboss': loginId},  //대화방 방장ID
+    	        dataType: 'JSON',
+    	        success: function(alarmresponse) {
+    	            // 알림 데이터 객체 생성
+    	            const newAlarm = {
+    	                receiverId: user_id, //수신자 id
+    	                chatroomname: alarmresponse.chatroomname,  //문의 제목
+    	                alarm: alarmresponse.alarm, //알림 내용
+    	                alarm_idx: alarmresponse.alarm_idx //알림 idx
+    	            };
+    	            sendNotification(newAlarm); // 알림 전송 함수 호출
+    	            saveNotification(newAlarm); // 알림 저장 함수 호출
+    	        },
+    	        error: function(e) {
+    	            console.log("AJAX 요청 실패:", e); // 에러 메시지 출력
+    	        }
+    	    });
+    	}
        
        if (confirm(reported_nick+"를 내보낼거야?")) {
           $.ajax({
@@ -323,7 +330,7 @@ $(document).ready(function() {
    });
    
    
-   // 참여자 리스트
+	// 참여자 리스트
    
    var chatroom_idx = ${idx};
    var ownerId = '${userid}';
@@ -365,7 +372,6 @@ $(document).ready(function() {
            }
        });
    }
-
    // 초기 로드
    loadUserList();
 
@@ -374,7 +380,7 @@ $(document).ready(function() {
    // 메세지 전송
    function sendMessage(){
        var usermsg_content = $('textarea[name="usermsgcontent"]').val();
-       var user_id = $('input[name="user_id"]').val();
+       var user_id = $('.textarea').find('input[name="user_id"]').val();
        var userchat_idx = ${idx};
 
        console.log("메세지내용"+usermsg_content);
@@ -422,7 +428,6 @@ $(document).ready(function() {
     var userchat_idx = ${idx};
     var ownerId = '${userid}';
     setInterval(loadMessages, 2000);
-
     function loadMessages() {
         $.ajax({
             url: '/SULBAZI/loadMessages.ajax',
@@ -802,6 +807,7 @@ $(document).ready(function() {
 	                               <div class="room">
 	                                   <div class="roominfo">${userchat.userchat_subject}</div>
 	                                   <input type="hidden" name="userchat_idx" value="${userchat.userchat_idx}">
+	                                   <input type="hidden" name="user_id" value="${userchat.user_id}">
 	                                   <div class="roominfo">${userchat.current_people} / ${userchat.max_people}</div>   
 	                               </div>
                                </form>
@@ -905,7 +911,7 @@ $(document).ready(function() {
                         <div class="chatlist">
                         </div>
                         <div class="textarea">
-                           <input type="text" name="user_id" style="display:none;" value="${sessionScope.loginId}" readonly/>
+                            <input type="text" name="user_id" value="${sessionScope.loginId}" readonly/>
                             <textarea name="usermsgcontent" placeholder="메세지 입력"></textarea>
                             <button type="button" class="sendmsg">전송</button>
                         </div>
@@ -965,7 +971,7 @@ $(document).ready(function() {
    // 공지 등록, 수정
    $('.notiedit').click(function() {
       var notice= $('textarea[name="notice"]').val();
-      var userchat_idx = $('input[name="userchat_idx"]').val(); 
+      var userchat_idx = ${idx};
       
       if (confirm("공지사항을 등록하시겠습니까?")) {
          console.log(notice);
@@ -1001,16 +1007,16 @@ $(document).ready(function() {
        
        if (confirm("방 정보를 수정하시겠습니까?")) {
            var userchat_subject = $('input[name="userchat_subject"]').val();
-           var max_people = $('input[name="max_people"]').val();
+           var max_people = $('input[type="range"]').val();
            var userchat_state = $('input[name="userchat_state"]:checked').val();
-           var userchat_idx = $('input[name="userchat_idx"]').val();
+           var userchat_idx = ${idx};
            var current = $('.current').text();
            
            console.log(userchat_subject);
-           console.log(max_people);
+           console.log("바꿀 최대인원 "+max_people);
            console.log(userchat_state);
-           console.log(userchat_idx);
-           console.log(current);
+           console.log("지금 방 번호"+userchat_idx);
+           console.log("현재 인원"+current);
            
            if(current <= max_people){
 	           $.ajax({
@@ -1038,36 +1044,40 @@ $(document).ready(function() {
        }
     });
     
-    
-   // 방 삭제할거임
-   $('.roomdelete').click(function() {
-       if (confirm("방을 삭제하실것?")) {
-          var userchat_idx = $('input[name="userchat_idx"]').val();
-          
-          console.log(userchat_idx);
-          
-           $.ajax({
-              url:'./deletechatroom.ajax',
-              type:'POST',
-              data:{userchat_idx: userchat_idx},
-              success: function(response){
-                 console.log("Response from server:", response); 
-                 if(response === 1){
-                    window.location.href = './userchatlist.go';
-                    alert("잘가~");
-                 }else{
-                    alert("삭제 대실패");
-                 }
-                 
-              }, error: function(){
-                 alert(del);
-              }
-           });
-       }else{
-          alert("취소되었습니다.");
-       }
+ 	// 방 삭제할거임
+	$('.roomdelete').click(function() {
+	    if (confirm("방을 삭제하시겠습니까?")) {
+	    	var userchat_idx = ${idx};
+	    	var current_people = $('.current').text();
+	    	var user_id = $('.textarea').find('input[name="user_id"]').val();
+	    	var del = "${del}";
+	    	console.log("방번호"+userchat_idx);
+	    	console.log("사람수"+current_people);
+	    	console.log("방장"+user_id);
+	        $.ajax({
+	        	url:'./deletechatroom.ajax',
+	        	type:'POST',
+	        	data:{
+	                userchat_idx: userchat_idx,
+	                current_people: current_people,
+	                user_id: user_id
+	        	},
+	        	success: function(response){
+	        		if(response.status === "success"){
+	        			window.location.href = './userchatlist.go';
+		        		alert(response.message);
+	        		}else{
+	        			alert(response.message);
+	        		}
+	        		
+	        	}, error: function(){
+	        		alert(del);
+	        	}
+	        });
+	    }else{
+	    	alert("취소되었습니다.");
+	    }
    });
-    
     
    // 채팅 입력창 포커스되면 placeholder 제거
    $('.txtarea').on('focus', function() {

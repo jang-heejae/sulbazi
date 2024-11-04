@@ -374,6 +374,11 @@ a{
 	    height: 600px;
 	    flex-direction: column;
 	    background-color: white;
+	    width: 210px;
+    }
+    .ajax{
+	    overflow-y: auto;
+    	overflow-x: hidden;
     }
     .room2{
         left: 10px;
