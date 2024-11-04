@@ -76,6 +76,9 @@ public class StoreController {
         //리뷰 카테고리 가져오기
         List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);
         model.addAttribute("options",options);
+        
+        
+        
 
         model.addAttribute("store", storeDetail);
         model.addAttribute("files", files);
@@ -128,12 +131,23 @@ public class StoreController {
   
     }
 	
-//	@PostMapping(value="/bookmark.ajax")
+	@PostMapping(value="/bookmark.ajax")
+	@ResponseBody
+	public Map<String, Object> bookmarkCheck(@RequestParam Map<String, Object> params){
+
+		return store_ser.bookmarkCheck(params);
+	}
+	@PostMapping(value="/firstMark.ajax")
+	@ResponseBody
+	public Map<String, Object> firstMark(@RequestParam Map<String, Object> params){
+
+		return store_ser.firstMark(params);
+	}
+//	@PostMapping(value="/favoritMark.ajax")
 //	@ResponseBody
-//	public Map<String, Object> bookmarkCheck(String loginId,String storeidx ){
-//		System.out.println(storeidx);
-//		System.out.println(loginId);
-//		return store_ser.bookmarkCheck(loginId,storeidx);
+//	public Map<String, Object> favoritMark(@RequestParam Map<String, Object> params ){
+//
+//		return store_ser.favoritMark(params);
 //	}
 
 
@@ -237,14 +251,15 @@ public class StoreController {
 		return store_ser.storeaddrsearch(keyword,page,cnt);
 	}
 	
+	
 	/*
 	 * @PostMapping(value="/filtering.ajax")
 	 * 
 	 * @ResponseBody public Map<String,Object> storefiltering(@RequestParam
-	 * Map<String, String> params,Model model) {
-	 * 
-	 * return store_ser.storefiltering(params); }
+	 * Map<String, String> params,Model model) { return
+	 * category_ser.storefiltering(params); }
 	 */
+	 
 	 
 	
 	

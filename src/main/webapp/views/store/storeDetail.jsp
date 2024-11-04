@@ -22,13 +22,11 @@
                 width: 788px;
                 height: 100%;
                 border-radius: 8px;
-                
                 display: flex;
                 flex-direction: column;
                 align-items: center;       
             }
             .ativeimage{
-                background-color: aqua;
                 width: 748px;
                 height: 320px;
                 margin-top: 20px;
@@ -79,18 +77,15 @@
                 
             }
             .operating{
-                background-color: #FFA91F;
                 width: 95%;
-                height: 500px;
+                height: 100%;
             }
             fieldset{
-            	border:1px solid black;
                 background-color: rgba(255, 255, 255, 0);
                 width: 100%;
                 height: 500px;
             }
              table,tr,td,th{
-                border:1px solid black;
                 border-collapse: collapse;
                 padding: 5px 10px;
             }
@@ -240,7 +235,7 @@ img.review-photo{
 			
 .reply-btn > button {
     box-shadow: 0px 0px 3px 0px gray;
-    margin: -4px 14px 0px 3px;
+    margin: -4px 14px 13px 3px;
     border: 1px solid black;
     
 }
@@ -253,7 +248,7 @@ img.review-photo{
 	/* display: none; */
 	
 }
- .hide {
+ .hide{
 	display: none;
 }
   :root {
@@ -421,10 +416,43 @@ img.review-photo{
 .btn-like:hover span:after {
   opacity: 1;
   right: 0;
-} 
+}
+/* 특정 테이블만 바텀에 솔리드 넣기 */
+.target-row {
+    border-bottom: 1px solid black;
+}
+/* 메뉴 영역 */
+#menuId{
+	width: 100%;
+	height: 100%;
+}
+/* 영업시간 */
+#timeStamp{
+	margin-right: 50px;
+	float: right;
+	opacity: 0.5;
+}   
+
+#inoutphoto{
+	width: 100%;
+	height: 100%;
+}
+#line{
+	width: 90%;
+	height: 1px;
+	background-color: black;
+	display: block;
+}
+.text-right{
+	text-align: right;
+}
+/* 수정 삭제 버튼 위치 조정 */
+#user-check{
+	margin: 1px 1px 1px 1px;
+}
 
 
-            
+
         </style>
     </head>
     
@@ -437,11 +465,11 @@ img.review-photo{
         
             <div class="bodysize">            	
                	<div class="ativeimage">
-               		<img src="/photo/${file.new_filename}" alt="Store Photo" id="mainimg" />
+               		<img src="photo/${file.new_filename}" alt="Store Photo" id="mainimg" />
                	</div>
                 <br/>
                 <p class="left-align"><strong>${store.store_name}</strong></p>
-                <button class="favorite-btn" onclick="bookmark(${store.store_idx})">즐겨찾기</button>
+                <button class="favorite-btn hide" onclick="bookmark()">즐겨찾기</button>
                 <div class="linetag"></div>
                 <br/>
                 <ul class="title-container">
@@ -506,20 +534,18 @@ img.review-photo{
                 </div>
                 <!-- 영업시간 영역-->
                 <div class="operating">
-                    <fieldset>
-                        <legend>영업시간</legend>
-                        <p>${store.store_time}</p>
-                    </fieldset>
+                        <h3>영업시간</h3>
+                        <p id="timeStamp">${store.store_time}</p>
                 </div>
                 <!-- 메뉴정보 페이징 처리-->
-                <fieldset>
-                    <legend>메뉴</legend>
+                <div id="menuId">
+                    <h3>메뉴</h3>
 				    <button onclick="location.href='menu.do?storeidx=${store.store_idx}'">안주</button>
 				    <button onclick="location.href='menu2.do?storeidx=${store.store_idx}'">술종류</button>
-                </fieldset>			
+                </div>			
                 <!-- 사진 내외부 사진-->
-                <fieldset>
-                    <legend>사진 내외부</legend>
+                <div id="inoutphoto">
+                    <h3>사진 내외부</h3>
 					<table>
 						<tr>
 	                    	<c:forEach var="file" items="${files}" varStatus="status">
@@ -527,14 +553,14 @@ img.review-photo{
 							</c:forEach>
 						</tr>
 					</table>
-                </fieldset>
+                </div>
                 <section class="review-gragory">
                  <!-- 리뷰 작성-->
 		             <article>
 			            <h3 class="reTextReview">리뷰 작성</h3>
-    <div class="main-box container">
+    <div class="main-box container hide">
       <div class="button-box container">
-        <button class="button">
+        <button class="button review-btn">
           <p class="title">리뷰</p>
           <img class="imgthing"
             src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Handshake.png"
@@ -642,8 +668,19 @@ img.review-photo{
 
     </body>
     <script>
-    	
-    
+	var loginId = '${sessionScope.loginId}'; 
+	var storeId = '${store.store_id}';
+	var opt = '${sessionScope.opt}';
+	
+	if (opt == 'user_log') {
+		$('.main-box').removeClass('hide');	
+	}
+		
+		
+	
+	
+	
+	
     /* 지도 영역 */
 		var container = document.getElementById('map');
     	var storeLatitude = '${store.store_latitude}';
@@ -666,25 +703,57 @@ img.review-photo{
 		marker.setMap(map);
 		
     /* 북마크 영역 */
-    	var loginId = '${sessionScope.loginId}';   
+  
+    	
+    	if (loginId) {
+			$('.favorite-btn').removeClass('hide');
+		}
+    	
+    	
+    	
+    	firstMark();
+    	
+    	function firstMark(){
+    		var	storeIdx = '${store.store_idx}';
+    	    $.ajax({
+    	        type: 'POST',
+    	        url: 'firstMark.ajax',
+    	        data: {'loginId':loginId , 'storeIdx':storeIdx},
+    	        dataType:'JSON',
+    	        success: function(data) {
+    	            if (data.success<1) {
+						$('.favorite-btn').css('background-color', '#FFA91F');
+						$('.favorite-btn').text('즐겨찾기');
+					}else{
+    	            	$('.favorite-btn').css('background-color', '#28256C');
+    	            	$('.favorite-btn').text('즐겨찾기 완료'); 
+					}
 
-    	function bookmark(storeidx){
-    		console.log(storeidx)
+    	        },
+    	        error: function(error) {
+    	            console.error('Error:', error);
+    	        }
+    	    });
+    		
+    	};
+
+    	function bookmark(){
+    		var	storeIdx = '${store.store_idx}';
+    		//유저 아이디는 로그인 아이디로 해결
+    		console.log(storeIdx);
     	    $.ajax({
     	        type: 'POST',
     	        url: 'bookmark.ajax',
-    	        data: {'loginId':loginId , 'storeidx':storeidx},
+    	        data: {'loginId':loginId , 'storeIdx':storeIdx},
     	        dataType:'JSON',
     	        success: function(data) {
-    	            if (data.bookmark>0) {
-    	            	console.log(data.bookmark);
-    	            	$('.favorite-btn').css('background-color', '#28256C');
-    	            	$('.favorite-btn').text('즐겨찾기 완료'); 
-					}else{
+    	            if (data.success >= 1) {
 						$('.favorite-btn').css('background-color', '#FFA91F');
 						$('.favorite-btn').text('즐겨찾기');
+					}else{
+    	            	$('.favorite-btn').css('background-color', '#28256C');
+    	            	$('.favorite-btn').text('즐겨찾기 완료'); 
 					}
-
 
     	        },
     	        error: function(error) {
@@ -692,6 +761,11 @@ img.review-photo{
     	        }
     	    });
     	}
+    	
+    	
+    	
+    	
+    	
     	
     	//리뷰 글쓰기  아쟉 
 /* function openWindowTab(storeIdx) {
@@ -706,7 +780,7 @@ img.review-photo{
     	reviewShow(storeIdx);
 
  		function reviewShow(storeIdx){
- 			console.log("이종원 리뷰"+storeIdx)
+// 			console.log("이종원 리뷰"+storeIdx)
  			$.ajax({
  				type:'POST', 
  				url: 'reviewAllUser.ajax',
@@ -792,19 +866,22 @@ img.review-photo{
  			 	if (review.comm_content != null) {
  			 	content +='</br><p class="thing">ㄴ'+storeName +': '+review.comm_content+'</p>';
 				}
- 			 	content +='</td></tr>';
- 			 	content +='<tr><td colspan="3" class="action-cell reply-btn">'+reviewDate;
+ 			 	content +='</td></tr class="target-row">';
+ 			 	content +='<tr><td colspan="3" class="action-cell reply-btn text-right">'+reviewDate;
  			 	content +='<span class="report-section"><img src="resources/img/yellow.png" alt="좋아요" class="icon-review"></span>';
  			 	
  			 	//좋아요 버튼
+ 			 	if (loginId != review.user_id && opt != 'store_log' && opt != 'admin_log') {
+ 			 		//loginId != review.user_id && !['store_log', 'admin_log'].includes(opt) 이것도 같은거
 			 	content +='<button class="btn-like" onclick="likebtn(this,'+review.review_idx+')"><span>좋아요 </span></button>';
-
-
+				}
 			 	
+
+ 			 	
 			 	if (review.comm_content != null) {
- 			 	content +='<button class="action-button btn-light rething ttt" onclick="replyDown(this)">답글</button>';
+ 			 	content +='<button class="action-button btn-light rething store-user hide" onclick="replyDown(this)">답글?</button>';
 				}else {
- 			 	content +='<button class="action-button btn-light ttt" onclick="replyDown(this)">답글</button>';
+ 			 	content +='<button class="action-button btn-light store-user hide" onclick="replyDown(this)">답글</button>';
 				}
 			 	if (review.user_id == loginId) {
  			 	content += '<button id="user-check" class="action-button btn-light" onclick="reviewUpdate(this,' + idx + ',' + review.review_idx + ')">수정</button>';
@@ -821,7 +898,7 @@ img.review-photo{
  			 	content += '<button id="user-check" class="action-button btn-light hide" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
  			 	
  			 	
- 			 	content += '</td></tr>';
+ 			 	content += '<div id="line"></div></td></tr>';
  			 	
  			 	
  			 	//답글영역
@@ -843,13 +920,23 @@ content += '</tr>';
  			
 
  		    
- 		            
+
  		        
  		    
  			 	listContainer.innerHTML += content;
  			});
  			$('.thing').removeClass('hide');
- 		}
+			 	if (loginId == storeId) {
+ 			 	    $('.store-user').removeClass('hide');
+				}
+			 	
+			 	
+			 	
+			 	
+			 	
+			 	
+ 		} //drawlist 끝 영역
+ 		
  		//리뷰 나오기 버튼 클릭시 해당영역 나오기
  		$('.button').click(function() {
  		    $('.mypost').slideDown(1000); 
@@ -1375,7 +1462,7 @@ function replyUp(button) {
           });
  	  }
  	   
- 		
+
  		
     </script>
 </html>
