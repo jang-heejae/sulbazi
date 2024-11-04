@@ -43,9 +43,5 @@ public interface UserDAO {
 	
 	List<BookMarkDTO> userBookmark(String userId);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 	
 }
