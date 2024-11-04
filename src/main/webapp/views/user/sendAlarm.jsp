@@ -105,7 +105,7 @@ function markAsRead(notification) {
 function fetchInitialNotifications() {
     $.ajax({
         type: 'GET',
-        url: '/SULBAZI/getInitialNotifications.ajax',
+        url: '/SULBAZI/notifications/getInitialNotifications.ajax',
         data: { 'receiverId': loggedInUserId },
         dataType: 'json',
         success: function(notifications) {
