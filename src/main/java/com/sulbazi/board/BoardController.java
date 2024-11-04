@@ -71,17 +71,24 @@ public class BoardController {
 		String action = request.getParameter("action");
 		logger.info("실행되는 액션기능 : " + action);
 		if("filter".equals(action)) {
+			if("all".equals(boardCategory)) {
+			}else {
 			boardList = boardList.stream()
 					.filter(board -> board.getBoard_category().equals(boardCategory))
 					.collect(Collectors.toList());
+			}
 		}else if("search".equals(action)) {
-			boardList = board_ser.getSearch(boardCategory, boardSearch);
+		    if ("all".equals(boardCategory)) {
+		        boardList = board_ser.getSearch("", boardSearch);
+		    } else {
+		        boardList = board_ser.getSearch(boardCategory, boardSearch);                
+		    }
 		}
 		List<BoardDTO> limitedBoardList = boardList.stream()
 	            .limit(15)
 	            .collect(Collectors.toList());
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", boardList);
+
 		map.put("list", limitedBoardList);
 		return map;
 	}

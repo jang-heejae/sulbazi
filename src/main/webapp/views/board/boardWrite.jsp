@@ -291,7 +291,7 @@ width: 50px;
          	<tr>
          		<th><input type="file" id="file" multiple="multiple"></th>
          		<th></th>
-         		<th><button onclick="location.href='boardList.go'">취소</button>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="등록" onclick="save(event)"/></th>
+         		<th><button onclick="location.href='redirect:/boardList.go'">취소</button>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="등록" onclick="save(event)"/></th>
          	</tr>
          </table>
          <input type="hidden" id="store_id" value="'${sessionScope.loginId}'">
