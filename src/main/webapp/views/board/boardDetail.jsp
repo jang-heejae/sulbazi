@@ -127,7 +127,7 @@
                <th><i class="fa-solid fa-eye" style="color: #999999; margin-right: 5px;"></i>${info.board_bHit}</th>
             </tr>
             <tr class="what">
-               <th>${info.board_category}</th>
+               <th>${store}</th>
                <th></th>
                <th></th>
                <th></th>

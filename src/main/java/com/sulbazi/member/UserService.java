@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sulbazi.category.CategoryDAO;
 import com.sulbazi.category.CategoryService;
 import com.sulbazi.chat.ChatRoomService;
 import com.sulbazi.chat.UserChatroomDTO;
@@ -38,6 +39,7 @@ public class UserService {
 	@Autowired PhotoService photo_ser;
 	@Autowired ReviewDAO review_dao;
 	Logger log = LoggerFactory.getLogger(getClass());
+	@Autowired CategoryDAO category_dao;
 	@Value("${upload.path}") private String bpath;
 	
 	// 일반 회원 마이페이지
@@ -161,4 +163,23 @@ public class UserService {
 	public UserDTO user(String user_id) {
 		return user_dao.user(user_id);
 	}
+	public void userDetail(String user_nickname, Model model) {
+		UserDTO userdto = user_dao.userDetail(user_nickname);
+		log.info("userDetail : {}", userdto);
+		model.addAttribute("info", userdto);
+		String user_id = userdto.getUser_id();
+		log.info("user_id : " + user_id);
+		
+		List<HashMap<String, Object>> optList = user_dao.getUserCategories(user_id);
+		List<Integer> optIdxList = new ArrayList<Integer>();
+		for(HashMap<String, Object> opt : optList) {
+			optIdxList.add((Integer) opt.get("opt_idx"));
+		}
+		
+		List<HashMap<String, Object>> category = user_dao.userGetCategory(optIdxList);
+		log.info("가져온 카테고리 번호 : {} ", category);
+		model.addAttribute("category", category);
+		
+	}
+	
 }
