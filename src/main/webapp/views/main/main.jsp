@@ -55,13 +55,9 @@
         display: flex;
     }
     .full{
-<<<<<<< HEAD
-    	position: absolute;
-=======
         position: fixed;
     	top: 0;
     	left: 0; 
->>>>>>> origin/master
         z-index: 999;
         display: flex;
         width: 300px;

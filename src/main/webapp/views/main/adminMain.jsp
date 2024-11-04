@@ -144,18 +144,11 @@
         <div class="fullbox">
             <div class="full">
                 <ul class="list1">
-<<<<<<< .merge_file_fwZO4P
                     <li><a href="localChatRoom.go">지역 대화방</a></li>
                     <li><a href="userchatlist.go">개인 대화방</a></li>
                     <li><a href="storeList.go">매장 리스트</a></li>
                     <li><a href="boardList.go">게시판</a></li>
                     <li><a href="userinquery.go">고객센터</a></li>
-=======
-                    <li><a href="localchatlist.go">지역 대화방</a></li>
-                    <li><a href="userchatlist.go">개인 대화방</a></li>
-                    <li><a href="storeList.go">매장 리스트</a></li>
-                    <li><a href="boardList.go">게시판</a></li>
->>>>>>> .merge_file_PtBhky
                 </ul>
             </div>
             <div class="full2">
