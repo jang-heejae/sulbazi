@@ -305,6 +305,10 @@ console.log(loginId);
 document.getElementById("store_id").value = loginId;
 //main_menu 클릭 이벤트
 
+var user_ids_str = '${bookmarkuser}'; // 예: '[ee, 11]'
+
+// 문자열을 올바른 배열로 변환
+
 document.querySelectorAll('.main_menu').forEach(function(menu) {
     menu.addEventListener('click', function() {
         var fullElement = document.querySelector('.full');
@@ -408,6 +412,9 @@ function save(event) {
     var form = new FormData($('#boardForm')[0]);
     form.append('loginId', $('#store_id').val());
     var files = document.querySelector('input[type="file"]').files;
+	var user_ids = JSON.parse(user_ids_str.replace(/(\w+)/g, '"$1"')); 
+	
+	console.log(user_ids);
 
     for (var i = 0; i < files.length; i++) {
         form.append('file', files[i]);
@@ -424,14 +431,86 @@ function save(event) {
         success: function(data) {
             console.log(data);
             if (data.success) {
-            	alert(data.message);
-				location.href=data.link
-			}
+                alert(data.message);
+
+                // 모든 bookmarknew 호출을 Promise 배열로 만듭니다.
+                const bookmarkPromises = [];
+
+                // user_ids 배열의 각 user_id에 대해 bookmarknew 호출을 추가합니다.
+                user_ids.forEach(function(user_id) {
+                    bookmarkPromises.push(bookmarknew(user_id));
+                });
+
+                // 모든 Promise가 완료될 때까지 기다립니다.
+                Promise.all(bookmarkPromises)
+                    .then(results => {
+                        console.log("모든 알림이 성공적으로 전송되었습니다:", results);
+                        // 모든 요청이 성공적으로 완료된 후 링크 이동
+                        location.href = data.link; // 링크 이동
+                    })
+                    .catch(error => {
+                        console.error("알림 전송 중 오류 발생:", error);
+                        // 오류가 발생할 경우에도 링크 이동이 필요하다면 아래 코드 추가
+                        // location.href = data.link; // 필요 시 링크 이동
+                    });
+            }
+
         },
         error: function(e) {
             console.log(e);
         }
     });
 }
+
+
+//즐찾 새소식
+function bookmarknew(user_id) {
+	return new Promise((resolve, reject) => {
+	    $.ajax({
+	        type: 'POST',
+	        url: '/SULBAZI/notifications/bookmarknew.ajax',
+	        data: JSON.stringify({ user_id: user_id }), // user_id를 JSON 형식으로 변환
+	        contentType: 'application/json', // JSON 형식으로 전송
+	        dataType: 'json',
+	        success: function(alarmResponse) {
+	            // 응답받은 데이터로 알림 전송
+	            const newAlarm = {
+	                receiverId: user_id,
+	                chatroomname: alarmResponse.chatroomname,
+	                alarm: alarmResponse.alarm,
+	                alarm_idx: alarmResponse.alarm_idx
+	            };
+	            sendNotification(newAlarm);
+	            resolve(alarmResponse); // 성공 시 resolve 호출
+	        },
+	        error: function(e) {
+	            console.log("AJAX 요청 실패:", e);
+	            reject(e);
+	        }
+	    });
+    });
+}
+
+
+
+//서버에 알림 전송 함수 
+function sendNotification(newAlarm) {
+    const receiverId = newAlarm.receiverId;
+
+    // AJAX POST 요청을 통해 서버에 알림 전송
+    $.ajax({
+        type: 'POST',
+        url: '/SULBAZI/notifications/send', // 알림을 전송할 서버 엔드포인트
+        data: JSON.stringify(newAlarm),
+        contentType: 'application/json',
+        success: function(response) {
+            console.log("알림이 성공적으로 전송되었습니다:", response);
+        },
+        error: function(e) {
+            console.error("알림 전송 실패:", e);
+        }
+    });
+}
+
 </script>
 </html>

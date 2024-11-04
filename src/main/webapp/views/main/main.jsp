@@ -125,6 +125,7 @@
     }
 </style>
 <body>
+    <jsp:include page="../user/sendAlarm.jsp"/>
     <header>
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
@@ -144,9 +145,9 @@
                     </li>
                     <li>
                         <i class="fa-regular fa-bell"></i>
-                        <div class="sub_" >
+                        <div class="sub_">
                             <div class="sub_txt">개 알림</div>
-                            <div id="result"></div>
+                            <div id="notification"></div>
                         </div>
                     </li>
                     <li class="mypage"><i class="fa-regular fa-user"></i></li>

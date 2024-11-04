@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sulbazi.member.StoreDTO;
+import com.sulbazi.member.StoreService;
 import com.sulbazi.photo.PhotoDAO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
@@ -39,6 +40,8 @@ public class BoardController {
 	@Autowired BoardService board_ser;
 	@Autowired PhotoService photo_ser;
 	@Autowired PhotoDAO photo_daoDao;
+	@Autowired StoreService store_ser;
+	
  	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@RequestMapping(value="/boardList.go")
@@ -119,7 +122,11 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/boardWrite.go")
-	public String boardWrite() {
+	public String boardWrite(Model model, HttpSession session) {
+		String store_id = (String) session.getAttribute("loginId");
+		logger.info(store_id);
+		model.addAttribute("bookmarkuser", store_ser.bookmarkuserlist(store_id));
+		logger.info("북마크 유저 리스트"+store_ser.bookmarkuserlist(store_id));
 		return "board/boardWrite";
 	}
 	

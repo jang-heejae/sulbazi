@@ -137,11 +137,11 @@ function chatroommanager() {
 
 
 //즐찾 새소식
-function bookmarknew() {
+/* function bookmarknew(userIds) {
     $.ajax({
         type: 'POST',
         url: '/SULBAZI/notifications/bookmarknew.ajax',
-        data: {'user_id':user_id},//수신자 ID  //게시물 idx
+        data: JSON.stringify({ 'user_ids: userIds }),//수신자 ID  //게시물 idx
         dataType: 'JSON',
         success: function(alarmresponse) {
             // 알림 데이터 객체 생성
@@ -157,7 +157,7 @@ function bookmarknew() {
             console.log("AJAX 요청 실패:", e);
         }
     });
-}
+} */
 
 
 
@@ -188,7 +188,7 @@ function bookmarknew() {
 }*/
 
 // 서버에 알림 전송 함수 
-function sendNotification(newAlarm) {
+/* function sendNotification(newAlarm) {
     const receiverId = newAlarm.receiverId;
 
     // AJAX POST 요청을 통해 서버에 알림 전송
@@ -204,7 +204,7 @@ function sendNotification(newAlarm) {
             console.error("알림 전송 실패:", e);
         }
     });
-}
+} */
 
 </script>
 </html>
