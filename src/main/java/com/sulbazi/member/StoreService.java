@@ -392,7 +392,7 @@ public class StoreService {
 	}
 
 
-<<<<<<< HEAD
+
 	public List<String> bookmarkuserlist(String store_id) {
 		logger.info(store_id);
 		int store_idx =store_dao.storeidx(store_id);
@@ -403,7 +403,7 @@ public class StoreService {
 	}
 
 
-=======
+
 	//북마크 영역
 	public Map<String, Object> bookmarkCheck(Map<String, Object> params) {
 		
@@ -426,7 +426,7 @@ public class StoreService {
 		map.put("success",row );
 		return map;
 	}
->>>>>>> origin/master
+
 
 
 
