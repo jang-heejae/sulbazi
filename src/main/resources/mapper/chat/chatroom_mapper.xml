@@ -58,7 +58,7 @@
 		UPDATE userchat
 	    SET userchat_subject = #{userchat_subject}, 
 	        userchat_state = #{userchat_state},
-	        max_people = #{max_people}, 
+	        max_people = #{max_people}
     	WHERE userchat_idx = #{userchat_idx}
 	</update>
 
@@ -71,20 +71,23 @@
 	
 	<!-- 개인 채팅방 삭제(비공개) -->
 	<update id="deletechatroom">
-		UPDATE userchat SET userchat_state = 0 WHERE userchat_idx = #{userchat_idx}
+		UPDATE userchat SET userchat_state = 0
+		WHERE userchat_idx = #{userchat_idx} 
+		AND user_id = #{user_id}
 	</update>
 
 	<!-- 내가 참여중인 채팅방 목록 -->
 	<select id="myroomlist" resultType="com.sulbazi.chat.UserChatroomDTO">
-		SELECT uc.userchat_idx, uc.userchat_subject, uc.current_people, uc.max_people
+		SELECT uc.userchat_idx, uc.user_id, uc.userchat_subject, uc.current_people, uc.max_people
 		FROM userchat uc
-		WHERE uc.userchat_idx IN (
-		    SELECT p.chatroom_idx AS userchat_idx 
-		    FROM parti p 
-		    WHERE p.user_id = #{user_id} 
-		      AND p.parti_state = 1 
-		      AND p.chatroom_category = 'userchat'
-		)
+		WHERE uc.userchat_state = 1
+		  AND uc.userchat_idx IN (
+		      SELECT p.chatroom_idx AS userchat_idx 
+		      FROM parti p 
+		      WHERE p.user_id = #{user_id} 
+		        AND p.parti_state = 1 
+		        AND p.chatroom_category = 'userchat'
+		  )
 	</select>
 	
 	<!-- 방 정보 가져오기 -->
@@ -94,8 +97,9 @@
 	
 	<!-- 현재 인원수 추가 -->
 	<update id="roomin">
-		UPDATE userchat SET current_people = current_people+1 WHERE userchat_idx = #{idx}
+		UPDATE userchat SET current_people =#{total} WHERE userchat_idx = #{roomidx}
 	</update>
+	
 	<!-- 입장 가능 인원 수 -->
 	<select id="current" resultType="java.lang.Integer">
 		SELECT current_people FROM userchat WHERE userchat_idx = #{idx}
@@ -103,7 +107,7 @@
 	
 	<!-- 개인 채팅방 나가기 -->
 	<update id="userroomout">
-		UPDATE userchat SET current_people = current_people-1 WHERE userchat_idx = #{chatroom_idx}
+		UPDATE userchat SET current_people = #{total} WHERE userchat_idx = #{chatroom_idx}
 	</update>
 	
 	

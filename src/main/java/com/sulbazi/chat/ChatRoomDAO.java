@@ -26,7 +26,7 @@ public interface ChatRoomDAO {
 	int updatenotice(String notice, int userchat_idx);
 	
 	/* 개인 채팅방 삭제(비공개) */
-	int deletechatroom(int userchat_idx);
+	int deletechatroom(String user_id, int userchat_idx);
 	
 	/* 개인 채팅방 참여 */
 	/* 내가 참여중인 채팅방 목록 */
@@ -34,12 +34,12 @@ public interface ChatRoomDAO {
 	/* 방 정보 가져오기 */
 	List<UserChatroomDTO> roominfo(int idx);
 	/* 현재 인원수 추가 */
-	int roomin(int idx);
+	int roomin(int total, int roomidx);
 	/* 입장 가능 인원 수 */
 	Integer current(int idx);
 	
 	/* 개인 채팅방 나가기 */
-	int userroomout(int chatroom_idx);
+	int userroomout(int total, int chatroom_idx);
 	
 	
 	
@@ -53,6 +53,10 @@ public interface ChatRoomDAO {
 	
 	/* 지역 채팅방 정보 */
 	List<LocalChatroomDTO> localroominfo(int idx);
+
+	
+
+
 
 
 
