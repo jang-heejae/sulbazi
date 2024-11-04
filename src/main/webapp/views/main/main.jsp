@@ -56,6 +56,7 @@
     }
     .full{
         z-index: 999;
+        position:absolute;
         display: flex;
         width: 300px;
         height: 100vh;
@@ -124,7 +125,7 @@
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
             <div class="logo_text">
-                <a href="./">SULBAZI</a>
+                <a href="./mainPage.go">SULBAZI</a>
             </div>
             <div>
                 <ul class="icon">

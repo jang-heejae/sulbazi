@@ -48,15 +48,13 @@ public class ChatPartiService {
 	}
 	
 	/* 방에 참여중인 사용자 - 개인 */
-	public List<PartiDTO> userlist(int idx) {
-		return chatparti_dao.userlist(idx);
-	}
 	public List<PartiDTO> userlistajax(int chatroom_idx) {
 		return chatparti_dao.userlistajax(chatroom_idx);
 	}
 	
 	/* 개인 채팅방에서 나가기 */
 	public void userroomout(String user_id, int chatroom_idx) {
+		chatroom_dao.userroomout(chatroom_idx);
 		chatparti_dao.userroomout(user_id, chatroom_idx);
 	}
 	
@@ -71,8 +69,6 @@ public class ChatPartiService {
 		}
 		return row > 0;
 	}
-
-	
 	
 	// SSE 등록 메서드
     public SseEmitter registerSse(String userId) {
@@ -97,8 +93,16 @@ public class ChatPartiService {
         }
     }
 	
+    /*  참여 신청 취소 */
+	public int cancelparti(String user_id, int chatroom_idx) {
+		return chatparti_dao.cancelparti(user_id, chatroom_idx);
+	}
 	
 	
+	
+	
+	/* ************************  지역 채팅  *************************** */
+    
 	/* 지역 채팅방 참여 */
 	public void localparti(String userId, int idx) {
 		
@@ -117,9 +121,6 @@ public class ChatPartiService {
 	}
 	
 	/* 방에 참여중인 사용자 - 지역 */
-	public List<PartiDTO> localuserlist(int idx) {
-		return chatparti_dao.localuserlist(idx);
-	}
 	public List<PartiDTO> localuserlistajax(int localchat_idx) {
 		return chatparti_dao.localuserlistajax(localchat_idx);
 	}
@@ -128,6 +129,7 @@ public class ChatPartiService {
 	public void localroomout(String user_id, int chatroom_idx) {
 		chatparti_dao.localroomout(user_id, chatroom_idx);
 	}
+	
 	
 
 	

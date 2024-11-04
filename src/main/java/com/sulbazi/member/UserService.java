@@ -116,4 +116,10 @@ public class UserService {
 		 
 		
 	}
+	
+	// 채팅 기능
+	// 채팅방 주인(닉네임, 사진)
+	public UserDTO user(String user_id) {
+		return user_dao.user(user_id);
+	}
 }

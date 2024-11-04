@@ -76,13 +76,13 @@
 	}
 	.chatroom{
         display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-		margin : 5px;
-		width: 230px;
-		height: 230px;
-		background-color : 73734F;
-		border-radius: 45px;
+	    flex-direction: column;
+	    margin: 5px;
+	    width: 230px;
+	    height: 230px;
+	    background-color: 73734F;
+	    border-radius: 45px;
+	    justify-content: center;
 	}
 	.title{
 		font-size: large;
@@ -103,14 +103,17 @@
         border-radius: 10px;
     }
     .createroom{
-        display: none;
-        position: absolute;
-        left: 1100px;
-        top: 250px;
-        z-index: 999;
-        background-color: rgb(106, 106, 219);
-        width: 300px;
-        height: 120px;
+        padding: 12px;
+	    display: none;
+	    position: absolute;
+	    left: 1100px;
+	    top: 198px;
+	    z-index: 999;
+	    background-color: rgb(255, 140, 9);
+	    width: 310px;
+	    height: 122px;
+	    border: 1px solid black;
+	    border-radius: 20px;
     }
     .newroombtn:hover{
         cursor: pointer;
@@ -118,10 +121,23 @@
     }
     .roominp{
         display: flex;
+        margin-top: 10px;
     }
     .roombtn{
         display: flex;
         justify-content: flex-end;
+    }
+    .roombtn button{
+    	background: white;
+	    border-radius: 15px;
+	    border: none;
+	    cursor: pointer;
+	    width: 70px;	
+	    margin-left: 5px;
+    }
+    .roombtn button:hover{
+    	cursor: pointer;
+    	font-weight: bold;
     }
     .roombtn div{
         background-color: aliceblue;
@@ -137,25 +153,46 @@
     .commitbtn{
     	width: 50px;
         height: 25px;
-        background-color: aliceblue;
 	    border: none;
 	    cursor: pointer;
 	    text-align: left;
     }
-    .roomname{
-        background-color: aquamarine;
+    .roomname ul{
+        margin: 15px 10px 0px 10px;
     }
-    .roomname li{
-        margin-bottom: 10px;
+    .title{
+    	font-size: 24px;
+    }	
+    .createduser{
+    	margin-top: 10px;
+    }
+    .createduser img{
+    	width: 35px;
+	    height: 35px;
+	    border-radius: 50px;
+	    margin-right: 5px;
+    }
+    .createduser{
+    	font-size: 20px;
     }
     .roominfo{
-        background-color: burlywood;
         display: flex;
         justify-content: space-between;
         width: 200px;
         align-items: center;
+        margin: 0px 10px;
     }
-    
+    .userinfo{
+    	margin-top: 2px;
+    	font-size: large;
+    }
+    .gobtn{
+        border-radius : 50px;
+	    background: #80f109;
+	    outline: none;      
+	    padding: 0;
+        margin-left: 15px;
+    }
     .return a{
 	    position: absolute;
 	    top: 66px;
@@ -186,11 +223,11 @@
 	        <div class="createroom">
 	            <ul>
 	                <li>
-	                    대화방 이름:<input type="text" name="userchat_subject" placeholder="방 제목을 입력하세요.">
+	                    대화방 이름 : <input type="text" name="userchat_subject" maxlength="20" placeholder="20자 이내로 입력 하세요">
 	                </li>
 	                <li class="roominp">
-	                     제한 인원:<input type="range" name="current_people" min="2" max="20" value="5" oninput="document.getElementById('value2').innerHTML=this.value;">
-	                     <p id="value2">5</p>
+	                     제한 인원 : <input type="range" name="max_people" min="2" max="20" value="5" oninput="document.getElementById('value2').innerHTML=this.value;">
+	                     <div id="value2">5</div>
 	                </li>
 	                <li>
 	                	<input type="hidden" name="user_id" value="${loginId}" readonly/>
@@ -204,6 +241,7 @@
 	    </form>  
         <div class="chatitems">
           <c:forEach items="${list}" var="userchat">
+          <c:set var="user" value="${userinfo[userchat.user_id]}" />
           <form action="userchatroom.go?idx=${userchat.userchat_idx}" method="post">
             <div class="chatroom">
                 <div class="roomname">
@@ -215,22 +253,24 @@
                         	<input type="hidden" name="userchat_subject" value="${userchat.userchat_subject}" readonly/>	
                         </li>
                         <li class="createduser">
-                        	${userchat.user_id}
+                        	<img src="/photo/${user.user_photo}" alt="프로필 사진" />${user.user_nickname}
                         	<input type="hidden" name="user_id" class="boss" value="${userchat.user_id}" readonly/>	
                         </li>
-                        <li>
-                        	<span class="total_${userchat.userchat_idx}"></span> / ${userchat.current_people}
-                        </li>
+                        
                     </ul>
                 </div>
                 <div class="roominfo">
                     <div>
                         <ul>
-                            <%-- <li>${userchat.total_users}/${userchat.current_people}</li> --%>
+	                        <li class="userinfo">
+	                        	${userchat.current_people} / ${userchat.max_people}
+	                        	<input type="hidden" name="current_people" value="${userchat.current_people}" readonly/>
+	                        	<input type="hidden" name="max_people" value="${userchat.max_people}" readonly/>
+	                        </li>
                             <li>${userchat.userchat_date}</li>
                         </ul>
                     </div>
-				    <button type="button" class="gobtn" 
+				    <button type="submit" class="gobtn" 
 	                        data-user-id="${sessionScope.loginId}" 
 	                        data-chatroom-idx="${userchat.userchat_idx}">
 		                    참가 상태 확인 중...
@@ -245,7 +285,8 @@
 <script>
 
 $(document).ready(function() {
-	
+	var user_id = '${sessionScope.loginId}';
+	console.log(user_id);
 	
     // 채팅방 취소 버튼
     $('.newroombtn, .cancel').click(function(){      
@@ -295,8 +336,6 @@ $(document).ready(function() {
                     statusElement.text("참가신청중");
                 } else if (response.partistate === 1) {
                     statusElement.text("참가중");
-                    statusElement.closest('form').submit();
-                    
                 } else {
                     statusElement.text("참가하기");
                 }
@@ -306,105 +345,70 @@ $(document).ready(function() {
                 statusElement.text("오류 발생");
             }
         });
-    });  ///////
-/*     $('.gobtn').on('click', function(event) {
-    	statusElement.closest('form').submit();
-    } */
+    }); 
+    
+
     // 참가 신청   
-	/* $('.gobtn').on('click', function(event) {
-    	 
-         var form = this.closest('form'); 
-         var chatboss = form.querySelector('.boss').value;
-         var user_id = loginId;
-         var chatroomCategory = 'userchat';
-         var chatroom_idx = form.querySelector('input[name="userchat_idx"]').value; 
-        
-        $.ajax({
-            url: 'userchatroom.go', 
-            type: 'POST',
-            data: {
-            	chatroom_idx: chatroom_idx
-            	},
-            success: function(response) {
-            	// 기본 폼 제출 막기
-                event.preventDefault();
-            	
-                    if ($(this).text() === "참가") {
-                        $(this).closest('form').submit();
-                        $(this).text('참가신청중');
-                        
-                        // 알림 ajax
-                        function chatroommanager() {
-                            $.ajax({
-                                type: 'POST',
-                                url: 'chatroommanager.ajax',
-                                data: {'my_id': loginId,
-                                		'user_id': chatboss},
-                                dataType: 'JSON',
-                                success: function(alarmresponse) {
+	$('.gobtn').on('click', function(event) {
+		event.preventDefault();
+		 
+		var form = $(this).closest('form');
+		
+		chatboss = $(this).closest('form').find('input[name="user_id"]').val(); 
+        console.log(" 방장 "+chatboss);
+        var chatroom_idx = form.find('input[name="userchat_idx"]').val(); 
+        console.log(" 방 "+chatroom_idx);
+        var buttonText = $(this).text();
+		
+		if(buttonText === "참가중") {
+			$(this).closest('form').submit();
+		}else if(buttonText === "참가하기"){     
+			$(this).closest('form').submit();
+			chatroommanager();
+		}else if(buttonText === "참가신청중") {
+			console.log("내아이디"+user_id);
+	    	console.log("취소할 방"+chatroom_idx);
+			$.ajax({
+				type: 'POST',
+	            url: './cancelparti.ajax',
+	            data: {
+	            	user_id: user_id,
+	             	chatroom_idx: chatroom_idx
+	             },
+	            dataType: 'JSON',
+	            success: function(response) {
+	            	console.log("서버 응답:", response);
+	             	alert("신청 취소");
+	             	location.reload();
+	             },
+	             error: function(e) {
+	                console.log("AJAX 요청 실패:", e);
+	             }
+	         });
+		}
 
-                                	const newAlarm = alarmresponse;
-                                	addAlarm(newAlarm);
-                                	console.log("신청 완료");
-                                },
-                                error: function(e) {
-                                    console.log("AJAX 요청 실패:", e);
-                                }
-                            });
-                        }
-                        
-                    } else if ($(this).text() === "참가신청중") {
-                    	
-                    }
-                }
-                console.log("입장");
-            },
-            error: function() {
-                console.log("참가 여부 확인 중 오류가 발생했습니다.");
-            }
-        });
-    }); */
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
- 	
-    // 각 방에 참여한 사용자 수
-    $('.chatroom').each(function() {
-        var chatroom_idx = $(this).find('input[name="userchat_idx"]').val();
-        console.log(chatroom_idx);
-        
-        $.ajax({
-            url: '/SULBAZI/usertotal.ajax',
-            method: 'GET',
-            data: { chatroom_idx: chatroom_idx },
-            success: function(count) {
-                // 참여자 수를 표시할 DOM 요소에 업데이트
-                console.log(count);
-                $('.total_' + chatroom_idx).text(count);
-
-                // 참가 버튼 표시 조건
-               /*  var currentPeople = parseInt('${userchat.current_people}');
-                if (count < currentPeople) {
-                    $('#joinButton_' + chatroomId).show();
-                } */
-            },
-            error: function() {
-            	$('.total_' + chatroom_idx).text('Error');
-            }
-        });
-        
     });
- 	
-   
- 
- 
+    
+	// 알림 ajax
+	function chatroommanager() {
+
+		$.ajax({
+			type: 'POST',
+            url: 'chatroommanager.ajax',
+            data: {'my_id': user_id,
+             		'user_id': chatboss},
+            dataType: 'JSON',
+            success: function(alarmresponse) {
+            	const newAlarm = alarmresponse;
+             	addAlarm(newAlarm);
+             	console.log("신청 완료");
+             },
+             error: function(e) {
+                console.log("AJAX 요청 실패:", e);
+             }
+         });
+	}
+       
  
     // 페이지 로드 시 검색어가 있을 경우
     var storedQuery = localStorage.getItem('searchQuery'); // 로컬 스토리지에서 검색어 가져오기

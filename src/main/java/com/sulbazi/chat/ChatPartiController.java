@@ -61,7 +61,6 @@ public class ChatPartiController {
                 sseEmitters.remove(emitter);
             }
         }
-	  
 	    
 	    return participants; // 리스트 반환
 	}
@@ -96,14 +95,26 @@ public class ChatPartiController {
 	}
 	
 	/* 강퇴당한 사용자 페이지 강제 이동 */
-	@GetMapping("/subscribe")
+	@GetMapping(value="/subscribe")
 	public SseEmitter subscribe(HttpSession session) {
 	    String userId = (String) session.getAttribute("loginId");
 	    return chatparti_ser.registerSse(userId);
 	}
 
-	
-	
+	/* 참여 신청 취소 */
+	@PostMapping(value="/cancelparti.ajax")
+	@ResponseBody
+	public Map<String, String> cancelparti(@RequestParam String user_id, @RequestParam int chatroom_idx) {
+		chatparti_ser.cancelparti(user_id, chatroom_idx);
+		logger.info("user_id: " + user_id);
+	    logger.info("chatroom_idx: " + chatroom_idx);
+	    
+	    Map<String, String> response = new HashMap<>();
+	    response.put("status", "success");
+	    
+	    return response;
+	    
+	}
 	
 	
 	
@@ -133,5 +144,14 @@ public class ChatPartiController {
 		return "success";
 	}
 	
+	@PostMapping(value="/localroomtrans.ajax")
+	@ResponseBody
+	public String localroomtrans(HttpSession session, @RequestParam int chatroom_idx) {
+		
+		String user_id = (String) session.getAttribute("loginId");
+		
+		chatparti_ser.localroomout(user_id, chatroom_idx);
+		return "success";
+	}
 	
 }
