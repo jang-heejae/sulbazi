@@ -30,9 +30,11 @@
 	<select id="getReportedIdByReportIdx" parameterType="int" resultType="com.sulbazi.report.ReportDTO">
     	SELECT * FROM report WHERE report_idx = #{report_idx}
 	</select>
+	
 	<select id="getAllReports" resultType="com.sulbazi.report.ReportDTO">
         SELECT * FROM report
     </select>
+    
     <select id="getReportsByState" parameterType="int" resultType="com.sulbazi.report.ReportDTO">
         SELECT * FROM report WHERE report_state = #{state}
     </select>

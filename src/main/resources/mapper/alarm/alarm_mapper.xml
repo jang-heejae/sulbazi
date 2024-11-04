@@ -4,7 +4,10 @@
 >
 <mapper namespace="com.sulbazi.alarm.AlarmDAO">
 
-	
+	<!-- 매장이름  -->
+	<select id="storename">
+		SELECT store_name FROM store WHERE store_idx={param1}
+	</select>
 
 	<!-- 즐겨찾기 정보 -->
 	<select id="bookmarkinfo" resultType="com.sulbazi.member.BookMarkDTO">
@@ -14,8 +17,7 @@
 
 	<!-- 홍보 게시판 정보 -->
 	<select id="storeboardinfo" resultType="com.sulbazi.board.BoardDTO">
-		SELECT store_idx, board_idx FROM board 
-			WHERE store_idx = #{param1}
+		SELECT store_idx FROM board ORDER BY board_idx DESC LIMIT 1;
 	</select>
 
 	<!-- 개인 대화방 정보 by user_id-->

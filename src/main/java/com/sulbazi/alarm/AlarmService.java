@@ -15,9 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import com.sulbazi.board.BoardDTO;
 import com.sulbazi.chat.PartiDTO;
 import com.sulbazi.chat.UserChatroomDTO;
 import com.sulbazi.inquery.InqueryDTO;
+import com.sulbazi.member.BookMarkDTO;
 
 @Service
 public class AlarmService {
@@ -28,9 +30,7 @@ public class AlarmService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 
-	
-	
-	
+
 	
 	//결국 sse
     private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
@@ -55,22 +55,33 @@ public class AlarmService {
             }
         }
     }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
 	//즐겨찾기 매장 홍보게시물 알림
-	public void bookmarknew() {
-		
-		
+	public Map<String, Object> bookmarknew(String user_id) {
+		logger.info("내 id"+user_id);
+		BoardDTO boarddto = alarm_dao.storeboardinfo();
+		BookMarkDTO bookmark = alarm_dao.bookmarkinfo(user_id);
+		int storeboardidx = boarddto.getStore_idx(); //게시물 매장 idx
+		int storeidx = bookmark.getStore_idx(); //즐겨찾기 매장 idx
+		String storename = alarm_dao.storename(storeidx); //매장 이름
+		Map<String, Object> chatroom = new HashMap<String, Object>();
+		if(storeboardidx == storeidx) {
+			AlarmCategoryDTO bookmarkalarm = alarm_dao.categoryalarminfo(4);
+			String alarm = bookmarkalarm.getAlarm_content();
+			AlamDTO insertalarm = new AlamDTO();
+			insertalarm.setAlarm_category_idx(4);
+			insertalarm.setUser_id(user_id);
+			alarm_dao.alarminsert(insertalarm);
+			int alarm_idx= insertalarm.getAlarm_idx();
+			chatroom.put("alarm_idx", alarm_idx); //알림 idx
+			chatroom.put("chatroomname", storename); //게시판 제목
+			chatroom.put("alarm", alarm); //알림 내용
+		}
+		return chatroom;
 	}
+	
+	
 	
 	//대화방 강제 퇴장 당함 알림
 	public Map<String, Object> chatroomout(String chatroomboss,String my_id) {
@@ -159,8 +170,8 @@ public class AlarmService {
 	
 	
 	//내 대화방 참여 수락/거절 선택 알림
-	public Map<String, Object> chatroommanager(String user_id, String my_id) {
-		UserChatroomDTO userchatroomdto = alarm_dao.userchatroominfo(my_id);//개설자 대화방 정보
+	public Map<String, Object> chatroommanager(String getuser_id, String user_id) {
+		UserChatroomDTO userchatroomdto = alarm_dao.userchatroominfo(getuser_id);//개설자 대화방 정보
 		int chatroom_idx = userchatroomdto.getUserchat_idx();// 참여신청 대화방 idx
 		PartiDTO partidto = new PartiDTO();
 		partidto.setChatroom_idx(chatroom_idx); //참여신청 대화방idx
@@ -173,7 +184,7 @@ public class AlarmService {
 			String chatroomname = userchatroomdto.getUserchat_subject();
 			AlamDTO insertalarm = new AlamDTO();
 			insertalarm.setAlarm_category_idx(1);
-			insertalarm.setUser_id(my_id);
+			insertalarm.setUser_id(getuser_id);
 			alarm_dao.alarminsert(insertalarm);
 			insertalarm.getAlarm_idx();
 			int alarm_idx= insertalarm.getAlarm_idx();
@@ -212,8 +223,8 @@ public class AlarmService {
 		alarm_dao.partialarm(id);		
 	}
 
-	public int readalarm(int alarm_id) {
-		int row = alarm_dao.readalarm(alarm_id);
+	public int readalarm(int alarm_idx) {
+		int row = alarm_dao.readalarm(alarm_idx);
 		return row;
 	}
 

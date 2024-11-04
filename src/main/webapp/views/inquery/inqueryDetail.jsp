@@ -17,11 +17,16 @@
         }
         .container {
             max-width: 800px;
-            margin: 0 auto;
-            background-color: #E79A32;
+            max-height: 800px;
+            margin: 150 auto;
+            background-color: rgb(255, 140, 9);
             padding: 20px;
             border-radius: 10px;
+            overflow-y: auto;
         }
+         .container::-webkit-scrollbar { 
+    		display: none;          /* Chrome, Safari에서 스크롤바 숨김 */
+		}
         .section {
             background-color: #00200e;
             padding: 15px;
@@ -30,9 +35,10 @@
         }
         .header {
             text-align: center;
-            font-size: 24px;
+            font-size: 45px;
             font-weight: bold;
             color:#000000;
+            padding-botton: 30;
         }
         .form-group {
             margin-bottom: 15px;
@@ -58,6 +64,7 @@
             padding: 10px;
             border-radius: 5px;
             color: #000000;
+            height:93;
         }
 		img {
     		max-width: 100%;
@@ -67,8 +74,11 @@
     </style>
 </head>
 <body>
+<div style="display: flex; justify-content: center; align-items: center;">
+    <jsp:include page="../main/adminMain.jsp"/>
+</div>
     <div class="container">
-        <div class="header">고객센터</div>
+        <div class="header">고객센터<i class='fas fa-headphones' style='font-size:48px'></i></div>
         <div class="section">
             <form>
                 <div class="form-group flex-group">
@@ -78,7 +88,7 @@
                     </div>
                     <div class="flex-item">
                         <label class="form-label" for="inquiryDate">문의 일자</label>
-                        <input type="text" id="inquiryDate" name="inquiryDate" class="form-control" value="${userinquerydetail.inquery_date}" readonly>
+                        <input type="text" id="inquiryDate" name="inquiryDate" class="form-control" value="${userinquerydetail.inquery_date}"readonly>
                     </div>
                 </div>
                 <div class="form-group">
@@ -118,6 +128,7 @@
                     				<div class="form-group">
                         				<label class="form-label">답변 내용</label>
                         				<div class="admin-response">${inqueryanswer.answer_content}</div>
+                        				<br><hr/>
                     				</div>
                 				</c:when>
             				</c:choose>
@@ -128,9 +139,9 @@
 			<form action="adminanswer.do" method="post">
     			<div class="admin-response">
     				 <input type="hidden" name="inqueryIdx" id="inqueryIdx" value="${userinquerydetail.inquery_idx}">
-        			<textarea id="answer" name="answer" rows="3" style="width: 722px; max-width:722px;"></textarea>
+        			<textarea id="answer" name="answer" rows="5" style="width: 750px; max-width:750px; font-size:16;"></textarea>
     			</div>
-    			<button type="submit" id="submitAnswer" style="margin-top: 5;">답변 등록</button>
+    			<button type="submit" id="submitAnswer" style="margin-top: 5; font-size:16; padding: 5;">답변 등록</button>
 			</form>
         </div>
     </div>
@@ -138,10 +149,14 @@
 
 </body>
 <script>
+
+
+
+
 // 로그인된 사용자 ID와 문의 ID 변수
 const my_id = '${sessionScope.loginId}';
 const inquery_idx = document.getElementById('inqueryIdx').value;
-const inquery_id = document.getElementById('inquiryId').value;
+const id_write = document.getElementById('inquiryId').value;
 
 const form = document.querySelector("form[action='adminanswer.do']");
 const btn = document.getElementById('submitAnswer');
@@ -169,7 +184,8 @@ btn.addEventListener('click', function(event) {
         })
         .then(text => {
             console.log("폼 제출 성공:", text); // 서버에서 반환한 응답을 로그에 출력
-            inquirynewanswer(); // 성공 후 AJAX 호출
+            inquirynewanswer(id_write,inquery_idx); // 성공 후 AJAX 호출
+            location.reload();
         })
         .catch(error => console.error("폼 제출 중 오류 발생:", error));
     } else {
@@ -183,19 +199,20 @@ btn.addEventListener('click', function(event) {
 
 
 //AJAX 호출 함수
-function inquirynewanswer() {
+function inquirynewanswer(id_write,inquery_idx) {
     $.ajax({
         type: 'POST',
-        url: 'inquiryanswer.ajax',
-        data: { 'my_id': my_id, 'inquery_idx': inquery_idx },
+        url: '/SULBAZI/notifications/inquiryanswer.ajax',
+        data: { 'id_write': id_write,  //수신자 id
+        		'inquery_idx': inquery_idx }, //문의 idx
         dataType: 'JSON',
         success: function(alarmresponse) {
             // 알림 데이터 객체 생성
             const newAlarm = {
-                receiverId: inquery_id,
-                chatroomname: alarmresponse.chatroomname,
-                alarm: alarmresponse.alarm,
-                alarm_idx: alarmresponse.alarm_idx
+                receiverId: id_write, //수신자 id
+                chatroomname: alarmresponse.chatroomname,  //문의 제목
+                alarm: alarmresponse.alarm, //알림 내용
+                alarm_idx: alarmresponse.alarm_idx //알림 idx
             };
             sendNotification(newAlarm); // 알림 전송 함수 호출
             saveNotification(newAlarm); // 알림 저장 함수 호출
@@ -214,7 +231,7 @@ function sendNotification(newAlarm) {
     // AJAX POST 요청을 통해 서버에 알림 전송
     $.ajax({
         type: 'POST',
-        url: '/notifications/send', // 알림을 전송할 서버 엔드포인트
+        url: '/SULBAZI/notifications/send', // 알림을 전송할 서버 엔드포인트
         data: JSON.stringify(newAlarm),
         contentType: 'application/json',
         success: function(response) {
@@ -231,88 +248,8 @@ function sendNotification(newAlarm) {
 function saveNotification(notification) {
     notificationsList.push(notification); // 새로운 알림을 배열에 추가
     console.log("저장된 알림:", notificationsList); // 디버깅: 저장된 알림 확인
-    displayNotification(notification); // 화면에 알림 표시
+    //displayNotification(notification); // 화면에 알림 표시
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// AJAX 호출 함수
-/*function inquirynewanswer() {
-    $.ajax({
-        type: 'POST',
-        url: 'inquiryanswer.ajax',
-        data: { 'my_id': my_id, 'inquery_idx': inquery_idx },
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-            // 알림 데이터를 객체로 정의하여 localStorage에 저장
-            console.log(alarmresponse);
-            const newAlarm = {
-                receiverId: inquery_id,
-                chatroomname: alarmresponse.chatroomname,
-                alarm: alarmresponse.alarm,
-                alarm_idx:alarmresponse.alarm_idx
-            };
-            addAlarm(newAlarm.receiverId, newAlarm); // addAlarm 함수를 호출하여 알림 추가
-        },
-        error: function(e) {
-            console.error("AJAX 요청 실패:", e);
-            console.log("응답 내용:", e.responseText);
-        }
-    });
-}
-
-function addAlarm(receiverId, newAlarm) {
-    if (!receiverId || !newAlarm) {
-        console.error("유효하지 않은 수신자 ID 또는 알림 데이터입니다.");
-        return;
-    }
-
-    // 알림에 고유 ID 생성
-    newAlarm.id = Date.now();
-
-    // 수신자 ID를 기반으로 로컬 스토리지에서 해당 사용자 알림 목록 가져오기
-    const alarmresponse = localStorage.getItem(receiverId);
-    let alarms = alarmresponse ? JSON.parse(alarmresponse) : [];
-
-    // 새로운 알림 추가
-    alarms.push(newAlarm);
-    
-    // 수신자 ID로 알림 저장
-    localStorage.setItem(receiverId, JSON.stringify(alarms)); // receiverId를 키로 사용해야 함
-
-    console.log("알림이 로컬 스토리지에 저장되었습니다:", newAlarm);
-
-    // 알림 표시 함수 호출 (필요한 경우)
-    //displayNotifications(receiverId); // 추가된 알림을 화면에 표시
-}
-     // 로그인한 사용자에게만 알림 표시 (현재 사용자가 수신자인 경우만)
-    if (receiverId === loggedInUserId) {
-        displayNotifications(receiverId);
-    } 
-}*/
 </script>
 </html>

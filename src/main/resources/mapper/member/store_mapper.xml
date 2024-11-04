@@ -223,20 +223,8 @@
 			FROM store_menu WHERE store_idx=#{param1} AND menu_category='술'
 	</select>
 
-	<!-- 매장 마이페이지  메뉴 정보 보기 -->
-	<select id="storemenulist" resultType="com.sulbazi.member.StoreMenuDTO">
-      	SELECT menu_idx,menu_name,menu_price  
-         	FROM store_menu WHERE store_idx=#{param1} AND menu_category='안주'
-   	</select>
    
-   <!-- 매장 마이페이지  술 메뉴 정보 보기 -->
-   	<select id="storealcholmenulist" resultType="com.sulbazi.member.StoreMenuDTO">
-      	SELECT menu_idx,menu_name,menu_price 
-         	FROM store_menu WHERE store_idx=#{param1} AND menu_category='술'
-   	</select>
 
-	
-	
 	<!-- 매장 마이페이지  메뉴 정보 수정 -->
 	<update id="menuupdate">
 		UPDATE store_menu SET menu_name=#{param1},menu_price=#{param2}
