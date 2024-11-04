@@ -1,5 +1,6 @@
 package com.sulbazi.category;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -156,6 +157,12 @@ public class CategoryService {
 	}
 	public int insertOption(int purposeValue, int moodValue, int idx) {
 		return category_dao.insertOption(purposeValue,moodValue,idx);
+	}
+	public int categoryUpdate(Map<String, String> params) {
+		int cate =  category_dao.selectCategory(params);
+		int insertCate =  category_dao.insertCategory(params);
+		
+		return insertCate;
 	}
 }
 

@@ -107,6 +107,13 @@
 		SELECT * FROM photo
 		 WHERE photo_folder_idx = #{store_idx} AND photo_category_idx = #{photo_category_idx};
 	</select>
+	<!-- 리뷰 포토 업데이트를 위한 삭제 -->
+	<delete id="reviewPhotoDel" parameterType="map">
+	    DELETE FROM photo 
+	    WHERE photo_category_idx = 3
+	    AND photo_folder_idx = #{reviewIdx} 
+	    AND new_filename = #{photo}
+	</delete>
 
 </mapper>
 

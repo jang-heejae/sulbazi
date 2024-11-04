@@ -17,12 +17,14 @@
         r.review_date,
         r.starpoint,
         r.review_state,
+        u.user_id,
         u.user_nickname,
         u.user_likecount,
         u.user_photo,
         rc.comm_date,
         rc.comm_content,
         COUNT(rl.user_id) AS like_count,
+        GROUP_CONCAT(rl.user_id) AS like_user_ids,
         (
             SELECT GROUP_CONCAT(co.opt_name SEPARATOR ', ') 
             FROM review_category AS rcg 
@@ -48,7 +50,7 @@
         AND r.review_state = 1
     GROUP BY 
         r.review_idx, r.store_idx, r.review_content, r.review_date, r.starpoint, r.review_state, 
-        u.user_nickname, u.user_likecount, u.user_photo, rc.comm_date, rc.comm_content
+        u.user_id,u.user_nickname, u.user_likecount, u.user_photo, rc.comm_date, rc.comm_content
     ORDER BY 
         r.review_idx DESC;
 </select>
@@ -67,6 +69,59 @@
 	 	insert into review_comm (review_idx,store_idx,comm_content)
 	 		values(#{review_idx},#{store_idx},#{comm_content})
 	 </insert>
+
+	 <!-- 리뷰 답글 수정 -pk 걸려있어서 수정밖에 안됨요  -->
+	 <update id="replyUpdate" parameterType="map">
+	    update review_comm 
+	    set comm_content = #{comm_content}
+	    where review_idx = #{review_idx}
+	 </update>
+	 <!-- 리뷰 답글 삭제  -->
+	 <delete id="replyDel" parameterType="map">
+    	DELETE FROM review_comm
+			WHERE review_idx = #{review_idx}
+	 </delete>
+	 <!-- 매장 평균 별점 -->
+	 <update id="storeAvg" parameterType="map">
+	    UPDATE store
+	    SET star_average = (SELECT CEIL(AVG(starpoint) * 100) / 100.0 FROM review WHERE store_idx = #{storeIdx})
+	    WHERE store_idx = #{storeIdx}
+	 </update>
+	 <!-- 리뷰 업데이트 -->
+	 <update id="reviewUpdate" parameterType="map">
+	    UPDATE review
+	    SET 
+	        review_content = #{reviewContent},
+	        starpoint = #{ratingValue},
+	        review_date = NOW()
+	    WHERE review_idx = #{reviewIdx}
+	 </update>
+	 
+	   <!-- 리뷰 삭제 상태 바꾸기 업데이트 -->
+    <update id="reviewDelUpdate" parameterType="map">
+		UPDATE review
+		SET review_state = 0
+		WHERE review_idx = #{reviewIdx}
+    </update>
+	   <!-- 리뷰 좋아요 -->
+    <insert id="reviewLike" parameterType="map">
+		INSERT INTO review_like (review_idx, user_id)
+       		 VALUES (#{reviewIdx}, #{loginId});
+    </insert>
+	
+	   <!-- 리뷰 좋아요 중복체크 -->
+	<select id="reviewCount" parameterType="map">
+	    SELECT COUNT(review_idx) 
+	    FROM review_like 
+	    WHERE review_idx = #{reviewIdx} AND user_id = #{loginId};
+	</select>
+	<!-- 좋아요 중복 삭제 -->
+	<delete id="reviewLikeDel" parameterType="map">
+    	DELETE FROM review_like
+			WHERE review_idx = #{reviewIdx} and user_id = #{loginId}
+	</delete>
+	
+
 	 
 	 <!-- 유저 마이페이지 나의 리뷰 -->
 	<select id="allCount" parameterType="map" resultType="int">
@@ -121,4 +176,5 @@
         	r.review_idx DESC
     	LIMIT #{limit} OFFSET #{offset}
 </select>
+
 </mapper>

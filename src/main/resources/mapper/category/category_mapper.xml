@@ -128,4 +128,24 @@
 	INSERT INTO review_category (review_idx,opt_idx)
 		VALUES (#{param3},#{param1}), (#{param3},#{param2})
 	</insert>
+	<!-- 리뷰 카테고리 업데이트 에 필요한 카테고리 -->
+	<delete id="selectCategory" parameterType="map">
+	    DELETE FROM review_category 
+			WHERE review_idx = #{reviewIdx}
+	</delete>
+	<insert id="insertCategory" parameterType="map" >
+	INSERT INTO review_category (review_idx,opt_idx)
+		VALUES (#{reviewIdx},#{purposeValue}), (#{reviewIdx},#{moodValue})
+	</insert>
+	
+	
+	<!-- 리뷰 카테고리 업데이트 -->
+	<update id="categoryUpdate" parameterType="int">
+		update review_category set opt_idx = #{param2}
+			where review_idx = #{param3} and opt_idx = #{param1}
+	</update>
+	<update id="categoryUpdateTwo" parameterType="int">
+		update review_category set opt_idx = #{param2}
+			where review_idx = #{param3} and opt_idx = #{param1}
+	</update>
 </mapper>
