@@ -44,7 +44,7 @@
 	<select id="getReportedIdByReportIdx" parameterType="int" resultType="com.sulbazi.report.ReportDTO">
     	SELECT * FROM report WHERE report_idx = #{report_idx}
 	</select>
-<<<<<<< HEAD
+
 	
 	<select id="getAllReports" resultType="com.sulbazi.report.ReportDTO">
         SELECT * FROM report
@@ -53,11 +53,8 @@
     <select id="getReportsByState" parameterType="int" resultType="com.sulbazi.report.ReportDTO">
         SELECT * FROM report WHERE report_state = #{state}
     </select>
-=======
->>>>>>> origin/master
-    
-    
-    
+
+
     <!-- 채팅 신고 기능 -->
     <!-- 개인, 지역 채팅방 메세지 신고 -->
     <insert id="usermsgreport" parameterType="com.sulbazi.report.ReportDTO">
