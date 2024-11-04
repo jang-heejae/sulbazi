@@ -59,7 +59,6 @@
     	top: 0;
     	left: 0; 
         z-index: 999;
-        position:absolute;
         display: flex;
         width: 300px;
         min-height: 100vh;

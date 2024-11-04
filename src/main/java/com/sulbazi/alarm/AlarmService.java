@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.sulbazi.board.BoardDTO;
+import com.sulbazi.chat.ChatPartiDAO;
+import com.sulbazi.chat.ChatRoomDAO;
 import com.sulbazi.chat.PartiDTO;
 import com.sulbazi.chat.UserChatroomDTO;
 import com.sulbazi.inquery.InqueryDTO;
@@ -26,7 +28,8 @@ public class AlarmService {
 
 	
 	@Autowired AlarmDAO alarm_dao;
-	
+	@Autowired ChatPartiDAO chatparti_dao;
+	@Autowired ChatRoomDAO chatroom_dao;
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -129,6 +132,10 @@ public class AlarmService {
 		PartiDTO partidto = new PartiDTO();
 		partidto.setChatroom_idx(chatroom_idx);
 		partidto.setUser_id(my_id);
+		
+		// 거절되면 parti 테이블에서 삭제
+		chatparti_dao.handleDeny(chatroom_idx,my_id);
+		
 		//수정 필요(아마도)
 		Map<String, Object> chatroom = new HashMap<String, Object>();
 		if(alarm_dao.partiexist(partidto) == null) {//존재 유무
@@ -157,6 +164,15 @@ public class AlarmService {
 		partidto.setChatroom_idx(chatroom_idx); //참여신청 대화방idx
 		partidto.setUser_id(my_id); //신청자 id
 		partidto.setParti_state(1); //참여 상태
+		
+		int roomidx = partidto.getChatroom_idx();
+		String user_id = partidto.getUser_id();
+		
+		// 수락되면 parti 테이블 state = 1 하고 userchat 테이블에 +parti 테이블 count
+		chatparti_dao.handleAccept(roomidx,user_id);
+		Integer total = chatparti_dao.usertotal(roomidx);
+		chatroom_dao.roomin(total,roomidx);
+		
 		Map<String, Object> chatroom = new HashMap<String, Object>();
 		if(alarm_dao.partiinfo(partidto) != null) { //신청 대화방에서 나의 id가 참여상태 1이라면 
 			AlarmCategoryDTO chatinalarm = alarm_dao.categoryalarminfo(5);
@@ -179,17 +195,29 @@ public class AlarmService {
 	
 	//내 대화방 참여 수락/거절 선택 알림
 	public Map<String, Object> chatroommanager(String getuser_id, String user_id) {
+		logger.info("발신자:"+user_id);
+		logger.info("방장:"+getuser_id);
 		UserChatroomDTO userchatroomdto = alarm_dao.userchatroominfo(getuser_id);//개설자 대화방 정보
 		int chatroom_idx = userchatroomdto.getUserchat_idx();// 참여신청 대화방 idx
+		logger.info("chatroom_idx:"+chatroom_idx);
 		PartiDTO partidto = new PartiDTO();
 		partidto.setChatroom_idx(chatroom_idx); //참여신청 대화방idx
 		partidto.setUser_id(user_id); //신청자 id
 		partidto.setParti_state(0); //참여 상태
+		logger.info("참여신청 대화방 : {}"+partidto.getChatroom_idx());
+		logger.info("참여 희망자 : {}"+partidto.getUser_id());
+		logger.info("참여 상태 : {}"+partidto.getParti_state());
+
+		logger.info("참여 상태 : {}"+partidto);
 		Map<String, Object> chatroom = new HashMap<String, Object>();
+		logger.info("partidto : {}"+alarm_dao.partiinfo(partidto));
+		
 		if(alarm_dao.partiinfo(partidto) != null) { //신청 대화방에서 나의 id가 참여상태 0이라면 
 			AlarmCategoryDTO choosealarm = alarm_dao.categoryalarminfo(1);
 			String alarm = choosealarm.getAlarm_content();
+			logger.info("alarm:"+alarm);
 			String chatroomname = userchatroomdto.getUserchat_subject();
+			logger.info("chatroomname:"+chatroomname);
 			AlamDTO insertalarm = new AlamDTO();
 			insertalarm.setAlarm_category_idx(1);
 			insertalarm.setUser_id(getuser_id);
@@ -228,10 +256,7 @@ public class AlarmService {
 		return chatroom;
 	}
 
-	//채팅방 참여신청
-	public void partialarm(String id) {
-		alarm_dao.partialarm(id);		
-	}
+
 
 	public int readalarm(int alarm_idx) {
 		int row = alarm_dao.readalarm(alarm_idx);

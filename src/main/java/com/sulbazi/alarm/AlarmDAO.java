@@ -27,8 +27,7 @@ public interface AlarmDAO {
 
 	UserChatroomDTO userchatroominfoidx(int chatroom_idx);
 
-	// 채팅방 참여신청 알림
-	int partialarm(String id);
+
 	
 	// 강퇴 알림
 	int kickuser(Map<String, String> params);
