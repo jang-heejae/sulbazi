@@ -392,6 +392,18 @@ public class StoreService {
 	}
 
 
+
+	public List<String> bookmarkuserlist(String store_id) {
+		logger.info(store_id);
+		int store_idx =store_dao.storeidx(store_id);
+		logger.info("매장 idx"+store_idx);
+		List<String> bookmarklist = store_dao.bookmarkuser(store_idx);
+		logger.info("북마크 유저 리스트:"+bookmarklist);
+		return bookmarklist;
+	}
+
+
+
 	//북마크 영역
 	public Map<String, Object> bookmarkCheck(Map<String, Object> params) {
 		
@@ -414,6 +426,7 @@ public class StoreService {
 		map.put("success",row );
 		return map;
 	}
+
 
 
 

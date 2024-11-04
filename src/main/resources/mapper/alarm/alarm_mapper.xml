@@ -6,10 +6,10 @@
 
 	<!-- 매장이름  -->
 	<select id="storename">
-		SELECT store_name FROM store WHERE store_idx={param1}
+		SELECT store_name FROM store WHERE store_idx=#{param1}
 	</select>
 
-	<!-- 즐겨찾기 정보 -->
+	<!-- 나의 즐겨찾기 정보 -->
 	<select id="bookmarkinfo" resultType="com.sulbazi.member.BookMarkDTO">
 		SELECT bookmark_idx, user_id, store_idx FROM bookmark
 			WHERE user_id = #{param1}
@@ -72,7 +72,7 @@
 
 	<!-- 읽음& 안읽음 -->
 	<select id="alarmreadornot" resultType="com.sulbazi.alarm.AlamDTO">
-		SELECT * FROM alarm WHERE alarm_read=#{param1}
+		SELECT * FROM alarm WHERE alarm_read=#{param1} AND user_id=#{param2};
 	</select>
 	
 	
@@ -104,8 +104,8 @@
 	  useGeneratedKeys="true"
 	  keyColumn="alarm_idx"
 	  keyProperty="alarm_idx" parameterType="com.sulbazi.alarm.AlamDTO">
-		INSERT INTO alarm(user_id, alarm_category_idx) 
-			VALUES(#{user_id}, #{alarm_category_idx})
+		INSERT INTO alarm(user_id, alarm_category_idx,alarm_subject) 
+			VALUES(#{user_id}, #{alarm_category_idx},#{alarm_subject})
 	</insert>
 	
 

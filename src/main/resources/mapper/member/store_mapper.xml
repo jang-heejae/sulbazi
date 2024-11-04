@@ -254,4 +254,10 @@
 		SELECT store_idx FROM store WHERE store_id=#{param1}
 	</select>
 	
+	
+	<!-- 북마크 알림 북마크 유저리스트 -->
+	<select id="bookmarkuser">
+		SELECT user_id FROM bookmark WHERE store_idx=#{param1}
+	</select>
+	
 </mapper>
