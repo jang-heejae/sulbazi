@@ -28,7 +28,6 @@ public class ChatRoomService {
 		return chatroom_dao.search(query);
 	}
 	
-	
 	/* 개인 채팅방 생성 */	
 	public int chatcreate(UserChatroomDTO userchatroomdto, Model model, String userId) {
 		
@@ -42,7 +41,8 @@ public class ChatRoomService {
 			model.addAttribute("msg", "방이 개설되었습니다.");
 			logger.info("방금 insert한 idx : "+idx);
 			
-			chatparti_dao.createparti(idx, userId);
+//			chatroom_dao.createuser(idx, userId);
+//			chatparti_dao.createparti(idx, userId);
 			
 		}		
 		return row;
@@ -83,6 +83,10 @@ public class ChatRoomService {
 	public List<UserChatroomDTO> roominfo(int idx) {
 		return chatroom_dao.roominfo(idx);
 	}
+	/* 현재 인원수 추가 */
+	public void roomin(int idx) {
+		chatroom_dao.roomin(idx);
+	}
 	/* 입장 가능 인원 수 */
 	public Integer current(int idx) {
 		return chatroom_dao.current(idx);
@@ -93,10 +97,20 @@ public class ChatRoomService {
 		return chatroom_dao.myroomlist(user_id);
 	}
 	
+	
+	
+	/* ************************  지역 채팅  *************************** */
+	
 	/* 지역 채팅방 리스트 */	
-	public List<UserChatroomDTO> localchatlist() {
+	public List<LocalChatroomDTO> localchatlist() {
 		return chatroom_dao.localchatlist();
 	}
+	
+	/* 지역 채팅방 정보 */
+	public List<LocalChatroomDTO> localroominfo(int idx) {
+		return chatroom_dao.localroominfo(idx);
+	}
+
 
 	
 

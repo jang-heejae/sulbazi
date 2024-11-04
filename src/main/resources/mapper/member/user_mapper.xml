@@ -45,8 +45,29 @@
 	<select id="overlay" resultType="int">
     	SELECT COUNT(user_nickname) FROM user WHERE user_nickname = #{param1}
 	</select>
+	<!-- user_id 기반 북마크 한 store_idx 뽑기 -->
 	<select id="userBookmark" parameterType="com.sulbazi.member.BookMarkDTO">
-		SELECT * FROM bookmark WHERE user_id = #{user_id}
+		SELECT store_idx FROM bookmark WHERE user_id = #{user_id} ORDER BY bookmark_date DESC
+	</select>
+	<!-- store 카테고리 뽑아오기 -->
+	<select id="storeOptName" parameterType="map" resultType="map">
+    SELECT 
+        b.store_idx,
+        co.opt_name
+    FROM 
+        bookmark b
+    JOIN 
+        store_category sc ON b.store_idx = sc.store_idx
+    JOIN 
+        category_opt co ON sc.opt_idx = co.opt_idx
+    WHERE 
+        b.user_id = #{user_id}
+    ORDER BY 
+        b.bookmark_date DESC
+</select>
+	<!-- user_id 가 작성한 리뷰 뽑기 -->
+	<select id="userReview" parameterType="com.sulbazi.review.ReviewDTO">
+		SELECT * FROM review WHERE user_id = #{user_id} ANd review_state = 1 ORDER BY review_date DESC
 	</select>
 	
 	
@@ -55,13 +76,17 @@
 	<!-- 채팅 신고 기능 -->
 	<!-- 신고한 횟수 -->
 	<update id="report">
-		UPDATE user SET user_reportno = user_reportno + 1 WHERE user_id = #{reporting_id}
+		UPDATE user SET user_reportno = #{reporting} WHERE user_id = #{reporting_id}
 	</update>
 	
 	<!-- 신고당한 횟수 -->
 	<update id="reported">
-		UPDATE user SET user_reportedcases = user_reportedcases + 1 WHERE user_id = #{reported_id}
+		UPDATE user SET user_reportedcases = #{reported} WHERE user_id = #{reported_id}
 	</update>
 	
+	<!-- 채팅방 주인(닉네임, 사진) -->
+	<select id="user" resultType="com.sulbazi.member.UserDTO">
+		SELECT user_nickname, user_photo FROM user WHERE user_id = #{user_id}
+	</select>
 	
 </mapper>

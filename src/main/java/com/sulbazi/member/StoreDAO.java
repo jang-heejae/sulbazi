@@ -39,8 +39,6 @@ public interface StoreDAO {
 
 	List<StoreMenuDTO> getStoreAlcohol(int idx);
 
-	int bookmarkCheckCount(Map<String, Object> map);
-
 	List<PhotoDTO> getStorePhotos(int idx);
 
 	int storeBookmarkCheck(int store_idx);
@@ -81,15 +79,21 @@ public interface StoreDAO {
 
 	List<StoreMenuDTO> storemenulist(int store_idx);
 
-	int getTPage(int cnt);
 
 	List<StoreMenuDTO> storealcholmenulist(int store_idx);
+
+	int getTPage(int cnt);
+
 
 	int menuupdate(String menu_name, String menu_price, String menu_idx);
 
 	int menuudelete(String menu_idx);
 
 	int menuinsert(StoreMenuDTO store_menu);
+
+	int bookmarkCheckCount(Map<String, Object> map);
+
+	int delBookmark(String loginId, String storeidx);
 
 
 

@@ -7,18 +7,19 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <title>고객센터</title>
 <style>
-	body {
+/* 	body {
         background-color: #26320B;
         color: #F2A100;
-        font-family: Arial, sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
         margin: 0;
-    }
+    } */
     .container {
-        width: 60%;
+    	margin: auto;
+    	margin-top:250;
+        width: 800;
         background-color: rgb(255, 140, 9);
         padding: 20px;
         border-radius: 10px;
@@ -27,9 +28,10 @@
     }
         .header {
             text-align: center;
-            font-size: 2em;
+            font-size: 3em;
             margin-bottom: 20px;
             color:#000;
+            font-weight: bold;
 
         }
         .back {
@@ -43,7 +45,7 @@
             text-align: center;
         }
         .customer-service .title {
-            font-size: 1.5em;
+            font-size: 36px;
             margin-bottom: 20px;
             color: #ffffff;
         }
@@ -51,14 +53,31 @@
             margin-bottom: 20px;
         }
         .form-group label {
-            display: block;
+/*             display: block; */
             margin-bottom: 10px;
             color: #ffffff;
         }
-        .form-group input[type="text"], .form-group textarea {
+        .form-group textarea {
             width: 90%;
             padding: 10px;
             border: 1px solid #ffffff;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+        
+        .form-group input[type="text"] {
+            width: 83%;
+            padding: 10px;
+            border: 1px solid #ffffff;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+
+
+		 .form-group input[type="file"] {
+            width: 93%;
+            padding: 10px;
+            border: 1px solid #0a1c06;
             border-radius: 4px;
             margin-bottom: 5px;
         }
@@ -69,10 +88,11 @@
             margin-top: 20px;
         }
         button {
-            padding: 10px 20px;
+            padding: 12px 23px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 20px; 
         }
         .actions .register {
             background-color: #FF6600;
@@ -85,19 +105,29 @@
         .table-container {
             margin-top: 20px;
             border-radius: 10px;
-            background-color: #fff;
+            max-height: 300px;
+            background-color: #0a1c06;
             padding: 20px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+             -ms-overflow-style: none;
         }
+        
+        .table-container::-webkit-scrollbar { 
+    		display: none;          /* Chrome, Safari에서 스크롤바 숨김 */
+		}
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 0 auto;
+
         }
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: center;
+            border-color:#0a1c06;
+            color: white;
         }
         th {
             background-color: #FF6600;
@@ -107,12 +137,32 @@
             text-align: center;
             margin-top: 20px;
         }
+        div.include {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		
+		label{
+			font-size: 24;
+		}
+		.white-link {
+		    color: white;
+		}
+		div.include {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 </style>
 </head>
 <body>
+<div class="include" >
+    <jsp:include page="../main/main.jsp"/>
+</div >
 	<form action="userinqueryWrite.do" method="post" enctype="multipart/form-data">
     	<div class="container">
-        	<div class="header">고객센터</div>
+        	<div class="header">고객센터<i class='fas fa-headphones' style='font-size:48px'></i></div>
         	<div class="back">
             	<div class="customer-service">
                 	<div class="title">내 문의 사항</div>
@@ -129,24 +179,24 @@
                 	</div>
             	</div>
         	</div>
+	        <div class="table-container">
+	            <table>
+	                <thead>
+	                    <tr>
+	                        <th>문의자ID</th>
+	                        <th>문의제목</th>
+	                        <th>문의 날짜</th>
+	                        <th>처리상태</th>
+	                        <th>처리자</th>
+	                    </tr>
+	                </thead>
+	                <tbody id="list">
+	
+	                </tbody>
+	            </table>
+	        </div>
     	</div>
 	</form>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>문의자ID</th>
-                        <th>문의제목</th>
-                        <th>문의 날짜</th>
-                        <th>처리상태</th>
-                        <th>처리자</th>
-                    </tr>
-                </thead>
-                <tbody id="list">
-
-                </tbody>
-            </table>
-        </div>
         <div class="pagination"></div>
 </body>
 <script>
@@ -201,7 +251,7 @@ addquery(); // 리스트 업데이트 함수 호출
             console.log(adminName);
             content += '<tr>';
             content += '<td>' + loginId + '</td>';
-            content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '">' + item.inquery_subject + '</a></td>'; // 상세보기 링크 추가
+            content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '" class="white-link">' + item.inquery_subject + '</a></td>'; // 상세보기 링크 추가
             content += '<td>' + item.inquery_date + '</td>';
             content += '<td>' + state + '</td>';
             content += '<td>' + adminName + '</td>'; // 관리자 이름 출력

@@ -84,6 +84,11 @@
 	    AND chatroom_category = 'userchat'
 	</delete>
 	
+	<!-- 참여 신청 취소 -->
+	<delete id="cancelparti">
+		DELETE FROM parti WHERE user_id = #{user_id} AND chatroom_idx = #{chatroom_idx} AND chatroom_category = 'userchat'
+	</delete>
+	
 	
 	
 	
@@ -122,13 +127,7 @@
 	      AND chatroom_idx = #{chatroom_idx} 
 	      AND chatroom_category = 'localchat'
 	</update>
-	
-	
-	<!-- 방에 참여중인 사용자 - 지역 -->
-	<!-- <select id="localuserlist" resultType="com.sulbazi.chat.PartiDTO">
-		SELECT user_id FROM parti WHERE chatroom_idx = #{idx} AND parti_state = 1 AND chatroom_category = 'localchat'
-	</select> -->
-	
+
 	<!-- 지역 채팅방 참여자 리스트 -->
 	<select id="localuserlistajax" parameterType="int" resultType="map">
 		SELECT p.user_id, u.user_nickname, u.user_photo 
@@ -138,7 +137,7 @@
 			AND p.parti_state = 1
 			AND chatroom_category = 'localchat'
 	</select>
-	<!-- 개인 채팅방 참여자 리스트 -->
+
 	
 	
 	

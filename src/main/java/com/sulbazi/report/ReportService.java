@@ -28,17 +28,26 @@ public class ReportService {
 	@Autowired UserDAO user_dao;
 	Logger log = LoggerFactory.getLogger(getClass());
 	
- 
-	 public Map<String, Object> reportList(int page, int cnt) { 
-		 int limit = cnt;
-		 int offset = (page-1) * cnt;
-		 int totalPages = report_dao.allCount(cnt);
-	   
-		 Map<String, Object> map = new HashMap<String, Object>();
-		 map.put("totalPages", totalPages);
-		 map.put("list", report_dao.reportList(limit, offset));
-		 return map;
-	 }
+	// 신고목록 페이지네이션 + 필터링
+	public Map<String, Object> reportList(int page, int cnt, String reportState, String reportCategory) {
+	    int limit = cnt;
+	    int offset = (page - 1) * cnt;
+
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("limit", limit);
+	    params.put("offset", offset);
+	    params.put("reportState", reportState);
+	    params.put("reportCategory", reportCategory);
+
+	    int totalReports = report_dao.countReports(params);
+	    int totalPages = (int) Math.ceil((double) totalReports / cnt);
+
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("totalPages", totalPages);
+	    map.put("list", report_dao.getReports(params));
+
+	    return map;
+	}
 
 	public ReportDTO reportDetail(String report_idx) {
 		return report_dao.reportDetail(report_idx);
@@ -88,7 +97,8 @@ public class ReportService {
 	    log.info("pro_write service revoke_idx: " + revokeIdx);
 	    return pro_dto;
 	}
-
+	
+	// 작성한 관리자 답변 히스토리 쌓기
 	public Map<String, Object> process(int report_idx) { 
 	    // ProcessDTO 가져오기
 	    List<ProcessDTO> processList = report_dao.getProcessesByReportIdx(report_idx);
@@ -126,15 +136,6 @@ public class ReportService {
 	    return map; 
 	}
 
-
-	public List<ReportDTO> getAllReports() {
-		return report_dao.getAllReports();
-	}
-
-	public List<ReportDTO> getReportsByState(int state) {
-		return report_dao.getReportsByState(state);
-	}
-
 	
 	
 	
@@ -143,10 +144,26 @@ public class ReportService {
 	@Transactional
 	public void usermsgreport(String reported_id, String reporting_id, String report_category, int reported_idx, String report_content) {
 		int row = report_dao.usermsgreport(reported_id, reporting_id, report_category, reported_idx, report_content);
+		
 		if(row>0) {
-			user_dao.report(reporting_id);
-			user_dao.reported(reported_id);
+			// 신고한사람
+			int reporting = report_dao.reportingcount(reporting_id);
+			user_dao.report(reporting_id, reporting);
+			
+			// 신고 받은사람
+			int reported = report_dao.reportedcount(reported_id);
+			user_dao.reported(reported_id, reported);
+			
 		}
 	}
+	//리뷰 신고
+	public int reportReview(Map<String, String> params) {
+		int row = report_dao.reportReview(params);
+		//유저 테이블 신고횟수 업데이트
+		int dao = report_dao.userReportedCount(params);
+		
+		return row;
+	}
+
 
 }

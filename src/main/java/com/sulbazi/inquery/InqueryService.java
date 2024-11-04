@@ -89,30 +89,87 @@ public class InqueryService {
 	    return userinquerylist;
 	}
 	
-
-	public List<HashMap<String, Object>> admininquerylist() {
-		return inquery_dao.admininquerylist();
+	//관리자 문의 리스트
+	public Map<String, Object> admininquerylist(int page, int cnt) {
+		 int limit = cnt;
+		 int offset = (page-1) * cnt;
+		 int inquerytotalPages = inquery_dao.inqueryCount(cnt);
+		 
+		 Map<String, Object> map = new HashMap<String, Object>();
+		 map.put("inquerytotalPages", inquerytotalPages);
+		 map.put("list", inquery_dao.admininquerylist(limit, offset));
+		return map;
 	}
 
-	public List<HashMap<String, Object>> inqueryfiltering(boolean bool) {
-		return inquery_dao.inqueryfiltering(bool);
+	
+	//관리자 문의 필터링
+	public Map<String, Object> inqueryfiltering(Map<String, String> params) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<HashMap<String, Object>>  inquerylist = null;
+		int cnt = Integer.parseInt(params.get("cnt"));
+		int limit = cnt;
+		int page = Integer.parseInt(params.get("page"));
+		int offset = (page-1) * cnt;
+		int inquerytotalPages = 0;
+		if(!params.get("inquerystate").equals("all")) {
+			boolean bool=false;
+			if(params.get("inquerystate").equals("false")) {
+				bool = false;
+				inquerylist=inquery_dao.inqueryfiltering(bool,limit, offset);				
+				inquerytotalPages=inquery_dao.inqueryfilteringCount(cnt,bool);
+			} else {
+				bool = true;
+				inquerylist=inquery_dao.inqueryfiltering(bool,limit, offset);
+				inquerytotalPages=inquery_dao.inqueryfilteringCount(cnt,bool);
+			}
+		}else if(params.get("inquerystate").equals("all")) {
+			inquerylist=inquery_dao.inqueryfilteringall(limit, offset);
+			inquerytotalPages=inquery_dao.inqueryfilteringallCount(cnt);
+		}
+		 map.put("inquerytotalPages", inquerytotalPages);
+		 map.put("list", inquerylist);
+		return map;
 	}
 
-	public List<HashMap<String, Object>> inquerysearch(Map<String, String> params) {
+
+	//관리자 문의 검색
+	public Map<String, Object> inquerysearch(Map<String, String> params) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> param = new HashMap<String, Object>();
 		logger.info("params: {}",params);
 		InqueryDTO dto = new InqueryDTO();
 		dto.setId_write(params.get("id_write"));
-		boolean bool=false;
-		if(params.get("inquery_state").equals("false")) {
-			bool = false;
-			dto.setInquery_state(false);
-		} else {
-			bool = true;
-			dto.setInquery_state(true);
+		String state = params.get("inquery_state");
+		List<HashMap<String, Object>>  inquerylist = null;
+		int cnt = Integer.parseInt(params.get("cnt"));
+		int limit = cnt;
+		int page = Integer.parseInt(params.get("page"));
+		int offset = (page-1) * cnt;
+		int inquerytotalPages = 0;
+		if(!state.equals("all")) {			
+			if(state.equals("false")) {
+				dto.setInquery_state(false);
+			} else if(state.equals("true")){
+				dto.setInquery_state(true);
+			}
+			param.put("imqueryDTO", dto);
+			param.put("limit", limit);
+			param.put("offset", offset);
+			param.put("cnt", cnt);
+			inquerylist = inquery_dao.inquerysearch(param);
+			inquerytotalPages=inquery_dao.inquerysearchCount(param);
+		}else {
+			inquerylist = inquery_dao.inqueryallsearch(params.get("id_write"),limit, offset);
+			inquerytotalPages=inquery_dao.inquerysearchallCount(cnt, params.get("id_write"));
 		}
-		return inquery_dao.inquerysearch(dto);
+		 map.put("inquerytotalPages", inquerytotalPages);
+		 map.put("list", inquerylist);
+		return map;
+
 	}
 
+	
+	
 	public InqueryDTO userinquerydetail(int inqueryIdx) {
 		return inquery_dao.userinquerydetail(inqueryIdx);
 	}
@@ -140,12 +197,6 @@ public class InqueryService {
 		inquery_dao.inquerystateupdate(inquery_idx);
 	}
 
-	
-	
-	
-	
-
-	
 	
 	
 }

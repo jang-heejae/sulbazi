@@ -77,28 +77,19 @@ public class InqueryController {
 	//관리자 문의 글 리스트
 	@GetMapping(value="/inqueryList.do")
 	@ResponseBody
-	public Map<String, Object> admininquerylist(Model model, HttpSession session) {
+	public Map<String, Object> admininquerylist(@RequestParam String page, @RequestParam String cnt) {
 		logger.info("문의리스트 관리자컨트롤러");
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<HashMap<String, Object>>  inquerylist = inquery_ser.admininquerylist();
-		map.put("inquerylist", inquerylist);
-		return map;
+		int page_ = Integer.parseInt(page);
+		int cnt_ = Integer.parseInt(cnt);
+		return inquery_ser.admininquerylist(page_,cnt_);
 	}
 	
 	//문의 글 리스트 필터링
 	@GetMapping(value="/inqueryFiltering.ajax")
 	@ResponseBody
-	public Map<String, Object> inqueryfiltering(String inquerystate) {
-		boolean bool=false;
-		if(inquerystate.equals("false")) {
-			bool = false;
-		} else {
-			bool = true;
-		}
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<HashMap<String, Object>>  inquerylist = inquery_ser.inqueryfiltering(bool);
-		map.put("inquerylist", inquerylist);
-		return map;
+	public Map<String, Object> inqueryfiltering(@RequestParam Map<String, String> params) {
+		logger.info("params: {}",params);
+		return inquery_ser.inqueryfiltering(params);
 	}
 	
 	//문의 글 사용자 id 검색
@@ -106,10 +97,14 @@ public class InqueryController {
 	@ResponseBody
 	public Map<String, Object> inquerysearch(@RequestParam Map<String, String> params) {
 		logger.info("params: {}",params);
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<HashMap<String, Object>>  inquerylist = inquery_ser.inquerysearch(params);
-		map.put("inquerylist", inquerylist);
-		return map;
+		/*
+		 * Map<String, Object> map = new HashMap<String, Object>(); List<HashMap<String,
+		 * Object>> inquerylist = inquery_ser.inquerysearch(params); int page_ =
+		 * Integer.parseInt(params.get("page")); int cnt_ =
+		 * Integer.parseInt(params.get("cnt"));
+		 * inquery_ser.inquerysearchpaging(page_,cnt_);
+		 */
+		return inquery_ser.inquerysearch(params);
 	}
 	
 	//사용자 문의 글 상세페이지 이동

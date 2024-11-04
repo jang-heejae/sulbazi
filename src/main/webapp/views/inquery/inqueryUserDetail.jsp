@@ -15,11 +15,19 @@
         }
         .container {
             max-width: 800px;
-            margin: 0 auto;
-            background-color: #E79A32;
+            max-height: 800px;
+            margin:250 auto;
+            background-color: rgb(255, 140, 9);
             padding: 20px;
             border-radius: 10px;
+            overflow-y: auto;
+             -ms-overflow-style: none;
+            margin-bottom: 100;
         }
+        
+        .container::-webkit-scrollbar { 
+    		display: none;          /* Chrome, Safari에서 스크롤바 숨김 */
+		}
         .section {
             background-color: #00200e;
             padding: 15px;
@@ -29,9 +37,10 @@
         }
         .header {
             text-align: center;
-            font-size: 24px;
+            font-size: 45px;
             font-weight: bold;
             color:#000000;
+            padding-botton: 30;
         }
         .form-group {
             margin-bottom: 15px;
@@ -57,17 +66,28 @@
             padding: 10px;
             border-radius: 5px;
             color: #000000;
+            height:80;
         }
 		img {
     		max-width: 100%; /* 이미지의 최대 너비를 부모 요소의 100%로 설정 */
     		height: auto;   
     		max-height: 200px; 
 		}
+		
+div.include {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
     </style>
 </head>
 <body>
+<div class="include">
+    <jsp:include page="../main/main.jsp"/>
+</div >
     <div class="container">
-        <div class="header">고객센터</div>
+        <div class="header">고객센터 <i class='fas fa-headphones' style='font-size:48px'></i></div>
         <div class="section">
             <form action="submitInquiry.jsp" method="post">
                 <div class="form-group flex-group">
@@ -117,6 +137,7 @@
                     				<div class="form-group">
                         				<label class="form-label">답변 내용</label>
                         				<div class="admin-response">${inqueryanswer.answer_content}</div>
+                        				<br><hr/>
                     				</div>
                 				</c:when>
             				</c:choose>

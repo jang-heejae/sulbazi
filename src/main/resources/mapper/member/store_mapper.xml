@@ -55,7 +55,7 @@
 		select * from board where store_idx=#{param1} ORDER BY board_date DESC LIMIT 1
 	</select>
 	
-	<insert id="bookmarkCheck" parameterType="map">
+	<insert id="bookmarkCheck" >
 		insert into bookmark (user_id,store_idx)
 			values(#{user_id},#{store_idx})
 	</insert>
@@ -68,7 +68,7 @@
 		select count(store_idx) from bookmark where store_idx=#{param1}
 	</select>
 	
-	<delete id="delBookmark" parameterType="map">
+	<delete id="delBookmark">
 		DELETE FROM bookmark WHERE user_id = #{user_id} and store_idx = #{store_idx};
 	</delete>
 	
@@ -107,6 +107,7 @@
         WHERE store_latitude BETWEEN #{minLat} AND #{maxLat}
           AND store_longitude BETWEEN #{minLng} AND #{maxLng}
     </select>
+    
     <!-- 매장리스트들 대표사진들 -->
 	<select id="findPhotosForStores" parameterType="list" resultType="com.sulbazi.photo.PhotoDTO">
 	    SELECT * FROM photo 
@@ -196,7 +197,8 @@
 
 
 
- 	<!-- 매장 마이페이지  정보 수정 -->
+
+
 
 	<!-- 매장 마이페이지  정보 수정 -->
 	<update id="mystoreupdate" parameterType="com.sulbazi.member.StoreDTO">
@@ -205,32 +207,24 @@
 	</update>
 
 
-
-
-
-
-
-
-
-	
 	<!-- 매장 마이페이지  내 댓글 보기 -->
 	
 	
 	
-	
-	<!-- 매장 마이페이지  메뉴 정보 보기 -->
+	<!-- 매장 마이페이지  안주 메뉴 정보 보기 -->
 	<select id="storemenulist" resultType="com.sulbazi.member.StoreMenuDTO">
-      	SELECT menu_idx,menu_name,menu_price  
-         	FROM store_menu WHERE store_idx=#{param1} AND menu_category='안주'
-   	</select>
+		SELECT menu_idx,menu_name,menu_price  
+			FROM store_menu WHERE store_idx=#{param1} AND menu_category='안주'
+	</select>
+	
+	<!-- 매장 마이페이지  안주 메뉴 정보 보기 -->
+	<select id="storealcholmenulist" resultType="com.sulbazi.member.StoreMenuDTO">
+		SELECT menu_idx,menu_name,menu_price 
+			FROM store_menu WHERE store_idx=#{param1} AND menu_category='술'
+	</select>
+
    
-   <!-- 매장 마이페이지  술 메뉴 정보 보기 -->
-   	<select id="storealcholmenulist" resultType="com.sulbazi.member.StoreMenuDTO">
-      	SELECT menu_idx,menu_name,menu_price 
-         	FROM store_menu WHERE store_idx=#{param1} AND menu_category='술'
-   	</select>
-	
-	
+
 	<!-- 매장 마이페이지  메뉴 정보 수정 -->
 	<update id="menuupdate">
 		UPDATE store_menu SET menu_name=#{param1},menu_price=#{param2}

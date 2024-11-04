@@ -10,6 +10,7 @@ import com.sulbazi.member.UserDTO;
 
 @Mapper
 public interface AdminDAO {
+	
 	int adminAdd(Map<String, String> param);
 
 	List<AdminDTO> adminList();

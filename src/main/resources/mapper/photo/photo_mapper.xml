@@ -35,6 +35,7 @@
    			 	ORDER BY photo_idx DESC  <!-- index를 내림차순으로 정렬 -->
     			LIMIT 1
 	</select>
+	
 	<select id="mainStore" 
 		resultType="com.sulbazi.photo.PhotoDTO">
     		SELECT new_filename 
@@ -42,6 +43,7 @@
     			WHERE photo_category_idx = 1 
     			AND photo_folder_idx = #{store_idx} ORDER BY photo_idx DESC LIMIT 1
 	</select>
+	
 	<!-- 매장 내외부사진 -->
 	<select id="mystorephoto" 
 		resultType="com.sulbazi.photo.PhotoDTO">
@@ -52,20 +54,32 @@
     		LIMIT 5
 	</select>
 	
+
+	
+	<!-- 매장 메뉴 사진 -->
+	<select id="storemenuphoto" resultType="com.sulbazi.photo.PhotoDTO">
+		SELECT new_filename FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=2
+	</select>
+	
+	<!-- 매장 술메뉴 사진 -->
+	<select id="alcholmenuphoto" resultType="com.sulbazi.photo.PhotoDTO">
+		SELECT new_filename FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=6
+	</select>
+	
+	
+	
+	<insert id="storephotoupdate">
+		INSERT INTO photo(photo_category_idx, new_filename, photo_folder_idx)
+			VALUES(#{param1},#{param2},#{param3})
+	</insert>
+
 	<insert id="storephotoinsert" parameterType="com.sulbazi.photo.PhotoDTO">
 		INSERT INTO photo(photo_category_idx,new_filename,photo_folder_idx)
 			VALUES(#{photo_category_idx},#{new_filename},#{photo_folder_idx})
+
 	</insert>
 
-	<!-- 매장 메뉴 사진 -->
-    <select id="storemenuphoto" resultType="com.sulbazi.photo.PhotoDTO">
-      	SELECT new_filename FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=2
-   	</select>
    
-   	<!-- 매장 술메뉴 사진 -->
-   	<select id="alcholmenuphoto" resultType="com.sulbazi.photo.PhotoDTO">
-      	SELECT new_filename FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=6
-   	</select>
 	
 	<!-- 매장 메뉴 지우기 -->
 	<delete id="menuphotodelete">
@@ -76,6 +90,13 @@
 		DELETE FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=6
 	</delete>
 	
+
+	<insert id="menuphotoinsert">
+    	INSERT INTO photo(photo_category_idx, new_filename, photo_folder_idx)
+    		VALUES(#{photo_category_idx}, #{new_filename}, #{photo_folder_idx})
+	</insert>
+
+
 	
 	<select id="detail1" resultType="com.sulbazi.photo.PhotoDTO">
 	    SELECT * FROM photo
@@ -86,6 +107,13 @@
 		SELECT * FROM photo
 		 WHERE photo_folder_idx = #{store_idx} AND photo_category_idx = #{photo_category_idx};
 	</select>
+	<!-- 리뷰 포토 업데이트를 위한 삭제 -->
+	<delete id="reviewPhotoDel" parameterType="map">
+	    DELETE FROM photo 
+	    WHERE photo_category_idx = 3
+	    AND photo_folder_idx = #{reviewIdx} 
+	    AND new_filename = #{photo}
+	</delete>
 
 </mapper>
 

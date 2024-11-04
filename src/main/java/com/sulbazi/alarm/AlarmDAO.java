@@ -4,9 +4,11 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.sulbazi.board.BoardDTO;
 import com.sulbazi.chat.PartiDTO;
 import com.sulbazi.chat.UserChatroomDTO;
 import com.sulbazi.inquery.InqueryDTO;
+import com.sulbazi.member.BookMarkDTO;
 
 @Mapper
 public interface AlarmDAO {
@@ -32,7 +34,13 @@ public interface AlarmDAO {
 
 	int alarminsert(AlamDTO insertalarm);
 
-	int readalarm(int alarm_id);
+	int readalarm(int alarm_idx);
+
+	BoardDTO storeboardinfo();
+
+	BookMarkDTO bookmarkinfo(String user_id);
+
+	String storename(int storeidx);
 
 }
 

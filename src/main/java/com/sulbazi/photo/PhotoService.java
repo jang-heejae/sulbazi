@@ -5,7 +5,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
+
+import java.util.HashMap;
+
+
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -18,6 +24,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+
+
+import com.sulbazi.category.StoreCategoryDTO;
+import com.sulbazi.inquery.InqueryDTO;
 
 import com.sulbazi.member.StoreDAO;
 import com.sulbazi.member.StoreMenuDTO;
@@ -325,6 +336,7 @@ public class PhotoService {
 			return photo;
 		}
 
+
 		public void updateajax(MultipartFile[] file, int store_idxx, int i) throws IOException {
 			PhotoDTO photoDTO = new PhotoDTO();
 			String photo = storeFile(file);
@@ -334,6 +346,11 @@ public class PhotoService {
 			photoDTO.setPhoto_category_idx(i);
 			photo_dao.updateajax(photoDTO);
 		}
+
+		public int reviewPhotoDel(Map<String, String> params) {
+			return photo_dao.reviewPhotoDel(params);
+		}
+
 
 
 

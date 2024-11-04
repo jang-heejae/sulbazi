@@ -20,6 +20,10 @@ public interface PhotoDAO {
 
 	List<PhotoDTO> mystorephoto(int store_idx);
 
+	List<PhotoDTO> storemenualcholphoto(int photofolderidx);
+
+	int storephotoupdate(int photocategory, String newFileName, int photofolderidx);
+
 	int storephotoinsert(int photo_category_idx, String new_filename, int photo_folder_idx);
 	   
 	List<PhotoDTO> alcholmenuphoto(int photofolderidx);
@@ -39,6 +43,9 @@ public interface PhotoDAO {
 	void updateajax(PhotoDTO photoDTO);
 
 	PhotoDTO mainStore(int store_idx);
+
+	int reviewPhotoDel(Map<String, String> params);
+
 
 
 }

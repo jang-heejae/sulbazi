@@ -114,51 +114,67 @@
 		
 		// 신고 할거야
 		$(document).on('click', '.reportuser', function() {
-				
-			var display = $('.reportuserform, .reportcancel').css('display');
-			if (display == 'none'){
-		             $('.reportuserform').show();
-		             $('.reportuserform').css({'display':'flex'});
-		         }else{
-		             $('.reportuserform').hide();
-		         }
 			
-			$('.reportedit').click(function(){
+			var reporting_id = '${sessionScope.loginId}';
+			var report_category = '지역 메시지';
+			
+		    console.log("아작스 신고 당할 사람 "+reported_id);
+		    console.log("아작스 신고 할 사람 "+reporting_id);
+			console.log("아작스 신고할 메세지 번호 "+reported_idx);
+			console.log("아작스 신고할사용자 닉 :"+reported_nick);
+			
+			if (confirm("신고 할거야?")) {	
+				$('.popup').remove();
+				var display = $('.reportuserform').css('display');
+				if (display == 'none'){
+			        $('.reportuserform').show();
+					$('.reportuserform').css({'display':'flex'});
+			    }else{
+			    	alert("신고창이 열려있습니다.");
+		        	location.reload();
+		        }
 				
-				var reporting_id = '${sessionScope.loginId}';
-				var report_content = $('textarea[name="report_content"]').val();
-				var report_category = '지역 메시지';
+				$('.reportcancel').on('click', function(){
+					$('.reportuserform').hide();
+				});
 				
-			    console.log("아작스 신고 당할 사람 "+reported_id);
-			    console.log("아작스 신고 할 사람 "+reporting_id);
-				console.log("아작스 신고할 메세지 번호 "+reported_idx);
-				console.log("신고 내용" + report_content);
-				console.log("아작스 신고할사용자 닉 :"+reported_nick);
 				
-			    $.ajax({
-			        url: '/SULBAZI/localreportuser.ajax',
-			        type: 'POST',
-			        data: {
-			        	reported_id: reported_id,
-			        	reporting_id: reporting_id,
-			        	report_category: report_category,
-			        	reported_idx: reported_idx,
-			        	report_content: report_content		        	
-			        },
-			        success: function(response) {
-			            
-			            alert(reported_nick +' 신고 완료');
-			            $('.reportuserform').hide();
-			            $('.popup').remove();
-			            loadMessages();
-			        },
-			        error: function() {
-			            alert(reported_nick +'신고 실패');
+				$('.reportedit').click(function(){
+					var report_content = $('textarea[name="report_content"]').val();
+					console.log("신고 내용" + report_content);
+					
+					if (!report_content.trim()) {
+			            alert("20자 이내로 신고 내용을 입력하세요.");
+			            return;
 			        }
-			    });
-				
-			});
-			
+					
+				    $.ajax({
+				        url: '/SULBAZI/localreportuser.ajax',
+				        type: 'POST',
+				        data: {
+				        	reported_id: reported_id,
+				        	reporting_id: reporting_id,
+				        	report_category: report_category,
+				        	reported_idx: reported_idx,
+				        	report_content: report_content		        	
+				        },
+				        success: function(response) {
+				            
+				            alert(reported_nick +' 신고 완료');
+				            $('textarea[name="report_content"]').val('');
+				            $('.reportuserform').hide();
+				            loadMessages();
+				        },
+				        error: function() {
+				            alert(reported_nick +'신고 실패');
+				        }
+				    });
+					
+				});
+			}else{
+				alert("취소되었습니다.");
+				$('.popup').remove();
+			}
 		});
 
 		// 메세지 전송
@@ -196,7 +212,7 @@
 		
 	    // 5초마다 새 메세지를 불러오기
 	    var localchat_idx = ${roomidx};
-	    setInterval(loadMessages, 3000);
+	    setInterval(loadMessages, 3000000);
 
 	    function loadMessages() {
 	        $.ajax({
@@ -308,7 +324,7 @@ a{
     justify-content: center;
     width: 200px;
     height: 46px;
-    font-size: 35px;
+    font-size: 32px;
 }
 .room{
     left: 10px;
@@ -318,8 +334,8 @@ a{
     margin: 10px;
     width: 180px;
     height: 45px;
-    background-color: aliceblue;
-    border-radius: 10px;
+    background-color: rgb(255, 140, 9);
+    border-radius: 50px;
 }
 .roominfo{
 	font-size: x-large;
@@ -330,27 +346,34 @@ a{
     /* 채팅방 */
     .chatroom{
 	    width: 780px;
-	    height: 650px;;
-	    background-color: lightseagreen;
+	    height: 650px;
 	}
     .roomtitle{
         width: 780px;
         height: 50px;
-        background-color: bisque;
+        background-color: lightgray;
+        display: flex;
+        align-items: center;
+    	justify-content: center;
+    }
+    .title{
+    	font-size: xx-large;
+    }
+    .total{
+    	
     }
     .cont2{
         display: flex;
         width: 780px;
         height: 600px;
-        background-color: darkkhaki;
     }
     .userlist{
         display: flex;
 	    justify-content: space-between;
 	    width: 200px;
 	    height: 600px;
-	    background-color: darkcyan;
 	    flex-direction: column;
+	    background-color: white;
     }
     .room2{
         left: 10px;
@@ -361,17 +384,21 @@ a{
         width: 180px;
         height: 50px;
         background-color: aliceblue;
-        border-radius: 10px;
+        border-radius: 50px;
+        border: 1px solid black;
+        background-color: lightgray;
     }
     .room2 img{
     	width: 40px;
 	    height: 40px;
 	    border-radius: 25px;
+	    border: 1px solid black;
     }
     .roomout{
 	    display: flex;
 	    align-items: center;
 		justify-content: space-between;
+		background-color: lightgray;
     }
     .roomoutbtn{
     	display: flex;
@@ -402,10 +429,10 @@ a{
         background-color: darkolivegreen;
     }
     .chatlist{
-        background-color: thistle;
         width: 100%;
         height: 550px;
         overflow-y: auto;
+        background-color: lightblue;
     }
     .user{
     	display: flex;
@@ -453,8 +480,7 @@ a{
 </head>
 <body>
 	<jsp:include page="../main/main.jsp"/>
-	<h2>${loginId}님의 ${roomidx}번 채팅방</h2>
-	<a href="localchatlist.go">뒤로가기</a>
+	<h2 style="display:none;">${loginId}님의 ${roomidx}번 채팅방</h2>
     <div class="main">
         <div class="section">
             <div class="content">
@@ -463,9 +489,12 @@ a{
                         <div class="cont">
                             <div class="txt">지역 대화방</div>
                             <c:forEach items="${list}" var="localchat">
-	                            <div class="room">
-	                                <div class="roominfo">${localchat.local_category}</div>
-	                            </div>
+                            	<form action="localchatroom.go?idx=${localchat.localchat_idx}" method="post">
+		                            <div class="room">
+		                                <div class="roominfo">${localchat.local_category} 대화 방</div>
+		                                <input type="hidden" name="localchat_idx" value="${localchat.localchat_idx}">
+		                            </div>
+	                            </form>
                             </c:forEach>
                         </div>
                     </div>
@@ -473,7 +502,12 @@ a{
             </div>
             <div class="chatroom">
             	<div class="chatroom">
-                <div class="roomtitle">${subject}${userNicknames}</div>
+                <div class="roomtitle">
+                	<c:forEach items="${roominfo}" var="roominfo">
+                    <div class="title">${roominfo.local_category} 대화 방</div>
+               		</c:forEach>
+               		<%-- <div class="total">현재 인원수 : ${localtotal}</div> --%>
+                </div>
                 <div class="cont2">
                     <div class="userlist">
                     	<div class="ajax">
@@ -518,25 +552,49 @@ a{
     </div>
 </body>
 <script>
+	
+	// 방 이동 할거양
+	$('.room').click(function(){
+		if (confirm("방 이동할거야?")) {
+			$(this).closest('form').submit();
+			var chatroom_idx = '${roomidx}';
+			console.log(chatroom_idx);
+			$.ajax({
+				url: '/SULBAZI/localroomtrans.ajax',
+				type: 'POST',
+				data: {chatroom_idx: chatroom_idx},
+				success: function(response) {
+					alert("잘가~");
+				 }, error: function(){
+	                 alert('이동 실패.');
+	             }
+			});
+		}else{
+			alert("취소되었습니다.");
+		}
+	});
 
 	// 방 나가기 클릭 시 parti_state를 0으로 변경
-	
 	$('.roomout').click(function() {
-		var chatroom_idx = '${roomidx}';
-		
-		$.ajax({
-			url: '/SULBAZI/localroomout.ajax',
-			type: 'POST',
-			data: {chatroom_idx: chatroom_idx},
-			success: function(response) {
-				alert("잘가고~");
-				window.location.href = "localchatlist.go";  // 로컬 채팅방 리스트로 이동
-			},
-			error: function(error) {
-				console.error("에러 발생:", error);
-				alert("방 나가기에 실패했습니다.");
-			}
-		});
+		if (confirm("방 진짜 나가?")) {
+			var chatroom_idx = '${roomidx}';
+			
+			$.ajax({
+				url: '/SULBAZI/localroomout.ajax',
+				type: 'POST',
+				data: {chatroom_idx: chatroom_idx},
+				success: function(response) {
+					alert("잘가고~");
+					window.location.href = "localchatlist.go";  // 로컬 채팅방 리스트로 이동
+				},
+				error: function(error) {
+					console.error("에러 발생:", error);
+					alert("방 나가기에 실패했습니다.");
+				}
+			});
+		}else{
+			alert("취소되었습니다.");
+		}
 	});
 	
 	// 채팅 입력창 포커스되면 placeholder 제거

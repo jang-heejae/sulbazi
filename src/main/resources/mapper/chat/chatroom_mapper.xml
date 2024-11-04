@@ -6,7 +6,6 @@
 <mapper namespace="com.sulbazi.chat.ChatRoomDAO">
 
 	<!-- 개인 채팅방 리스트 -->
-	
 	<select id="chatlist" resultType="com.sulbazi.chat.UserChatroomDTO">
 		SELECT 
 	        userchat_idx,
@@ -23,7 +22,6 @@
 	</select>
 	
 	<!-- 개인 채팅방 리스트 - 검색결과 -->
-	
 	<select id="search" parameterType="String" resultType="com.sulbazi.chat.UserChatroomDTO">
 		SELECT 
 			userchat_idx,
@@ -40,14 +38,13 @@
 	</select>
 	
 	<!-- 개인 채팅방 생성 -->
-	
 	<insert id="chatcreate" 
 		useGeneratedKeys="true"
 		keyColumn="userchat_idx"
 		keyProperty="userchat_idx"
 		parameterType="com.sulbazi.chat.UserChatroomDTO">
-		INSERT INTO userchat(user_id, userchat_subject, current_people)
-		SELECT #{user_id}, #{userchat_subject}, #{current_people} FROM DUAL
+		INSERT INTO userchat(user_id, userchat_subject, current_people, max_people)
+		SELECT #{user_id}, #{userchat_subject}, 1, #{max_people} FROM DUAL
 		WHERE NOT EXISTS (
 	        SELECT 1
 	        FROM userchat
@@ -60,8 +57,8 @@
 	<update id="updatechatroom">
 		UPDATE userchat
 	    SET userchat_subject = #{userchat_subject}, 
-	        current_people = #{current_people}, 
-	        userchat_state = #{userchat_state}
+	        userchat_state = #{userchat_state},
+	        max_people = #{max_people}, 
     	WHERE userchat_idx = #{userchat_idx}
 	</update>
 
@@ -77,10 +74,9 @@
 		UPDATE userchat SET userchat_state = 0 WHERE userchat_idx = #{userchat_idx}
 	</update>
 
-	
 	<!-- 내가 참여중인 채팅방 목록 -->
 	<select id="myroomlist" resultType="com.sulbazi.chat.UserChatroomDTO">
-		SELECT uc.userchat_subject, uc.user_id 
+		SELECT uc.userchat_idx, uc.userchat_subject, uc.current_people, uc.max_people
 		FROM userchat uc
 		WHERE uc.userchat_idx IN (
 		    SELECT p.chatroom_idx AS userchat_idx 
@@ -96,16 +92,23 @@
 		SELECT * FROM userchat WHERE userchat_idx = #{idx}
 	</select>
 	
+	<!-- 현재 인원수 추가 -->
+	<update id="roomin">
+		UPDATE userchat SET current_people = current_people+1 WHERE userchat_idx = #{idx}
+	</update>
 	<!-- 입장 가능 인원 수 -->
 	<select id="current" resultType="java.lang.Integer">
 		SELECT current_people FROM userchat WHERE userchat_idx = #{idx}
 	</select>
 	
+	<!-- 개인 채팅방 나가기 -->
+	<update id="userroomout">
+		UPDATE userchat SET current_people = current_people-1 WHERE userchat_idx = #{chatroom_idx}
+	</update>
 	
 	
 	
 	<!-- 지역 채팅방 리스트 -->
-	
 	<select id="localchatlist" resultType="com.sulbazi.chat.LocalChatroomDTO">
 		SELECT 
 			localchat_idx,
@@ -114,9 +117,12 @@
 	</select>
 	
 	<!-- 지역 채팅방 참여 -->
-	
 	<select id="localroom" resultType="com.sulbazi.chat.LocalChatroomDTO">
 		SELECT * FROM localchat ORDER BY localchat_idx
 	</select>
 	
+	<!-- 지역 채팅방 정보 -->
+	<select id="localroominfo" resultType="com.sulbazi.chat.LocalChatroomDTO">
+		SELECT * FROM localchat WHERE localchat_idx = #{idx}
+	</select>
 </mapper>

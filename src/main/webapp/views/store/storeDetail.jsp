@@ -20,7 +20,7 @@
                 top: 202px
                 left: 626px; */
                 width: 788px;
-                height: 5000px;
+                height: 100%;
                 border-radius: 8px;
                 
                 display: flex;
@@ -94,7 +94,7 @@
                 border-collapse: collapse;
                 padding: 5px 10px;
             }
-            #imgview {
+            .imgview {
                 width: 100%;
                 height: auto;
             }
@@ -182,7 +182,9 @@
         margin-left: 20px;
     }
     .action-button {
-        margin-left: 10px;
+        margin: 10px 10px 10px 10px;
+        padding: 5px 24px;
+        border-radius: .25rem;
     }
     
 *{
@@ -220,12 +222,12 @@ font-family: 'Gowun Dodum', sans-serif;
 h3 {
 	margin: 20px;
 }
-.review-write:hover{
+/* .review-write:hover{
 	border: 4px solid #09f;
-}
-.review-write{
+} */
+/* .review-write{
 	margin: 0px 30px;
-}
+} */
 img.preview{
 	width:100px;
 	margin:3px;
@@ -236,7 +238,191 @@ img.review-photo{
 	max-height: 100px;
 }
 			
-			
+.reply-btn > button {
+    box-shadow: 0px 0px 3px 0px gray;
+    margin: -4px 14px 0px 3px;
+    border: 1px solid black;
+    
+}
+  .reply-btn > button:hover{
+    border: 4px solid #09f;			
+}
+.reply-show {
+	/* opacity: 1;
+	transition-duration: 0.75s; */
+	/* display: none; */
+	
+}
+ .hide {
+	display: none;
+}
+  :root {
+    --lovelish: hsl(0, 0%, 18%);
+    --handshake: hsl(40, 100%, 66%);
+  }
+
+/*   .main-box {
+    height: 100vh;
+    display: flex;
+    margin: auto;
+  } */
+
+  .button-box {
+   /*  height: 500px;
+    max-width: 500px; */
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    /* display: grid; */
+  }
+
+  /* Button 1 */
+  .button {
+    display: flex;
+    align-items: center;
+    border-radius: 1rem;
+    transition: 0.5s;
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.5rem;
+    background-image: linear-gradient(to right,
+      #8081cf,
+      #847dc9,
+      #8778c3,
+      #8a74bd,
+      #8d70b7,
+      #8f6db2,
+      #9169ac,
+      #9266a7,
+      #9362a1,
+      #935e9a,
+      #935b93,
+      #93578d
+    );
+    color: white;
+    animation: blurr 2s;
+    animation-iteration-count: infinite;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    padding: 0 3rem;
+  }
+
+  .imgthing {
+    transition: 0.5s;
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+  }
+
+  @keyframes blurr {
+    0%,
+    100% {
+      box-shadow: 0 0 10px var(--handshake);
+    }
+
+    50% {
+      box-shadow: 0 0 36px var(--handshake);
+    }
+  }
+
+  @keyframes fade {
+    0% {
+      opacity: 100%;
+    }
+    100% {
+      opacity: 0%;
+    }
+  }
+
+  .title {
+    font-weight: bold;
+    transition: 0.5s;
+    margin: 10px 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 1.2rem;
+  }
+
+  .button:hover .title {
+    transform: translateX(-10px);
+    animation: fade 0.5s;
+    opacity: 0%;
+  }
+
+  .button:hover img {
+    transform: translateX(-100px);
+  }
+
+  .description {
+    position: absolute;
+    font-weight: bold;
+    line-height: 1.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    transition: 0.5s;
+    opacity: 0%;
+    margin: 10px px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .button:hover .description {
+    transform: translateX(10px);
+    opacity: 100%;
+  }
+    .reply-btn .rething:before {
+        content: " ";
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: red;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+    .action-Update{
+    	display: none;
+    }
+    
+ /* 좋아요 버튼 */
+ .btn-like {
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 0px;
+  margin:1px 1px 1px 1px;
+  width: 117px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.btn-like span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.btn-like span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.btn-like:hover span {
+  padding-right: 25px;
+}
+
+.btn-like:hover span:after {
+  opacity: 1;
+  right: 0;
+} 
+
 
             
         </style>
@@ -337,7 +523,7 @@ img.review-photo{
 					<table>
 						<tr>
 	                    	<c:forEach var="file" items="${files}" varStatus="status">
-								<td><img src="/photo/${file.new_filename}" alt="Store Photo" id="imgview" /></td>
+								<td><img src="photo/${file.new_filename}" alt="Store Photo" id="imgview"  class="imgview"/></td>
 							</c:forEach>
 						</tr>
 					</table>
@@ -345,9 +531,21 @@ img.review-photo{
                 <section class="review-gragory">
                  <!-- 리뷰 작성-->
 		             <article>
-			            <h3>리뷰 작성</h3><button type="button" class="review-write btn btn-dark">리뷰 쓰기</button>
+			            <h3 class="reTextReview">리뷰 작성</h3>
+    <div class="main-box container">
+      <div class="button-box container">
+        <button class="button">
+          <p class="title">리뷰</p>
+          <img class="imgthing"
+            src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Handshake.png"
+            alt="Handshake"
+          />
+          <p class="description">즐거운 리뷰<br />쓰러 가기</p>
+        </button>
+      </div>
+    </div>
 			      		<%-- <button onclick="openWindowTab(${store.store_idx})">리뷰가기</button> --%>
-						<form enctype="multipart/form-data">
+						<form enctype="multipart/form-data" id="myForm">
 						    <div class="mypost">
 						        <div class="input-group mb-3">
 						            <label class="input-group-text" for="inputGroupSelect01">별점</label>
@@ -389,9 +587,14 @@ img.review-photo{
 						            </div>
 						
 						        <div class="mybtn">
-									<input type="file" name="files" multiple="multiple" onchange="readFile(this)">
+									<input id="fileId" type="file" name="files" multiple="multiple" onchange="readFile(this)">
 									<div id="img_list"></div>
-						            <button type="button" class="btn review-write btn-dark" onclick="writeDo()">등록</button>
+									
+									<div id="photo_list"><table id="qwewe"></table></div>
+									
+									<input class="hide" id="requestReviewIdx">
+						            <button type="button" class="btn btn-dark action-write" onclick="writeDo()">등록</button>
+						            <button type="button" class="btn btn-dark action-Update" onclick="reviewReWrite(this)">수정하기</button>
 						            <button type="button" class="btn review-close btn-light">닫기</button>
 						        </div>
 						    </div>
@@ -407,8 +610,35 @@ img.review-photo{
                 </section>
 
             </div>
-
         </main>
+<!-- 모달용 -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">신고하기</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+<input type="text" class="hide" id="reportedId">
+
+<input type="text" class="hide" id="reportingId">
+
+<input type="text" class="hide" id="reportCategory">
+
+<input type="text" class="hide" id="reportedIdx">
+
+      	<textarea class="form-control" maxlength="30" id="reportReason" name="reason" rows="3" required></textarea>
+      </div>
+      <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-primary action-button" onclick="submitReport()">신고하기</button>
+      </div>
+    </div>
+  </div>
+</div>
 
     </body>
     <script>
@@ -416,8 +646,8 @@ img.review-photo{
     
     /* 지도 영역 */
 		var container = document.getElementById('map');
-    	var storeLatitude = '${store.store_latitude}'
-    	var storeLongitude = '${store.store_longitude}'
+    	var storeLatitude = '${store.store_latitude}';
+    	var storeLongitude = '${store.store_longitude}';
    		 
 		var options = {
 			center: new kakao.maps.LatLng(storeLatitude, storeLongitude),
@@ -501,11 +731,17 @@ img.review-photo{
  			
  		};
     	
+ 		var reviewDataList = [];
  		function drawList(reviews){
  			var listContainer = document.getElementById('review-section');
  			listContainer.innerHTML = '';
+ 			reviewDataList = [];
+ 			
+ 			var storeName = '${store.store_name}';
  			
  			reviews.forEach(function(review,idx){
+ 				var userIds = review.like_user_ids ? review.like_user_ids.split(',') : []; 
+ 				reviewDataList.push(review); 
  			   console.log("reviews img:", review.review_photos);
  				var reviewDate = review.review_date.split('T')[0];
  			    if (review.review_photos) {
@@ -513,67 +749,135 @@ img.review-photo{
  			       review.photos = photoArray;
  			    }
  			    
- 			var content = '<tr>'
- 			 	content += '<td colspan="3" class = "profile">'
- 			 	content +='<img src="/photo/'+review.user_photo+'" alt="user" class="profile-image">'
- 			 	content +='<strong>&nbsp;'+review.user_nickname+'</strong>&nbsp;'
- 			 	content +='<div class="like-section">'
- 			 	content +='<img src="resources/img/이종원 좋아요전.png" alt="좋아요" class="icon-review">&nbsp;'+review.user_likecount+'</div>'
- 			 	content +='</td></tr>'
- 			 	content +='<tr><td class="rating-cell">'
- 			 	content +='<img src="resources/img/종원리뷰별.png" alt="별점" class="icon-review">'+review.starpoint+' </td>'
- 			 	content +='<td class="likes-cell">'
- 			 	content +='<img src="resources/img/종원리뷰좋아요전.png" alt="좋아요" class="icon-review"> '+review.like_count+' </td>'
+  			    
+ 			var content = '<tr>';
+ 			 	content += '<td colspan="3" class = "profile">';
+ 			 	content +='<img src="/photo/'+review.user_photo+'" alt="user" class="profile-image">';
+ 			 	content +='<strong>&nbsp;'+review.user_nickname+'</strong>&nbsp;';
+ 			 	content +='<div class="like-section">';
+ 			 	content +='<img src="resources/img/이종원 좋아요전.png" alt="좋아요" class="icon-review">&nbsp;'+review.user_likecount+'</div>';
+ 			 	content +='</td></tr>';
+ 			 	content +='<tr><td class="rating-cell">';
+ 			 	content +='<img src="resources/img/종원리뷰별.png" alt="별점" class="icon-review">'+review.starpoint+' </td>';
+ 			 	content +='<td class="likes-cell">';
+ 			 	
+ 			 	
+ 			 	if (Array.isArray(userIds) && userIds.length > 0) {
+ 			 	    if (userIds.includes(loginId)) {
+ 			 	        // 좋아요가 눌린 상태
+ 			 	        content += '<img src="resources/img/종원리뷰좋아요후.png" alt="좋아요" class="icon-review"> ' + review.like_count + ' </td>';
+ 			 	    } else {
+ 			 	        // 좋아요가 눌리지 않은 상태
+ 			 	        content += '<img src="resources/img/종원리뷰좋아요전.png" alt="좋아요" class="icon-review"> ' + review.like_count + ' </td>';
+ 			 	    }
+ 			 	} else {
+ 			 	    // userIds가 비어 있을 때
+ 			 	    content += '<img src="resources/img/종원리뷰좋아요전.png" alt="좋아요" class="icon-review"> ' + review.like_count + ' </td>';
+ 			 	}
+
+ 			 	
  			 	content +='<td class="category-cell">'+review.opt_names+'</td></tr>'
- 			 	content += '<tr class="review-imgs hide"><td colspan="3" class="photo-cell">';
+ 			 	
  			    if (review.photos && review.photos.length > 0 ) {
- 			    	
+ 			    	content += '<tr class="review-imgs"><td colspan="3" class="photo-cell">';
  			    	review.photos.forEach(function(photo) {
- 			            content += '<img  src="/photo/' + photo + '" alt="review photo" class="review-photo">';
+ 			            content += '<img  src="photo/' + photo + '" alt="review photo" class="review-photo">';
  			        });
- 			    }else{
- 			    	content += '<p>이미지가 없습니다</p>'
+ 			    	content += '</td></tr>';
  			    }
- 			    	
-		        content += '</td></tr>';
- 			 	content +='<tr> <td colspan="3" class="review-content-cell">'
- 			 	content += review.review_content+' </td></tr>'
- 			 	content +='<tr><td colspan="3" class="action-cell">'+reviewDate
- 			 	content +='<span class="report-section"><img src="resources/img/yellow.png" alt="좋아요" class="icon-review"></span>'
- 			 	content +='<button class="action-button replyDown">답글</button>'
- 			 	content +='<button class="action-button">수정</button>'
- 			 	content +='<button class="action-button">신고</button>'
- 			 	content +='<button class="action-button">삭제</button>'
- 			 	content +='</td></tr>'
- 			 	content +='<tr class="reply-show"><td colspan="3" class="text-area">'
- 			 	content +=review.comm_content
- 			 	content +='</td></tr>'
- 			 	content +='<tr class="reply-show"><td colspan="3">'
- 			 	content +='<button class="action-button replyUp">닫기</button>'
- 			 	content +='<button class="action-button" onclick="reply('+review.review_idx+')">확인</button>'
- 			 	content +='</td></tr>'
+ 			 	
+		        
+ 			 	content +='<tr> <td colspan="3" class="review-content-cell">';
+ 			 	content += review.review_content;
+ 			 	if (review.comm_content != null) {
+ 			 	content +='</br><p class="thing">ㄴ'+storeName +': '+review.comm_content+'</p>';
+				}
+ 			 	content +='</td></tr>';
+ 			 	content +='<tr><td colspan="3" class="action-cell reply-btn">'+reviewDate;
+ 			 	content +='<span class="report-section"><img src="resources/img/yellow.png" alt="좋아요" class="icon-review"></span>';
+ 			 	
+ 			 	//좋아요 버튼
+			 	content +='<button class="btn-like" onclick="likebtn(this,'+review.review_idx+')"><span>좋아요 </span></button>';
+
+
+			 	
+			 	if (review.comm_content != null) {
+ 			 	content +='<button class="action-button btn-light rething ttt" onclick="replyDown(this)">답글</button>';
+				}else {
+ 			 	content +='<button class="action-button btn-light ttt" onclick="replyDown(this)">답글</button>';
+				}
+			 	if (review.user_id == loginId) {
+ 			 	content += '<button id="user-check" class="action-button btn-light" onclick="reviewUpdate(this,' + idx + ',' + review.review_idx + ')">수정</button>';
+ 			    } 
+ 			 	content += '<button id="user-check" class="action-button btn-light hide" onclick="reviewUpdate(this,' + idx + ',' + review.review_idx + ')">수정</button>';
+ 			 	
+ 			 	content += '<button type="button" class="btn btn-warning ttt" data-toggle="modal" ';
+ 			 	content += 'data-target="#exampleModalCenter" data-reported-id="' + review.user_id + '" ';
+ 			 	content += 'data-reporting-id="' + loginId + '" data-report-category="리뷰" data-reported-idx="' + review.review_idx + '">신고하기</button>';
+
+			 	if (review.user_id == loginId) {
+ 			 	content += '<button id="user-check" class="action-button btn-light" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
+			 	}
+ 			 	content += '<button id="user-check" class="action-button btn-light hide" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
+ 			 	
+ 			 	
+ 			 	content += '</td></tr>';
+ 			 	
+ 			 	
+ 			 	//답글영역
+content += '<tr class="hide reply-show">';
+content += '<td colspan="3" >';
+content += '<textarea class="form-control reply-text" placeholder="답글 입력은 한 번만 가능합니다. 신중히 작성해주세요. 수정은 가능합니다." style="max-height: 80px"></textarea>';
+content += '</td>';
+content += '</tr>';
+
+				
+				content += '<tr class="reply-show hide"><td class="reply-btn" colspan="3">';
+				content += '<button class="action-button btn-dark" onclick="replyUp(this)">닫기</button>';
+				content += '<button class="action-button btn-dark" onclick="reply(this,' + review.review_idx + ')">확인</button>';
+				content += '<button class="action-button btn-dark" onclick="replyUpdate(this,' + review.review_idx + ')">수정하기</button>';
+				content += '<button class="action-button btn-dark" onclick="replyDel(this,\'' + review.review_idx + '\')">삭제하기</button>';
+				content += '</td></tr>';  
+		
+
  			
 
- 		   
- 			 		
- 		        
  		    
  		            
  		        
  		    
  			 	listContainer.innerHTML += content;
  			});
+ 			$('.thing').removeClass('hide');
  		}
  		//리뷰 나오기 버튼 클릭시 해당영역 나오기
- 		$('.review-write').click(function() {
+ 		$('.button').click(function() {
  		    $('.mypost').slideDown(1000); 
  		});
 
  		// 리뷰 숨기기 버튼 클릭 시, 해당 영역을 부드럽게 사라지게 하기
- 		$('.review-close').click(function() {
+ 		$('.review-close').click(function(button) {
  		    $('.mypost').slideUp(2000); 
+ 		    $('.action-Update').slideUp(0);
+ 		    $('.action-write').slideDown(0);
+ 		   $('#review-section').slideDown(0);
+ 		  $('.reTextReview').text('리뷰 작성');
+ 	      $('#myForm')[0].reset();
+ 	     $('#img_list').empty();
+ 	      $('#qwewe').empty(); 
+	        // textarea 초기화
+ 	    /*  	        document.getElementById('text-area').value = '';
+
+ 	     	        // select 요소 초기화
+ 	     	        document.getElementById('ratingSelect').selectedIndex = 0;
+ 	     	        document.getElementById('purposeSelect').selectedIndex = 0;
+ 	     	        document.getElementById('moodSelect').selectedIndex = 0;
+ 	     	       $('#img_list').empty(); */
+ 		    
  		});
  		
+ 		
+
 
  		//글쓰기 이벤트
  		function writeDo() {
@@ -604,6 +908,9 @@ img.review-photo{
 	 				success:function(data){
 						if (data.success) {
 							reviewShow(storeIdx)
+							$('.mypost').slideUp(2000); 
+							$('#myForm')[0].reset();
+							$('#img_list').empty();
 							
 						}else{
 							errorReviewWrite();
@@ -617,8 +924,10 @@ img.review-photo{
 	 					alert("글쓰기를 실패하셨습니다. 다시 확인해 주세요.");
 	 				}
 	 			}); 
-			}else
+			}else{
 				alert("별점, 방문목적, 분위기를 선택해 주세요!!");
+				
+			}
  		}
  		
   	   // 이미지 프리뷰
@@ -636,6 +945,21 @@ img.review-photo{
  			}
  			
  		}
+  	   
+  	   // 수정 할때 사진 폼
+/*  		function readPhoto(input){
+ 			console.log( "온체인지 파일: "+input.files);
+ 			var reader;
+ 			
+ 			for (var file of input.files) {
+ 				reader = new FileReader();
+ 				reader.readAsDataURL(file);
+ 				reader.onload = function(e){
+ 					$('#img_list').append('<img class = "preview" src="'+e.target.result+'"/>');
+ 				}
+ 			}
+ 			
+ 		} */
  	   /* 노리뷰 */
  	   function errorDraw() {
  	       var listContainer = document.getElementById('review-section');
@@ -653,50 +977,404 @@ img.review-photo{
  	       	listContainer.innerHTML = content;
  	   }
 		
- 	   //답글 영역 이벤트 
- 		$('.replyDown').click(function() {
- 		    $('.reply-show').slideDown(500); 
- 		});
 
- 		$('.replyUp').click(function() {
- 		    $('.reply-show').slideUp(500); 
- 		});
  		
- 	   
- 	   
- 	   
+/*   	   //답글 영역 이벤트 
+function replyDown(button) {
+    // 클릭된 버튼 기준으로 가장 가까운 <tr>을 찾고, 그 다음에 오는 .reply-show 클래스를 가진 두 개의 <tr> 요소를 슬라이드 다운
+    $(button).closest('tr').nextAll('.reply-show').slice(0, 2).slideDown(1000);
+}
+
+function replyUp(button) {
+    // 클릭된 버튼 기준으로 가장 가까운 <tr>을 찾고, 그 <tr>과 위쪽에 있는 reply-show 클래스 두 개의 <tr> 요소를 슬라이드 업
+    var $currentRow = $(button).closest('tr');
+    var $targetRows = $currentRow.add($currentRow.prevAll('.reply-show').slice(0, 1));
+    $targetRows.slideUp(1000);
+} */
+//답글 클래스 추가로 위아래 변경
+/* function replyDown(button) {
+    // 클릭된 버튼 기준으로 가장 가까운 <tr>을 찾고, 그 다음에 오는 .reply-show 클래스를 가진 두 개의 <tr> 요소의 숨김 클래스를 제거하고 슬라이드 다운
+	$('.reply-show').slideDown(1000); 
+}
+
+function replyUp(button) {
+    // 클릭된 버튼 기준으로 가장 가까운 <tr>을 찾고, 해당 <tr>과 그 위쪽에 있는 reply-show 클래스를 가진 두 개의 <tr> 요소에 숨김 클래스를 추가하고 슬라이드 업
+    $('.reply-show').slideUp(1000);
+} */
+
+//답글 위아래 이벤트
+function replyDown(button) {
+	//가장 까운 tbody 자식중 reply-show 클래스 찾기
+    $(button).closest('tbody').find('.reply-show').slideDown(0);
+    $(button).closest('tbody').find('.thing').addClass('hide');
+}
+
+function replyUp(button) {
+    $(button).closest('tbody').find('.reply-show').slideUp(0);
+    $(button).closest('tbody').find('.thing').removeClass('hide');
+}
+
  	   
  	   //답글 디비 넣기
- 	   function reply(review_idx){
-		    var commContent = document.getElementById("text-area").value; 
-
- 		   
-			$.ajax({
- 				type:'POST', 
- 				url: 'storeReviewReply.ajax',
- 				data:{
- 					'comm_content':commContent ,
- 					'review_idx':review_idx,
- 					'store_idx':storeIdx
- 				},
- 				dataType:'JSON',
- 				success:function(data){
+ 	   function reply(button,review_idx){
+		   /*  var commContent = document.getElementById("reply-text").value;  */
+		    var commContent = $(button).closest('tr').prev().find('.reply-text').val();
+ 		   console.log(commContent);
+ 		  var badThing = $(button).closest('tbody').find('.rething').length > 0;
+ 		  if (!badThing) {	
+				$.ajax({
+	 				type:'POST', 
+	 				url: 'storeReviewReply.ajax',
+	 				data:{
+	 					'comm_content':commContent ,
+	 					'review_idx':review_idx,
+	 					'store_idx':storeIdx
+	 				},
+	 				dataType:'JSON',
+	 				success:function(data){
+						if (data.success) {
+							reviewShow(storeIdx)
+							
+						}else{
+							errorReviewWrite();
+							
+						}
+	 					
+	 				},
+	 				error:function(e){
+	 					console.log(e);
+	 					errorReviewWrite();
+	 					alert("글쓰기를 실패하셨습니다. 다시 확인해 주세요.");
+	 				}
+	 			}); 
+	 	   }else{
+	 		   alert('기존에 쓰신글이 있습니다 수정,삭제 밖에 불가능하십니다.');
+	 	   }
+ 	  }
+ 	   //답글 리뷰 수정하기
+ 	   function replyUpdate(button,review_idx){
+ 		  var commContent = $(button).closest('tr').prev().find('.reply-text').val();
+	 		$.ajax({
+					type:'POST', 
+					url: 'storeReviewReplyUpdate.ajax',
+					data:{
+						'comm_content':commContent ,
+						'review_idx':review_idx
+						
+					},
+					dataType:'JSON',
+					success:function(data){
 					if (data.success) {
+						
 						reviewShow(storeIdx)
+						
 						
 					}else{
 						errorReviewWrite();
 						
 					}
- 					
- 				},
- 				error:function(e){
- 					console.log(e);
- 					errorReviewWrite();
- 					alert("글쓰기를 실패하셨습니다. 다시 확인해 주세요.");
- 				}
- 			}); 
+						
+					},
+					error:function(e){
+						console.log(e);
+						errorReviewWrite();
+						alert("답글 수정실패 다시 확인해 주세요.");
+					}
+				}); 
+ 	 
  	   }
+ 	   //리뷰 답글 삭제
+ 	   function replyDel(button,review_idx){
+	 		$.ajax({
+					type:'POST', 
+					url: 'storeReviewReplyDel.ajax',
+					data:{
+						'review_idx':review_idx
+						
+					},
+					dataType:'JSON',
+					success:function(data){
+					if (data.success) {
+						reviewShow(storeIdx)
+					}else{
+						alert("답글 삭제 실패했습니다 다시확인해 주세요.");
+					}
+					},
+					error:function(e){
+						console.log(e);
+						errorReviewWrite();
+						alert("답글 삭제 실패했습니다 다시확인해 주세요.");
+					}
+				}); 
+ 	 
+ 	   }
+ 	   //리뷰 수정 하기 눌렀을시 나오는 영역전개
+ 	   function reviewUpdate(button,idx,review_idx){
+ 		  /* var review_idx = reviewDataList[idx].review_idx; */
+			$('.mypost').slideDown(0);
+			$(button).closest('#review-section').slideUp(0);
+			$('.reTextReview').text('수정하기');
+			$('.action-write').slideUp(0);
+			$('.action-Update').slideDown(0);
+			$('#requestReviewIdx').val(review_idx);
+			/* $('#purposeSelect').text(review.review_)
+			$('#moodSelect').val(''); */
+			$('#ratingSelect').val(reviewDataList[idx].starpoint);
+			$('#text-area').val(reviewDataList[idx].review_content);
+
+			
+			
+			photoDel(reviewDataList[idx],idx);
+
+			
+
+			
+ 	   }
+ 	   
+ 	   //제발 수정
+ 	  function photoDel(reviewListIdx, idx) {
+ 		    var photoList = document.getElementById('qwewe');
+ 		    photoList.innerHTML = '';  // 기존 내용을 초기화합니다.
+
+ 		    // 사진이 있을 경우 반복하여 추가
+ 		    if (reviewListIdx.photos && reviewListIdx.photos.length > 0) {
+ 		        var content = '';  // 전체 HTML을 누적할 변수입니다.
+
+ 		        reviewListIdx.photos.forEach(function(photo, index) {
+ 		            content += '<tr class = "reviewSomePhoto">';
+ 		            content += '<td>';  // `<td>` 추가로 잘못된 구조를 방지합니다.
+ 		            content += '<img src="photo/' + photo + '" alt="review photo" class="update-photo review-photo">';
+ 		            content += '<button type="button" onclick="photoCheck(this, \'' + photo + '\', ' + idx + ')" class="photo-check">사진 삭제</button>';
+ 		            content += '</td>';
+ 		            content += '</tr>';
+ 		        });
+
+ 		        photoList.innerHTML = content;  // 최종적으로 한 번에 HTML을 추가합니다.
+ 		    }
+ 		}
+ 	   
+ 	   
+ 	   //수정하기 에서 사진 삭제 버튼 눌렀을시 실행되는 메서드
+ 	   
+ 	   
+ 	  function photoCheck(button,photo,idx){
+ 		  console.log("이종원 함수 확인용 : "+reviewDataList[idx]);
+ 		  console.log("idx: "+idx);
+ 		    var parentTd = button.closest('.reviewSomePhoto');
+ 		    if (parentTd) {
+ 		        parentTd.remove();
+ 		    }
+ 		  
+ 		 var reviewIdx=  reviewDataList[idx].review_idx
+ 	  	    $.ajax({
+		        type: 'POST',
+		        url: 'reviewPhotoDel.ajax',
+		        data: {
+		        	'photo':photo,
+		        	'reviewIdx':reviewIdx
+		        	
+		        },
+		        dataType:'JSON',
+		        success: function(data) {
+		            if (data.success) {
+		            	/* reviewDataList = [];  */
+		            	reviewShow(storeIdx);
+		                /* removePhotoFromUI(button); */
+		                // reviewDataList 업데이트 (배열에서 해당 사진 제거)
+
+		            	/* photoDel(reviewDataList[idx],idx); */
+					}else{
+						alert('선택하신 사진은 없는 사진입니다.')
+					}
+	
+	
+		        },
+		        error: function(error) {
+		            console.error('Error:', error);
+		        }
+		    }); 
+ 		/* reviewDataList = []; */
+ 	  }
+ 	   
+
+ 	    
+ 	   //리뷰 업데이트 함수
+ 	   function reviewReWrite(button){
+		    var ratingValue = document.getElementById("ratingSelect").value; 
+ 		    var purposeValue = document.getElementById("purposeSelect").value;  
+ 		    var moodValue = document.getElementById("moodSelect").value;  
+ 		    var reviewContent = document.getElementById("text-area").value; 
+ 		    var reviewIdx = document.getElementById("requestReviewIdx").value; 
+ 		    
+ 		   console.log("이종원 reviewidx: " + reviewIdx);
+ 		   
+ 		   var form = new FormData($('form')[0]);
+ 		  form.append('loginId', loginId);
+ 		  form.append('storeIdx', storeIdx);
+ 		  form.append('ratingValue', ratingValue);
+ 		  form.append('purposeValue', purposeValue);
+ 		  form.append('moodValue', moodValue);
+ 		  form.append('reviewContent', reviewContent);
+ 		  form.append('reviewIdx', reviewIdx);
+ 		  
+ 		    
+	 		if (ratingValue != 0 && purposeValue != 0 && moodValue != 0 && reviewContent.trim() !== "" ) {
+	 			$.ajax({
+	 				type:'POST', 
+	 				url: 'reviewUpdate.ajax',
+	 				processData:false,
+	 				contentType: false,
+	 				enctype:'multipart/form-data',
+	 				data:form,
+	 				dataType:'JSON',
+	 				success:function(data){
+						if (data.success) {
+							$('#review-section').slideDown(0);
+							$('.mypost').slideUp(2000);
+							$('.reTextReview').text('리뷰 작성');
+							$('.action-write').slideDown(0);
+							$('.action-Update').slideUp(0)
+							$('#myForm')[0].reset();
+							$('#img_list').empty();
+							$('#qwewe').empty(); 
+							reviewShow(storeIdx)
+
+							/* $('#img_list').empty(); */
+							
+						}else{
+							errorReviewWrite();
+							alert("리뷰 수정 실패하셨습니다. 다시 확인해 주세요.");
+						}
+	 					
+	 				},
+	 				error:function(e){
+	 					console.log(e);
+	 					errorReviewWrite();
+	 					alert("리뷰 수정 실패하셨습니다. 다시 확인해 주세요.");
+	 				}
+	 			}); 
+			}else{
+				alert("별점, 방문목적, 분위기를 선택해 주세요!!");
+				
+			}
+	 		
+ 	   } 
+ 	   
+ 	   
+ 	   //모달창에 특정 데이터 넘기기
+ 	    		 
+  $('#exampleModalCenter').on('show.bs.modal', function (event) {
+	    var button = $(event.relatedTarget);
+	    var reportedId = button.data('reported-id');
+	    var reportingId = button.data('reporting-id');
+	    var reportCategory = button.data('report-category');
+	    var reportedIdx = button.data('reported-idx');
+
+	    var modal = $(this);
+	    modal.find('#reportedId').val(reportedId);
+	    modal.find('#reportingId').val(reportingId);
+	    modal.find('#reportCategory').val(reportCategory);
+	    modal.find('#reportedIdx').val(reportedIdx);
+  });
+ 	   
+  $('#exampleModalCenter').on('hidden.bs.modal', function () {
+	    // 입력된 텍스트 초기화
+	    $(this).find('textarea').val('');
+	    // 숨겨진 필드 초기화
+	    $(this).find('input[type="hidden"]').val('');
+	});
+ 	   
+ 	  function submitReport(){
+ 		  
+ 		    var reportedId = $('#reportedId').val();
+ 		    var reportingId = $('#reportingId').val();
+ 		    var reportCategory = $('#reportCategory').val();
+ 		    var reportedIdx = $('#reportedIdx').val();
+ 		    var reportReason = $('#reportReason').val();
+ 		    
+ 		 console.log("종원 신고 할때 내용: "+reportedId)
+ 		 console.log("종원 신고 할때 내용: "+reportingId)
+ 		 console.log("종원 신고 할때 내용: "+reportCategory)
+ 		 console.log("종원 신고 할때 내용: "+reportedIdx)
+ 		 console.log("종원 신고 할때 내용: "+reportReason)
+
+          
+          $.ajax({
+              type: 'POST',
+              url: 'reportReview.ajax',
+              data: {
+                  "reportedId": reportedId,
+                  "reportingId": reportingId,
+                  "reportCategory": reportCategory,
+                  "reportedIdx": reportedIdx,
+                  "reportReason": reportReason
+                },
+              dataType: 'json',
+              success: function(data) {
+                  if (data.success) {
+                      alert('신고가 접수되었습니다.');
+                      $('#exampleModalCenter').modal('hide');
+                      $('#exampleModalCenter')
+                  } else {
+                      alert('신고 처리에 실패했습니다. 다시 시도해주세요.');
+                  }
+              },
+              error: function() {
+                  alert('신고 접수 중 오류가 발생했습니다. 다시 시도해주세요.');
+              }
+          });
+ 	  }
+ 	  
+ 	  //리뷰 삭제
+ 	  function reviewDel(button,reviewIdx){
+ 		  
+          $.ajax({
+              type: 'POST',
+              url: 'reviewDel.ajax',
+              data: {
+                  "reviewIdx": reviewIdx
+                },
+              dataType: 'json',
+              success: function(data) {
+                  if (data.success) {
+                      alert('삭제 되었습니다.');
+                      reviewShow(storeIdx);
+                  } else {
+                      alert('삭제 에 실패했습니다. 다시 시도해주세요.');
+                  }
+              },
+              error: function() {
+                  alert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
+              }
+          });
+ 	  }
+	//리뷰 좋아요
+ 	  function likebtn(button,reviewIdx){
+ 		 $(button).css('background-color', '#F781BE');
+          $.ajax({
+              type: 'POST',
+              url: 'reviewLike.ajax',
+              data: {
+                  "reviewIdx": reviewIdx,
+                  "loginId":loginId
+                },
+              dataType: 'json',
+              success: function(data) {
+            	  
+                  if (data.success) {
+                      reviewShow(storeIdx);
+                	  
+                  } else {
+                      alert('좋아요 취소 했습니다.');
+                      reviewShow(storeIdx);
+                  }
+              },
+              error: function() {
+                  alert('좋아요 중 오류가 발생했습니다. 다시 시도해주세요.');
+              }
+          });
+ 	  }
+ 	   
  		
  		
     </script>

@@ -128,13 +128,13 @@ public class StoreController {
   
     }
 	
-	@PostMapping(value="/bookmark.ajax")
-	@ResponseBody
-	public Map<String, Object> bookmarkCheck(String loginId,int storeidx ){
-		System.out.println(storeidx);
-		System.out.println(loginId);
-		return store_ser.bookmarkCheck(loginId,storeidx);
-	}
+//	@PostMapping(value="/bookmark.ajax")
+//	@ResponseBody
+//	public Map<String, Object> bookmarkCheck(String loginId,String storeidx ){
+//		System.out.println(storeidx);
+//		System.out.println(loginId);
+//		return store_ser.bookmarkCheck(loginId,storeidx);
+//	}
 
 
     @GetMapping(value = "/list.ajax")
@@ -331,6 +331,7 @@ public class StoreController {
 		return "store/storeBoard";
 	}
 	
+	
 
 	
 	//매장 나의 메뉴 가기
@@ -405,6 +406,8 @@ public class StoreController {
         logger.info("Success status: " + success);
         return "store/storeMyMenu";
     }
+	
+	
 	
 	
 	

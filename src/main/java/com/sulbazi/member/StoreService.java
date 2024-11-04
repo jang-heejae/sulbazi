@@ -372,6 +372,7 @@ public class StoreService {
 	}
 
 
+
 	public List<StoreMenuDTO> storealcholmenulist(int store_idx) {
 		return store_dao.storealcholmenulist(store_idx);
 		   }
