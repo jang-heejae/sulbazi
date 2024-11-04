@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.sulbazi.category.UserCategoryDTO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.review.ReviewDTO;
 
@@ -42,6 +43,11 @@ public interface UserDAO {
 	
 	
 	List<BookMarkDTO> userBookmark(String userId);
+
+	UserDTO userDetail(String user_nickname);
+
+	List<HashMap<String, Object>> userGetCategory(List<Integer> opt_idx);
+
 
 	
 }

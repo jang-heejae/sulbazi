@@ -11,6 +11,11 @@
 	var session = "${sessionScope.session}";
 	var msg = "${msg}";
 	
+	// 사용자 상세정보 jsp 이동
+	function openPopup(user_nickname) {
+		var popupUrl = '/SULBAZI/userPopup.jsp?user_nickname=' + user_nickname;
+	    window.open(popupUrl, 'userPopup', 'width=600,height=400');
+	}
 	
 	if(msg!=""){
 		alert(msg);
@@ -39,7 +44,7 @@
 	                    if (user.user_id === loginId) {
 	                        userlist += '<div class="user" style="font-weight: bold;">' + user.user_nickname + '㉯</div>';
 	                    } else {
-	                        userlist += '<div class="user">' + user.user_nickname + '</div>';
+	                    	userlist += '<div class="user"><span onclick="openPopup(\'' + user.user_nickname + '\')">' + user.user_nickname + '</span></div>';
 	                    }
 	                    
 	                    userlist += '</div>';
@@ -103,6 +108,29 @@
 			}
 		
 	    });
+		
+		/* // 사용자의 상세정보
+		$(document).on('click', '.user span', function() {
+	    var usernickname = $(this).text();
+	    console.log(usernickname);
+	
+	    $.ajax({
+	        url: 'userDetail.ajax', // 서버에서 사용자 상세 정보를 요청할 URL
+	        type: 'GET',
+	        data: { user_nickname: usernickname }, // 사용자 ID를 쿼리 파라미터로 전송
+	        success: function(success) {
+	            // 서버로부터 받은 응답을 처리
+	            // 팝업창 열기
+	            var popup = window.open('', '_blank', 'width=600,height=400');
+	            popup.document.write(success); // 응답을 팝업에 작성
+	            popup.document.close(); // 문서 닫기
+	        },
+	        error: function(xhr, status, error) {
+	            console.error("AJAX 요청 실패:", status, error);
+	            alert("사용자 정보를 불러오는 데 실패했습니다.");
+	        }
+	    });
+		}); */
 		
 		// 팝업 제거
 		$(document).on('click', function(event) {

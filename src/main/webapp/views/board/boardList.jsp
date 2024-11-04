@@ -123,6 +123,7 @@
     
 </body>
 <script>
+
 var showPage = 1;
 pageCall(showPage);
 
@@ -175,7 +176,7 @@ function drawList(list) {
                 '<i class="fa-solid fa-eye" style="color: #999999; margin-right: 5px;"></i>' + 
                 item.board_bHit + 
                 '</td>';
-            content += '<td>' + item.store_id + '</td>'; // store_id가 포함되어 있어야 함
+            content += '<td>' + item.store_name + '</td>'; // store_id가 포함되어 있어야 함
             content += '<td>' + item.board_date + '</td>';
             content += '<td style="display: none;">' + item.board_state + '</td>'; // 숨김 처리
             content += '</tr>';
@@ -192,7 +193,7 @@ $(document).ready(function() {
     $('#searchButton').click(function() {
     	board_filter('search');	
     });   
-	});	
+	});
 
 
 function board_filter(action) {
@@ -216,5 +217,6 @@ function board_filter(action) {
 		}
 	});
 }
+
 </script>
 </html>

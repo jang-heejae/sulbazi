@@ -77,5 +77,18 @@ public class UserController {
     public String useralarm() {
     	return "user/userAlarm";
     }
+    
+    @GetMapping(value="/userDetail.ajax")
+    @ResponseBody
+    public String userDetail(String user_nickname, Model model) {
+    	log.info("가져온 유저 idx : " + user_nickname);
+    	user_ser.userDetail(user_nickname, model);
+    	return "user/userPopup";
+    }
+    
+    @RequestMapping(value="/userPopup.go")
+    public String wewe() {
+    	return "user/userPopup";
+    }
 	
 }

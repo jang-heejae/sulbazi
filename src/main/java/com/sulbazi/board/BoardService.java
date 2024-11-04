@@ -46,7 +46,7 @@ public class BoardService {
 			board_dao.bHit(board_idx);
 		}
 		int store_idx = boarddto.getStore_idx();
-		String store_id = selectidx(store_idx);
+		String store_name = selectidx(store_idx);
 		logger.info("detail에 가져올 store_idx : "+store_idx);
 		List<PhotoDTO> photo1 = photo_ser.detail1(store_idx, 1);
 		List<PhotoDTO> photo4 = photo_ser.detail4(store_idx, 4);
@@ -57,7 +57,7 @@ public class BoardService {
 			logger.info(file1);
 			model.addAttribute("info", boarddto);
 			model.addAttribute("files", file1);
-			model.addAttribute("store", store_id);
+			model.addAttribute("store", store_name);
 			for (PhotoDTO photodto4 : photo4) {
 				String file4 = photodto4.getNew_filename();
 				logger.info(file4);

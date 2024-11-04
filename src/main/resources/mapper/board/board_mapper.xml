@@ -5,7 +5,7 @@
 <mapper namespace="com.sulbazi.board.BoardDAO">
 
 	<select id="boardlistgo">
-		SELECT b.*, s.store_id
+		SELECT b.*, s.store_name
 		 FROM board b
 		 LEFT JOIN store s ON b.store_idx = s.store_idx
 		 ORDER BY b.board_idx DESC
@@ -46,8 +46,8 @@
     	SELECT b.*, s.store_id
 	    FROM board b
 	    LEFT JOIN store s ON b.store_idx = s.store_idx
-	    WHERE b.board_category = #{boardCategory}
-	      AND b.board_subject LIKE CONCAT('%', #{boardSearch}, '%')
+	    WHERE (#{boardCategory} = '' OR b.board_category = #{boardCategory})
+      	AND b.board_subject LIKE CONCAT('%', #{boardSearch}, '%')
     </select>
 
     <select id="isLiked" parameterType="com.sulbazi.board.BoardLikeDTO" resultType="boolean">
@@ -69,7 +69,7 @@
 	</insert>
 	
 	<select id="selectidx" resultType="String">
-		SELECT store_id FROM store WHERE store_idx = #{param1}
+		SELECT store_name FROM store WHERE store_idx = #{param1}
 	</select>
 	
 	<update id="updateajax" parameterType="com.sulbazi.board.BoardDTO">
