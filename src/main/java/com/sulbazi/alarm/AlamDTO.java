@@ -9,7 +9,15 @@ public class AlamDTO {
 	private int alarm_category_idx;
 	private Time alarm_time;
 	private int alarm_read;
+	private String alarm_subject;
 	
+	
+	public String getAlarm_subject() {
+		return alarm_subject;
+	}
+	public void setAlarm_subject(String alarm_subject) {
+		this.alarm_subject = alarm_subject;
+	}
 	public int getAlarm_idx() {
 		return alarm_idx;
 	}

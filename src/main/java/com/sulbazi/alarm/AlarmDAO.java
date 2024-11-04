@@ -1,5 +1,6 @@
 package com.sulbazi.alarm;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -38,9 +39,12 @@ public interface AlarmDAO {
 
 	BoardDTO storeboardinfo();
 
-	BookMarkDTO bookmarkinfo(String user_id);
+	List<BookMarkDTO> bookmarkinfo(String user_id);
 
 	String storename(int storeidx);
 
+	List<AlamDTO> alarmreadornot(int i, String receiverId);
+	
+	
 }
 

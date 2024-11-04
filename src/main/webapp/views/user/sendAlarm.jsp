@@ -23,29 +23,29 @@ let notificationsList = [];
 
 //SSE 연결 시작
 function startSseConnection() {
- const eventSource = new EventSource(`/SULBAZI/notifications/connect/${sessionScope.loginId}`);
+ 	const eventSource = new EventSource(`/SULBAZI/notifications/connect/${sessionScope.loginId}`);
 
  // 알림 수신
- eventSource.onmessage = function(event) {
-     console.log("SSE 데이터 수신:", event.data);
-     const newAlarm = JSON.parse(event.data);
+ 	eventSource.onmessage = function(event) {
+     	console.log("SSE 데이터 수신:", event.data);
+     	const newAlarm = JSON.parse(event.data);
 
      // 로그인한 사용자에게 맞는 알림만 추가
      if (newAlarm.receiverId === loggedInUserId) {
          addAlarm(newAlarm);
          displayNotifications();
-     }
- };
+     	}
+ 	};
 
- eventSource.onerror = function(event) {
-     console.error("SSE 오류:", event);
- };
+ 	eventSource.onerror = function(event) {
+     	console.error("SSE 오류:", event);
+ 	};
 }
 
 //알림 추가 함수
 function addAlarm(notification) {
- notificationsList.push(notification);
- console.log("새 알림 추가:", notification);
+ 	notificationsList.push(notification);
+ 	console.log("새 알림 추가:", notification);
 }
 
 //알림 표시 함수
@@ -101,11 +101,31 @@ function markAsRead(notification) {
     });
 }
 
-//페이지 로드 시 SSE 연결 시작
+//페이지 로드 시 초기 알림 가져오기
+function fetchInitialNotifications() {
+    $.ajax({
+        type: 'GET',
+        url: '/SULBAZI/getInitialNotifications.ajax',
+        data: { 'receiverId': loggedInUserId },
+        dataType: 'json',
+        success: function(notifications) {
+            notifications.forEach(notification => {
+                addAlarm(notification);
+            });
+            displayNotifications();
+        },
+        error: function(error) {
+            console.error("초기 알림 가져오기 실패:", error);
+        }
+    });
+}
+
+// 페이지 로드 시 SSE 연결 시작
 window.onload = () => {
- startSseConnection(); // SSE 연결 시작
- displayNotifications(); // 초기 알림 표시
+    fetchInitialNotifications(); // 초기 알림 가져오기
+    startSseConnection(); // SSE 연결 시작
 };
+
 </script>
 
 

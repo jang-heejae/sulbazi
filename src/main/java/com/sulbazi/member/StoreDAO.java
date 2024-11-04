@@ -65,7 +65,7 @@ public interface StoreDAO {
 
 	List<BoardDTO> storemyboard(int store_idx);
 
-	int storeidx(String attribute);
+	int storeidx(String store_id);
 
 	StoreDTO mystore(int store_idx);
 
@@ -95,8 +95,8 @@ public interface StoreDAO {
 
 	int delBookmark(String loginId, String storeidx);
 
-
-
+	List<String> bookmarkuser(int store_idx);
+	
 
 	
 

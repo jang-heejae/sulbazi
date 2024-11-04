@@ -3,6 +3,7 @@ package com.sulbazi.alarm;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -48,6 +49,8 @@ public class AlarmController {
 	public SseEmitter connect(@PathVariable String userId) {
 		return alarm_ser.connect(userId);
 	}
+	
+	
 
     //문의 글  알림
     @PostMapping("/inquiryanswer.ajax")
@@ -64,12 +67,15 @@ public class AlarmController {
    //즐겨찾기 새소식
     @PostMapping(value="/bookmarknew.ajax")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> bookmarknew(@RequestParam String user_id){
-    	logger.info("내 id:"+user_id);
-    	Map<String, Object> map =  alarm_ser.bookmarknew(user_id);
-    	alarm_ser.sendNotification(user_id, map);
-    	return ResponseEntity.ok(map);
+    public ResponseEntity<Map<String, Object>> bookmarknew(@RequestBody Map<String, String> requestBody) {
+        String user_id = requestBody.get("user_id"); // JSON에서 user_id 추출
+        logger.info("내 id:"+user_id);
+        Map<String, Object> map = alarm_ser.bookmarknew(user_id);
+        alarm_ser.sendNotification(user_id, map);
+        return ResponseEntity.ok(map);
     }
+
+
 
     //대화방 강제 퇴장 당함 알림
     @PostMapping(value="/chatroomout.ajax")
@@ -144,7 +150,17 @@ public class AlarmController {
     }
     
     
+    //기존 안읽은 알림 가져오기
+    @GetMapping("/getInitialNotifications.ajax")
+    @ResponseBody
+    public ResponseEntity<List<Map<String, Object>>> getInitialNotifications(@RequestParam String receiverId) {
+    	List<Map<String, Object>> notifications = alarm_ser.getNotificationsByReceiverId(receiverId);
+        return ResponseEntity.ok(notifications);
+    }
+
     
+
+
     
     
 }
