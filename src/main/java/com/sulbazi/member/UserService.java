@@ -163,23 +163,27 @@ public class UserService {
 	public UserDTO user(String user_id) {
 		return user_dao.user(user_id);
 	}
-	public void userDetail(String user_nickname, Model model) {
+	public Map<String, Object> userDetail(String user_nickname) {
+		Map<String, Object> response = new HashMap<String, Object>();
 		UserDTO userdto = user_dao.userDetail(user_nickname);
 		log.info("userDetail : {}", userdto);
-		model.addAttribute("info", userdto);
+		response.put("info", userdto);
+		
 		String user_id = userdto.getUser_id();
 		log.info("user_id : " + user_id);
 		
 		List<HashMap<String, Object>> optList = user_dao.getUserCategories(user_id);
 		List<Integer> optIdxList = new ArrayList<Integer>();
+		
 		for(HashMap<String, Object> opt : optList) {
 			optIdxList.add((Integer) opt.get("opt_idx"));
 		}
 		
 		List<HashMap<String, Object>> category = user_dao.userGetCategory(optIdxList);
 		log.info("가져온 카테고리 번호 : {} ", category);
-		model.addAttribute("category", category);
+		response.put("category", category);
 		
+		return response;
 	}
 	
 }

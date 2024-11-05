@@ -92,7 +92,7 @@
     	border-color: #73734F;
 </style>
 <body>
-<c:choose>
+<%-- <c:choose>
     <c:when test="${sessionScope.opt == 'admin_log'}">
         <jsp:include page="../main/adminMain.jsp" />
     </c:when>
@@ -102,8 +102,7 @@
     <c:when test="${sessionScope.opt == 'store_log'}">
         <jsp:include page="../main/storeMain.jsp" />
     </c:when>
-</c:choose>
-    <c:if test="${not empty sessionScope.opt && sessionScope.opt == 'store_log'}">
+</c:choose> --%>
     <div id="reportList">
 		<input type="radio" name="board_category" value="all" checked/> 전체 보기&nbsp;&nbsp;
 		<input type="radio" name="board_category" value="홍보"/>홍보&nbsp;&nbsp;
@@ -114,21 +113,22 @@
 		<button id="searchButton">검색</button>
 	</div>
     <div class="writebutton" style="text-align: right; margin: 10px;">
-        <a href="boardWrite.go" style="padding: 10px 20px; background-color: rgb(255, 140, 9); color: white; text-decoration: none; border-radius: 5px;">
-            글쓰기
-        </a>
+	    <c:if test="${not empty sessionScope.opt && sessionScope.opt == 'store_log'}">
+	        <a href="boardWrite.go" style="padding: 10px 20px; background-color: rgb(255, 140, 9); color: white; text-decoration: none; border-radius: 5px;">
+	            글쓰기
+	        </a>
+	    </c:if>
     </div>
-    </c:if>
     <div class="boardlist">
         <table>
             <tbody id="list">
             </tbody>
         </table>
-            	<div class="container">
-	    				<nav aria-label="Page navigation">
-	        			<ul class="pagination" id="pagination"></ul>
-    				</nav>
-				</div>
+        <div class="container">
+			<nav aria-label="Page navigation">
+    			<ul class="pagination" id="pagination"></ul>
+			</nav>
+		</div>
     </div>
     
 </body>

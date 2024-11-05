@@ -13,7 +13,7 @@
 	
 	// 사용자 상세정보 jsp 이동
 	function openPopup(user_nickname) {
-		var popupUrl = '/SULBAZI/userPopup.jsp?user_nickname=' + user_nickname;
+		var popupUrl = '/SULBAZI/userPopup.go?user_nickname=' + user_nickname;
 	    window.open(popupUrl, 'userPopup', 'width=600,height=400');
 	}
 	
