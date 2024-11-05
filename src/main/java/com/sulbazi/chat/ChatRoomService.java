@@ -41,8 +41,7 @@ public class ChatRoomService {
 			model.addAttribute("msg", "방이 개설되었습니다.");
 			logger.info("방금 insert한 idx : "+idx);
 			
-//			chatroom_dao.createuser(idx, userId);
-//			chatparti_dao.createparti(idx, userId);
+			chatparti_dao.createparti(idx, userId);
 			
 		}		
 		return row;

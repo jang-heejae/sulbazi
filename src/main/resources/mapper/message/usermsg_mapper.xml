@@ -25,9 +25,6 @@
 	</insert>
 	
 	<!-- 메세지 로드 -->
-<!-- 	<select id="getmsg" parameterType="int" resultType="com.sulbazi.message.UserMsgDTO">
-	    SELECT * FROM usermsg WHERE userchat_idx = #{userchat_idx} ORDER BY usermsg_time
-	</select> -->
 	<select id="getmsg" parameterType="int" resultType="map">
 	    SELECT um.*, u.user_nickname, u.user_photo 
 	    FROM usermsg um

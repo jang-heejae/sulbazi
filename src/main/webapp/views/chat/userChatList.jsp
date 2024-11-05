@@ -74,6 +74,9 @@
 	    border-radius: 20px;
 	    overflow-y: auto; /* 수직 스크롤 활성화 */
 	}
+	form{
+	    height: 250px;
+	}
 	.chatroom{
         display: flex;
 	    flex-direction: column;
@@ -114,6 +117,11 @@
 	    height: 122px;
 	    border: 1px solid black;
 	    border-radius: 20px;
+    }
+    .createroom input{
+    	border: none;
+	    border-radius: 20px;
+	    padding: 2px;
     }
     .newroombtn:hover{
         cursor: pointer;
@@ -298,6 +306,107 @@ $(document).ready(function() {
 	var user_id = '${sessionScope.loginId}';
 	console.log(user_id);
 	
+	checkParticipantStatus();
+	 // 페이지 로드 시 검색어가 있을 경우
+    var storedQuery = localStorage.getItem('searchQuery'); // 로컬 스토리지에서 검색어 가져오기
+    if (storedQuery) {
+        $('.searchInput').val(storedQuery); // 검색창에 검색어 설정
+        search(storedQuery); // 저장된 검색어로 검색 수행
+    }
+
+    // input 검색창 엔터치면 동작
+    $('.searchInput').keydown(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault(); // 기본 동작 방지
+            var query = $('.searchInput').val().trim(); // 입력값 공백 제거
+            search(query); // 검색 함수 호출
+        }
+    });
+
+    // 검색 함수
+    function search(query) {
+        console.log(query);
+
+        if (query) {
+            localStorage.setItem('searchQuery', query); // 검색어를 로컬 스토리지에 저장
+            // AJAX 요청으로 검색 결과 가져오기
+            $.ajax({
+                url: './search.ajax',
+                method: 'GET',
+                data: { query: query }, // 검색어 서버에 전달
+                dataType: 'json',
+                success: function(response) {
+                    if (response.length > 0) {
+                        searchlist(response);
+                        checkParticipantStatus();
+                    } else {
+                        $('.chatitems').html('<p>검색 결과가 없습니다.</p>');
+                    }
+                },
+                error: function(error, status, xhr) {
+                    console.error("검색 실패:", error);
+                    $('.chatitems').html('<p>검색 중 오류가 발생했습니다.</p>');
+                }
+            });
+        } else {
+            $('.chatitems').html('<p>검색어를 입력하세요.</p>');
+        }
+    }
+    
+    function searchlist(response) {
+        var result= '';
+        
+        response.forEach(function(userchat) {
+            result += '<form action="userchatroom.go?idx=' + userchat.userchat_idx + '" method="post">';
+            result += '<div class="chatroom">';
+            result += '<div class="roomname">';
+            result += '<ul>';
+            result += '<li><input type="hidden" name="userchat_idx" value="' + userchat.userchat_idx + '" readonly/></li>';
+            result += '<li><input type="hidden" name="userchat_date" value="' + userchat.userchat_date + '" readonly/></li>';
+            result += '<li class="title">' + userchat.userchat_subject; 
+            result += '<input type="hidden" name="userchat_subject" value="' + userchat.userchat_subject + '" readonly/></li>';
+            result += '<li class="createduser">';
+            result += '<img src="/photo/' + userchat.user_photo + '" alt="프로필 사진" />' + userchat.user_nickname; 
+            result += '<input type="hidden" name="user_id" class="boss" value="' + userchat.user_id + '" readonly/>';
+            result += '</li>';
+            result += '</ul>';
+            result += '</div>';
+            result += '<div class="roominfo">';
+            result += '<div>';
+            result += '<ul>';
+
+            // 날짜를 년-월-일 형식으로 출력
+            var date = new Date(userchat.userchat_date);
+            var formattedDate = date.toISOString().split('T')[0]; // '년-월-일'만 추출
+
+            result += '<li class="userinfo">' + userchat.current_people + ' / ' + userchat.max_people; 
+            result += '<input type="hidden" name="current_people" value="' + userchat.current_people + '" readonly/>';
+            result += '<input type="hidden" name="max_people" value="' + userchat.max_people + '" readonly/>';
+            result += '</li>';
+            result += '<li>' + formattedDate + '</li>'; // 형식 변환된 날짜 추가
+            result += '</ul>';
+            result += '</div>';
+            result += '<button type="submit" class="gobtn" ';
+            result += 'data-user-id="' + ${sessionScope.loginId} + '" ';
+            result += 'data-chatroom-idx="' + userchat.userchat_idx + '">';
+            result += '참가 상태 확인 중...';
+            result += '</button>';
+            result += '</div>';
+            result += '</div>';
+            result += '</form>';
+        });
+
+
+        $('.chatitems').html(result);
+    }
+    
+    
+    $('.returnbtn').click(function() {
+        // 다른 페이지로 이동 시 검색어 삭제
+        localStorage.removeItem('searchQuery'); // 검색어 삭제
+        location.href = "userchatlist.go"; // 리스트 페이지로 이동
+    });
+    
     // 채팅방 취소 버튼
     $('.newroombtn, .cancel').click(function(){      
         var display = $('.createroom').css('display');
@@ -327,35 +436,37 @@ $(document).ready(function() {
  
 
     // 참가 상태를 확인    
-    $('.gobtn').each(function() {
-        var statusElement = $(this);
-        var user_id = statusElement.data('user-id');
-        var chatroom_idx = statusElement.data('chatroom-idx');
-        
-        // 참가 상태를 확인
-        $.ajax({
-            url: '/SULBAZI/userchek.ajax', 
-            type: 'POST',
-            data: {
-                user_id: user_id,
-                chatroom_idx: chatroom_idx
-            },
-            success: function(response) {
-              
-                if (response.partistate === 0) {
-                    statusElement.text("참가신청중");
-                } else if (response.partistate === 1) {
-                    statusElement.text("참가중");
-                } else {
-                    statusElement.text("참가하기");
-                }
-            },
-            error: function() {
-                console.log("참가 여부 확인 중 오류가 발생했습니다.");
-                statusElement.text("오류 발생");
-            }
-        });
-    }); 
+    function checkParticipantStatus() {
+	    $('.gobtn').each(function() {
+	        var statusElement = $(this);
+	        var user_id = statusElement.data('user-id');
+	        var chatroom_idx = statusElement.data('chatroom-idx');
+	        
+	        // 참가 상태를 확인
+	        $.ajax({
+	            url: '/SULBAZI/userchek.ajax', 
+	            type: 'POST',
+	            data: {
+	                user_id: user_id,
+	                chatroom_idx: chatroom_idx
+	            },
+	            success: function(response) {
+	              
+	                if (response.partistate === 0) {
+	                    statusElement.text("참가신청중");
+	                } else if (response.partistate === 1) {
+	                    statusElement.text("참가중");
+	                } else {
+	                    statusElement.text("참가하기");
+	                }
+	            },
+	            error: function() {
+	                console.log("참가 여부 확인 중 오류가 발생했습니다.");
+	                statusElement.text("오류 발생");
+	            }
+	        });
+	    }); 
+    }
     
     // 알림 아작스
     function sendNotification(newAlarm) {
@@ -470,89 +581,7 @@ $(document).ready(function() {
     
 	
     
-    // 페이지 로드 시 검색어가 있을 경우
-    var storedQuery = localStorage.getItem('searchQuery'); // 로컬 스토리지에서 검색어 가져오기
-    if (storedQuery) {
-        $('.searchInput').val(storedQuery); // 검색창에 검색어 설정
-        search(storedQuery); // 저장된 검색어로 검색 수행
-    }
-
-    // input 검색창 엔터치면 동작
-    $('.searchInput').keydown(function(event) {
-        if (event.keyCode === 13) {
-            event.preventDefault(); // 기본 동작 방지
-            var query = $('.searchInput').val().trim(); // 입력값 공백 제거
-            search(query); // 검색 함수 호출
-        }
-    });
-
-    // 검색 함수
-    function search(query) {
-        console.log(query);
-
-        if (query) {
-            localStorage.setItem('searchQuery', query); // 검색어를 로컬 스토리지에 저장
-            // AJAX 요청으로 검색 결과 가져오기
-            $.ajax({
-                url: './search.ajax',
-                method: 'GET',
-                data: { query: query }, // 검색어 서버에 전달
-                success: function(response) {
-                    if (response.length > 0) {
-                        searchlist(response);
-                    } else {
-                        $('.chatitems').html('<p>검색 결과가 없습니다.</p>');
-                    }
-                },
-                error: function(error, status, xhr) {
-                    console.error("검색 실패:", error);
-                    $('.chatitems').html('<p>검색 중 오류가 발생했습니다.</p>');
-                }
-            });
-        } else {
-            $('.chatitems').html('<p>검색어를 입력하세요.</p>');
-        }
-    }
-    
-    function searchlist(response) {
-        var result= '';
-        
-        response.forEach(function(userchat) {
-            result += '<form action="userchatroom.go?idx=' + userchat.userchat_idx + '" method="post">';
-            result += '<div class="chatroom">';
-            result += '<div class="roomname">';
-            result += '<ul>';
-            result += '<li><input type="hidden" name="userchat_idx" value="' + userchat.userchat_idx + '" readonly/></li>'; 
-            result += '<li><input type="hidden" name="userchat_date" value="' + userchat.userchat_date + '" readonly/></li>';
-            result += '<li>' + userchat.userchat_subject + '<input type="hidden" name="userchat_subject" value="' + userchat.userchat_subject + '" readonly/></li>';
-            result += '<li>' + userchat.user_id + '</li>';
-            result += '</ul>';
-            result += '</div>';
-            result += '<div class="roominfo">';
-            result += '<div>';
-            result += '<ul>';
-            result += '<li>' + userchat.current_people + '/' + userchat.max_people + '</li>';
-            result += '<li>' + userchat.userchat_date + '</li>';
-            result += '</ul>';
-            result += '</div>';
-            result += '<button type="submit" class="gobtn">참가</button>';
-            result += '</div>';
-            result += '</div>';
-            result += '</form>';
-        });
-
-        $('.chatitems').html(result);
-    }
-    
-    
-    $('.returnbtn').click(function() {
-        // 다른 페이지로 이동 시 검색어 삭제
-        localStorage.removeItem('searchQuery'); // 검색어 삭제
-        location.href = "userchatlist.go"; // 리스트 페이지로 이동
-    });
-    
-    
-    
+   
 });
 </script>
 </html>

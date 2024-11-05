@@ -16,30 +16,52 @@ $(document).ready(function() {
       location.replace('./userchatlist.go');
    }
    
-   
-    const sse = new EventSource("/sse/all");
-
+   // SSE(EventSource) 객체 생성
+    const sse = new EventSource("/SULBAZI/sse/all");
+    const sssse = new EventSource("/SULBAZI/sssse/all");
+    var eventSource = new EventSource('/SULBAZI/subscribe');
+    var eventSou = new EventSource('/SULBAZI/ssubscribe');
+    
     sse.addEventListener("newMessage", function(event) {
         loadMessages();
     });
 
-    sse.addEventListener("newuser", function(event) {
-        loadUserList();
+    sssse.addEventListener("newuser", function(event) {
+    	loadUserList();
     });
-   
-
-    // SSE(EventSource) 객체 생성
-    var eventSource = new EventSource('/SULBAZI/subscribe');
-
+    
     // 연결이 성공적으로 열리면 실행되는 핸들러
     eventSource.onopen = function() {
         console.log('Connection opened');
     };
 
-    // 오류가 발생하면 실행되는 핸들러
+    // 오류가 발생하면 실행되는 핸들러 - 메세지
+    sse.onerror = function(event) {
+        console.error('EventSource failed:', event);
+        setTimeout(function() {
+        	sse = new EventSource("/SULBAZI/sse/all");
+        }, 1000); // 1초 후 재연결 시도
+    };
+    // 오류가 발생하면 실행되는 핸들러 - 사용자 리스트
+    sssse.onerror = function(event) {
+        console.error('EventSource failed:', event);
+        setTimeout(function() {
+        	sssse = new EventSource("/SULBAZI/sssse/all");
+        }, 1000); // 1초 후 재연결 시도
+    };
+    // 오류가 발생하면 실행되는 핸들러 - 검색
     eventSource.onerror = function(event) {
         console.error('EventSource failed:', event);
-        // 추가적인 오류 처리 로직을 여기에 추가할 수 있습니다.
+        setTimeout(function() {
+        	eventSource = new EventSource('/SULBAZI/subscribe');
+        }, 1000); // 1초 후 재연결 시도
+    };
+    // 오류가 발생하면 실행되는 핸들러
+    eventSou.onerror = function(event) {
+        console.error('EventSource failed:', event);
+        setTimeout(function() {
+        	eventSou = new EventSource('/SULBAZI/ssubscribe');
+        }, 1000); // 1초 후 재연결 시도
     };
 
     // 'kick' 이벤트가 수신되면 실행되는 핸들러
@@ -47,7 +69,15 @@ $(document).ready(function() {
         alert(event.data);
         window.location.href = '/SULBAZI/userchatlist.go';
     });
+    
+ 	// 기존 SSE 연결 객체를 사용하여 공지사항 업데이트 이벤트 처리
+    eventSou.addEventListener('noticeUpdate', function(event) {
+    	var updatedNotice = event.data;
+        $('#noticeArea').text(updatedNotice); // 공지사항 영역 업데이트
+        alert('공지사항이 업데이트되었습니다.');
+    });
 
+ 	
    // 방장 권한 준다
    var userId = $('h2').data('userid').toString();
    var menu = $('.menu').css('display');
@@ -231,14 +261,15 @@ $(document).ready(function() {
 	             url: '/SULBAZI/reportuser.ajax',
 	             type: 'POST',
 	             data: {
-	                reported_id: reported_id,
-	                reporting_id: reporting_id,
+	                reported_id: reported_id,  // 신고받은사람
+	                reporting_id: reporting_id, // 신고한사람
 	                report_category: report_category,
 	                reported_idx: reported_idx,
 	                report_content: report_content                 
 	             },
 	             success: function(response) {
-	                 
+	            	 console.log("신고한사람 : "+reporting_id);			
+	     			 console.log("신고받은사람 : "+reported_id);
 	                 alert(reported_nick +' 신고 완료');
 	                 $('textarea[name="report_content"]').val('');
 	                 $('.reportuserform').hide();
@@ -258,6 +289,24 @@ $(document).ready(function() {
 	  
    });
 
+   // 알림 아작스
+   function sendNotification(newAlarm) {
+	    const receiverId = newAlarm.receiverId;
+
+	    // AJAX POST 요청을 통해 서버에 알림 전송
+	    $.ajax({
+	        type: 'POST',
+	        url: '/SULBAZI/notifications/send', // 알림을 전송할 서버 엔드포인트
+	        data: JSON.stringify(newAlarm),
+	        contentType: 'application/json',
+	        success: function(response) {
+	            console.log("알림이 성공적으로 전송되었습니다:", response);
+	        },
+	        error: function(e) {
+	            console.error("알림 전송 실패:", e);
+	        }
+	    });
+	}
    
    // 강퇴시킬거야~
    $(document).on('click', '.kickuser', function() {
@@ -270,7 +319,7 @@ $(document).ready(function() {
        console.log("강퇴당할방 "+chatroom_idx);
        
        function roomout() {
-    	    $.ajax({
+    	   $.ajax({
     	        type: 'POST',
     	        url: '/SULBAZI/notifications/chatroomout.ajax',
     	        data: {'user_id': user_id,  //수신자ID
@@ -334,7 +383,6 @@ $(document).ready(function() {
    
    var chatroom_idx = ${idx};
    var ownerId = '${userid}';
-   setInterval(loadUserList, 3000);
    
    function loadUserList() {
        $.ajax({
@@ -424,10 +472,10 @@ $(document).ready(function() {
     });
     
     
-    // 새 메세지를 불러오기
+    // 메세지를 불러오기
     var userchat_idx = ${idx};
     var ownerId = '${userid}';
-    setInterval(loadMessages, 2000);
+    
     function loadMessages() {
         $.ajax({
             url: '/SULBAZI/loadMessages.ajax',
@@ -670,33 +718,51 @@ $(document).ready(function() {
     }
     .notice{
        display: none;
-        position: absolute;    
-        top: 390px;
+       position: absolute;    
+       top: 390px;
        flex-direction: column;
        justify-content: center;
        align-items: center;
-       background-color: green;
+       background-color: rgb(255, 140, 9);
        width: 300px;
-       height: 180px;
+       height: 170px;
+       border-radius: 30px;
     }
     .noticearea{
-          width: 260px;
-         height: 100px;
+         width: 250px;
+         height: 110px;
+         border-radius: 15px;
+         padding: 5px;
     }
     .noticearea textarea{
        width: 85%;
         height: 100%;
         font-size: x-large;
     }
-    
     .roomedit{
-       display: none;
-          position: absolute;
-       top: 460px;
-       background-color: rgb(106, 106, 219);
-       width: 300px;
-        height: 120px;
+        display: none;
+	    position: absolute;
+	    top: 460px;
+	    background-color: rgb(255, 140, 9);
+	    width: 300px;
+	    height: 140px;
+	    flex-direction: column;
+	    justify-content: center;
+	    align-items: center;	
+	    border-radius: 25px;
     }    
+    .roomedit li{
+    	margin-bottom: 5px;
+    }
+    .roomeditFli input{
+    	border: none;
+    	border-radius: 10px;
+    	padding: 3px 0px 4px 6px;
+    }
+    .roominp{
+    	display: flex;
+    	justify-content: space-around;
+    }
     .reportuserform{
        display: none;
        width: 250px;
@@ -704,14 +770,28 @@ $(document).ready(function() {
        position: absolute;
        top: 400px;
        right: 0;
-       background-color: brown;
+       background-color: rgb(255, 140, 9);
        flex-direction: column;
        align-items: center;
        justify-content: center;
+       border-radius: 30px;
     }
     .reportuserform textarea{
-          width: 80%;
-       height: 70%;
+		width: 80%;
+        height: 70%;
+        border-radius: 15px;
+        padding: 5px;
+    }
+    .reportedit, .reportcancel, .notiedit, .noticancel, .edit, .cancel{
+    	background: white;
+	    border-radius: 15px;
+	    border: none;
+	    cursor: pointer;
+	    width: 60px;
+    }
+    .reportedit:hover, .reportcancel:hover, .notiedit:hover, .noticancel:hover, .edit:hover, .cancel:hover{
+    	cursor: pointer;
+    	font-weight: bold;
     }
     .msgform{
 		width: 580px;
@@ -857,17 +937,17 @@ $(document).ready(function() {
                                 <div class="roomedit">
                                    <c:forEach items="${roominfo}" var="roominfo">
                                <ul>
-                                  <li>
-                                      대화방 이름:<input type="text" name="userchat_subject" maxlength="20" value="${roominfo.userchat_subject}">
+                                  <li class="roomeditFli">
+                                      대화방 이름 : <input type="text" name="userchat_subject" maxlength="20" value="${roominfo.userchat_subject}">
                                   </li>
                                   <li class="roominp">
-                                       제한 인원:<input type="range" name="max_people" min="2" max="20" value="${roominfo.max_people}" oninput="document.getElementById('value2').innerHTML=this.value;">
+                                       제한 인원 : <input type="range" name="max_people" min="2" max="20" value="${roominfo.max_people}" oninput="document.getElementById('value2').innerHTML=this.value;">
                                        <p id="value2">${roominfo.max_people}</p>
                                   </li>
                                   <li>
                                      <input type="hidden" name="userchat_idx" value="${roominfo.userchat_idx}" readonly/>
                                   </li>
-                                  <li>
+                                  <li>공개여부 : 
                                      <input type="radio" name="userchat_state" value="1"
                                      <c:if test="${roominfo.userchat_state eq '1'}">checked</c:if>   
                                      />공개   
@@ -898,12 +978,12 @@ $(document).ready(function() {
                         </div>
                     </div>
                     <div class="msgform">
-                   <c:if test="${not empty roominfo}">
+                    <c:if test="${not empty roominfo}">
                        <c:forEach items="${roominfo}" var="roominfo">
                            <c:if test="${not empty roominfo.notice}">
                                <div class="noti">
                                    <i class="fas fa-bullhorn"></i>
-                                   <p>${roominfo.notice}</p>
+                                   <p id="noticeArea">${roominfo.notice}</p>
                                </div>
                            </c:if>
                        </c:forEach>
@@ -985,6 +1065,8 @@ $(document).ready(function() {
                   userchat_idx: userchat_idx
               },
               success: function(response){
+                 $('.notice').hide();
+                 $('textarea[name="notice"]').val('');
                  location.reload();
                  alert('수정 완료.');
               }, error: function(){
@@ -999,7 +1081,13 @@ $(document).ready(function() {
    
     // 방 정보 변경
     $('.roominfoupdate, .edit, .cancel').click(function(){
-       $('.roomedit').toggle();        
+       var display = $('.roomedit').css('display');
+       if (display == 'none'){
+           $('.roomedit').show();
+           $('.roomedit').css({'display':'flex'});
+       }else{
+           $('.roomedit').hide();
+       }
     });
     
        

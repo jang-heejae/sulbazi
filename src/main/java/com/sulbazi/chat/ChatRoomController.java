@@ -3,6 +3,7 @@ package com.sulbazi.chat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.w3c.dom.html.HTMLModElement;
 
@@ -34,6 +36,8 @@ public class ChatRoomController {
 	@Autowired ChatPartiService chatparti_ser;
 	@Autowired AlarmService alarm_ser;
 	@Autowired UserService user_ser;
+	
+	 private Map<String, SseEmitter> emitters = new ConcurrentHashMap<String, SseEmitter>();
 	
 	/* 개인 채팅방 리스트 */
 	@RequestMapping(value ="/userchatlist.go")
@@ -65,8 +69,10 @@ public class ChatRoomController {
 	@GetMapping(value ="/search.ajax")
 	@ResponseBody
 	public List<UserChatroomDTO> search(@RequestParam String query) {
-		logger.info(query);
-		return chatroom_ser.search(query);
+		logger.info("Search query: " + query);
+		List<UserChatroomDTO> resultList = chatroom_ser.search(query);
+		logger.info("resultList{}:",resultList);
+		return resultList;
 	}
 	
 	/* 개인 채팅방 생성 */
@@ -101,12 +107,39 @@ public class ChatRoomController {
 		return ResponseEntity.ok("Success");
 	}
 	
+	// SSE
+	@GetMapping(value="/ssubscribe")
+    public SseEmitter subscribe() {
+        SseEmitter emitter = new SseEmitter(0L);
+        String emitterId = "emitter-" + System.currentTimeMillis();
+        emitters.put(emitterId, emitter);
+
+        emitter.onCompletion(() -> emitters.remove(emitterId));
+        emitter.onTimeout(() -> emitters.remove(emitterId));
+
+        return emitter;
+    }
+	
 	/* 공지 등록, 수정 */
 	@PostMapping(value="/updatenotice.ajax")
 	@ResponseBody
 	public ResponseEntity<String> updatenotice(@RequestParam String notice, int userchat_idx){
 		chatroom_ser.updatenotice(notice, userchat_idx);
+		
+		// 공지사항 변경 사항을 SSE로 전송
+	    sendNoticeUpdate(notice);
+	    
 		return ResponseEntity.ok("Success");
+	}
+	/* 공지 SSE */
+	public void sendNoticeUpdate(String notice) {
+	    emitters.forEach((id, emitter) -> {
+	        try {
+	            emitter.send(SseEmitter.event().name("noticeUpdate").data(notice));
+	        } catch (Exception e) {
+	            emitters.remove(id);
+	        }
+	    });
 	}
 	
 	/* 개인 채팅방 삭제(비공개) */
