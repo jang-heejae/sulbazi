@@ -173,7 +173,7 @@ public class StoreController {
             // 응답 데이터 구성
             Map<String, Object> response = new HashMap<>();
             response.put("list", stores);
-            response.put("totalpages", totalPages);
+            response.put("totalPages", totalPages);
             response.put("photos", photoList);
             response.put("storeCategorys", storeCategorys);
             response.put("categoryOpts", categoryOpts);

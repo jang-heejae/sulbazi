@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,17 +79,42 @@ public class UserController {
     	return "user/userAlarm";
     }
     
-    @GetMapping(value="/userDetail.ajax")
-    @ResponseBody
+
+    @GetMapping(value="/userPopup.go")
     public String userDetail(String user_nickname, Model model) {
-    	log.info("가져온 유저 idx : " + user_nickname);
-    	user_ser.userDetail(user_nickname, model);
-    	return "user/userPopup";
+       log.info("가져온 유저 idx : " + user_nickname);
+       Map<String, Object> response = user_ser.userDetail(user_nickname);
+       model.addAttribute("info", response.get("info"));
+       model.addAttribute("category", response.get("category"));
+       return "user/userPopup";
+    }
+    //유저 아이콘 이미지 불러오는 함수
+    @GetMapping(value = "userLikeFind.ajax")
+    @ResponseBody
+    public Map<String, Object> userLike(@RequestParam Map<String, Object> params) {
+    	int row = user_ser.userLike(params);
+    	if (row == 0) {
+    	    row = 0; // 혹은 다른 기본 값으로 설정
+    	}
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map.put("success", row);
+    	
+    	return map;
     }
     
-    @RequestMapping(value="/userPopup.go")
-    public String wewe() {
-    	return "user/userPopup";
+    //유저 좋아요 눌럿을때 나오는 함수
+    @GetMapping(value = "insertLike.ajax")
+    @ResponseBody
+    public Map<String, Object> insertLike(@RequestParam Map<String, Object> params) {
+    	int row = user_ser.insertLike(params);
+    	if (row == 0) {
+    	    row = 0; // 혹은 다른 기본 값으로 설정
+    	}
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map.put("success", row);
+    	
+    	return map;
     }
+    
 	
 }

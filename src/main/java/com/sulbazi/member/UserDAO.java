@@ -48,6 +48,12 @@ public interface UserDAO {
 
 	List<HashMap<String, Object>> userGetCategory(List<Integer> opt_idx);
 
+	int userLike(Map<String, Object> params);
 
+	int insertLike(Map<String, Object> params);
+
+	int userLikeDel(Map<String, Object> params);
+
+	int userUpdateLike(Map<String, Object> params);
 	
 }

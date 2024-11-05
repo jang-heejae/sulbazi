@@ -163,23 +163,49 @@ public class UserService {
 	public UserDTO user(String user_id) {
 		return user_dao.user(user_id);
 	}
-	public void userDetail(String user_nickname, Model model) {
-		UserDTO userdto = user_dao.userDetail(user_nickname);
-		log.info("userDetail : {}", userdto);
-		model.addAttribute("info", userdto);
-		String user_id = userdto.getUser_id();
-		log.info("user_id : " + user_id);
+	// 유저 상세보기
+	public Map<String, Object> userDetail(String user_nickname) {
+	      Map<String, Object> response = new HashMap<String, Object>();
+	      UserDTO userdto = user_dao.userDetail(user_nickname);
+	      log.info("userDetail : {}", userdto);
+	      response.put("info", userdto);
+	      
+	      String user_id = userdto.getUser_id();
+	      log.info("user_id : " + user_id);
+	      
+	      List<HashMap<String, Object>> optList = user_dao.getUserCategories(user_id);
+	      List<Integer> optIdxList = new ArrayList<Integer>();
+	      
+	      for(HashMap<String, Object> opt : optList) {
+	         optIdxList.add((Integer) opt.get("opt_idx"));
+	      }
+	      
+
+	      List<HashMap<String, Object>> category = user_dao.userGetCategory(optIdxList);
+	      log.info("가져온 카테고리 번호 : {} ", category);
+	      response.put("category", category);
+	      
+	      return response;
+	   }
+	
+	//좋아요 눌럿는지 찾아보는 메서드
+	public int userLike(Map<String, Object> params) {
 		
-		List<HashMap<String, Object>> optList = user_dao.getUserCategories(user_id);
-		List<Integer> optIdxList = new ArrayList<Integer>();
-		for(HashMap<String, Object> opt : optList) {
-			optIdxList.add((Integer) opt.get("opt_idx"));
+		return user_dao.userLike(params);
+	}
+	//좋아요 누르는 메서드
+	public int insertLike(Map<String, Object> params) {
+			int row  = user_dao.userLike(params);
+		if (row >=1) {
+			int sow = user_dao.userLikeDel(params);
+			
+		}else {
+			int dow = user_dao.insertLike(params);
 		}
+		//유저테이블 업데이트 총 라이크 수
+		int how = user_dao.userUpdateLike(params);
 		
-		List<HashMap<String, Object>> category = user_dao.userGetCategory(optIdxList);
-		log.info("가져온 카테고리 번호 : {} ", category);
-		model.addAttribute("category", category);
-		
+		return row;
 	}
 	
 }
