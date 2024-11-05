@@ -124,8 +124,4 @@ public class BoardService {
 		return board_dao.getSearch(boardCategory, boardSearch);
 	}
 
-
-
-	
-
 }

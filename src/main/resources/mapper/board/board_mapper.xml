@@ -79,5 +79,5 @@
 			board_category = #{board_category}
 				WHERE board_idx = #{board_idx}
 	</update>
-	
+
 </mapper>

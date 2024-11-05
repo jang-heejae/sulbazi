@@ -41,7 +41,7 @@
 		text-align: center;
 		padding: 10px;
 	} 
-	button{
+	#addBtn{
 		background-color: rgb(255, 140, 9);
 		color: #041d03;
 		padding: 5px;
@@ -53,6 +53,43 @@
 	    display: flex;
     	flex-direction: column;
 	}
+.modal_madal {
+    display: none; /* 초기 상태에서 숨김 */
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 530px;
+    height: 336px; /* 모달 높이 설정 */
+    background-color: #041d03;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    color: #041d03;
+    text-align: center;
+    font-family: "Yeon Sung", system-ui;
+    overflow: auto; /* 내용이 넘칠 때 스크롤 */
+}
+
+.modal-content_madal {
+    padding: 20px;
+    text-align: center;
+    color: #041d03;
+}
+.close_madal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close_madal:hover,
+.close_madal:focus {
+    color: black;
+}
 </style>
 <body>
 <jsp:include page="../main/adminMain.jsp"/>
@@ -74,12 +111,18 @@
 			
 						</tbody>
 					</table>
-					<button onclick="window.open('<c:url value="adminDetail.go"/>', 'popup', 
-							'width=600,height=330'); return false;">관리자 추가</button>
+					<button id="addBtn" onclick="openModal(); return false;">관리자 추가</button>
 				</div>
 			</div>
 		</section>
 </body>
+<div id="adminModal" class="modal_madal" style="display:none;">
+    <div class="modal-content_madal">
+        <span class="close_madal" onclick="closeModal()">&times;</span>
+        <!-- JSP 내용을 불러올 위치 -->
+        <div id="modalContent"></div>
+    </div>
+</div>
 <script>
 listCall();
 	function listCall(){
@@ -113,12 +156,50 @@ listCall();
 		var content ='';
 		for (var item of list) {
 			content+='<tr>';
-			content += '<td><a href="#" onclick="window.open(\'<c:url value="/adminUpdate.do?admin_id=' + item.admin_id + '" />\', \'popup\', \'width=600,height=400\'); return false;">' + item.admin_id + '</a></td>';
+			content += '<td><a href="#" onclick="openAdminUpdateModal(\'' + item.admin_id + '\'); return false;">' + item.admin_id + '</a></td>';
 			content+='<td>'+item.admin_name+'</td>';
 			content+='<td>'+formatDate(item.admin_doc)+'</td>';
 			content+='</tr>';
 		}
         $('#list').html(content);
    }
+	function openAdminUpdateModal(admin_id) {
+	    $.ajax({
+	        url: "adminUpdate.do",
+	        method: "GET",
+	        data: { admin_id: admin_id }, // 전달할 데이터
+	        success: function(data) {
+	            // 받은 데이터를 모달에 삽입
+	            $('#modalContent').html(data);
+	            $('#adminModal').css('display', 'block'); // 모달 표시
+	        },
+	        error: function() {
+	            alert("모달 내용을 불러오는 데 실패했습니다.");
+	        }
+	    });
+	}
+	function openModal() {
+	    $.ajax({
+	        url: "adminDetail.go", // 불러올 JSP 파일 경로
+	        method: "GET",
+	        success: function(data) {
+	            // 불러온 JSP 내용을 모달에 삽입
+	            $('#modalContent').html(data);
+	            $('#adminModal').css('display', 'block');
+	        },
+	        error: function() {
+	            alert("모달 내용을 불러오는 데 실패했습니다.");
+	        }
+	    });
+	}
+	$('#closeModal').off('click').on('click', function() {
+        $('#adminModal').css('display', 'none'); // 모달 숨기기
+        window.location.reload();
+    });
+	function closeModal() {
+	    $('#adminModal').css('display', 'none');
+	    window.location.reload();
+	}
+	
 </script>
 </html>

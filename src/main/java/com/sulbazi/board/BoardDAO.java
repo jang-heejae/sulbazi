@@ -2,6 +2,7 @@ package com.sulbazi.board;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -35,9 +36,5 @@ public interface BoardDAO {
 	int allCount(int cnt_);
 
 	List<BoardDTO> getSearch(String boardCategory, String boardSearch);
-
-
-
-
 
 }

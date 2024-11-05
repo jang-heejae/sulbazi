@@ -33,6 +33,7 @@
     	margin-top: 140px;
     	font-family: "Yeon Sung", system-ui;
     	flex-direction: row;
+    	border: 2px solid rgb(255, 140, 9);
 	}
 	#storeSearch2{
 		width: 283px;

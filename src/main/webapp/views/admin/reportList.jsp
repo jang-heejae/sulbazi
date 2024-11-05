@@ -36,6 +36,7 @@
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 140px; 
     	font-family: "Yeon Sung", system-ui;
+    	border: 2px solid rgb(255, 140, 9);
 	}
 	input[type="radio"] {
         appearance: none; /* 기본 스타일 제거 */
@@ -83,7 +84,6 @@
 		border-bottom: 1px solid rgb(255, 140, 9);
 	}
 	#reportList{
-	    margin-bottom: 25px;
 	    position: relative;
 	}
 	.pagination {
@@ -139,9 +139,24 @@
     	max-width: 54%;
     	display: inline-block;
 	}
-	hr{
-	    background-color: white;
-    	width: 297%;
+	.reportUl{
+		display: flex;
+    	flex-direction: row;
+    	align-items: center;
+    	font-size: 48px;
+    	color: #041d03;
+    	width: 310%;
+    	justify-content: center;
+	}
+	#reportUl{
+		display: flex;
+    	flex-direction: row;
+    	align-items: center;
+	}
+	.reportIcon{
+		width: 54px;
+	    height: 54px;
+		color: rgb(255, 140, 9);
 	}
 </style>
 </head>
@@ -150,16 +165,21 @@
 	<section class="chatBox2">
         <div class="chatitems2">
 	<div id="reportList">
-		<h3>신고 목록</h3>
-		<hr/>
-		<input type="radio" name="report_state" value="all" checked/>전체 보기&nbsp;&nbsp;
-		<input type="radio" name="report_state" value="0"/>처리 중&nbsp;&nbsp;
-		<input type="radio" name="report_state" value="1"/>처리 완료
-		<br/>
-		<input type="radio" name="report_category" value="all" checked/> 전체 보기&nbsp;&nbsp;
-		<input type="radio" name="report_category" value="리뷰"/>리뷰&nbsp;&nbsp;
-		<input type="radio" name="report_category" value="개인 메시지"/>개인 메시지&nbsp;&nbsp;
-		<input type="radio" name="report_category" value="지역 메시지"/>지역 메시지
+		<ul class="reportUl">
+			<li>신고 목록</li>
+			<li><img class="reportIcon" src="resources/img/siren.png"/></li>
+		</ul>
+		<ul id="reportUl">
+			<li><input type="radio" name="report_state" value="all" checked/> 전체 보기</li> &nbsp;&nbsp;
+			<li><input type="radio" name="report_state" value="0"/> 처리 중 </li> &nbsp;&nbsp;
+			<li><input type="radio" name="report_state" value="1"/> 처리 완료 </li>
+		</ul>
+		<ul id="reportUl">
+			<li><input type="radio" name="report_category" value="all" checked/> 전체 보기<li>&nbsp;&nbsp;
+			<li><input type="radio" name="report_category" value="리뷰"/>리뷰<li>&nbsp;&nbsp;
+			<li><input type="radio" name="report_category" value="개인 메시지"/>개인 메시지<li>&nbsp;&nbsp;
+			<li><input type="radio" name="report_category" value="지역 메시지"/>지역 메시지<li>
+		</ul>
 	</div>
 	<div id="reportDiv">
 	<table>

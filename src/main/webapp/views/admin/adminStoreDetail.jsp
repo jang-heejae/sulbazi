@@ -32,6 +32,7 @@
     	padding: 20px; /* 내부 여백 추가 */
     	margin-top: 140px; 
     	font-family: "Yeon Sung", system-ui;
+    	border: 2px solid rgb(255, 140, 9);
 	}
 		input[type="radio"] {
         appearance: none; /* 기본 스타일 제거 */

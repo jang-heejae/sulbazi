@@ -30,6 +30,7 @@
     	margin-top: 140px; 
     	font-family: "Yeon Sung", system-ui;
     	font-weight: normal;
+    	border: 2px solid rgb(255, 140, 9);
 	}
 	.userProfile {
         display: flex;

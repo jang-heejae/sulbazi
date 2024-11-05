@@ -36,6 +36,7 @@
     	font-family: "Yeon Sung", system-ui;
     	color:#20290E;
 		font-weight: normal;
+		border: 2px solid rgb(255, 140, 9);
 	}
 	#reportDiv{
 		display: block;
@@ -84,8 +85,8 @@
 	    font-family: "Yeon Sung", system-ui;
 	}
 	#textA {
-		margin-right: -1366px;
-    	margin-left: -581px;
+	    margin-right: -1488px;
+    	margin-left: -646px;
 	}
 	li:has(#textA){
 		margin-bottom: 10px;
@@ -222,7 +223,7 @@
         <div class="chatitems2">
     <div id="reportDiv">
         <input type="hidden" name="report_idx" value="${info.report_idx}"/>
-        <h1 style="color:rgb(255, 140, 9); font-size:48px;">신고 상세보기</h1>
+        <h1 style="color:rgb(255, 140, 9); font-size:48px; -webkit-text-stroke: 1px #20290E;">신고 상세보기</h1>
         <hr/>
     </div>
     <br/>

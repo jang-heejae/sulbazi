@@ -61,7 +61,7 @@
 	option{
 		font-family: "Yeon Sung", system-ui;
 	}
-		.modal_madal {
+	.modal_madal2 {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -80,7 +80,7 @@
     font-family: "Yeon Sung", system-ui;
 }
 
-.modal-content_madal {
+.modal-content_madal2 {
     padding: 20px;
     text-align: center;
     color: #041d03;
@@ -88,7 +88,7 @@
     border-radius: 10px;
 }
 
-.btn_madal {
+.btn_madal2 {
     background-color: rgb(255, 140, 9);
     color: #041d03;
     padding: 10px 20px;
@@ -100,12 +100,12 @@
     font-family: "Yeon Sung", system-ui;
 }
 
-.btn_madal:hover {
+.btn_madal2:hover {
     background-color: #20290E;
     color: white;
 }
 
-.close_madal {
+.close_madal2 {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -113,8 +113,8 @@
     cursor: pointer;
 }
 
-.close_madal:hover,
-.close_madal:focus {
+.close_madal2:hover,
+.close_madal2:focus {
     color: black;
 }
 </style>
@@ -143,46 +143,45 @@
 		</tr>
 	</table>
 		<button type="button" id="acps" class="acp">카테고리 추가</button>
-		<button class="acp" onclick="window.close();">닫기</button>
+		<button type="button" class="acp" onclick="closeModal2()">닫기</button>
 	</div>
 	</form>
 </body>
-<div id="confirmationModal" class="modal_madal">
-    <div class="modal-content_madal">
-        <span class="close_modal" id="closeModal">&times;</span>
-        <p id="confirmationMessage"></p>
-        <button type="button" class="btn_madal" id="confirmAction">확인</button>
-        <button type="button" class="btn_madal" id="cancelAction">취소</button>
+<div id="confirmationModal2" class="modal_madal2">
+    <div class="modal-content_madal2">
+        <span class="close_modal2" id="closeModal2">&times;</span>
+        <p id="confirmationMessage2"></p>
+        <button type="button" class="btn_madal2" id="confirmAction2">확인</button>
+        <button type="button" class="btn_madal2" id="cancelAction2">취소</button>
     </div>
 </div>
 <script>
 $(document).ready(function() {
     // 모달을 표시하는 이벤트 등록
     $('#acps').on('click', function() {
-        $('#confirmationMessage').text('추가하시겠습니까?');
-        $('#confirmationModal').css('display', 'block'); // 모달을 보이도록 설정
+        $('#confirmationMessage2').text('추가하시겠습니까?');
+        $('#confirmationModal2').css('display', 'block'); // 모달을 보이도록 설정
     });
 
     // 확인 버튼 클릭 시 폼 제출
-    $('#confirmAction').off('click').on('click', function() {
+    $('#confirmAction2').off('click').on('click', function() {
         // 모달 숨기기
-        $('#confirmationModal').css('display', 'none');
+        $('#confirmationModal2').css('display', 'none');
 
          // 폼을 제출하고, 부모 창을 새로고침한 후 현재 창 닫기
         $('form')[0].submit(); // 폼 제출
 
         window.opener.location.reload();
-
-         // 현재 창 닫기
-        setTimeout(function() {
-            window.close();
-        }, 200); 
+ 
     });
 
     // 취소 버튼 클릭 시 모달 닫기
-    $('#cancelAction, #closeModal').off('click').on('click', function() {
-        $('#confirmationModal').css('display', 'none'); // 모달 숨기기
+    $('#cancelAction2, #closeModal2').off('click').on('click', function() {
+        $('#confirmationModal2').css('display', 'none'); // 모달 숨기기
     });
 });
+function closeModal2() {     // adminAdd 영역 숨기기
+    $('#adminModal').css('display', 'none'); // 확인 모달도 함께 숨기기
+}
 </script>
 </html>

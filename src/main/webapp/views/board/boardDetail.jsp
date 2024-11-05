@@ -118,6 +118,8 @@
 </c:choose>
     <div class="boardlist">
        <div class="bboard">
+       <input type="hidden" id="board_idx" value="${info.board_idx}">
+    	<input type="hidden" id="user_id" value="${sessionScope.loginId}">
          <table>
             <tr>
                <th class="category">${info.board_category}</th>
@@ -175,85 +177,6 @@
     </div>
 </body>
 <script>
-//main_menu 클릭 이벤트
-document.querySelectorAll('.main_menu').forEach(function(menu) {
-    menu.addEventListener('click', function() {
-        var fullElement = document.querySelector('.full');
-        var displayfull = window.getComputedStyle(fullElement).display;
-
-        if (displayfull === 'none') {
-            // .full2, .sub_, .sub_1 숨기기
-            document.querySelectorAll('.full2, .sub_, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .full 클래스 요소를 flex로 설정
-            fullElement.style.display = 'flex';
-        } else {
-            // .full 클래스 요소 숨기기
-            fullElement.style.display = 'none';
-        }
-    });
-});
-
-// mypage 클릭 이벤트
-document.querySelectorAll('.mypage').forEach(function(mypage) {
-    mypage.addEventListener('click', function() {
-        var full2Element = document.querySelector('.full2');
-        var displayfull2 = window.getComputedStyle(full2Element).display;
-
-        if (displayfull2 === 'none') {
-            // .full, .sub_, .sub_1 숨기기
-            document.querySelectorAll('.full, .sub_, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .full2 클래스 요소를 flex로 설정
-            full2Element.style.display = 'flex';
-        } else {
-            // .full2 클래스 요소 숨기기
-            full2Element.style.display = 'none';
-        }
-    });
-});
-
-// fa-message 클릭 이벤트
-document.querySelectorAll('.fa-message').forEach(function(message) {
-    message.addEventListener('click', function() {
-        var sub1Element = document.querySelector('.sub_1');
-        var displaysub_1 = window.getComputedStyle(sub1Element).display;
-
-        if (displaysub_1 === 'none') {
-            // .full, .full2, .sub_ 숨기기
-            document.querySelectorAll('.full, .full2, .sub_').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .sub_1 클래스 요소 보이기
-            sub1Element.style.display = 'block';
-        } else {
-            // .sub_1 클래스 요소 숨기기
-            sub1Element.style.display = 'none';
-        }
-    });
-});
-
-// fa-bell 클릭 이벤트
-document.querySelectorAll('.fa-bell').forEach(function(bell) {
-    bell.addEventListener('click', function() {
-        var subElement = document.querySelector('.sub_');
-        var displaysub = window.getComputedStyle(subElement).display;
-
-        if (displaysub === 'none') {
-            // .full, .full2, .sub_1 숨기기
-            document.querySelectorAll('.full, .full2, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .sub_ 클래스 요소 보이기
-            subElement.style.display = 'block';
-        } else {
-            // .sub_ 클래스 요소 숨기기
-            subElement.style.display = 'none';
-        }
-    });
-});
 
 $.ajax({
    type: 'GET',
@@ -273,23 +196,21 @@ $.ajax({
    }
 });
 
-$(document).on('click', '.like-button', function() {
-    var boardIdx = $(this).data('board_idx'); // 해당 게시물의 board_idx 가져오기
-    var userId = $('user_id').val(); // 사용자 ID 가져오기 (예: 숨겨진 input에서)
+$('.like-button').on('click', function() {
+    var boardIdx = $('#board_idx').val(); // 해당 게시물의 board_idx 가져오기
+    var userId = $('#user_id').val(); // 사용자 ID 가져오기 (예: 숨겨진 input에서)
 
     $.ajax({
         url: 'boardlike.ajax', // 좋아요를 처리할 URL
-        type: 'POST',
+        type: 'GET',
         data: {
             board_idx: boardIdx,
             user_id: userId // user_id를 전송
         },
-        success: function(response) {
-            // 성공적으로 처리된 후의 행동
-            if (response.success) {
-                alert('좋아요가 등록되었습니다.');
-            } else {
-                alert('좋아요 등록에 실패했습니다.');
+        success: function(data) {
+			console.log(data);
+			if (data.response) {
+				$('#likeCount').text(data.response.likeCount);
             }
         },
         error: function(xhr, status, error) {

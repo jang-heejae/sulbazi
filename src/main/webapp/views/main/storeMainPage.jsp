@@ -6,6 +6,7 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 	#mainSearchBar{
 		position: absolute;
 		top: 120px;
@@ -47,6 +48,7 @@
     	background-color: #041d03;
     	border-radius: 20px;
     	padding: 20px; /* 내부 여백 추가 */
+    	font-family: "Yeon Sung", system-ui;
 	}
 	.store{
 		background-color: #73734F;

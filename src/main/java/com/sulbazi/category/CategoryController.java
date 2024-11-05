@@ -43,7 +43,7 @@ Logger logger = LoggerFactory.getLogger(getClass());
 	public String categoryAdd(@RequestParam Map<String, String>param, Model model) {
 		String msg = category_ser.categoryAdd(param);
 		model.addAttribute("list", msg); 
-		return "admin/categoryAdd";
+		return "admin/categoryUpdate";
 	 }
 	@PostMapping(value="/categoryState.ajax")
 	@ResponseBody
