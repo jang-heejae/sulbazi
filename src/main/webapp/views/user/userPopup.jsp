@@ -87,6 +87,14 @@
         	width: 90px;
         	font-size: 20px;
         }
+        .jongwonIcon{
+        	width: 25px;
+        	height: 25px;
+        	margin: 0 0 0 0;
+        	position: relative;
+        	top: 2px;
+        	left: -10px;
+        }
     </style>
 </head>
 <body>
@@ -115,7 +123,10 @@
 				            	<button class="gendergirl"><span class="girl">♀</span>&nbsp;${info.user_gender}</button> 
 				            </c:when>
 				         </c:choose>
-				         <button class="like">좋아요</button> 
+				         <button class="like" id="userLike" onclick="clickLike()">
+				         	
+				        	좋아요
+				         </button> 
                     </td>
                 </tr>
                 <tr>
@@ -133,5 +144,83 @@
     </div>
 </body>
 <script>
+//좋아요 눌럿는지 처음 체크
+
+$(document).ready(function() {
+	userCheck();
+});
+	var loginId = '${sessionScope.loginId}';
+	var userId = '${info.user_id}';
+	console.log('로그인아이디 : '+loginId);
+	console.log('유저아이디 : '+userId);
+
+	
+	function userCheck(){
+		console.log('유저아이디 : '+userId);
+		$.ajax({
+				type:'GET', 
+				url: '/SULBAZI/userLikeFind.ajax',
+				data:{
+					'userId':userId,
+					'loginId':loginId
+				},
+				dataType:'JSON',
+				success:function(data){
+					if (data.success >0) {
+						doLike()
+					}else{
+						dontLike()
+					}
+				},
+				error:function(e){
+					console.log(e);
+					alert("좋아요불러오기 실패하셨습니다. 다시 확인해 주세요.");
+				}
+			});
+	
+	}		
+ 	  
+	
+	
+	function doLike(){
+		$('#userLike').empty();
+		var content ='';
+			content +='<img class="jongwonIcon" src="resources/img/이종원 좋아요후.png">좋아요';
+		$('#userLike').html(content);
+	};
+	function dontLike(){
+		$('#userLike').empty();
+		var content ='';
+			content +='<img class="jongwonIcon" src="resources/img/이종원 좋아요전.png">좋아요';
+		$('#userLike').html(content);
+	};
+	
+	function clickLike(){
+		$.ajax({
+			type:'GET', 
+			url: '/SULBAZI/insertLike.ajax',
+			data:{
+				'userId':userId,
+				'loginId':loginId
+			},
+			dataType:'JSON',
+			success:function(data){
+				if (data.success >=1) {
+					doLike();
+				}else{
+					dontLike();
+				}
+			},
+			error:function(e){
+				console.log(e);
+				alert("좋아요를 실패하셨습니다. 다시 확인해 주세요.");
+			}
+		});
+	}
+	
+	
+	
+	
+
 </script>
 </html>

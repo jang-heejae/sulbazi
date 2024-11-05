@@ -71,18 +71,18 @@
 	</select>
 	
 	<!-- 유저 상세보기 -->
-	<select id="userDetail" resultType="com.sulbazi.member.UserDTO">
-		SELECT * FROM user where user_nickname = #{param1}
-	</select>
+<select id="userDetail" resultType="com.sulbazi.member.UserDTO">
+      SELECT * FROM user where user_nickname = #{param1}
+</select>
 	
-	<select id="userGetCategory" resultType="hashMap">
+   <select id="userGetCategory" resultType="hashMap">
     SELECT * 
     FROM category_opt 
     WHERE opt_idx IN 
-	    <foreach item="item" index="index" collection="opt_idx" open="(" separator="," close=")">
-	        #{item}
-	    </foreach>
-	</select>
+       <foreach item="item" index="index" collection="opt_idx" open="(" separator="," close=")">
+           #{item}
+       </foreach>
+   </select>
 
 	
 	<!-- 채팅 신고 기능 -->
@@ -100,5 +100,34 @@
 	<select id="user" resultType="com.sulbazi.member.UserDTO">
 		SELECT user_nickname, user_photo FROM user WHERE user_id = #{user_id}
 	</select>
+	
+	<!-- 유저 좋아요 눌렀는지 찾기 -->
+	<select id="userLike" parameterType="map" resultType="int">
+	    SELECT count(user_id) 
+	    FROM user_like 
+	    WHERE user_id = #{loginId} AND pressed_id = #{userId}
+	</select>
+	
+	<!-- 유저 좋아요 누를때 인서트 되는 것 -->
+	<insert id="insertLike" parameterType="map">
+		INSERT INTO user_like(user_id,pressed_id)
+			VALUES (#{loginId},#{userId});
+	</insert>
+	<!-- 유저 좋아요 삭제 -->
+	<delete id="userLikeDel" parameterType="map">
+		DELETE FROM user_like WHERE user_id = #{loginId} AND pressed_id = #{userId};
+	</delete>
+	<!-- 유저 테이블 총라이크 업데이트 -->
+	<update id="userUpdateLike" parameterType="map">
+		UPDATE user
+		SET user_likecount = (
+		    SELECT COUNT(pressed_id) 
+		    FROM user_like 
+		    WHERE pressed_id = #{userId}
+		)
+		WHERE user_id = #{userId};
+	</update>
+	
+	
 	
 </mapper>

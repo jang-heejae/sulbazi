@@ -272,5 +272,4 @@ document.querySelectorAll('.fa-bell').forEach(function(bell) {
 
 
 </script>
-
 </html>

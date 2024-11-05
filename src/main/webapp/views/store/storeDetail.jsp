@@ -111,9 +111,12 @@
 				width:25px;
 				display:inline ;
 			}
+			/* 홍보 게시판 */
 			table.somw{
 				width: 95%;
 				margin: 0 20px;
+				background-color: F9F0E6;
+				border-radius: 15px;
 			}
 			.address{
 				margin: 0 0 30px 0;
@@ -134,6 +137,7 @@
 			.mapwhatname{
 				margin: 0 0 80px 0 ;
 				border-radius: 8px;
+				display: flex;
 			}
 			main{
 				display: flex;
@@ -147,11 +151,12 @@
 			
 	section.review-gragory{
 		width: 100%;
+
 	}
 	
     #review-section {
-    	width:100%;
-        border-collapse: collapse;
+	    margin: 0 auto; /* 수평 중앙 정렬 */
+	    width: 95%;     /* 필요에 따라 너비 설정 */
        
     }
     .profile{
@@ -180,6 +185,7 @@
         margin: 10px 10px 10px 10px;
         padding: 5px 24px;
         border-radius: .25rem;
+        border: 4px solid rgba(0, 0, 0, 0);
     }
     
 *{
@@ -234,9 +240,7 @@ img.review-photo{
 }
 			
 .reply-btn > button {
-    box-shadow: 0px 0px 3px 0px gray;
-    margin: -4px 14px 13px 3px;
-    border: 1px solid black;
+    box-shadow: 0px 0px 7px 0px gray;
     
 }
   .reply-btn > button:hover{
@@ -379,6 +383,8 @@ img.review-photo{
     
  /* 좋아요 버튼 */
  .btn-like {
+  position:relative;
+  top: 7px;
   border-radius: 4px;
   background-color: #f4511e;
   border: none;
@@ -386,16 +392,15 @@ img.review-photo{
   text-align: center;
   font-size: 28px;
   padding: 0px;
-  margin:1px 1px 1px 1px;
   width: 117px;
   transition: all 0.5s;
   cursor: pointer;
-  margin: 5px;
+  margin:1px 1px 1px 19px;
 }
 
 .btn-like span {
   cursor: pointer;
-  display: inline-block;
+  display: flow;
   position: relative;
   transition: 0.5s;
 }
@@ -426,6 +431,14 @@ img.review-photo{
 	width: 100%;
 	height: 100%;
 }
+#menuId > button{
+	margin: 10px 10px 10px 54px;
+}
+#menuId > button:hover{
+	border: 4px solid #8677db;
+	border-radius: 15px;
+	
+}
 /* 영업시간 */
 #timeStamp{
 	margin-right: 50px;
@@ -438,7 +451,7 @@ img.review-photo{
 	height: 100%;
 }
 #line{
-	width: 90%;
+	width: 100%;
 	height: 1px;
 	background-color: black;
 	display: block;
@@ -448,8 +461,67 @@ img.review-photo{
 }
 /* 수정 삭제 버튼 위치 조정 */
 #user-check{
-	margin: 1px 1px 1px 1px;
+	margin: 1px 13px 12px 24px;
 }
+/* 검색바 */
+    .search-container {
+        display: flex;
+        align-items: center;
+        width: 610px;
+        margin: 20px auto;
+        left: 630px;
+        position: absolute;
+        top: 100px;
+    }
+    
+        .search-wrapper {
+        margin-left: 10px;
+    }
+    
+        .search-input {
+        width: 450px;
+        padding: 8px 40px 8px 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+    }
+    
+        .search-button {
+        position: absolute;
+        background-color: rgb(255, 140, 9);
+        border: none;
+        border-radius: 20px;
+        width: 54px;
+        height: 42px;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+    
+        .search-button:hover {
+        background-color: rgb(255, 120, 0);
+    }
+    
+        .searchicon {
+        width: 25px;
+    }
+    #somesearch{
+    	display: flex;
+    	position: absolute;
+    	margin: 1px 1px 1px 1px;
+    	
+    }
+        .search-select {
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+    }
+    
+    
+
+
+    
 
 
 
@@ -457,7 +529,7 @@ img.review-photo{
     </head>
     
     <body>
-    <c:choose>
+<c:choose>
     <c:when test="${sessionScope.opt == 'admin_log'}">
         <jsp:include page="../main/adminMain.jsp" />
     </c:when>
@@ -468,7 +540,27 @@ img.review-photo{
         <jsp:include page="../main/storeMain.jsp" />
     </c:when>
 </c:choose>
+
+
+	<form id="somesearch">
+       <div class="search-container">
+           <select class="search-select" id="searchCategory">
+               <option value="menu">메뉴</option>
+               <option value="name">매장이름</option>
+               <option value="addr">매장 주소</option>
+           </select>
+           <div class="search-wrapper">
+               <input type="text" class="search-input" id="searchQuery" placeholder="검색어를 입력하세요">
+               <button id="performSearch" class="search-button" type="button" >
+                  <img class="searchicon" alt="serchicon" src="resources/img/serchicon.png">
+               </button>
+           </div>
+       </div>
+   </form>
+   
         <main>
+        
+
             <!-- 지도 영역 -->
             <div class="mapwhatname" id="map" style="width:789px;height:320px;"></div>
         
@@ -535,8 +627,8 @@ img.review-photo{
 	                    	<tr>
 	                    		<td>${board.board_category}</td>
 	                    		<td>
-	                    			<img class="icon" src="resources/img/img.png"/>
-	                    			<a href="#" style="display: inline-block; color: black;">${board.board_subject}</a>
+	                    			<!-- <img class="icon" src="resources/img/img.png"/> -->
+	                    			<a href="boardDetail.go?board_idx=${board.board_idx}" style="display: inline-block; color: purple;;">${board.board_subject}</a>
 	                    		</td>
 	                    		<td>${board.board_date}</td>
 	                    	</tr>
@@ -550,8 +642,8 @@ img.review-photo{
                 <!-- 메뉴정보 페이징 처리-->
                 <div id="menuId">
                     <h3>메뉴</h3>
-				    <button onclick="location.href='menu.do?storeidx=${store.store_idx}'">안주</button>
-				    <button onclick="location.href='menu2.do?storeidx=${store.store_idx}'">술종류</button>
+				    <button class="btn-light action-button" onclick="location.href='menu.do?storeidx=${store.store_idx}'">안주</button>
+				    <button class="btn-light action-button" onclick="location.href='menu2.do?storeidx=${store.store_idx}'">술종류</button>
                 </div>			
                 <!-- 사진 내외부 사진-->
                 <div id="inoutphoto">
@@ -898,14 +990,19 @@ img.review-photo{
  			    } 
  			 	content += '<button id="user-check" class="action-button btn-light hide" onclick="reviewUpdate(this,' + idx + ',' + review.review_idx + ')">수정</button>';
  			 	
- 			 	content += '<button type="button" class="btn btn-warning ttt" data-toggle="modal" ';
+ 			 	
+ 			 	/* 신고하기 버튼  */
+ 			 	if (review.user_id != loginId) {
+					
+ 			 	content += '<button type="button" class="btn btn-warning action-button" data-toggle="modal" ';
  			 	content += 'data-target="#exampleModalCenter" data-reported-id="' + review.user_id + '" ';
  			 	content += 'data-reporting-id="' + loginId + '" data-report-category="리뷰" data-reported-idx="' + review.review_idx + '">신고하기</button>';
+				}
 
 			 	if (review.user_id == loginId) {
- 			 	content += '<button id="user-check" class="action-button btn-light" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
+ 			 	content += '<button id="user-check" class="action-button btn-light tttt" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
 			 	}
- 			 	content += '<button id="user-check" class="action-button btn-light hide" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
+ 			 	content += '<button id="user-check" class="action-button btn-light hide tttt" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
  			 	
  			 	
  			 	content += '<div id="line"></div></td></tr>';

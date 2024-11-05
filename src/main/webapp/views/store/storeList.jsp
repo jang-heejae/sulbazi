@@ -6,8 +6,8 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"/>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <script src="resources/jquery.twbsPagination.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <style>
     body {
         background-color: #041d03;
@@ -336,7 +336,7 @@ function pageCall(page) {
                 drawMarkers(data.list);
                 $('#pagination').twbsPagination({
                     startPage: 1,
-                    totalPages: data.totalpages,
+                    totalPages: data.totalPages,
                     visiblePages: 5,
                     onPageClick: function(evt, page) {
                         pageCall(page);
@@ -460,7 +460,11 @@ $('#filtering').click(function() {
     var food = $(':input:radio[name=food]:checked').val();
     var mood = $(':input:radio[name=mood]:checked').val();
     var visit = $(':input:radio[name=visit]:checked').val();
-    $('#pagination').twbsPagination('destroy');
+    
+    //페이징 존재여부
+    if ($.fn.twbsPagination) {
+        $('#pagination').twbsPagination('destroy');
+    }
     $('#list').empty();
     storeListPage(alchol, food, mood, visit, 1);
 });
