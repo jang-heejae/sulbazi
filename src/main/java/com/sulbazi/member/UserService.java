@@ -201,11 +201,9 @@ public class UserService {
 			
 		}else {
 			int dow = user_dao.insertLike(params);
-		}
 		//유저테이블 업데이트 총 라이크 수
 		int how = user_dao.userUpdateLike(params);
-		
+		}
 		return row;
 	}
-	
 }

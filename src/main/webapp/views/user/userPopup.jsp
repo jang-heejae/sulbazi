@@ -221,7 +221,6 @@ $(document).ready(function() {
 	
 	
 	
-	//좋아요 눌렀을때 처리 
 
 </script>
 </html>
