@@ -10,10 +10,21 @@
 <body>
     <jsp:include page="../user/sendAlarm.jsp" />
     <h2>알림</h2>
+	<div class="stateselect">
+		<fieldset>
+			<input type="radio" name="alarmread" value="0" checked/> 안읽음<br/>
+			<input type="radio" name="alarmread" value="1"/>읽음<br/>
+		</fieldset>
+	</div>
+    <div class="stateselect">
+		<fieldset>
+			<input type="radio" name="alarm" value="3"checked/> 대화방<br/>
+			<input type="radio" name="alarm" value="4"/>즐겨찾기<br/>
+			<input type="radio" name="alarm" value="6"/>고객센터<br/>
+		</fieldset>
+	</div>
+	<button id="submitButton">확인</button>
     <div id="notification"></div>
-    <button type="button" onclick="chatroommanager()">수락거절 테스트</button>
-    
-
     <script>
             //displayNotifications(); // 화면에 표시
 
@@ -21,6 +32,77 @@
 
 </body>
 <script>
+
+document.getElementById('submitButton').addEventListener('click', function() {
+    const alarmreadValue = document.querySelector('input[name="alarmread"]:checked')?.value;
+    const alarmValue = document.querySelector('input[name="alarm"]:checked')?.value;
+
+    if (alarmreadValue !== undefined && alarmValue !== undefined) {
+        // 두 값이 모두 선택된 경우 처리
+        console.log("읽음 여부:", alarmreadValue);
+        console.log("알림 종류:", alarmValue);
+
+        // 여기에 추가적인 처리를 넣어주세요.
+        readornotalarm(alarmreadValue, alarmValue); // 예시 함수 호출
+    } else {
+        alert("모든 옵션을 선택하세요.");
+    }
+});
+
+// 두 값이 모두 null이 아닐 경우에만 알림 가져오는 함수 실행
+function checkAndFetchNotifications() {
+    if (alarmreadValue !== null && alarmValue !== null) { 
+        readornotalarm(alarmreadValue,alarmValue); // 두 값이 null이 아닐 경우에만 함수 호출
+    }
+}
+
+// 알림 가져오기 함수
+function readornotalarm(alarmreadValue, alarmValue) {
+    console.log("Logged in user ID:", loggedInUserId);
+    console.log("읽음 여부:", alarmreadValue);
+    console.log("알림 종류:", alarmValue);
+
+    $.ajax({
+        type: 'POST',
+        url: '/SULBAZI/notifications/readornotalarm.ajax',
+        data: JSON.stringify({ 
+            'receiverId': loggedInUserId, 
+            'alarmreadValue': alarmreadValue,
+            'alarmValue': alarmValue
+        }),
+        contentType: 'application/json', // JSON 형식으로 데이터 전송
+        success: function(notifications) {
+            console.log("알림 목록:", notifications); // 응답 확인
+            clearNotifications();
+            notifications.forEach(notification => {
+                addAlarm(notification);
+            });
+            displayNotifications();
+        },
+        error: function(error) {
+            console.error("초기 알림 가져오기 실패:", error);
+        }
+    });
+}
+
+	
+/* 	function noreadalarm() {
+	    $.ajax({
+	        type: 'GET',
+	        url: '/SULBAZI/notifications/noreadalarm.ajax',
+	        data: { 'receiverId': loggedInUserId },
+	        dataType: 'json',
+	        success: function(notifications) {
+	            notifications.forEach(notification => {
+	                addAlarm(notification);
+	            });
+	            displayNotifications();
+	        },
+	        error: function(error) {
+	            console.error("초기 알림 가져오기 실패:", error);
+	        }
+	    });
+	} */
 
 /* const loggedInUserId = localStorage.getItem('loggedInUserId'); // 현재 로그인한 사용자 ID*/
 
@@ -33,8 +115,8 @@ function roomout() {
     $.ajax({
         type: 'POST',
         url: '/SULBAZI/notifications/chatroomout.ajax',
-        data: {'user_id': user_id,  //수신자ID
-        		'chatroomboss': chatroomboss},  //대화방 방장ID
+        data:({'user_id': user_id,  //수신자ID
+        		'chatroomboss': chatroomboss}),  //대화방 방장ID
         dataType: 'JSON',
         success: function(alarmresponse) {
             // 알림 데이터 객체 생성

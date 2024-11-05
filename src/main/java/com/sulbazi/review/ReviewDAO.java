@@ -39,6 +39,10 @@ public interface ReviewDAO {
 
 	List<ReviewDTO> userReview(Map<String, Object> param);
 
+	List<ReviewDTO> storelookreview(int store_idx);
+
+	List<ReviewCommDTO> storelookreply(int store_idx);
+
 	
 
 	

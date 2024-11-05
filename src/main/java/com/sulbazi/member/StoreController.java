@@ -323,15 +323,14 @@ public class StoreController {
 		return "redirect:/storeMyPage.go";
 	}
 	
+
 	
-	
-	
-	
-	
-	
-	//나의 매장 리뷰 댓글
-	@RequestMapping(value="/storeMyReview.go")
-	public String storemyreview() {
+	//나의 매장 리뷰 댓글 보기
+	@RequestMapping(value="/storeMyReview.do")
+	public String storemyreply(Model model, HttpSession session) {
+		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
+		review_ser.storelookreview(store_idx);
+		review_ser.storelookreply(store_idx);
 		return "store/storeReview";
 	}
 	
@@ -408,8 +407,9 @@ public class StoreController {
     }
 	
 	
-    @PostMapping(value="/menuInsert.do")
-    public String menuinsert(@RequestParam("files") MultipartFile[] files, @RequestParam Map<String, String> params, HttpSession session) throws IOException {
+    @PostMapping(value="/menuInsert.ajax")
+    @ResponseBody
+    public boolean menuinsert(MultipartFile[] files, @RequestParam Map<String, String> params, HttpSession session) throws IOException {
         boolean success = false;
         logger.info("params: {}", params);
         logger.info("file count: " + files.length);
@@ -419,7 +419,7 @@ public class StoreController {
             success = true;
         }
         logger.info("Success status: " + success);
-        return "store/storeMyMenu";
+        return success;
     }
 	
 	

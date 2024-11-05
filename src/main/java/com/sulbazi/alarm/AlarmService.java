@@ -266,7 +266,7 @@ public class AlarmService {
 	//기존 안읽은 알림 가져오기 (페이지 로드시)
 	public List<Map<String, Object>> getNotificationsByReceiverId(String receiverId) {
 		List<Map<String, Object>> notificationsList = new ArrayList<>(); // 알림을 담을 리스
-		List<AlamDTO> alarm_contents = alarm_dao.alarmreadornot(0,receiverId); //안읽은 나의 알림 가져오기
+		List<AlamDTO> alarm_contents = alarm_dao.alarmnotread(receiverId); //안읽은 나의 알림 가져오기
 		for (AlamDTO content : alarm_contents) { 
 			Map<String, Object> chatroom = new HashMap<String, Object>();
 			int alarmcategory = content.getAlarm_category_idx();
@@ -278,6 +278,50 @@ public class AlarmService {
 			chatroom.put("alarm_idx", alarm_idx); //알림 idx
 			
 			 notificationsList.add(chatroom);
+		} 
+		return notificationsList; // 모든 알림 리스트 반환
+	}
+
+	
+	//분류별 알림 가져오기
+	public List<Map<String, Object>> readornotalarm(String receiverId, int alarmreadValue, int alarmValue) {
+        logger.info("receiverId: " + receiverId);
+        logger.info("alarmreadValue: " + alarmreadValue);
+        logger.info("alarmValue: " + alarmValue);
+        List<Map<String, Object>> notificationsList = new ArrayList<>(); // 알림을 담을 리스
+        List<AlamDTO> alarm_contents;
+		if(alarmValue==4 || alarmValue==6) {
+	        logger.info("receiverId: " + receiverId);
+	        logger.info("alarmreadValue: " + alarmreadValue);
+	        logger.info("alarmValue: " + alarmValue);
+			AlamDTO checkalarm = new AlamDTO();
+			checkalarm.setUser_id(receiverId);
+			checkalarm.setAlarm_category_idx(alarmValue);
+			checkalarm.setAlarm_read(alarmreadValue);
+			alarm_contents= alarm_dao.alarmreadornot(checkalarm); //분류별 나의 알림 가져오기			
+		} else {
+	        logger.info("receiverId: " + receiverId);
+	        logger.info("alarmreadValue: " + alarmreadValue);
+	        logger.info("alarmValue: " + alarmValue);
+			AlamDTO checkchatalarm = new AlamDTO();
+			checkchatalarm.setUser_id(receiverId);
+			checkchatalarm.setAlarm_read(alarmreadValue);
+			alarm_contents=alarm_dao.chatalarm(checkchatalarm);
+		}
+		logger.info("alarm_contents:{}",alarm_contents);
+		for (AlamDTO content : alarm_contents) { 
+			logger.info("content:"+content);
+			Map<String, Object> chatroom = new HashMap<String, Object>();
+			int alarmcategory = content.getAlarm_category_idx();
+			int alarm_idx = content.getAlarm_idx();
+			AlarmCategoryDTO alarm = alarm_dao.categoryalarminfo(alarmcategory);
+			String alarmmsg = alarm.getAlarm_content();
+			chatroom.put("alarm", alarmmsg); //알림 내용
+			chatroom.put("chatroomname", content.getAlarm_subject()); //알림 위치??어디 알림인지
+			chatroom.put("alarm_idx", alarm_idx); //알림 idx
+			
+			logger.info("chatroom:"+chatroom);
+			notificationsList.add(chatroom);
 		} 
 		return notificationsList; // 모든 알림 리스트 반환
 	}
