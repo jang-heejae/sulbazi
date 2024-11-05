@@ -124,4 +124,23 @@ public class BoardService {
 		return board_dao.getSearch(boardCategory, boardSearch);
 	}
 
+	public int boardLike(String user_id, int board_idx) {
+		int dow = board_dao.boardLike(user_id, board_idx);
+	    if (dow == 0) {
+	        dow = board_dao.boardLikedo(user_id, board_idx);
+	    } else {
+	        dow = board_dao.boardLikeDel(user_id, board_idx);
+	    }
+	    return board_dao.boardCount(board_idx);
+	}
+
+	public int likeCheck(String user_id, int board_idx) {
+		int row = board_dao.boardLike(user_id, board_idx);
+		return row;
+	}
+
+	public void boardCountUpdate(int likeCount, int board_idx) {
+		board_dao.boardLikeUpDate(likeCount, board_idx);
+	}
+
 }

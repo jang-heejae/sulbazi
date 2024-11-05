@@ -80,4 +80,29 @@
 				WHERE board_idx = #{board_idx}
 	</update>
 
+	<select id="boardLike" resultType="int">
+		SELECT COUNT(board_idx) 
+		FROM board_like
+		WHERE user_id = #{param1} AND board_idx = #{param2}
+	</select>
+	
+	<insert id="boardLikedo" parameterType="map">
+		INSERT INTO board_like (user_id, board_idx)
+			VALUES(#{user_id}, #{board_idx})
+	</insert>
+	
+	<delete id="boardLikeDel" parameterType="map">
+		DELETE FROM board_like 
+			WHERE user_id = #{user_id} AND board_idx = #{board_idx}
+	</delete>
+	
+	<select id="boardCount" resultType="int">
+		SELECT COUNT(*) 
+		FROM board_like
+		WHERE board_idx = #{board_idx}
+	</select>
+	
+	<update id="boardLikeUpDate">
+		UPDATE board SET like_count = #{param1} WHERE board_idx = #{param2}
+	</update>
 </mapper>
