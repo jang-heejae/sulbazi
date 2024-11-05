@@ -10,95 +10,90 @@
     <script src="resources/jquery.twbsPagination.js" type="text/javascript"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
-.stateselect{
-    display: flex;
-    margin-bottom:0;
-}
-input{
-    margin-left: 10;
-    margin: 0;
-}
-table{
-    margin: auto;
-    margin-left:auto; 
-    margin-right:auto;
-    width: 900;
-}
-table,th, td{
-    border: 1px solid rgb(255, 140, 9);
-    border-collapse: collapse;
-    padding: 5;
-}
-th{
-    background-color: rgb(255, 140, 9);
-    font-size:25;
-    text-align:center;
-}
-
-td {
-	color: white;
-	text-align:center;
-}
-
-div.table{
-	border-radius:10;
-	padding:10;
-}
-
-label{
-    height:30;
-    width: 100;
-    font-size: 16;
-}
-label.selected{
-    background-color: rgb(255, 140, 9);
-}
-fieldset{
-	color: white;
-	border-color: rgb(255, 140, 9);
-}
-
-div.include {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-#inqueryfiltering {
-    padding: 5px 8px;
-    font-size: 12px;
-    width:80;
-    height:30;
-}
-#inquerysearch{
-    padding: 5px 8px;
-    font-size: 11px;
-    width:30;
-    height:30;
-    border-radius: 50px; /* 모서리를 둥글게 */
-}
-
-#searchinquery{
-	height:30;
-	border-radius: 10px; /* 모서리를 둥글게 */
-    padding: 8px; /* 여백을 추가해 깔끔하게 */
-}
-
-.something{
-	display: flex;
-}
-
-.pagination {
-	display: flex; /* Flexbox로 설정 */
-	justify-content: center; /* 중앙 정렬 */
-	margin-top: 10px; /* 테이블과의 간격 */
-}
-
+	.chatBox2 {
+    	display: flex;
+    	justify-content: center;
+    	align-items: flex-start; /* 시작점에서부터 정렬 */
+    	width: 100%;
+    	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
+	}
+	.chatitems2 {
+    	width: 940px;
+    	min-height: 650px;
+    	height: auto;
+    	display: flex;
+    	flex-wrap: wrap;
+    	justify-content: space-around;
+    	align-items: center;
+    	align-content: center;
+    	background-color: #73734F;
+    	border-radius: 20px;
+    	padding: 20px;
+    	margin-top: 140px;
+    	font-family: "Yeon Sung", system-ui;
+    	flex-direction: row;
+    	border: 2px solid rgb(255, 140, 9);
+	}
+	input[type="radio"] {
+        appearance: none; /* 기본 스타일 제거 */
+        width: 15px;
+        height: 15px;
+        background-color: #041d03; /* 원하는 배경색 */
+        border: 2px solid #041d03; /* 테두리 색 */
+        border-radius: 50%; /* 동그란 모양 */
+        cursor: pointer;
+        position: relative;
+    }
+    input[type="radio"]:checked {
+        background-color: #041d03; /* 체크 시 배경색 */
+        border: 0.1px solid #041d03; /* 체크 시 테두리 색 */
+    }
+    input[type="radio"]::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: transparent; /* 체크되지 않았을 때는 투명 */
+    }
+    input[type="radio"]:checked::after {
+        background-color: rgb(255, 140, 9); /* 체크 시 점 색상 */
+    }
+	#inqueryTable{
+		color: rgb(255, 140, 9);
+		background-color: #20290E;
+		border: 1px solid #20290E;
+		border-collapse: collapse;
+		padding: 3px;
+		font-size: 16px;
+		font-family: "Yeon Sung", system-ui;
+		text-align: center;
+	}
+	td{
+		padding: 5px;
+		width: 151px;
+		text-align: center;
+		border-bottom: 1px solid rgb(255, 140, 9);
+	}
+	#searchinquery{
+		width: 283px;
+		padding: 10px;
+		border-radius: 20px;
+	}
+	.pagination {
+		display: flex; /* Flexbox로 설정 */
+		justify-content: center; /* 중앙 정렬 */
+		margin-top: 10px; /* 테이블과의 간격 */
+	}
 	.pagination li {
     	list-style: none; /* 기본 리스트 스타일 제거 */
     	margin: 0 5px; /* 버튼 간격 조정 */
 	}
-
 	.pagination a {
 		font-family: "Irish Grover", system-ui;
 		font-size: 20px;
@@ -109,7 +104,6 @@ div.include {
     	border-radius: 5px; /* 둥근 모서리 */
     	border: 1px solid #73734F; /* 버튼 테두리 색 */
 	}
-
 	.pagination .active a {
     	background-color: #73734F; /* 현재 페이지 강조 색 */
     	color: rgb(255, 140, 9); /* 현재 페이지 글자색 */
@@ -134,50 +128,55 @@ div.include {
     	background-color: #73734F;
     	border-color: #73734F;
     }
+    #inqueryUl{
+    	display: flex;
+    	flex-direction: row;
+    	align-items: center;
+    }
+    .inqueryUl{
+    	display: flex;
+   	 	flex-direction: column;
+    	align-items: center;
+    	font-size: 48px;
+    	color: #041d03;
+    }
     
-div.inquerypage{
-    margin: auto;
-   }
-    
+    button{
+		background-color: rgb(255, 140, 9);
+		color: #041d03;
+		padding: 2px;
+		border-radius: 5px;
+		font-size: 14;
+		font-family: "Yeon Sung", system-ui;
+	    margin-right: 178px;
+	}
+	#inqueryIcon{
+		font-size: 48px;
+		color: rgb(255, 140, 9);
+	}
 </style>
 </head>
 <body>
-<div class="include" >
-    <c:choose>
-    <c:when test="${sessionScope.opt == 'admin_log'}">
-        <jsp:include page="../main/adminMain.jsp" />
-    </c:when>
-    <c:when test="${sessionScope.opt == 'user_log'}">
-        <jsp:include page="../main/main.jsp" />
-    </c:when>
-    <c:when test="${sessionScope.opt == 'store_log'}">
-        <jsp:include page="../main/storeMain.jsp" />
-    </c:when>
-</c:choose>
-</div >
-<div class="inquerypage">
-        <form class="something">
-			<form>
-    			<div class="stateselect">
-                	<fieldset>
-                		<input type="radio" name="inquerystate" value="all"/> 전체 보기<br/>
-                    	<input type="radio" name="inquerystate" value="false"/> 처리중<br/>
-                    	<input type="radio" name="inquerystate" value="true"/>처리완료<br/>
-                	</fieldset>
-                	<button type ="button" id="inqueryfiltering">필터 적용</button>
-            	</div>
-        	</form>
-    		<div class="search-container">
-        		<div class="search-wrapper">
-            		<input type="text" class="search-input" id="searchinquery" placeholder="검색어를 입력하세요" value=""/>
-            		<button class="search-button" type="button" id="inquerysearch"><div class="searchicon">⌕</div></button>
-        		</div>
-    		</div>
-		</form>
-	<div class="table">
-		<table>
+<jsp:include page="../main/adminMain.jsp" />
+<section class="chatBox2">
+	<div class="chatitems2">
+        <div id="inqueryList">
+        	<ul class="inqueryUl">
+        		<li>고객 센터 <i class='fas fa-headphones' id="inqueryIcon"></i></li>
+        	</ul>
+        	<ul id="inqueryUl">
+         		<li><input type="radio" name="inquerystate" value="all" checked/> 전체 보기<li>&nbsp;
+            	<li><input type="radio" name="inquerystate" value="false"/> 처리중<li>&nbsp;
+            	<li><input type="radio" name="inquerystate" value="true"/>처리완료<li>&nbsp;
+            	<li><button type ="button" id="inqueryfiltering">필터 적용</button><li>
+        		<li><input type="text" id="searchinquery" class="search-input" value=""/>
+           		<i class="fas fa-search" id="searchIcon" style="cursor: pointer; color:rgb(255, 140, 9);"></i><li>
+        	</ul>
+        </div>
+	<div class="inqueryTable">
+		<table style="width: 100%; height: 100%;">
 			<thead>
-				<tr>
+				<tr id="inqueryTable">
 					<th>문의자ID</th>
 					<th>문의 제목</th>
 					<th>문의 날짜</th>
@@ -200,13 +199,13 @@ div.inquerypage{
 		</table>
 	</div>
 </div>
+</section>
 </body>
 <script>
 
 var showPage = 1;
 var isPaginationInitialized = false; // 초기화 여부 플래그
 pageCall(showPage);
-
 function pageCall(page) {
     $.ajax({
         type: 'GET',
@@ -271,7 +270,7 @@ $('#inqueryfiltering').click(function() {
                         $('.pagination').twbsPagination({
                             startPage: page,
                             totalPages: data.inquerytotalPages,
-                            visiblePages: 3,
+                            visiblePages: 5,
                             onPageClick: function(evt, page) {
                                 console.log('Page:', page);
                                 pageCallfiltering(page);
@@ -291,7 +290,7 @@ $('#inqueryfiltering').click(function() {
 });
 
 /* 문의자 필터 + ID 검색 */
-$('#inquerysearch').click(function() {
+$('#searchIcon').click(function() {
     var inquery_state = $(':input:radio[name=inquerystate]:checked').val();
     var id_write = document.getElementById("searchinquery").value;
     console.log(inquery_state);
@@ -320,7 +319,11 @@ $('#inquerysearch').click(function() {
                         $('.pagination').twbsPagination({
                             startPage: page,
                             totalPages: data.inquerytotalPages,
-                            visiblePages: 3,
+                            visiblePages: 5,
+                            first: '<<',     
+                            prev: '<',       
+                            next: '>',       
+                            last: '>>', 
                             onPageClick: function(evt, page) {
                                 console.log('Page:', page);
                                 pageCallsearch(page);

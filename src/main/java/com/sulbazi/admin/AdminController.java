@@ -38,7 +38,7 @@ public class AdminController {
 	}
 	 
 	// 관리자 리스트
-	@RequestMapping(value="/adminList.go")
+	@GetMapping(value="/adminList.go")
 	public String adminListGo() {
 		return "admin/adminList";
 	}

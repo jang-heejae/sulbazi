@@ -79,7 +79,7 @@
 			board_category = #{board_category}
 				WHERE board_idx = #{board_idx}
 	</update>
-	
+
 	<select id="boardLike" resultType="int">
 		SELECT COUNT(board_idx) 
 		FROM board_like

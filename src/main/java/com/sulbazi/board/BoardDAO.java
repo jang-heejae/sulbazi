@@ -2,6 +2,7 @@ package com.sulbazi.board;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -45,9 +46,5 @@ public interface BoardDAO {
 	int boardCount(int board_idx);
 
 	void boardLikeUpDate(int row, int board_idx);
-
-
-
-
 
 }

@@ -127,6 +127,62 @@
         flex-direction: column;
         text-align: center;
     }
+    .modal_madal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: auto;
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px #041d03;
+    color: #041d03;
+    text-align: center;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.modal-content_madal {
+    padding: 20px;
+    text-align: center;
+    color: #041d03;
+    background-color: #fefefe;
+    border-radius: 10px;
+}
+
+.btn_madal {
+    background-color: rgb(255, 140, 9);
+    color: #041d03;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 10px;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.btn_madal:hover {
+    background-color: #20290E;
+    color: white;
+}
+
+.close_madal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close_madal:hover,
+.close_madal:focus {
+    color: black;
+}
     .fa-regular fa-bell {
     	overflow-y: auto;
     	overflow: hidden;
@@ -189,8 +245,41 @@
         </div>  
     </header>
 </body>
+<div id="loginModal" class="modal_madal" style="display: none;">
+    <div class="modal-content_madal">
+        <span class="close_madal" onclick="closeLoginModal()">&times;</span>
+        <p>로그인이 필요한 페이지 입니다.</p>
+        <p>로그인 페이지로 이동하시겠습니까?</p>
+        <br/>
+        <button class="btn_madal" onclick="redirectToLogin()">로그인</button>
+    </div>
+</div>
 <script>
+const isLoggedIn = "${sessionScope.loginId != null}";
+document.addEventListener('DOMContentLoaded', function() {
+    // .go 링크 클릭 이벤트에 로그인 확인 추가
+    document.querySelectorAll('a[href*=".go"]').forEach(link => {
+        link.addEventListener('click', function(event) {
+        	if (!this.href.includes('login.go') && isLoggedIn !== "true") {
+                event.preventDefault(); // 기본 링크 이동 막기
+                document.getElementById('loginModal').style.display = 'block'; // 모달 표시
+            }
+        });
+    });
+});
+
+function closeLoginModal() {
+    document.getElementById('loginModal').style.display = 'none';
+}
+
+function redirectToLogin() {
+	closeLoginModal();
+    window.location.href = 'login.go'; // 로그인 페이지로 이동
+}
+
+
 //main_menu 클릭 이벤트
+
 document.querySelectorAll('.main_menu').forEach(function(menu) {
     menu.addEventListener('click', function() {
         var fullElement = document.querySelector('.full');
@@ -209,7 +298,6 @@ document.querySelectorAll('.main_menu').forEach(function(menu) {
         }
     });
 });
-
 // mypage 클릭 이벤트
 document.querySelectorAll('.mypage').forEach(function(mypage) {
     mypage.addEventListener('click', function() {

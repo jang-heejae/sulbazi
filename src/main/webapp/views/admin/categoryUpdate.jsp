@@ -35,6 +35,7 @@
    	    flex-direction: column;
     	font-family: "Yeon Sung", system-ui;
     	font-weight: normal;
+    	border: 2px solid rgb(255, 140, 9);
 	}
 	button{
 		background-color: rgb(255, 140, 9);
@@ -170,6 +171,43 @@
     	height: 2px;
    		background-color: rgb(255, 140, 9);
     }
+.modal_madal {
+    display: none; /* 초기 상태에서 숨김 */
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 530px;
+    height: 231px; /* 모달 높이 설정 */
+    background-color: #041d03;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    color: #041d03;
+    text-align: center;
+    font-family: "Yeon Sung", system-ui;
+    overflow: auto; /* 내용이 넘칠 때 스크롤 */
+}
+
+.modal-content_madal {
+    padding: 20px;
+    text-align: center;
+    color: #041d03;
+}
+.close_madal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close_madal:hover,
+.close_madal:focus {
+    color: black;
+}
 </style>
 </head>
 <body>
@@ -218,7 +256,7 @@
 			<br/>
 			<button>비활성화</button>
 			<br/>
-			<button onclick="window.open('<c:url value="categoryAdd.go"/>', 'popup', 'width=600,height=330'); return false;">카테고리 추가</button>
+			<button onclick="openModal(); return false;">카테고리 추가</button>
 		</div>
 		<div id="categoryDel">
 		<div class="cateDell"><h1>비활성화</h1></div>
@@ -255,6 +293,13 @@
 	</div>
 	</section>
 </body>
+<div id="adminModal" class="modal_madal" style="display:none;">
+    <div class="modal-content_madal">
+        <span class="close_madal" onclick="closeModal()">&times;</span>
+        <!-- JSP 내용을 불러올 위치 -->
+        <div id="modalContent"></div>
+    </div>
+</div>
 <script>
 optListCall();
 function optListCall(){
@@ -361,5 +406,27 @@ $(document).ready(function(){
 	}
 });
 
+function openModal() {
+    $.ajax({
+        url: "categoryAdd.go", // 불러올 JSP 파일 경로
+        method: "GET",
+        success: function(data) {
+            // 불러온 JSP 내용을 모달에 삽입
+            $('#modalContent').html(data);
+            $('#adminModal').css('display', 'block');
+        },
+        error: function() {
+            alert("모달 내용을 불러오는 데 실패했습니다.");
+        }
+    });
+}
+$('#closeModal').off('click').on('click', function() {
+    $('#adminModal').css('display', 'none'); // 모달 숨기기
+    window.location.reload();
+});
+function closeModal() {
+    $('#adminModal').css('display', 'none');
+    window.location.reload();
+}
 </script>
 </html>

@@ -143,8 +143,4 @@ public class BoardService {
 		board_dao.boardLikeUpDate(likeCount, board_idx);
 	}
 
-
-
-	
-
 }
