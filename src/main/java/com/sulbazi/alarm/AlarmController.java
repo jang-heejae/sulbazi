@@ -132,8 +132,10 @@ public class AlarmController {
     //공통읽음처리
     @PostMapping(value="/readAlarm.ajax")
     @ResponseBody
-    public ResponseEntity<?> readAlarm(@RequestParam("alarm_idx")  int alarm_idx, 
-                                        @RequestParam String receiverId) {
+    public ResponseEntity<?> readAlarm(@RequestBody Map<String, Object> payload) {
+        int alarm_idx = (int) payload.get("alarm_idx"); // JSON에서 alarm_idx 가져오기
+        String receiverId = (String) payload.get("receiverId"); // JSON에서 receiverId 가져오기
+
         int row = alarm_ser.readalarm(alarm_idx);
         boolean success = false;
 
@@ -157,6 +159,26 @@ public class AlarmController {
     	List<Map<String, Object>> notifications = alarm_ser.getNotificationsByReceiverId(receiverId);
         return ResponseEntity.ok(notifications);
     }
+
+    
+    //분류별 알림 가져오기
+    @PostMapping("/readornotalarm.ajax")
+    @ResponseBody
+    public ResponseEntity<List<Map<String, Object>>> readornotalarm(@RequestBody Map<String, Object> payload) {
+        
+        String receiverId = (String) payload.get("receiverId");
+        int alarmreadValue = Integer.parseInt((String) payload.get("alarmreadValue"));
+        int alarmValue = Integer.parseInt((String) payload.get("alarmValue"));
+        
+        logger.info("receiverId: " + receiverId);
+        logger.info("alarmreadValue: " + alarmreadValue);
+        logger.info("alarmValue: " + alarmValue);
+
+        List<Map<String, Object>> notifications = alarm_ser.readornotalarm(receiverId, alarmreadValue, alarmValue);
+        return ResponseEntity.ok(notifications);
+    }
+
+
 
     
 

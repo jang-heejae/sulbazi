@@ -115,7 +115,33 @@ public class ReviewService {
 		return row;
 	}
 
+	//매장 마이페이지 리뷰
+	public List<ReviewDTO> storelookreview(int store_idx) {
+		List<ReviewDTO> reviewlist = review_dao.storelookreview(store_idx);
+		for (ReviewDTO reviewdto : reviewlist) {
+			reviewdto.getReview_idx();
+			reviewdto.getUser_id();
+			reviewdto.getStore_idx();
+			reviewdto.getReview_content();
+			reviewdto.getReview_date();			
+		}
+		
+	}
 
+	//매장 마이페이지 댓글
+	public List<ReviewCommDTO> storelookreply(int store_idx) {
+		List<ReviewCommDTO> reviewlist = review_dao.storelookreply(store_idx);
+		for (ReviewCommDTO reviewCommdto : reviewlist) {
+			reviewCommdto.getComm_content();
+			reviewCommdto.getReview_idx();
+			reviewCommdto.getStore_idx();
+			reviewCommdto.getComm_date();
+		}
+	}
+
+
+	
+	
 
 
 
