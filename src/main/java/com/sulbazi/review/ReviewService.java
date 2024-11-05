@@ -125,7 +125,8 @@ public class ReviewService {
 			reviewdto.getReview_content();
 			reviewdto.getReview_date();			
 		}
-		
+		return null;
+
 	}
 
 	//매장 마이페이지 댓글
@@ -136,7 +137,9 @@ public class ReviewService {
 			reviewCommdto.getReview_idx();
 			reviewCommdto.getStore_idx();
 			reviewCommdto.getComm_date();
+			
 		}
+		return null;
 	}
 
 
