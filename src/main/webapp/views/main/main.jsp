@@ -134,7 +134,7 @@
             </div>
             <div>
                 <ul class="icon">
-                    <li><a href="login.go">로그인</a></li>
+                    <li class="userUser"><a href="login.go">로그인</a></li>
                     <li>
                         <i class="fa-regular fa-message"></i>
                         <div class="sub_1">

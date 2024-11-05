@@ -148,10 +148,12 @@ public class ReportService {
 		if(row>0) {
 			// 신고한사람
 			int reporting = report_dao.reportingcount(reporting_id);
+			log.info("신고한 횟수 "+reporting);
 			user_dao.report(reporting_id, reporting);
 			
 			// 신고 받은사람
 			int reported = report_dao.reportedcount(reported_id);
+			log.info("신고받은 횟수 "+reported);
 			user_dao.reported(reported_id, reported);
 			
 		}

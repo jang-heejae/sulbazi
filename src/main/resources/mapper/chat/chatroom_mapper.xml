@@ -22,20 +22,26 @@
 	</select>
 	
 	<!-- 개인 채팅방 리스트 - 검색결과 -->
-	<select id="search" parameterType="String" resultType="com.sulbazi.chat.UserChatroomDTO">
-		SELECT 
-			userchat_idx,
-			user_id,
-			userchat_subject,
-			userchat_date,
-			userchat_state,
-			current_people,
-			max_people,
-			notice 
-		FROM userchat 
-		WHERE userchat_subject LIKE CONCAT('%', #{query}, '%') 
-        AND userchat_state = 1
-	</select>
+	<select id="search" parameterType="String" resultType="map">
+	    SELECT 
+	        uc.userchat_idx,
+	        uc.user_id,
+	        uc.userchat_subject,
+	        DATE_FORMAT(uc.userchat_date, '%Y-%m-%d') AS userchat_date,
+	        uc.userchat_state,
+	        uc.current_people,
+	        uc.max_people,
+	        uc.notice,
+	        u.user_photo,
+	        u.user_nickname
+	    FROM 
+	        userchat uc
+	    JOIN 
+	        user u ON uc.user_id = u.user_id 
+	    WHERE 
+	        uc.userchat_subject LIKE CONCAT('%', #{query}, '%') 
+	        AND uc.userchat_state = 1
+</select>
 	
 	<!-- 개인 채팅방 생성 -->
 	<insert id="chatcreate" 
