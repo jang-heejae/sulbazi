@@ -24,6 +24,32 @@
 	
 	$(document).ready(function() {
 
+		var ssse = new EventSource("/SULBAZI/ssse/all");
+		var sssse = new EventSource("/SULBAZI/sssse/all");
+		
+		ssse.addEventListener("newMessage", function(event) {
+			loadMessages();
+	    });
+
+		sssse.addEventListener("newuser", function(event) {
+			localloadUserList();
+	    });
+		
+		// 오류가 발생하면 실행되는 핸들러 - 메세지
+	    ssse.onerror = function(event) {
+	        console.error('EventSource failed:', event);
+	        setTimeout(function() {
+	        	ssse = new EventSource("/SULBAZI/ssse/all");
+	        }, 1000); // 1초 후 재연결 시도
+	    };
+		// 오류가 발생하면 실행되는 핸들러 - 메세지
+	    sssse.onerror = function(event) {
+	        console.error('EventSource failed:', event);
+	        setTimeout(function() {
+	        	sssse = new EventSource("/SULBAZI/sssse/all");
+	        }, 1000); // 1초 후 재연결 시도
+	    };
+		
 		// 참여자 리스트
 		var localchat_idx = ${roomidx};
 		
@@ -204,9 +230,9 @@
 				$('.popup').remove();
 			}
 		});
-
+		
 		// 메세지 전송
-	    $('.sendmsg').click(function () {
+		function sendMessage(){
 	        var localmsg_content = $('textarea[name="usermsgcontent"]').val();
 	        var user_id = $('input[name="user_id"]').val();
 	        var localchat_idx = ${roomidx};
@@ -236,11 +262,23 @@
 	            }
 	        });
 	        
+	    }
+	    
+	    // 버튼 클릭 메세지 ㄱ
+	    $('.sendmsg').click(function () {
+	        sendMessage();
 	    });
-		
-	    // 5초마다 새 메세지를 불러오기
+	 
+	    // 엔터 메세지 ㄱ
+	    $('textarea[name="usermsgcontent"]').keydown(function (event) {
+	        if (event.key === "Enter" && !event.shiftKey) {
+	            event.preventDefault(); // 줄바꿈 방지
+	            sendMessage();
+	        }
+	    });
+	    
+	    // 메세지를 불러오기
 	    var localchat_idx = ${roomidx};
-	    setInterval(loadMessages, 3000000);
 
 	    function loadMessages() {
 	        $.ajax({
@@ -442,19 +480,33 @@ a{
     }
     .reportuserform{
     	display: none;
-	    width: 250px;
-	    height: 200px;
-	    position: absolute;
-	    top: 400px;
-	    right: 0;
-	    background-color: brown;
-	    flex-direction: column;
-	    align-items: center;
-	    justify-content: center;
+        width: 250px;
+        height: 200px;
+        position: absolute;
+        top: 400px;
+        right: 0;
+        background-color: rgb(255, 140, 9);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 30px;
     }
     .reportuserform textarea{
    	    width: 80%;
-    	height: 70%;
+        height: 70%;
+        border-radius: 15px;
+        padding: 5px;    
+    }
+    .reportedit, .reportcancel{
+    	background: white;
+	    border-radius: 15px;
+	    border: none;
+	    cursor: pointer;
+	    width: 60px;
+    }
+    .reportedit:hover, .reportcancel:hover{
+    	cursor: pointer;
+    	font-weight: bold;
     }
     .msgform{
         width: 580px;

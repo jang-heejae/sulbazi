@@ -44,7 +44,7 @@ public interface ReportDAO {
 
 	// 신고한사람
 	int reportingcount(String reporting_id);
-	
+
 	// 신고당한사람
 	int reportedcount(String reported_id);
 

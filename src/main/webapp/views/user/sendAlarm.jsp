@@ -140,6 +140,24 @@ window.onload = () => {
 };
 
 
+function sendNotification(newAlarm) {
+    const receiverId = newAlarm.receiverId;
+
+    // AJAX POST 요청을 통해 서버에 알림 전송
+    $.ajax({
+        type: 'POST',
+        url: '/SULBAZI/notifications/send', // 알림을 전송할 서버 엔드포인트
+        data: JSON.stringify(newAlarm),
+        contentType: 'application/json',
+        success: function(response) {
+            console.log("알림이 성공적으로 전송되었습니다:", response);
+        },
+        error: function(e) {
+            console.error("알림 전송 실패:", e);
+        }
+    });
+}
+
 // 수락
 function handleAccept(notification){
 	 $.ajax({
