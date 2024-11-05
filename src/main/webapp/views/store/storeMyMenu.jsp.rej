@@ -1,0 +1,67 @@
+diff a/src/main/webapp/views/store/storeMyMenu.jsp b/src/main/webapp/views/store/storeMyMenu.jsp	(rejected hunks)
+@@ -133,64 +133,7 @@
+ 	});
+ 	$('#list').html(content);	
+ }
+-=======
+-img {
+-	width: 100;
+-	height: 100;
+-}
+-</style>
+-</head>
+-<body>
+-<form action="menuInsert.do" method="post" enctype="multipart/form-data"> 
+-    <table>
+-        <tr>
+-            <th>메뉴 추가하기</th>
+-        </tr>
+-        <tr>
+-            <td>사진 추가<input type="file" name="files" multiple="multiple"/></td>
+-        </tr>
+-        <tr>
+-            <td>
+-                <select class="search-select" id="searchCategory" name="menu_category">
+-                    <option value="안주">안주</option>
+-                    <option value="술">주류</option>
+-                </select>
+-            </td>
+-        </tr>
+-        <tr>
+-            <td>메뉴 이름 : <input type="text" name="menu_name"></td>
+-        </tr>
+-        <tr>
+-            <td>메뉴 가격 : <input type="text" name="menu_price"></td>
+-        </tr>
+-        <tr>
+-            <td><button type="submit">메뉴 등록</button></td>
+-        </tr>
+-    </table>
+-</form>
+-    <form>
+-        <div class="stateselect">
+-              <fieldset>
+-                  <input type="radio" name="menu_category" value="안주" checked/> 안주 <br/>
+-                  <input type="radio" name="menu_category" value="주류"/> 주류<br/>
+-              </fieldset>
+-              <button type ="button" id="menufiltering">필터 적용</button>
+-          </div>
+-    </form>
+-    <table>
+-       <thead>
+-          <tr>
+-             <th>메뉴 사진</th>
+-             <th>메뉴 이름</th>
+-             <th rowspan="2">가격</th>
+-          </tr>
+-       </thead>
+-	   <tbody id="list">
+-	   
+-	   </tbody>
+-    </table>
+-</body>
+-<script>
++
+ var menu_category = $(':input:radio[name=menu_category]:checked').val();
+ menulist();
+ function menulist() {

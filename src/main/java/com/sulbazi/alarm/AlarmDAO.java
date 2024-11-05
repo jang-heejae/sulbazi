@@ -27,8 +27,6 @@ public interface AlarmDAO {
 
 	UserChatroomDTO userchatroominfoidx(int chatroom_idx);
 
-
-	
 	// 강퇴 알림
 	int kickuser(Map<String, String> params);
 
@@ -42,7 +40,11 @@ public interface AlarmDAO {
 
 	String storename(int storeidx);
 
-	List<AlamDTO> alarmreadornot(int i, String receiverId);
+	List<AlamDTO> alarmreadornot(AlamDTO checkalarm);
+
+	List<AlamDTO> alarmnotread(String receiverId);
+
+	List<AlamDTO> chatalarm(AlamDTO checkchatalarm);
 	
 	
 }
