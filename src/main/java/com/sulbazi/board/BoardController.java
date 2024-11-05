@@ -116,8 +116,10 @@ public class BoardController {
 	}
 
 	@RequestMapping(value="/boardDetail.go")
-	public String detail(String board_idx, Model model) {
+	public String detail(String board_idx, Model model, HttpSession session) {
 		board_ser.detail(board_idx, model, true);
+		String user_id = (String) session.getAttribute("loginId");
+		logger.info("" + user_id);
 		return "board/boardDetail";
 	}
 	
@@ -215,4 +217,18 @@ public class BoardController {
 		return "board/boardUpdate";
 	}
 	
+	@PostMapping(value="/boardLike.ajax")
+	@ResponseBody
+	public Map<String, Object> boardLike(String user_id, int board_idx) {
+		Map<String, Object> map = new HashMap<>();
+	    int likeCount = board_ser.boardLike(user_id, board_idx);
+	    int likeCheck = board_ser.likeCheck(user_id, board_idx);
+	    board_ser.boardCountUpdate(likeCount, board_idx);
+	    logger.info(""+likeCount);
+	    logger.info("좋아요 되있는지 체크 : " + likeCheck);
+	    map.put("like", likeCount);
+	    map.put("success", true);
+	    map.put("Check", likeCheck);
+	    return map;
+	}
 }

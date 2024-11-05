@@ -36,6 +36,16 @@ public interface BoardDAO {
 
 	List<BoardDTO> getSearch(String boardCategory, String boardSearch);
 
+	int boardLike(String user_id, int board_idx);
+
+	int boardLikedo(String user_id, int board_idx);
+
+	int boardLikeDel(String user_id, int board_idx);
+
+	int boardCount(int board_idx);
+
+	void boardLikeUpDate(int row, int board_idx);
+
 
 
 

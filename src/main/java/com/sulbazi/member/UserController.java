@@ -78,17 +78,18 @@ public class UserController {
     	return "user/userAlarm";
     }
     
-    @GetMapping(value="/userDetail.ajax")
-    @ResponseBody
+    @GetMapping(value="/userPopup.go")
     public String userDetail(String user_nickname, Model model) {
     	log.info("가져온 유저 idx : " + user_nickname);
-    	user_ser.userDetail(user_nickname, model);
+    	Map<String, Object> response = user_ser.userDetail(user_nickname);
+    	model.addAttribute("info", response.get("info"));
+    	model.addAttribute("category", response.get("category"));
     	return "user/userPopup";
     }
     
-    @RequestMapping(value="/userPopup.go")
-    public String wewe() {
-    	return "user/userPopup";
-    }
+	/*
+	 * @RequestMapping(value="/userPopup.go") public String wewe() { return
+	 * "user/userPopup"; }
+	 */
 	
 }
