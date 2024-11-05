@@ -24,7 +24,6 @@
     }
     th{
        width: 100px;
-       border: 1px solid #aaa;
     }
     .photo1{
     width: 150px;
@@ -61,14 +60,19 @@
       vertical-align: top;
    }
    .like-button {
-    background-color: transparent;
-   
+    background-color: #041d03;
     border: none;
     color: red;
-    font-size: 20px;
+    font-size: 15px;
     cursor: pointer;
     display: flex;
     align-items: center;
+    padding: 1% 3%;
+    border-radius: 12px;
+ 	margin-left: 47%;
+   }
+   #likeCount{
+   color: white;
    }
    .like-button i {
        margin-right: 5px;
@@ -123,7 +127,7 @@
                <th class="category">${info.board_category}</th>
                <th colspan="2" class="category" style="text-align: left; width: 400px;">${info.board_subject}</th>
                <th></th>
-               <th><i class="fa-solid fa-heart" style="color: red; margin-right: 5px;"></i>${info.like_count}</th>
+               <th><i class="fa-solid fa-heart" style="color: red; margin-right: 5px;"></i><span id="likeCount2">${info.like_count}</span></th>
                <th><i class="fa-solid fa-eye" style="color: #999999; margin-right: 5px;"></i>${info.board_bHit}</th>
             </tr>
             <tr class="what">
@@ -168,13 +172,43 @@
             <c:if test="${sessionScope.loginId == store}">
 			    <a href="delete.go?board_idx=${info.board_idx}" class="buttonn">삭제</a>
 			</c:if>
-           <button id="likeButton" class="like-button">
-               <i class="fa-solid fa-heart"></i> <span id="likeCount">${info.like_count}</span>
-           </button>
+            <button id="likeButton" class="like-button" onclick="like()">
+			    <i class="fa-solid fa-heart" id="heartIcon"></i> <span id="likeCount">${info.like_count}</span>
+			</button>
        </div>
     </div>
 </body>
 <script>
+function like(){
+	var board_idx = '${info.board_idx}';
+	var user_id = '${sessionScope.loginId}';
+	var heartIcon = $('#heartIcon');
+	console.log(board_idx);
+	console.log(user_id);
+	$.ajax({
+		type: 'POST',
+		url : 'boardLike.ajax',
+		data : {'user_id':user_id, 'board_idx':board_idx},
+		dataType : 'JSON',
+		success : function(data) {
+			if(data.success) {
+				alert('좋아요 성공');
+				$('#likeCount').text(data.like);
+				$('#likeCount2').text(data.like);
+				if (data.Check) {
+		            $('#heartIcon').removeClass('fa-heart-o').addClass('fa-heart').css('color', 'red'); // 좋아요 한 경우
+		        } else {
+		        	$('#heartIcon').removeClass('fa-heart-o').addClass('fa-heart').css('color', 'blue'); // 좋아요 취소한 경우
+		        }
+			}else {
+				alert('좋아요 실패');
+			}
+		},
+		error : function(error) {
+			console.error('Error', error);
+		}
+	})
+}
 //main_menu 클릭 이벤트
 document.querySelectorAll('.main_menu').forEach(function(menu) {
     menu.addEventListener('click', function() {
@@ -254,52 +288,6 @@ document.querySelectorAll('.fa-bell').forEach(function(bell) {
         }
     });
 });
-
-$.ajax({
-   type: 'GET',
-   url : 'boardList.ajax',
-   data:{},
-   dataType:'JSON',
-   success:function(data){
-      console.log(data);
-      if(data.login){
-         drawList(data.list);
-      }else{
-         alert('로그인이 필요한 서비스입니다.');
-         location.href='./login.go';
-      }
-   },error:function(e){
-      console.log(e);
-   }
-});
-
-$(document).on('click', '.like-button', function() {
-    var boardIdx = $(this).data('board_idx'); // 해당 게시물의 board_idx 가져오기
-    var userId = $('user_id').val(); // 사용자 ID 가져오기 (예: 숨겨진 input에서)
-
-    $.ajax({
-        url: 'boardlike.ajax', // 좋아요를 처리할 URL
-        type: 'POST',
-        data: {
-            board_idx: boardIdx,
-            user_id: userId // user_id를 전송
-        },
-        success: function(response) {
-            // 성공적으로 처리된 후의 행동
-            if (response.success) {
-                alert('좋아요가 등록되었습니다.');
-            } else {
-                alert('좋아요 등록에 실패했습니다.');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error: ', error);
-            alert('서버 오류가 발생했습니다. 나중에 다시 시도하세요.');
-        }
-    });
-});
-
-
 
 </script>
 </html>
