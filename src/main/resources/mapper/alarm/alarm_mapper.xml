@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
+
 <mapper namespace="com.sulbazi.alarm.AlarmDAO">
 
 	<!-- 매장이름  -->
@@ -71,8 +72,17 @@
 	
 
 	<!-- 읽음& 안읽음 -->
-	<select id="alarmreadornot" resultType="com.sulbazi.alarm.AlamDTO">
-		SELECT * FROM alarm WHERE alarm_read=#{param1} AND user_id=#{param2};
+	<select id="alarmreadornot" 
+		parameterType="com.sulbazi.alarm.AlamDTO" 
+		resultType="com.sulbazi.alarm.AlamDTO">
+		SELECT * FROM alarm WHERE alarm_read=#{alarm_read} 
+			AND user_id=#{user_id} AND alarm_category_idx=#{alarm_category_idx}
+	</select>
+	
+	<!-- 안읽음 -->
+	<select id="alarmnotread" resultType="com.sulbazi.alarm.AlamDTO">
+		SELECT * FROM alarm WHERE alarm_read=0 
+			AND user_id=#{param1}
 	</select>
 	
 	
@@ -82,11 +92,12 @@
 	</update>
 	
 	<!-- 대화방 알림 모음 -->
-	<select id="chatalarm" resultType="com.sulbazi.alarm.AlamDTO">
-		SELECT * FROM alarm WHERE alarm_category_idx=1
-			OR alarm_category_idx=2
-			OR alarm_category_idx=3
-			OR alarm_category_idx=5
+	<select id="chatalarm" 
+		parameterType="com.sulbazi.alarm.AlamDTO" 
+		resultType="com.sulbazi.alarm.AlamDTO">
+		SELECT * FROM alarm 
+			WHERE alarm_category_idx IN (1, 2, 3, 5)
+  			AND alarm_read = #{alarm_read} AND user_id=#{user_id}
 	</select>
 	
 	<!-- 즐겨찾기 or 관리자 알림 모음 -->

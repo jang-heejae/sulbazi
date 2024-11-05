@@ -5,54 +5,83 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<meta charset="UTF-8">
 <title>SULBAZI</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
+body.storeboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #041d03;
+}
+
+body.storeboard .navbar {
+    z-index: 99;
+    position: absolute;
+    left: 360px;
+    width: 1200px;
+    height: 120px;
+    background-color: #041d03;
+    color: rgb(255, 140, 9);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+body.storeboard .board {
+    width: 900px;
+    background-color: rgb(255, 140, 9);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-container {
+    width: 100%;
+    height: 500px;
+    overflow-y: scroll;
+}
+
+.table-container::-webkit-scrollbar { 
+    display: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
 th {
-	background-color: rgb(255, 140, 9);
-	height:35;
-	padding:7;
+    background-color: white;
+    height: 35px;
+    padding: 7px;
 }
 
-td{
-	color: white;
-	text-align: center;
+td {
+    color: white;
+    text-align: center;
 }
-
-div.board {
-	margin-top:200;
-    margin: auto; /* 좌우 여백을 자동으로 설정하여 중앙 정렬 */
-    width: 625px; /* 테이블의 너비를 설정 */
-    border-collapse: collapse; /* 테이블의 경계선 겹치지 않도록 설정 */
-    height: 800px; /* 원하는 높이 설정 (필요에 따라 조정) */
-    flex-wrap: wrap; /* flexbox 사용 */
-    flex-direction: column; /* 수직으로 정렬 */
-    align-items: center; /* 수평 중앙 정렬 */
-    justify-content: center; /* 수직 중앙 정렬 (옵션) */
-    overflow-y: auto;
-     -ms-overflow-style: none;
-}
-
-.board::-webkit-scrollbar { 
-	display: none;          /* Chrome, Safari에서 스크롤바 숨김 */
-}
-
 </style>
-<body>
+</head>
+<body class="storeboard">
 <jsp:include page="../main/storeMain.jsp"></jsp:include>
-	<div class="board">
-		<table>
-			<thead>
-				<tr>
-					<th>게시판 분류</th>
-					<th>게시물 제목</th>
-					<th>좋아요 수</th>
-					<th>조회 수</th>
-					<th>게시 일자</th>
-				</tr>
-			</thead>
+<div class="board">
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>게시판 분류</th>
+                    <th>게시물 제목</th>
+                    <th>좋아요 수</th>
+                    <th>조회 수</th>
+                    <th>게시 일자</th>
+                </tr>
+            </thead>
             <tbody>
                 <c:forEach var="board" items="${myboard}">
                     <tr>
@@ -64,10 +93,8 @@ div.board {
                     </tr>
                 </c:forEach>
             </tbody>
-		</table>
-	</div>
+        </table>
+    </div>
+</div>
 </body>
-<script>
-
-</script>
 </html>

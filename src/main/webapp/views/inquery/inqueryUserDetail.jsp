@@ -83,9 +83,8 @@ div.include {
     </style>
 </head>
 <body>
-<div class="include">
-    <jsp:include page="../main/main.jsp"/>
-</div >
+<jsp:include page="../main/main.jsp"/>
+
     <div class="container">
         <div class="header">고객센터 <i class='fas fa-headphones' style='font-size:48px'></i></div>
         <div class="section">

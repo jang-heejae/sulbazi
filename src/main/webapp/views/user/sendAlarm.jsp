@@ -41,6 +41,13 @@ function startSseConnection() {
  	};
 }
 
+
+function clearNotifications() {
+    notificationsList = []; // 기존 알림 리스트 초기화
+    const notificationsElement = document.getElementById('notification');
+    notificationsElement.innerHTML = ''; // DOM에서 기존 알림 제거
+}
+
 //알림 추가 함수
 function addAlarm(notification) {
  	notificationsList.push(notification);
@@ -56,6 +63,7 @@ function displayNotifications() {
      const notificationItem = document.createElement('div');
      notificationItem.innerHTML = notification.chatroomname+'의'+ notification.alarm;
      notificationItem.setAttribute('data-alarm-idx', notification.alarm_idx);
+     notificationItem.setAttribute('class', "sub");
 
      // 특정 알림일 경우 수락/거절 버튼 추가
      if (notification.alarm === "개설하신 대화방에 참여 신청이 왔습니다.") {
@@ -83,11 +91,16 @@ function displayNotifications() {
 
 //읽음 처리 함수
 function markAsRead(notification) {
+	console.log(notification.alarm_idx);
+	console.log(notification);
+	
     $.ajax({
         type: 'POST',
         url: '/SULBAZI/notifications/readAlarm.ajax',
-        data: JSON.stringify({ 'alarm_idx': notification.alarm_idx,
-				'receiverId': notification.receiverId }),
+        data: JSON.stringify({
+            'alarm_idx': notification.alarm_idx,
+            'receiverId': loggedInUserId
+        }),
         contentType: 'application/json',
         success: function(response) {
             console.log("알림 읽음 처리 성공:", response);
@@ -98,8 +111,8 @@ function markAsRead(notification) {
             console.error("알림 읽음 처리 실패:", error);
         }
     });
-    
 }
+
 
 //페이지 로드 시 초기 알림 가져오기
 function fetchInitialNotifications() {

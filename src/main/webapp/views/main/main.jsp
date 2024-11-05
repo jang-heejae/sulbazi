@@ -59,6 +59,7 @@
     	top: 0;
     	left: 0; 
         z-index: 999;
+        position:absolute;
         display: flex;
         width: 300px;
         min-height: 100vh;
@@ -122,7 +123,15 @@
         display: flex;
         justify-content: space-around;
         border-radius: 10px;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
     }
+    .fa-regular fa-bell {
+    	overflow-y: auto;
+    	overflow: hidden;
+    }
+    
 </style>
 <body>
     <jsp:include page="../user/sendAlarm.jsp"/>
@@ -146,7 +155,7 @@
                     <li>
                         <i class="fa-regular fa-bell"></i>
                         <div class="sub_">
-                            <div class="sub_txt">개 알림</div>
+                            <div class="sub_txt">알림</div>
                             <div id="notification"></div>
                         </div>
                     </li>
