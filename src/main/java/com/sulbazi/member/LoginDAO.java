@@ -7,7 +7,7 @@ public interface LoginDAO {
 
 	String login(String id, String pw, String opt);
 
-	String userfindpw(String id, String email);
+	String userfindpw(String id, String user_email);
 
 	String storefindpwdo(String store_id, String store_number);
 

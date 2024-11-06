@@ -119,7 +119,7 @@ public class BoardController {
 	public String detail(String board_idx, Model model, HttpSession session) {
 		board_ser.detail(board_idx, model, true);
 		String user_id = (String) session.getAttribute("loginId");
-		logger.info("" + user_id);
+		board_ser.detailCheck(user_id, board_idx, model);
 		return "board/boardDetail";
 	}
 	
