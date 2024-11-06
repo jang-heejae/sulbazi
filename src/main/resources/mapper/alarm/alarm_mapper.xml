@@ -26,6 +26,7 @@
 					parti_state,	
 					chatroom_category, 
 					chatroom_idx
+					userchat_subject
 		FROM 
 			userchat 
 		INNER JOIN 
@@ -50,13 +51,6 @@
 			AND chatroom_idx=#{chatroom_idx}   
 	</select>
 	
-	<!-- 참여자 존재 유무  -->
-	<select id="partiexist" parameterType="com.sulbazi.chat.PartiDTO"
-		resultType="com.sulbazi.chat.PartiDTO">
-		SELECT parti_idx, user_id, parti_state, chatroom_category, chatroom_idx
-			FROM parti
-			WHERE user_id=#{user_id} AND chatroom_idx=#{chatroom_idx}   
-	</select>
 	
 	
 	<!-- 고객센터 정보 by inquery_idx -->

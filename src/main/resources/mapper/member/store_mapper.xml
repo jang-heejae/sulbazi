@@ -246,7 +246,7 @@
 
 	<!-- 매장 마이페이지  홍보글 정보 보기 -->
 	<select id="storemyboard" resultType="com.sulbazi.board.BoardDTO">
-		SELECT board_category, board_subject, board_date, board_bHit, like_count 
+		SELECT * 
 			FROM board WHERE store_idx=#{param1} and board_state=true;
 	</select>
 	

@@ -195,27 +195,29 @@ public class AlarmService {
 	
 	
 	//대화방 참여 수락되었을때 알림
-	public Map<String, Object> chatroomin(String chatroomboss,String my_id) {
-//		UserChatroomDTO userchatroomdto = alarm_dao.userchatroominfo(chatroomboss);//개설자 대화방 정보
+	public Map<String, Object> chatroomin(String chatroomboss,String user_id) {
+		UserChatroomDTO userchatroomdto = alarm_dao.userchatroominfo(chatroomboss);//개설자 대화방 정보
 //		int chatroom_idx = userchatroomdto.getUserchat_idx();// 참여신청 대화방 idx
 //		PartiDTO partidto = new PartiDTO();
 //		partidto.setChatroom_idx(chatroom_idx); //참여신청 대화방idx
 //		partidto.setUser_id(my_id); //신청자 id
 //		partidto.setParti_state(1); //참여 상태
-		AlamDTO dto = new AlamDTO();
-		dto.setChatroomboss(chatroomboss);
-		dto.setParti_state(1);
-		dto.setPartiuser(my_id);
 		
-		AlamDTO alarmdto = alarm_dao.chatallalarm(dto);
-		
-		int roomidx = dto.getChatroom_idx();
-		String user_id = dto.getPartiuser();
+		int roomidx = userchatroomdto.getUserchat_idx();
+
 		
 		// 수락되면 parti 테이블 state = 1 하고 userchat 테이블에 +parti 테이블 count
 		chatparti_dao.handleAccept(roomidx,user_id);
 		Integer total = chatparti_dao.usertotal(roomidx);
 		chatroom_dao.roomin(total,roomidx);
+		
+		
+		AlamDTO dto = new AlamDTO();
+		dto.setChatroomboss(chatroomboss);
+		dto.setParti_state(1);
+		dto.setPartiuser(user_id);
+		
+		AlamDTO alarmdto = alarm_dao.chatallalarm(dto);
 		
 		Map<String, Object> chatroom = new HashMap<String, Object>();
 		if(alarmdto != null) { //신청 대화방에서 나의 id가 참여상태 1이라면 
@@ -224,7 +226,7 @@ public class AlarmService {
 			String chatroomname = alarmdto.getUserchat_subject();
 			AlamDTO insertalarm = new AlamDTO();
 			insertalarm.setAlarm_category_idx(5);
-			insertalarm.setUser_id(my_id);
+			insertalarm.setUser_id(user_id);
 			insertalarm.setAlarm_subject(chatroomname);
 			alarm_dao.alarminsert(insertalarm);
 			int alarm_idx= insertalarm.getAlarm_idx();
