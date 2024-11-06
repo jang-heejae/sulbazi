@@ -62,6 +62,9 @@ public class StoreController {
 	//매장 상세보기
 	@RequestMapping(value="/storeDetail.do")
     public String getStoreDetail(int storeidx, Model model, HttpSession session) {
+		if (session.getAttribute("loginId") != null) {
+			
+		
 		int idx = storeidx;
 		//매장 정보
         StoreDTO storeDetail = store_ser.getStoreDetail(idx);
@@ -88,12 +91,14 @@ public class StoreController {
         model.addAttribute("storeOverviews",storeOverviews);
 		/* logger.info("storeDetail: " + storeDetail); */
         return "store/storeDetail";
-  
+		}
+		return "redirect:/main.go";
     }
 	
 	
 	@RequestMapping(value="/menu.do")
     public String storeMenu1(int storeidx, Model model, HttpSession session) {
+		if (session.getAttribute("loginId") != null) {
 		int idx = storeidx;
         List<PhotoDTO> files= store_ser.fileList(idx);
 		/* logger.info("files list size: {}", files.size()); */
@@ -111,11 +116,13 @@ public class StoreController {
 		model.addAttribute("storeMenu",storeMenu);
 		model.addAttribute("store",idx);
         return "store/storeMenu";
-  
+		}
+		return "redirect:/main.go";
     }
 	
 	@RequestMapping(value="/menu2.do")
     public String storeMenu2(int storeidx, Model model, HttpSession session) {
+		if (session.getAttribute("loginId") != null) {
 		int idx = storeidx;
         List<PhotoDTO> files= store_ser.alcoholFileList(idx);
 //        logger.info("files list size: {}", files.size());
@@ -128,6 +135,8 @@ public class StoreController {
 		model.addAttribute("storeAlcohol",storeAlcohol);
 		model.addAttribute("store",idx);
         return "store/storeMenu2";
+		}
+		return "redirect:/main.go";
   
     }
 	
@@ -190,10 +199,10 @@ public class StoreController {
     
     
     //매장 리뷰 페이지 보내기만함
-	@RequestMapping(value="/review.go")
-    public String reviewJoin (int storeidx, Model model, HttpSession session) {
-        return "store/review";
-    }
+//	@RequestMapping(value="/review.go")
+//    public String reviewJoin (int storeidx, Model model, HttpSession session) {
+//        return "store/review";
+//    }
 	//매장 리뷰 불러오기 아쟉스
 	@PostMapping(value="/reviewAllUser.ajax")
 	@ResponseBody
@@ -220,9 +229,13 @@ public class StoreController {
 
 	@RequestMapping(value="/storeList.go")
 	public String storelist(Model model,HttpSession session) {
+		if (session.getAttribute("loginId") != null) {
 	    List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1); // category_state가 1인 옵션만 가져오기
 	    model.addAttribute("options", options);
 		return "store/storeList";
+		}
+		return "redirect:/main.go";
+		
 	}
 	
 	@GetMapping(value="/namesearch.ajax")

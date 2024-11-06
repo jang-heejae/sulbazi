@@ -605,7 +605,7 @@ background: linear-gradient(0deg, rgba(255,27,0,1) 0%, rgba(251,75,2,1) 100%);
 </c:choose>
 
 
-	<form id="somesearch">
+<!-- 	<form id="somesearch">
        <div class="search-container">
            <select class="search-select" id="searchCategory">
                <option value="menu">메뉴</option>
@@ -620,7 +620,7 @@ background: linear-gradient(0deg, rgba(255,27,0,1) 0%, rgba(251,75,2,1) 100%);
            </div>
        </div>
    </form>
-   
+    -->
    
         <main>
         
@@ -708,8 +708,8 @@ background: linear-gradient(0deg, rgba(255,27,0,1) 0%, rgba(251,75,2,1) 100%);
                 <!-- 메뉴정보 페이징 처리-->
                 <div id="menuId">
                     <h3>메뉴</h3>
-				    <button class="btn-light action-button" onclick="location.href='menu.do?storeidx=${store.store_idx}'">안주</button>
-				    <button class="btn-light action-button" onclick="location.href='menu2.do?storeidx=${store.store_idx}'">술종류</button>
+					<button class="btn-light action-button" onclick="window.open('menu.do?storeidx=${store.store_idx}', '_blank', 'width=300,height=800')">안주</button>	
+					<button class="btn-light action-button" onclick="window.open('menu2.do?storeidx=${store.store_idx}', '_blank', 'width=300,height=800')">술종류</button>
                 </div>			
                 <!-- 사진 내외부 사진-->
                 <div id="inoutphoto">
@@ -1116,7 +1116,34 @@ content += '</tr>';
  		
  		//리뷰 나오기 버튼 클릭시 해당영역 나오기
  		$('.button').click(function() {
- 		    $('.mypost').slideDown(1000); 
+	 		$.ajax({
+				type:'POST', 
+				url: 'dontWrite.ajax',
+				data:{
+					'storeIdx':storeIdx,
+					'loginId':loginId
+					
+				},
+				dataType:'JSON',
+				success:function(data){
+				if (data.success <1) {
+					$('.mypost').slideDown(1000);
+					
+					
+				}else{
+					alert('작성하신 리뷰가 있습니다 한번밖에 작성안되기 떄문에 수정으로 대체 부탁드리겠습니다 ');
+					
+				}
+					
+				},
+				error:function(e){
+					console.log(e);
+					errorReviewWrite();
+					alert("답글 수정실패 다시 확인해 주세요.");
+				}
+			}); 
+	 		
+ 		    
  		});
 
  		// 리뷰 숨기기 버튼 클릭 시, 해당 영역을 부드럽게 사라지게 하기
@@ -1151,7 +1178,7 @@ content += '</tr>';
  		    var moodValue = document.getElementById("moodSelect").value;  
  		    var reviewContent = document.getElementById("text-area").value; 
  		    
- 		   var form = new FormData($('form')[0]);
+ 		   var form = new FormData($('#myForm')[0]);
  		  form.append('loginId', loginId);
  		  form.append('storeIdx', storeIdx);
  		  form.append('ratingValue', ratingValue);
@@ -1160,7 +1187,12 @@ content += '</tr>';
  		  form.append('reviewContent', reviewContent);
  		  
  		    
+ 		    // FormData에 파일이 잘 들어갔는지 확인
+ 		    for (let entry of form.entries()) {
+ 		        console.log(entry[0], entry[1]);
+ 		    }
  		  
+ 		    
 	 		if (ratingValue != 0 && purposeValue != 0 && moodValue != 0 && reviewContent.trim() !== "" ) {
 	 			$.ajax({
 	 				type:'POST', 
@@ -1481,11 +1513,6 @@ function replyUp(button) {
  		  form.append('moodValue', moodValue);
  		  form.append('reviewContent', reviewContent);
  		  form.append('reviewIdx', reviewIdx);
- 		  
- 		    for (var pair of form.entries()) {
- 		        console.log(pair[0]+ ', ' + pair[1]); 
- 		    }
- 		  
  		  
  		    
 	 		if (ratingValue != 0 && purposeValue != 0 && moodValue != 0 && reviewContent.trim() !== "" ) {

@@ -45,6 +45,8 @@ public interface ReviewDAO {
 
 	String reviewusername(String user_id);
 
+	List<ReviewDTO> dontWrite(Map<String, Object> params);
+
 	
 
 	
