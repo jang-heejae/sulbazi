@@ -80,12 +80,6 @@ public class InqueryService {
 
 	public List<HashMap<String, Object>> userlistinquery(String id) {
 	    List<HashMap<String, Object>> userinquerylist = inquery_dao.userlistinquery(id);
-	    for (HashMap<String, Object> inquery : userinquerylist) {
-	        int inqueryidx = (int) inquery.get("inquery_idx");
-	        List<AdminDTO> answeradmin = inquery_dao.answeradmin(inqueryidx);
-	        // answeradmin 정보를 inquery에 추가
-	        inquery.put("answeradmin", answeradmin);
-	    }
 	    return userinquerylist;
 	}
 	

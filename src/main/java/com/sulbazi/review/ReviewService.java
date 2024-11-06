@@ -143,7 +143,7 @@ public class ReviewService {
 	        reviewMap.put("photoexist", photoexist);
 
 	        reviewMapList.add(reviewMap); // 변환한 Map을 리스트에 추가
-	        logger.info("map확인:{}",reviewMap);
+	        //logger.info("map확인:{}",reviewMap);
 	    }
 	    
 	    return reviewMapList; // 리스트 반환
@@ -165,7 +165,7 @@ public class ReviewService {
 	        replyMap.put("comm_date", reviewCommdto.getComm_date());
 
 	        replyMapList.add(replyMap); // 변환한 Map을 리스트에 추가
-	        logger.info("map확인:{}",replyMap);
+	        //logger.info("map확인:{}",replyMap);
 	    }
 
 	    return replyMapList; // 리스트 반환

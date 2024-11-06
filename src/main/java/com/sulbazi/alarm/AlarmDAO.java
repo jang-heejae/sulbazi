@@ -21,7 +21,7 @@ public interface AlarmDAO {
 
 	AlarmCategoryDTO categoryalarminfo(int i);
 
-	PartiDTO partiexist(PartiDTO partidto);
+	PartiDTO partiexist(AlamDTO partidto);
 
 	InqueryDTO inquiryinfoidx(int inquery_idx);
 
@@ -46,6 +46,10 @@ public interface AlarmDAO {
 
 	List<AlamDTO> chatalarm(AlamDTO checkchatalarm);
 	
+	//join테스트용
+	List<AlamDTO> storealarm(String user_id);
+	
+	AlamDTO chatallalarm(AlamDTO dto);
 	
 }
 

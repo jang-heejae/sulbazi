@@ -21,16 +21,20 @@
 			VALUES(#{param1}, #{param2},#{param3})
 	</insert>
 	
-	<select id="userlistinquery" resultType="map">
-		SELECT inquery_idx,inquery_subject,inquery_state, inquery_date 
-			FROM inquery WHERE id_write=#{param1}	
+	<!-- 일단 join써봄 -->
+	<select id="userlistinquery">
+		SELECT * 
+		FROM 
+			inquery
+		INNER JOIN 
+			answer ON inquery.inquery_idx=answer.inquery_idx
+		INNER JOIN 
+			admin ON answer.admin_id=admin.admin_id
+		WHERE
+			inquery.id_write=#{param1}		
 	</select>
+	
 
-	<!-- 문의 처리자 -->
-	<select id="inqueryprocessadmin" resultType="map">
-		SELECT inquery_idx,admin_id FROM answer WHERE 
-			(SELECT inquery_idx FROM inquery WHERE id_write=#{param1})
-	</select>
 	
 	<!-- 문의 리스트 -->
 	<select id="admininquerylist" resultType="com.sulbazi.inquery.InqueryDTO">
