@@ -74,7 +74,7 @@
     <body>
     	<div id="loginBox">
 		<div class="logo_text">
-             <a href="./#">SULBAZI</a>
+             <a href="/mainPage.go">SULBAZI</a>
         </div>
         	<hr/>
 	 		<br>
