@@ -5,6 +5,23 @@
 
 <mapper namespace="com.sulbazi.alarm.AlarmDAO">
 
+	<!-- ++속도개선 추가쿼리 1-->
+	<select id="storealarm" resultType="com.sulbazi.alarm.AlamDTO">
+		SELECT 
+			store_name,
+			store_idx,
+			bookmark_idx,
+			user_id,
+		FROM 
+			store
+		INNER JOIN 
+			bookmark ON store.store_idx=bookmark.store_idx
+		INNER JOIN 
+			board ON board.store_idx=store.store_idx
+		WHERE user_id = #{param1}
+	</select>
+	
+	<!-- 만약 1번이 된다면 -->
 	<!-- 매장이름  -->
 	<select id="storename">
 		SELECT store_name FROM store WHERE store_idx=#{param1}
@@ -20,6 +37,8 @@
 	<select id="storeboardinfo" resultType="com.sulbazi.board.BoardDTO">
 		SELECT store_idx FROM board ORDER BY board_idx DESC LIMIT 1;
 	</select>
+	<!-- 여기까지 삭제가능 1 -->
+	
 
 	<!-- 개인 대화방 정보 by user_id-->
 	<select id="userchatroominfo" resultType="com.sulbazi.chat.UserChatroomDTO">
@@ -27,13 +46,6 @@
 			WHERE user_id = #{param1}
 	</select>
 	
-	<!-- 개인 대화방 정보 by userchat_idx-->
-	<select id="userchatroominfoidx" resultType="com.sulbazi.chat.UserChatroomDTO">
-		SELECT userchat_idx, user_id, userchat_subject FROM userchat
-			WHERE userchat_idx = #{userchat_idx}
-	</select>
-	
-
 	<!-- 대화방 참여자 정보 -->
 	<select id="partiinfo" parameterType="com.sulbazi.chat.PartiDTO"
 		resultType="com.sulbazi.chat.PartiDTO">
@@ -51,23 +63,11 @@
 			WHERE user_id=#{user_id} AND chatroom_idx=#{chatroom_idx}   
 	</select>
 	
-	<!-- 고객센터 정보 by id_write-->
-	<select id="inquiryinfo" resultType="com.sulbazi.inquery.InqueryDTO">
-		SELECT inquery_idx, inquery_subject, id_write FROM inquery
-			WHERE id_write=#{param1}
-	</select>
 	
 	<!-- 고객센터 정보 by inquery_idx -->
 	<select id="inquiryinfoidx" resultType="com.sulbazi.inquery.InqueryDTO">
 		SELECT inquery_idx, inquery_subject, id_write, inquery_state FROM inquery
 			WHERE inquery_idx=#{inquery_idx}
-	</select>
-	
-	
-	<!-- 고객센터 문의 사항 답변 정보-->
-	<select id="answerinfo" resultType="com.sulbazi.inquery.AnswerDTO">
-		SELECT inquery_idx, answr_idx FROM answer
-			WHERE inquery_idx=#{param1} 
 	</select>
 	
 

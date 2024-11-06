@@ -46,6 +46,8 @@ public interface PhotoDAO {
 
 	int reviewPhotoDel(Map<String, String> params);
 
+	List<Integer> reviewphotoexist(int review_idx);
+
 
 
 }

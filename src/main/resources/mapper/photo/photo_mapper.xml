@@ -115,5 +115,12 @@
 	    AND new_filename = #{photo}
 	</delete>
 
+
+	<!-- 매장 리뷰 사진 유무 확인 -->
+	<select id="reviewphotoexist">
+	 	SELECT * FROM photo WHERE photo_folder_idx = #{param1}
+	</select>
+
+
 </mapper>
 

@@ -178,6 +178,12 @@
 </select>
 
 	
+	<!-- 리뷰 유저 이름 -->
+	<select id="reviewusername" resultType="String" >
+		SELECT user_name FROM user WHERE user_id=#{param1}
+	</select>
+	
+	
 	<!-- 매장 마이페이지 리뷰 확인 -->
 	<select id="storelookreview" resultType="com.sulbazi.review.ReviewDTO">
 		SELECT * FROM review WHERE store_idx=#{param1}
@@ -186,7 +192,7 @@
 	
 	 <!-- 매장 마이페이지 답글확인  -->
 	<select id="storelookreply" resultType="com.sulbazi.review.ReviewCommDTO">
-		SELECT * FROM review WHERE store_idx=#{param1}
+		SELECT * FROM review_comm WHERE store_idx=#{param1}
 	</select>
 	
 	
