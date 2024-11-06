@@ -63,12 +63,23 @@ public class PhotoService {
     	try {
 			for (MultipartFile file : files) {
 				String ori = file.getOriginalFilename();
+				if (ori == null || ori.isEmpty()) {
+					return "2a4ce406-3235-46b0-a641-6e02cde217ad.png";
+				}
 				int ext = ori.lastIndexOf(".");
-				String extt = ori.substring(ext);
-				newfile = UUID.randomUUID()+extt;
-				Path path = Paths.get(bpath+newfile);
-				byte[] arr = file.getBytes();
-				Files.write(path, arr);
+				if (ext > 0) {
+					String extt = ori.substring(ext);	
+					newfile = UUID.randomUUID()+extt;
+					Path path = Paths.get(bpath+newfile);
+					byte[] arr = file.getBytes();
+					Files.write(path, arr);
+				}else {
+					String extt = ".png";
+					newfile = UUID.randomUUID()+extt;
+					Path path = Paths.get(bpath+newfile);
+					byte[] arr = file.getBytes();
+					Files.write(path, arr);
+				}
 			}
 		} catch (IOException e) {
 				e.printStackTrace();
@@ -307,7 +318,8 @@ public class PhotoService {
 		// 게시판 게시글 사진 저장하는 메서드
 		public void boardwriteajax(MultipartFile[] file, int store_idxx, int i) throws IOException {
 			PhotoDTO photoDTO = new PhotoDTO();
-			String photo = storeFile(file);
+			String photo = "2a4ce406-3235-46b0-a641-6e02cde217ad.png";
+			photo = storeFile(file);
 			logger.info(photo);
 			photoDTO.setNew_filename(photo);
 			photoDTO.setPhoto_folder_idx(store_idxx);

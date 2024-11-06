@@ -278,7 +278,7 @@ width: 50px;
                <th><input class="subject" type="text" name="board_subject" value=""></th>
             </tr>
             <tr>
-            	<th class="contentphoto" colspan="3">사진을 넣어주세요!</th>
+            	<th class="contentphoto" colspan="3"><img id="previewImage" src="/photo/기본이미지.png" alt="기본 이미지"></th>
             </tr>
          </table>
          <hr class="alxwnf">
@@ -289,7 +289,10 @@ width: 50px;
          		</th>
          	</tr>
          	<tr>
-         		<th><input type="file" id="file" multiple="multiple"></th>
+         	
+         		<th>
+         		<input type="file" id="file" name="file" multiple="multiple" onchange="previewFile()">
+         		</th>
          		<th></th>
          		<th><button onclick="location.href='redirect:/boardList.go'">취소</button>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="등록" onclick="save(event)"/></th>
          	</tr>
@@ -304,6 +307,38 @@ var loginId = '${sessionScope.loginId}'
 console.log(loginId);
 document.getElementById("store_id").value = loginId;
 //main_menu 클릭 이벤트
+
+function previewFile() {
+    var fileInput = document.querySelector('#file');
+    var file = fileInput.files[0];
+    var preview = document.querySelector('#previewImage');
+    
+    if (file) {
+        // 파일이 선택되면 미리보기 이미지 변경
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            preview.src = reader.result;  // 선택된 파일을 미리보기 이미지로 설정
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // 파일이 없으면 기본 이미지 표시
+        preview.src = '/photo/기본이미지.png';
+    }
+}
+
+function submitForm() {
+    var fileInput = document.querySelector('#file');
+    if (!fileInput.files.length) {
+        // 파일이 선택되지 않았을 경우 기본 이미지 경로를 첨부하여 전송
+        var inputData = new FormData();
+        inputData.append("file", "/photo/기본이미지.png");  // 기본 이미지 경로를 서버로 전송
+        // Ajax를 통해 전송하거나 폼을 전송하는 방법 등 추가 구현
+    } else {
+        // 파일이 선택된 경우 FormData에 파일 추가
+        var formData = new FormData(document.querySelector('form'));
+        // Ajax로 폼을 전송하거나 일반 폼 제출
+    }
+}
 
 var user_ids_str = '${bookmarkuser}'; // 예: '[ee, 11]'
 

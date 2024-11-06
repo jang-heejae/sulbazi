@@ -9,6 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="resources/jquery.twbsPagination.js" type="text/javascript"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <style>
     .boardlist{
@@ -21,6 +22,7 @@
         left: 20%;
         padding: 20px;
         box-sizing: border-box;
+        top: 80px;
     }
     td{
         padding: 1%;
@@ -41,7 +43,7 @@
     }
     .writebutton{
        position: absolute;
-       top: 140px;
+       top: 216px;
        right: 327px;
     }
     .pagination {
@@ -65,7 +67,6 @@
        border-radius: 5px; /* 둥근 모서리 */
        border: 1px solid #73734F; /* 버튼 테두리 색 */
    }
-
    .pagination .active a {
        background-color: #73734F; /* 현재 페이지 강조 색 */
        color: rgb(255, 140, 9); /* 현재 페이지 글자색 */
@@ -89,6 +90,50 @@
        cursor: auto;
        background-color: #73734F;
        border-color: #73734F;
+       }
+   .catego{
+  	position: absolute;
+  	top: 235px;
+  	left: 392px;
+	color: white;
+	font-size: 21px;
+	font-weight: 700;
+   }
+    #reportList input[type="radio"] {
+        display: none;
+    }
+    
+    #reportList .category {
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    #reportList input[type="radio"]:checked + label.category {
+        background-color: rgb(255, 140, 9);
+        color: white;
+    }
+    .sear{
+    	position: absolute;
+    	top: 154px;
+    	left: 835px;
+    }
+    .sear::before {
+        content: '\f002';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        position: absolute;
+        left: 80%;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        color: #000;
+    }
+    .boar{
+    	width: 240px;
+    	border-radius: 15px;
+    	height: 40px;
+    }
 </style>
 <body>
 <c:choose>
@@ -102,14 +147,24 @@
         <jsp:include page="../main/storeMain.jsp" />
     </c:when>
 </c:choose>
-    <div id="reportList">
-      <input type="radio" name="board_category" value="all" checked/> 전체 보기&nbsp;&nbsp;
-      <input type="radio" name="board_category" value="홍보"/>홍보&nbsp;&nbsp;
-      <input type="radio" name="board_category" value="이벤트"/>이벤트&nbsp;&nbsp;
-      <input type="radio" name="board_category" value="신메뉴"/>신메뉴&nbsp;&nbsp;
-      <input type="radio" name="board_category" value="신규오픈"/>신규오픈
-      <div><input type="text" name="board_search" value=""/></div>
-      <button id="searchButton">검색</button>
+    <div id="reportList" class="catego">
+	    <input type="radio" name="board_category" id="category_all" value="all" checked>
+	    <label for="category_all" class="category">전체 보기</label>&nbsp;&nbsp;
+	    
+	    <input type="radio" name="board_category" id="category_promo" value="홍보">
+	    <label for="category_promo" class="category">홍보</label>&nbsp;&nbsp;
+	    
+	    <input type="radio" name="board_category" id="category_event" value="이벤트">
+	    <label for="category_event" class="category">이벤트</label>&nbsp;&nbsp;
+	    
+	    <input type="radio" name="board_category" id="category_newmenu" value="신메뉴">
+	    <label for="category_newmenu" class="category">신메뉴</label>&nbsp;&nbsp;
+	    
+	    <input type="radio" name="board_category" id="category_newopen" value="신규오픈">
+	    <label for="category_newopen" class="category">신규오픈</label>
+	</div>
+   <div class="sear">
+	    <input type="text" name="board_search" value="" class="boar" />
    </div>
     <div class="writebutton" style="text-align: right; margin: 10px;">
        <c:if test="${not empty sessionScope.opt && sessionScope.opt == 'store_log'}">
@@ -226,6 +281,25 @@ function board_filter(action) {
       }
    });
 }
+
+$(document).ready(function() {
+    pageCall(showPage);
+
+    $('input[name="board_state"], input[name="board_category"]').change(function() {
+        board_filter('filter');
+    });
+
+    $('#searchButton').click(function() {
+        board_filter('search');   
+    });
+
+    // Enter key 이벤트 추가
+    $('input[name="board_search"]').keypress(function(event) {
+        if (event.key === 'Enter') {
+            board_filter('search');
+        }
+    });
+});
 
 </script>
 </html>

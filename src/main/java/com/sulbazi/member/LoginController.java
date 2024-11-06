@@ -92,10 +92,10 @@ public class LoginController {
 	}
 	
 	@PostMapping(value="/userfindpw.do")
-	public String userfindpwdo(String user_id, String email, Model model) {
-		logger.info("변경할 비밀번호의 일반 사용자 이름, 이메일 : " + user_id + email);
+	public String userfindpwdo(String user_id, String user_email, Model model) {
+		logger.info("변경할 비밀번호의 일반 사용자 이름, 이메일 : " + user_id + user_email);
 		String page = "";
-		if (login_ser.userfindpwdo(user_id, email) != null) {
+		if (login_ser.userfindpwdo(user_id, user_email) != null) {
 			model.addAttribute("findtype", "user");
 			model.addAttribute("identifier", user_id);
 			page = "member/changePw";

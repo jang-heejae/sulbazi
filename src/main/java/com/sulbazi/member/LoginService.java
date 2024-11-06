@@ -55,22 +55,12 @@ public class LoginService {
 	public boolean userRevoke(String id, String opt) {
 		return login_dao.userRevoke(id, opt);
 	}
-	public String userfindpwdo(String user_id, String email) {
-		String msg = "일반 사용자 비밀번호 찾기 실패";
-		if(login_dao.userfindpw(user_id, email) != null) {
-			msg = "일반 사용자 비밀번호 찾기 성공";
-		}
-		logger.info(msg);		
-		return msg;
+	public String userfindpwdo(String user_id, String user_email) {
+		return login_dao.userfindpw(user_id, user_email);
 	}
 
 	public String storefindpwdo(String store_id, String store_number) {
-		String msg = "매장 사용자 비밀번호 찾기 실패";
-		if(login_dao.storefindpwdo(store_id, store_number) != null) {
-			msg = "매장 사용자 비밀번호 찾기 성공";
-		}
-		logger.info(msg);	
-		return msg;
+		return login_dao.storefindpwdo(store_id, store_number);
 	}
 
 	public void changeuserpw(String id, String newPassword) {
