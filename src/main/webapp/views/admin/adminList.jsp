@@ -112,7 +112,9 @@
 			
 						</tbody>
 					</table>
-					<button id="addBtn" onclick="openModal(); return false;">관리자 추가</button>
+					<c:if test="${sessionScope.loginId == 'admin'}">
+    					<button id="addBtn" onclick="openModal(); return false;">관리자 추가</button>
+					</c:if>
 				</div>
 			</div>
 		</section>
@@ -125,6 +127,7 @@
     </div>
 </div>
 <script>
+const loginId = '${sessionScope.loginId}';
 listCall();
 	function listCall(){
 		$.ajax({
@@ -153,11 +156,16 @@ listCall();
 	        return date.toLocaleDateString('en-CA'); // 'YYYY-MM-DD' 형식
 	    }
 	}
+	
 	function printList(list){
 		var content ='';
 		for (var item of list) {
 			content+='<tr>';
-			content += '<td><a href="#" onclick="openAdminUpdateModal(\'' + item.admin_id + '\'); return false;">' + item.admin_id + '</a></td>';
+			if (loginId === 'admin') {
+	            content += '<td><a href="#" onclick="openAdminUpdateModal(\'' + item.admin_id + '\'); return false;">' + item.admin_id + '</a></td>';
+	        } else {
+	            content += '<td>' + item.admin_id + '</td>';
+	        }
 			content+='<td>'+item.admin_name+'</td>';
 			content+='<td>'+formatDate(item.admin_doc)+'</td>';
 			content+='</tr>';

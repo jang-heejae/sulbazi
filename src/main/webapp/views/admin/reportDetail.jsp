@@ -296,19 +296,35 @@
 <script>
 listCall(); // 페이지 로드 시 데이터 호출
 $(document).ready(function() {
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+
     // 모달을 표시하는 이벤트 등록
     $('#button').on('click', function() {
+        const startDate = $('input[name="revoke_start"]').val();
+        const endDate = $('input[name="revoke_stop"]').val();
+
+        // 날짜 형식 검사
+        if (!datePattern.test(startDate) || !datePattern.test(endDate)) {
+            $('#confirmationMessage').text("날짜 형식이 올바르지 않습니다. 'yyyy-MM-dd' 형태로 입력하세요.");
+            $('#confirmationModal').css('display', 'block'); // 에러 모달 표시
+            
+            // 에러 시 확인 버튼을 클릭하면 모달만 닫음
+            $('#confirmAction').off('click').on('click', function() {
+                $('#confirmationModal').css('display', 'none'); // 모달 닫기
+            });
+
+            return; // 제출 중지
+        }
+        
+        // 날짜 형식이 맞으면 등록 확인 메시지 표시
         $('#confirmationMessage').text('등록하시겠습니까?');
-        $('#confirmationModal').css('display', 'block'); // 모달을 보이도록 설정
-    });
-
-    // 확인 버튼 클릭 시 폼 제출
-    $('#confirmAction').off('click').on('click', function() {
-        // 모달 숨기기
-        $('#confirmationModal').css('display', 'none');
-
-         // 폼을 제출하고, 부모 창을 새로고침한 후 현재 창 닫기
-        $('form').submit(); // 폼 제출
+        $('#confirmationModal').css('display', 'block'); // 등록 확인 모달 표시
+        
+        // 등록 확인 시 확인 버튼 클릭 이벤트 설정
+        $('#confirmAction').off('click').on('click', function() {
+            $('#confirmationModal').css('display', 'none'); // 모달 닫기
+            $('form').submit(); // 폼 제출
+        });
     });
 
     // 취소 버튼 클릭 시 모달 닫기
@@ -316,6 +332,7 @@ $(document).ready(function() {
         $('#confirmationModal').css('display', 'none'); // 모달 숨기기
     });
 });
+
 function listCall() {
 	var report_idx = $('#report_idx').val();
     $.ajax({
