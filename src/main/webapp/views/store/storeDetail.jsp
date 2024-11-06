@@ -519,6 +519,69 @@ img.review-photo{
     }
     
     
+    /* 유저좋아요 */
+    /* 5 */
+.like-section {
+  width: 130px;
+  height: 40px;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+  background: rgb(255,27,0);
+background: linear-gradient(0deg, rgba(255,27,0,1) 0%, rgba(251,75,2,1) 100%);
+}
+.like-section:hover {
+  color: #ff0000;
+  background: antiquewhite;
+   box-shadow:none;
+}
+.like-section:before,
+.like-section:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #f0094a;
+  box-shadow:
+   -1px -1px 5px 0px #fff,
+   7px 7px 20px 0px #0003,
+   4px 4px 5px 0px #0002;
+  transition:400ms ease all;
+}
+.like-section:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+.like-section:hover:before,
+.like-section:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
+.custom-btn {
+  width: 130px;
+  height: 40px;
+  color: #ffffff;
+  text-align:center;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: #ff92925c;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-flex;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+  align-items:center;
+}
+
 
 
     
@@ -557,6 +620,7 @@ img.review-photo{
            </div>
        </div>
    </form>
+   
    
         <main>
         
@@ -628,9 +692,11 @@ img.review-photo{
 	                    		<td>${board.board_category}</td>
 	                    		<td>
 	                    			<!-- <img class="icon" src="resources/img/img.png"/> -->
-	                    			<a href="boardDetail.go?board_idx=${board.board_idx}" style="display: inline-block; color: purple;;">${board.board_subject}</a>
+	                    			<a href="boardDetail.go?board_idx=${board.board_idx}" style="display: inline-block; color: purple;;">제목:${board.board_subject}</a>
 	                    		</td>
-	                    		<td>${board.board_date}</td>
+	                    		<td>좋아요:${board.like_count}</td>
+	                    		<td>조회수:${board.board_bHit}</td>
+	                    		<td>등록날짜:${board.board_date}</td>
 	                    	</tr>
 	                    </table>    
                 </div>
@@ -929,9 +995,13 @@ img.review-photo{
  			var content = '<tr>';
  			 	content += '<td colspan="3" class = "profile">';
  			 	content +='<img src="/photo/'+review.user_photo+'" alt="user" class="profile-image">';
- 			 	content +='<strong>&nbsp;'+review.user_nickname+'</strong>&nbsp;';
- 			 	content +='<div class="like-section">';
- 			 	content +='<img src="resources/img/이종원 좋아요전.png" alt="좋아요" class="icon-review">&nbsp;'+review.user_likecount+'</div>';
+ 			 	content +='<strong>&nbsp;' + review.user_nickname + '</strong>&nbsp;';
+ 			 	
+ 			 	if (loginId != review.user_id ) {
+ 			 		content += '<button class="custom-btn like-section action-button" onclick="openPopup(\'' + review.user_nickname + '\')">프로필</button>';
+				}else{
+ 			 		content += '<button class="custom-btn like-section action-button" onclick="openPopup(\'' + review.user_nickname + '\')">나</button>';
+				}
  			 	content +='</td></tr>';
  			 	content +='<tr><td class="rating-cell">';
  			 	content +='<img src="resources/img/종원리뷰별.png" alt="별점" class="icon-review">'+review.starpoint+' </td>';
@@ -1090,6 +1160,7 @@ content += '</tr>';
  		  form.append('reviewContent', reviewContent);
  		  
  		    
+ 		  
 	 		if (ratingValue != 0 && purposeValue != 0 && moodValue != 0 && reviewContent.trim() !== "" ) {
 	 			$.ajax({
 	 				type:'POST', 
@@ -1411,6 +1482,11 @@ function replyUp(button) {
  		  form.append('reviewContent', reviewContent);
  		  form.append('reviewIdx', reviewIdx);
  		  
+ 		    for (var pair of form.entries()) {
+ 		        console.log(pair[0]+ ', ' + pair[1]); 
+ 		    }
+ 		  
+ 		  
  		    
 	 		if (ratingValue != 0 && purposeValue != 0 && moodValue != 0 && reviewContent.trim() !== "" ) {
 	 			$.ajax({
@@ -1568,6 +1644,15 @@ function replyUp(button) {
               }
           });
  	  }
+	
+ 	//유저 좋아요
+	   function openPopup(user_nickname) {
+	      var popupUrl = '/SULBAZI/userPopup.go?user_nickname=' + user_nickname;
+	       window.open(popupUrl, 'userPopup', 'width=600,height=400');
+	   }
+ 	
+	   
+
  	   
 
  		

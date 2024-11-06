@@ -70,7 +70,7 @@
 	                    if (user.user_id === loginId) {
 	                        userlist += '<div class="user" style="font-weight: bold;">' + user.user_nickname + '㉯</div>';
 	                    } else {
-	                    	userlist += '<div class="user"><span onclick="openPopup(\'' + user.user_nickname + '\')">' + user.user_nickname + '</span></div>';
+	                    	userlist += '<div class="user"><span class="user-profile" onclick="openPopup(\'' + user.user_nickname + '\')">' + user.user_nickname + '</span></div>';
 	                    }
 	                    
 	                    userlist += '</div>';
@@ -560,6 +560,9 @@ a{
     }
     .sendmsg{
         width: 15%;
+    }
+    .user-profile{
+    	cursor: pointer;
     }
 </style>
 </head>

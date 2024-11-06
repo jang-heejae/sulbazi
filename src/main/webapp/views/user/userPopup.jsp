@@ -95,6 +95,10 @@
         	top: 2px;
         	left: -10px;
         }
+#userLike{
+    cursor: pointer;
+}
+        
     </style>
 </head>
 <body>
@@ -124,8 +128,7 @@
 				            </c:when>
 				         </c:choose>
 				         <button class="like" id="userLike" onclick="clickLike()">
-				         	
-				        	좋아요
+				         	<img class="jongwonIcon" src="resources/img/이종원 좋아요전.png">좋아요
 				         </button> 
                     </td>
                 </tr>
@@ -195,7 +198,9 @@ $(document).ready(function() {
 		$('#userLike').html(content);
 	};
 	
+	
 	function clickLike(){
+		if(loginId != userId){
 		$.ajax({
 			type:'GET', 
 			url: '/SULBAZI/insertLike.ajax',
@@ -206,9 +211,9 @@ $(document).ready(function() {
 			dataType:'JSON',
 			success:function(data){
 				if (data.success >=1) {
-					doLike();
-				}else{
 					dontLike();
+				}else{
+					doLike();
 				}
 			},
 			error:function(e){
@@ -216,6 +221,9 @@ $(document).ready(function() {
 				alert("좋아요를 실패하셨습니다. 다시 확인해 주세요.");
 			}
 		});
+		}else{
+			alert('자신에게 좋아요 다메요');
+		}
 	}
 	
 	

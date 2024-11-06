@@ -181,7 +181,6 @@
     </div>
 </body>
 <script>
-
 function like(){
 	var board_idx = '${info.board_idx}';
 	var user_id = '${sessionScope.loginId}';

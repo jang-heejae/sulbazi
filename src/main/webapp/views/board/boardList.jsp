@@ -37,58 +37,58 @@
         width: 200px;
     }
     .subject{
-    	width: 500px;
+       width: 500px;
     }
     .writebutton{
-    	position: absolute;
-    	top: 140px;
-    	right: 327px;
+       position: absolute;
+       top: 140px;
+       right: 327px;
     }
     .pagination {
-    	display: flex; /* Flexbox로 설정 */
-    	justify-content: center; /* 중앙 정렬 */
-    	margin-top: 10px; /* 테이블과의 간격 */
-	}
+       display: flex; /* Flexbox로 설정 */
+       justify-content: center; /* 중앙 정렬 */
+       margin-top: 10px; /* 테이블과의 간격 */
+   }
 
-	.pagination li {
-    	list-style: none; /* 기본 리스트 스타일 제거 */
-    	margin: 0 5px; /* 버튼 간격 조정 */
-	}
+   .pagination li {
+       list-style: none; /* 기본 리스트 스타일 제거 */
+       margin: 0 5px; /* 버튼 간격 조정 */
+   }
 
-	.pagination a {
-		font-family: "Irish Grover", system-ui;
-		font-size: 20px;
-    	color: #041d03; /* 버튼 글자색 */
-    	background-color: #73734F; /* 버튼 배경색 */
-    	padding: 5px 10px; /* 버튼 안쪽 여백 */
-    	text-decoration: none; /* 밑줄 제거 */
-    	border-radius: 5px; /* 둥근 모서리 */
-    	border: 1px solid #73734F; /* 버튼 테두리 색 */
-	}
+   .pagination a {
+      font-family: "Irish Grover", system-ui;
+      font-size: 20px;
+       color: #041d03; /* 버튼 글자색 */
+       background-color: #73734F; /* 버튼 배경색 */
+       padding: 5px 10px; /* 버튼 안쪽 여백 */
+       text-decoration: none; /* 밑줄 제거 */
+       border-radius: 5px; /* 둥근 모서리 */
+       border: 1px solid #73734F; /* 버튼 테두리 색 */
+   }
 
-	.pagination .active a {
-    	background-color: #73734F; /* 현재 페이지 강조 색 */
-    	color: rgb(255, 140, 9); /* 현재 페이지 글자색 */
-	}
-	.page-item.active .page-link {
-    	z-index: 1;
-    	color: rgb(255, 140, 9);
-    	background-color: #73734F;
-    	border-color: #73734F;
-	}
-	.page-item.disabled .page-link {
-    	color: #fff;;
-    	pointer-events: none;
-    	cursor: auto;
-    	background-color: #73734F;
-    	border-color: #73734F;
-	}
-	.page-item.disabled .page-link {
-    	color: rgb(255, 140, 9);
-    	pointer-events: none;
-    	cursor: auto;
-    	background-color: #73734F;
-    	border-color: #73734F;
+   .pagination .active a {
+       background-color: #73734F; /* 현재 페이지 강조 색 */
+       color: rgb(255, 140, 9); /* 현재 페이지 글자색 */
+   }
+   .page-item.active .page-link {
+       z-index: 1;
+       color: rgb(255, 140, 9);
+       background-color: #73734F;
+       border-color: #73734F;
+   }
+   .page-item.disabled .page-link {
+       color: #fff;;
+       pointer-events: none;
+       cursor: auto;
+       background-color: #73734F;
+       border-color: #73734F;
+   }
+   .page-item.disabled .page-link {
+       color: rgb(255, 140, 9);
+       pointer-events: none;
+       cursor: auto;
+       background-color: #73734F;
+       border-color: #73734F;
 </style>
 <body>
 <c:choose>
@@ -103,20 +103,20 @@
     </c:when>
 </c:choose>
     <div id="reportList">
-		<input type="radio" name="board_category" value="all" checked/> 전체 보기&nbsp;&nbsp;
-		<input type="radio" name="board_category" value="홍보"/>홍보&nbsp;&nbsp;
-		<input type="radio" name="board_category" value="이벤트"/>이벤트&nbsp;&nbsp;
-		<input type="radio" name="board_category" value="신메뉴"/>신메뉴&nbsp;&nbsp;
-		<input type="radio" name="board_category" value="신규오픈"/>신규오픈
-		<div><input type="text" name="board_search" value=""/></div>
-		<button id="searchButton">검색</button>
-	</div>
+      <input type="radio" name="board_category" value="all" checked/> 전체 보기&nbsp;&nbsp;
+      <input type="radio" name="board_category" value="홍보"/>홍보&nbsp;&nbsp;
+      <input type="radio" name="board_category" value="이벤트"/>이벤트&nbsp;&nbsp;
+      <input type="radio" name="board_category" value="신메뉴"/>신메뉴&nbsp;&nbsp;
+      <input type="radio" name="board_category" value="신규오픈"/>신규오픈
+      <div><input type="text" name="board_search" value=""/></div>
+      <button id="searchButton">검색</button>
+   </div>
     <div class="writebutton" style="text-align: right; margin: 10px;">
-	    <c:if test="${not empty sessionScope.opt && sessionScope.opt == 'store_log'}">
-	        <a href="boardWrite.go" style="padding: 10px 20px; background-color: rgb(255, 140, 9); color: white; text-decoration: none; border-radius: 5px;">
-	            글쓰기
-	        </a>
-	    </c:if>
+       <c:if test="${not empty sessionScope.opt && sessionScope.opt == 'store_log'}">
+           <a href="boardWrite.go" style="padding: 10px 20px; background-color: rgb(255, 140, 9); color: white; text-decoration: none; border-radius: 5px;">
+               글쓰기
+           </a>
+       </c:if>
     </div>
     <div class="boardlist">
         <table>
@@ -124,10 +124,10 @@
             </tbody>
         </table>
         <div class="container">
-			<nav aria-label="Page navigation">
-    			<ul class="pagination" id="pagination"></ul>
-			</nav>
-		</div>
+         <nav aria-label="Page navigation">
+             <ul class="pagination" id="pagination"></ul>
+         </nav>
+      </div>
     </div>
     
 </body>
@@ -136,38 +136,38 @@
 var showPage = 1;
 pageCall(showPage);
 
-	function pageCall(page){
-		$.ajax({
-		    type: 'GET',
-		    url: 'boardList.ajax',
-		    data: {
-		    	page: page,
-		    	cnt: 15
-		    },
-		    dataType: 'JSON',
-		    success: function(data) {
-		        console.log(data);
-		        if (data.login) {
-		            drawList(data.list);
-		            $('.pagination').twbsPagination({
-		            	startPage: page,
-	                    totalPages: data.totalPages,
-	                    visiblePages: 5,
-	                    onPageClick: function(evt, page) {
-	                        console.log('Page:', page);
-	                        pageCall(page); 
-	                    }
-	                });
-		        } else {
-		            alert('로그인이 필요한 서비스입니다.');
-		            location.href = './login.go';
-		        }
-		    },
-		    error: function(e) {
-		        console.log(e);
-		    }
-		});
-	}
+   function pageCall(page){
+      $.ajax({
+          type: 'GET',
+          url: 'boardList.ajax',
+          data: {
+             page: page,
+             cnt: 15
+          },
+          dataType: 'JSON',
+          success: function(data) {
+              console.log(data);
+              if (data.login) {
+                  drawList(data.list);
+                  $('.pagination').twbsPagination({
+                     startPage: page,
+                       totalPages: data.totalPages,
+                       visiblePages: 5,
+                       onPageClick: function(evt, page) {
+                           console.log('Page:', page);
+                           pageCall(page); 
+                       }
+                   });
+              } else {
+                  alert('로그인이 필요한 서비스입니다.');
+                  location.href = './login.go';
+              }
+          },
+          error: function(e) {
+              console.log(e);
+          }
+      });
+   }
 
 function drawList(list) {
     var content = '';
@@ -195,36 +195,36 @@ function drawList(list) {
 }
 
 $(document).ready(function() {
-	pageCall(showPage);
+   pageCall(showPage);
     $('input[name="board_state"], input[name="board_category"]').change(function() {
         board_filter('filter');
     });
     $('#searchButton').click(function() {
-    	board_filter('search');	
+       board_filter('search');   
     });   
-	});
+   });
 
 
 function board_filter(action) {
-	var boardCategory = $('input[name="board_category"]:checked').val() || "all";
-	var boardSearch = $('input[name="board_search"]').val();
-	console.log("카테고리 누른 값 : " + boardCategory);
-	$.ajax({
-		type: 'GET',
-		url: 'board_category.ajax',
-		data: {
-			action: action,
-			boardCategory: boardCategory,
-			boardSearch: boardSearch
-		},
-		dataType: 'JSON',
-		success: function(data) {
-			drawList(data.list);
-		},
-		error: function(e) {
-			console.error('AJAX Error:', e);
-		}
-	});
+   var boardCategory = $('input[name="board_category"]:checked').val() || "all";
+   var boardSearch = $('input[name="board_search"]').val();
+   console.log("카테고리 누른 값 : " + boardCategory);
+   $.ajax({
+      type: 'GET',
+      url: 'board_category.ajax',
+      data: {
+         action: action,
+         boardCategory: boardCategory,
+         boardSearch: boardSearch
+      },
+      dataType: 'JSON',
+      success: function(data) {
+         drawList(data.list);
+      },
+      error: function(e) {
+         console.error('AJAX Error:', e);
+      }
+   });
 }
 
 </script>
