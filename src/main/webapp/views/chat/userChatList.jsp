@@ -239,7 +239,7 @@
 	                </li>
 	            </ul>
 	            <div class="roombtn">
-	            	<button type="submit">개설</button>
+	            	<button type="button" onclick="validateForm()">개설</button>
 	                <button class="cancel" type="button">취소</button>
 	            </div>
 	        </div>
@@ -327,7 +327,9 @@ $(document).ready(function() {
                         searchlist(response);
                         checkParticipantStatus();
                     } else {
-                        $('.chatitems').html('<p>검색 결과가 없습니다.</p>');
+                        $('.chatitems').html('<p>검색 결과가 없습니다. 현재 개설된 채팅방</p>');
+                        searchlist(response);
+                        checkParticipantStatus();
                     }
                 },
                 error: function(error, status, xhr) {
@@ -394,7 +396,7 @@ $(document).ready(function() {
         location.href = "userchatlist.go"; // 리스트 페이지로 이동
     });
     
-    // 채팅방 취소 버튼
+    // 채팅방 개설
     $('.newroombtn, .cancel').click(function(){      
         var display = $('.createroom').css('display');
         if (display == 'none'){
@@ -403,6 +405,20 @@ $(document).ready(function() {
             $('.createroom').hide();
         }
     });
+    
+    function validateForm() {
+    	
+    	var subject = $("input[name='userchat_subject']").val();
+
+        // 입력값이 비어있으면 경고를 표시하고, submit 방지
+        if (!subject.trim()) {
+            alert("대화방 이름을 입력하세요.");
+            return;
+        }
+
+        // 입력값이 모두 있을 경우 폼을 제출
+        document.querySelector(".createroom").submit();
+    }
     
     // 서버에서 보내온 model alert
     var msg = "${msg}";

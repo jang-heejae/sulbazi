@@ -24,32 +24,36 @@
 	
 	$(document).ready(function() {
 
-		var ssse = new EventSource("/ssse/all");
-		var sssse = new EventSource("/sssse/all");
+		// SSE - 메세지, 유저리스트, 공지
+	    var sse = new EventSource("/sse/all");
 		
-		ssse.addEventListener("newMessage", function(event) {
-			loadMessages();
+	 	// 메세지 SSE
+	    sse.addEventListener("newMessage", function(event) {
+	        loadMessages();
 	    });
 
-		sssse.addEventListener("newuser", function(event) {
-			localloadUserList();
+	    // 사용자 리스트 SSE
+	    sse.addEventListener("newuser", function(event) {
+	    	loadUserList();
 	    });
 		
-		// 오류가 발생하면 실행되는 핸들러 - 메세지
-	    ssse.onerror = function(event) {
-	        console.error('EventSource failed:', event);
-	        setTimeout(function() {
-	        	ssse = new EventSource("/ssse/all");
-	        }, 1000); // 1초 후 재연결 시도
+	 	// 연결이 성공적으로 열리면 실행되는 핸들러
+	    sse.onopen = function() {
+	        console.log('Connection opened');
 	    };
-		// 오류가 발생하면 실행되는 핸들러 - 메세지
-	    sssse.onerror = function(event) {
-	        console.error('EventSource failed:', event);
-	        setTimeout(function() {
-	        	sssse = new EventSource("/sssse/all");
-	        }, 1000); // 1초 후 재연결 시도
-	    };
+
+	    // 오류 SSE - 메세지, 유저리스트, 공지
+	    sse.onerror = function(event) {
+		    console.error('EventSource failed:', event);
+		    setTimeout(function() {
+		        eventSource = new EventSource("/sse/all");
+		    }, 1000); // 재연결 시도
+		};
 		
+		window.onbeforeunload = function() {
+	        eventSource.close();
+	    };
+	    
 		// 참여자 리스트
 		var localchat_idx = ${roomidx};
 		
@@ -90,7 +94,7 @@
 	 // 신고 팝업창 - 메세지
 		$(document).off('click', '.usermsg');
 		
-		$(document).on('click', '.usermsg', function(event) {
+		$(document).on('contextmenu', '.usermsg', function(event) {
 			
 	        // 클릭한 위치 좌표
 	        var x = event.pageX;
