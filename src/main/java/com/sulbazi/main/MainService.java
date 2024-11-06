@@ -73,6 +73,7 @@ public class MainService {
 		}
         model.addAttribute("storeInfo", board);
         model.addAttribute("boards", boardList);
+        
     }
 
 }

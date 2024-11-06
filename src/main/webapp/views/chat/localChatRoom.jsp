@@ -564,7 +564,7 @@ a{
 </style>
 </head>
 <body>
-	<jsp:include page="../main/main.jsp"/>
+<jsp:include page="../main/main.jsp"/>
 	<h2 style="display:none;">${loginId}님의 ${roomidx}번 채팅방</h2>
     <div class="main">
         <div class="section">

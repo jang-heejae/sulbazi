@@ -17,10 +17,10 @@ $(document).ready(function() {
    }
    
    // SSE(EventSource) 객체 생성
-    const sse = new EventSource("/SULBAZI/sse/all");
-    const sssse = new EventSource("/SULBAZI/sssse/all");
-    var eventSource = new EventSource('/SULBAZI/subscribe');
-    var eventSou = new EventSource('/SULBAZI/ssubscribe');
+    var sse = new EventSource("/sse/all");
+    var sssse = new EventSource("/sssse/all");
+    var eventSource = new EventSource('/subscribe');
+    var eventSou = new EventSource('/ssubscribe');
     
     sse.addEventListener("newMessage", function(event) {
         loadMessages();
@@ -76,7 +76,9 @@ $(document).ready(function() {
         $('#noticeArea').text(updatedNotice); // 공지사항 영역 업데이트
         alert('공지사항이 업데이트되었습니다.');
     });
-
+    window.onbeforeunload = function() {
+        eventSource.close();
+    };
  	
    // 방장 권한 준다
    var userId = $('h2').data('userid').toString();
@@ -108,8 +110,9 @@ $(document).ready(function() {
    // 신고, 강퇴 팝업창 - 메세지
    $(document).off('click', '.usermsg');
    
-   $(document).on('click', '.usermsg', function(event) {
+   $(document).on('contextmenu', '.usermsg', function(event) {
       
+	    event.preventDefault();
         // 클릭한 위치 좌표
         var x = event.pageX;
         var y = event.pageY;
@@ -171,8 +174,10 @@ $(document).ready(function() {
    // 방장은 프로필에서도 강퇴시킬거야       
    $(document).off('click', '.room2');
    
-   $(document).on('click', '.room2', function(event) {
-      
+   $(document).on('contextmenu', '.room2', function(event) {
+	   
+	    event.preventDefault();
+	    
         // 클릭한 위치 좌표
         var x = event.pageX;
         var y = event.pageY;
@@ -225,6 +230,8 @@ $(document).ready(function() {
    
    // 신고 할거야
    $(document).on('click', '.reportuser', function() {
+	   event.preventDefault();
+
 	   var reporting_id = '${sessionScope.loginId}';
        var report_category = '개인 메시지';
        
@@ -873,7 +880,7 @@ $(document).ready(function() {
 </style>
 </head>
 <body>
-   <jsp:include page="../main/main.jsp"/>
+<jsp:include page="../main/main.jsp"/>
    <h2 data-userid="${userid}">${userid}님의 ${idx}번 채팅방</h2>
     <div class="main">
         <div class="section">
