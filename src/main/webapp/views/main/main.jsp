@@ -99,7 +99,10 @@
     i{
         font-size: 25px;
     }
-
+	.sub_1{
+		display: block;
+    	overflow-y: auto;
+	}
     .sub_, .sub_1{
         position: absolute;
         width: 200px;
@@ -196,7 +199,7 @@ div#notification {
 }
 </style>
 <body>
-    <jsp:include page="../user/sendAlarm.jsp"/>
+    <%-- <jsp:include page="../user/sendAlarm.jsp"/> --%>
     <header>
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
@@ -210,8 +213,17 @@ div#notification {
                         <i class="fa-regular fa-message"></i>
                         <div class="sub_1">
                             <div class="sub_txt1">대화중인 대화방</div>
-                            <div class="sub1">알림1</div>
-                            <div class="sub1">알림2</div>
+                            <c:if test="loginId == ${userchat.userchat_id}">
+                            <c:forEach items="${list}" var="userchat">
+                            	<form action="userchatroom.go?userchat_idx=${userchat.userchat_idx}" method="post">
+	                               <div class="sub1" onclick="submitForm(${userchat.userchat_idx})" style="cursor: pointer;">
+	                                   <div class="roominfof">${userchat.userchat_subject}</div>
+	                                   <input type="hidden" name="userchat_idx" value="${userchat.userchat_idx}">
+	                                   <div class="roominfof">${userchat.current_people} / ${userchat.max_people}</div>   
+	                               </div>
+                               </form>
+                            </c:forEach>
+                            </c:if>
                         </div>
                     </li>
                     <li>
@@ -228,7 +240,7 @@ div#notification {
         <div class="fullbox">
             <div class="full">
                 <ul class="list1">
-                    <li><a href="localchatlist.go">지역 대화방</a></li>
+                    <li><a href="./localchatlist.go">지역 대화방</a></li>
                     <li><a href="userchatlist.go">개인 대화방</a></li>
                     <li><a href="storeList.go">매장 리스트</a></li>
                     <li><a href="boardList.go">게시판</a></li>
@@ -261,6 +273,8 @@ div#notification {
     </div>
 </div>
 <script>
+var loginId ='${sessionscope.loginId}';
+
 const isLoggedIn = "${sessionScope.loginId != null}";
 document.addEventListener('DOMContentLoaded', function() {
     // .go 링크 클릭 이벤트에 로그인 확인 추가
@@ -283,7 +297,14 @@ function redirectToLogin() {
     window.location.href = 'login.go'; // 로그인 페이지로 이동
 }
 
-
+// 내 대화방 입장
+function submitForm(userchatIdx) {
+        // 폼을 찾아서 제출합니다.
+        const form = document.getElementById(`chatForm_${userchatIdx}`);
+        if (form) {
+            form.submit();
+        }
+    }
 //main_menu 클릭 이벤트
 
 document.querySelectorAll('.main_menu').forEach(function(menu) {
