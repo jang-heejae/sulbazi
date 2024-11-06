@@ -1160,6 +1160,7 @@ content += '</tr>';
  		  form.append('reviewContent', reviewContent);
  		  
  		    
+ 		  
 	 		if (ratingValue != 0 && purposeValue != 0 && moodValue != 0 && reviewContent.trim() !== "" ) {
 	 			$.ajax({
 	 				type:'POST', 
@@ -1480,6 +1481,11 @@ function replyUp(button) {
  		  form.append('moodValue', moodValue);
  		  form.append('reviewContent', reviewContent);
  		  form.append('reviewIdx', reviewIdx);
+ 		  
+ 		    for (var pair of form.entries()) {
+ 		        console.log(pair[0]+ ', ' + pair[1]); 
+ 		    }
+ 		  
  		  
  		    
 	 		if (ratingValue != 0 && purposeValue != 0 && moodValue != 0 && reviewContent.trim() !== "" ) {
