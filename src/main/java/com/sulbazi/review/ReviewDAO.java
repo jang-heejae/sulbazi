@@ -43,6 +43,8 @@ public interface ReviewDAO {
 
 	List<ReviewCommDTO> storelookreply(int store_idx);
 
+	String reviewusername(String user_id);
+
 	
 
 	
