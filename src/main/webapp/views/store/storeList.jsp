@@ -21,7 +21,7 @@
         position: absolute;
         width: 242px;
         height: auto;
-        left: 284px;
+        left: 352px;
         top: 201px;
         border-radius: 15px;
         padding: 20px;
@@ -139,7 +139,7 @@
         align-items: center;
         position: absolute;
         top: 203px;
-        left: 50%;
+        left: 54%;
         transform: translateX(-50%);
     }
 
@@ -500,6 +500,7 @@ function storeListPage(alchol, food, mood, visit, page) {
         },
         error: function(e) {
             console.log(e);
+            showNoStoresMessage();
         }
     });
 }

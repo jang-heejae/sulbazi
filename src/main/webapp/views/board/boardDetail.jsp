@@ -181,26 +181,6 @@
     </div>
 </body>
 <script>
-
-$.ajax({
-   type: 'GET',
-   url : 'boardList.ajax',
-   data:{},
-   dataType:'JSON',
-   success:function(data){
-      console.log(data);
-      if(data.login){
-         drawList(data.list);
-      }else{
-         alert('로그인이 필요한 서비스입니다.');
-         location.href='./login.go';
-      }
-   },error:function(e){
-      console.log(e);
-   }
-});
-
-
 function like(){
 	var board_idx = '${info.board_idx}';
 	var user_id = '${sessionScope.loginId}';
