@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import com.sulbazi.chat.SseService;
+
 @Controller
 public class MessageController {
 
@@ -22,19 +24,10 @@ public class MessageController {
 	
 	
 	// SSE
-	private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
-
-	// 개인 채팅방
-    @GetMapping(value="/sse/all")
-    @ResponseBody
-    public SseEmitter connectAll() {
-        SseEmitter emitter = new SseEmitter(3600000L);
-        emitters.add(emitter);
-
-        emitter.onCompletion(() -> emitters.remove(emitter));
-        emitter.onTimeout(() -> emitters.remove(emitter));
-
-        return emitter;
+	private final SseService sseService;
+	@Autowired
+	public MessageController(SseService sseService) {
+        this.sseService = sseService;
     }
     
 	// 개인 채팅방
@@ -45,15 +38,7 @@ public class MessageController {
         msg_ser.sendmsg(user_id, usermsg_content, userchat_idx, model);
         
         // 모든 연결된 클라이언트에게 새 메시지 이벤트 전송
-        for (SseEmitter emitter : emitters) {
-            try {
-                emitter.send(SseEmitter.event()
-                    .name("newMessage")
-                    .data("새 메시지가 도착했습니다."));
-            } catch (Exception e) {
-            	emitters .remove(emitter);
-            }
-        }
+        sseService.sendMessageToAll("새 메시지가 도착했습니다.");
         
         return "success";
     }
@@ -69,18 +54,6 @@ public class MessageController {
     
     
     // 지역 채팅방
-    @GetMapping(value="/ssse/all")
-    @ResponseBody
-    public SseEmitter connectAlll() {
-        SseEmitter emitter = new SseEmitter(0L);
-        emitters.add(emitter);
-
-        emitter.onCompletion(() -> emitters.remove(emitter));
-        emitter.onTimeout(() -> emitters.remove(emitter));
-
-        return emitter;
-    }
-    // 지역 채팅방
     // 메세지 전송
     @PostMapping(value="/localsendMessage.ajax")
     @ResponseBody
@@ -88,15 +61,7 @@ public class MessageController {
         msg_ser.localsendmsg(user_id, localmsg_content, localchat_idx, model);
         
         // 모든 연결된 클라이언트에게 새 메시지 이벤트 전송
-        for (SseEmitter emitter : emitters) {
-            try {
-                emitter.send(SseEmitter.event()
-                    .name("newMessage")
-                    .data("새 메시지가 도착했습니다."));
-            } catch (Exception e) {
-            	emitters .remove(emitter);
-            }
-        }
+        sseService.sendMessageToAll("새 메시지가 도착했습니다.");
         
         return "success";
     }

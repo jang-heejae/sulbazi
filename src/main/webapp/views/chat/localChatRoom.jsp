@@ -24,8 +24,8 @@
 	
 	$(document).ready(function() {
 
-		var ssse = new EventSource("/SULBAZI/ssse/all");
-		var sssse = new EventSource("/SULBAZI/sssse/all");
+		var ssse = new EventSource("/ssse/all");
+		var sssse = new EventSource("/sssse/all");
 		
 		ssse.addEventListener("newMessage", function(event) {
 			loadMessages();
@@ -39,14 +39,14 @@
 	    ssse.onerror = function(event) {
 	        console.error('EventSource failed:', event);
 	        setTimeout(function() {
-	        	ssse = new EventSource("/SULBAZI/ssse/all");
+	        	ssse = new EventSource("/ssse/all");
 	        }, 1000); // 1초 후 재연결 시도
 	    };
 		// 오류가 발생하면 실행되는 핸들러 - 메세지
 	    sssse.onerror = function(event) {
 	        console.error('EventSource failed:', event);
 	        setTimeout(function() {
-	        	sssse = new EventSource("/SULBAZI/sssse/all");
+	        	sssse = new EventSource("/sssse/all");
 	        }, 1000); // 1초 후 재연결 시도
 	    };
 		
@@ -55,7 +55,7 @@
 		
 	    function localloadUserList() {
 	        $.ajax({
-	            url: '/SULBAZI/localuserlist.ajax',
+	            url: 'localuserlist.ajax',
 	            type: 'GET',
 	            data: { localchat_idx: localchat_idx },
 	            dataType: 'json',
@@ -203,7 +203,7 @@
 			        }
 					
 				    $.ajax({
-				        url: '/SULBAZI/localreportuser.ajax',
+				        url: 'localreportuser.ajax',
 				        type: 'POST',
 				        data: {
 				        	reported_id: reported_id,
@@ -246,7 +246,7 @@
 	        }
 
 	        $.ajax({
-	            url: '/SULBAZI/localsendMessage.ajax',
+	            url: 'localsendMessage.ajax',
 	            type: 'POST',
 	            data: {
 	            	user_id: user_id,
@@ -282,7 +282,7 @@
 
 	    function loadMessages() {
 	        $.ajax({
-	            url: '/SULBAZI/localloadMessages.ajax',
+	            url: 'localloadMessages.ajax',
 	            type: 'GET',
 	            data: { localchat_idx: localchat_idx },
 	            
@@ -629,7 +629,7 @@ a{
                         </div>
                         <div class="textarea">
                         	<input type="text" name="user_id" value="${sessionScope.loginId}" readonly>
-                            <textarea name="usermsgcontent" placeholder="메세지 입력"></textarea>
+                            <textarea name="usermsgcontent" placeholder="메세지 입력(500자 이내)" maxlength="500"></textarea>
                             <button type="button" class="sendmsg">전송</button>
                         </div>
                     </div>
@@ -648,7 +648,7 @@ a{
 			var chatroom_idx = '${roomidx}';
 			console.log(chatroom_idx);
 			$.ajax({
-				url: '/SULBAZI/localroomtrans.ajax',
+				url: 'localroomtrans.ajax',
 				type: 'POST',
 				data: {chatroom_idx: chatroom_idx},
 				success: function(response) {
@@ -668,7 +668,7 @@ a{
 			var chatroom_idx = '${roomidx}';
 			
 			$.ajax({
-				url: '/SULBAZI/localroomout.ajax',
+				url: 'localroomout.ajax',
 				type: 'POST',
 				data: {chatroom_idx: chatroom_idx},
 				success: function(response) {

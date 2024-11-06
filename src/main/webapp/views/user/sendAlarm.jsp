@@ -22,7 +22,7 @@ let notificationsList = [];
 
 //SSE 연결 시작
 function startSseConnection() {
- 	const eventSource = new EventSource(`/SULBAZI/notifications/connect/${sessionScope.loginId}`);
+ 	const eventSource = new EventSource(`notifications/connect/${sessionScope.loginId}`);
 
  // 알림 수신
  	eventSource.onmessage = function(event) {
@@ -96,7 +96,7 @@ function markAsRead(notification) {
 	
     $.ajax({
         type: 'POST',
-        url: '/SULBAZI/notifications/readAlarm.ajax',
+        url: 'notifications/readAlarm.ajax',
         data: JSON.stringify({
             'alarm_idx': notification.alarm_idx,
             'receiverId': loggedInUserId
@@ -118,7 +118,7 @@ function markAsRead(notification) {
 function fetchInitialNotifications() {
     $.ajax({
         type: 'GET',
-        url: '/SULBAZI/notifications/getInitialNotifications.ajax',
+        url: 'notifications/getInitialNotifications.ajax',
         data: { 'receiverId': loggedInUserId },
         dataType: 'json',
         success: function(notifications) {
@@ -146,7 +146,7 @@ function sendNotification(newAlarm) {
     // AJAX POST 요청을 통해 서버에 알림 전송
     $.ajax({
         type: 'POST',
-        url: '/SULBAZI/notifications/send', // 알림을 전송할 서버 엔드포인트
+        url: 'notifications/send', // 알림을 전송할 서버 엔드포인트
         data: JSON.stringify(newAlarm),
         contentType: 'application/json',
         success: function(response) {
@@ -162,7 +162,7 @@ function sendNotification(newAlarm) {
 function handleAccept(notification){
 	 $.ajax({
 	        type: 'POST',
-	        url: '/SULBAZI/notifications/chatroomin.ajax',
+	        url: 'notifications/chatroomin.ajax',
 	        data: {'user_id':notification.sendId,  //수신자ID
 	        		'chatroomboss':notification.receiverId // 방장
 	        }, //채팅방 방장
@@ -176,7 +176,6 @@ function handleAccept(notification){
 	                alarm_idx: alarmresponse.alarm_idx //알림 idx
 	            };
 	            sendNotification(newAlarm); // 알림 전송 함수 호출
-	            saveNotification(newAlarm); // 알림 저장 함수 호출
 	        },
 	        error: function(e) {
 	            console.log("AJAX 요청 실패:", e);
@@ -189,7 +188,7 @@ function handleAccept(notification){
 function handleDeny(notification){
     $.ajax({
         type: 'POST',
-        url: '/SULBAZI/notifications/chatroomdeny.ajax',
+        url: 'notifications/chatroomdeny.ajax',
         data: {'user_id':notification.sendId, //수신자 ID
         		'chatroomboss':notification.receiverId}, //대화방 방장ID 
         dataType: 'JSON',
@@ -202,7 +201,6 @@ function handleDeny(notification){
                 alarm_idx: alarmresponse.alarm_idx //알림 idx
             };
             sendNotification(newAlarm); // 알림 전송 함수 호출
-            saveNotification(newAlarm); // 알림 저장 함수 호출
         },
         error: function(e) {
             console.log("AJAX 요청 실패:", e);

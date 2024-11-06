@@ -2,7 +2,6 @@ package com.sulbazi.chat;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.transaction.Transactional;
 
@@ -10,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.sulbazi.alarm.AlarmDAO;
 
@@ -22,7 +19,7 @@ public class ChatPartiService {
 	@Autowired ChatPartiDAO chatparti_dao;
 	@Autowired AlarmDAO alarm_dao;
 	@Autowired ChatRoomDAO chatroom_dao;
-	private Map<String, SseEmitter> sseEmitters = new ConcurrentHashMap<String, SseEmitter>();
+	
 	
 	
 	/* 개인 채팅방 참여 */
@@ -69,35 +66,9 @@ public class ChatPartiService {
 	public boolean kickuser(Map<String, String> params) {
 		int row = chatparti_dao.kickuser(params);
 		
-		// 퇴장 시키면 알람보내기
-		if(row>0) {
-			alarm_dao.kickuser(params);
-		}
 		return row > 0;
 	}
 	
-	// SSE 등록 메서드
-    public SseEmitter registerSse(String userId) {
-        SseEmitter emitter = new SseEmitter();
-        sseEmitters.put(userId, emitter);
-        emitter.onCompletion(() -> sseEmitters.remove(userId));
-        emitter.onTimeout(() -> sseEmitters.remove(userId));
-        return emitter;
-    }
-    
-    // 강퇴 알림 메서드
-    public void notifyUserOfKick(String userId) {
-        SseEmitter emitter = sseEmitters.get(userId);
-        if (emitter != null) {
-            try {
-                emitter.send(SseEmitter.event().name("kick").data("강퇴 당했찌~"));
-                emitter.complete();
-            } catch (Exception e) {
-                sseEmitters.remove(userId); // 에러 발생 시 Emitter 제거
-                emitter.completeWithError(e);
-            }
-        }
-    }
 	
     /*  참여 신청 취소 */
 	public int cancelparti(String user_id, int chatroom_idx) {

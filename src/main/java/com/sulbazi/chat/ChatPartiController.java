@@ -25,20 +25,11 @@ public class ChatPartiController {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired ChatPartiService chatparti_ser;
-	private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
-
 	
-    // SSE
-    @GetMapping(value="/sssse/all")
-    @ResponseBody
-    public SseEmitter connectAlllist() {
-    	SseEmitter emitter = new SseEmitter(3600000L);
-    	emitters. add(emitter);
-
-        emitter.onCompletion(() -> emitters.remove(emitter));
-        emitter.onTimeout(() -> emitters.remove(emitter));
-
-        return emitter;
+	private final SseService sseService;
+	@Autowired
+    public ChatPartiController(SseService sseService) {
+        this.sseService = sseService;
     }
     
 	/* 각 개인 채팅방의 참여자 수 - 채팅방 리스트 */
@@ -65,17 +56,11 @@ public class ChatPartiController {
 	@ResponseBody
 	public List<PartiDTO> userlistajax(@RequestParam("chatroom_idx") int chatroom_idx) {
 	    List<PartiDTO> participants = chatparti_ser.userlistajax(chatroom_idx);
-		 // 모든 연결된 클라이언트에게 newuser 이벤트 전송
-	        for (SseEmitter emitter : emitters) {
-	            try {
-	                emitter.send(SseEmitter.event()
-	                    .name("newuser")
-	                    .data("리스트 업데이트."));
-	            } catch (Exception e) {
-	            	emitters .remove(emitter);
-	            }
-	        }
-	    return participants; // 리스트 반환
+		 
+	    // 모든 연결된 클라이언트에게 newuser 이벤트 전송
+	    sseService.notifyNewUser();
+
+	    return participants;
 	}
 	
 	/* 개인 채팅방에서 나가기 */
@@ -96,22 +81,20 @@ public class ChatPartiController {
 		
 		boolean success = chatparti_ser.kickuser(params);
 		
-		 if (success) {
-			 chatparti_ser.notifyUserOfKick(params.get("user_id"));
-		 }
+		if (success) {
+	        String userId = params.get("user_id");  // params에서 user_id 추출
+	        String userchatIdx = params.get("userchat_idx");  // params에서 값 가져오기
+	        int chatroom_idx = Integer.parseInt(userchatIdx);  // String을 int로 변환
+	       
+	        sseService.notifyKick(userId);  // 강퇴된 사용자에게 알림
+	        chatparti_ser.userroomout(userId, chatroom_idx);
+	    }
 		 
 		Map<String, Object> response = new HashMap<String, Object>();
 	    response.put("redirect", success); // 클라이언트에게 리다이렉션 요청
 	    
 	    
 	    return response;
-	}
-	
-	/* 강퇴당한 사용자 페이지 강제 이동 */
-	@GetMapping(value="/subscribe")
-	public SseEmitter subscribe(HttpSession session) {
-	    String userId = (String) session.getAttribute("loginId");
-	    return chatparti_ser.registerSse(userId);
 	}
 
 	/* 참여 신청 취소 */
@@ -144,17 +127,10 @@ public class ChatPartiController {
 	@ResponseBody
 	public List<PartiDTO> localuserlistajax(@RequestParam("localchat_idx") int localchat_idx) {
 		List<PartiDTO> participants = chatparti_ser.localuserlistajax(localchat_idx);
-	    // 모든 연결된 클라이언트에게 newuser 이벤트 전송
-        for (SseEmitter emitter : emitters) {
-            try {
-                emitter.send(SseEmitter.event()
-                    .name("newuser")
-                    .data("리스트 업데이트."));
-            } catch (Exception e) {
-            	emitters .remove(emitter);
-            }
-        }
 	    
+		// 모든 연결된 클라이언트에게 newuser 이벤트 전송
+		sseService.notifyNewUser();
+
 	    return participants; // 리스트 반환
 	}
 	

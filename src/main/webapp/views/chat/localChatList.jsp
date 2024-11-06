@@ -107,7 +107,7 @@
 	    console.log(chatroom_idx);
 	    
 	    $.ajax({
-	        url: '/SULBAZI/localusertotal.ajax',
+	        url: 'localusertotal.ajax',
 	        method: 'GET',
 	        data: { chatroom_idx: chatroom_idx },
 	        success: function(count) {

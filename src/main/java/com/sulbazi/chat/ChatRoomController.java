@@ -37,32 +37,45 @@ public class ChatRoomController {
 	@Autowired AlarmService alarm_ser;
 	@Autowired UserService user_ser;
 	
-	 private Map<String, SseEmitter> emitters = new ConcurrentHashMap<String, SseEmitter>();
+	private final SseService sseService;
+	@Autowired
+	public ChatRoomController(SseService sseService) {
+        this.sseService = sseService;
+    }
 	
 	/* 개인 채팅방 리스트 */
 	@RequestMapping(value ="/userchatlist.go")
 	public String chatlist(HttpSession session, Model model, UserChatroomDTO userChatroomdto) {
 		
-		List<UserChatroomDTO> userchat_list = chatroom_ser.chatlist();
-		model.addAttribute("list", userchat_list);
+		String page;
+		String loginId = (String) session.getAttribute("loginId"); // 세션에서 로그인 아이디
 		
-		// 닉네임, 사진
-		Map<String, UserDTO> userinfo = new HashMap<>();
+		if(loginId==null) {
+			model.addAttribute("msg", "로그인 해라");
+			page = "/member/login";
+		}else {		
+			List<UserChatroomDTO> userchat_list = chatroom_ser.chatlist();
+			model.addAttribute("list", userchat_list);
+			
+			// 닉네임, 사진
+			Map<String, UserDTO> userinfo = new HashMap<>();
+			
+	        for (UserChatroomDTO userlist : userchat_list) {
+	        	UserDTO user = user_ser.user(userlist.getUser_id());
+	            if (user != null) {
+	            	userinfo.put(userlist.getUser_id(), user);
+	                logger.info("방장 id : {}", userlist.getUser_id());
+	                logger.info("방장 사진: {}", user.getUser_photo());
+	                logger.info("방장 닉 : {}", user.getUser_nickname());
+	            }
+	        }
+	        model.addAttribute("userinfo", userinfo);
+			logger.info("userchat_list :"+ userchat_list);
+			logger.info("세션아이디 : "+loginId);
+			page = "chat/userChatList";
+		}
 		
-        for (UserChatroomDTO userlist : userchat_list) {
-        	UserDTO user = user_ser.user(userlist.getUser_id());
-            if (user != null) {
-            	userinfo.put(userlist.getUser_id(), user);
-                logger.info("방장 id : {}", userlist.getUser_id());
-                logger.info("방장 사진: {}", user.getUser_photo());
-                logger.info("방장 닉 : {}", user.getUser_nickname());
-            }
-        }
-        model.addAttribute("userinfo", userinfo);
-		logger.info("userchat_list :"+ userchat_list);
-		logger.info("세션아이디 : "+session.getAttribute("loginId"));
-				
-		return "chat/userChatList";
+		return page;
 	}
 	
 	/* 개인 채팅방 리스트 - 검색결과 */
@@ -80,13 +93,13 @@ public class ChatRoomController {
 	public String chatcreate(HttpSession session, UserChatroomDTO userchatroomdto, Model model, RedirectAttributes redirectAttributes) {
 		
 		String page;
-		String userId = (String) session.getAttribute("loginId"); // 세션에서 로그인 아이디
+		String loginId = (String) session.getAttribute("loginId"); // 세션에서 로그인 아이디
 		
-		if(userId==null) {
+		if(loginId==null) {
 			model.addAttribute("msg", "로그인 해라");
 			page = "/member/login";
 		}else {		
-			int row = chatroom_ser.chatcreate(userchatroomdto, model, userId);
+			int row = chatroom_ser.chatcreate(userchatroomdto, model, loginId);
 			
 			if(row>0) {
 	            page = "/chat/userChatList";
@@ -106,40 +119,17 @@ public class ChatRoomController {
 		chatroom_ser.updatechatroom(params);
 		return ResponseEntity.ok("Success");
 	}
-	
-	// SSE
-	@GetMapping(value="/ssubscribe")
-    public SseEmitter subscribe() {
-        SseEmitter emitter = new SseEmitter(3600000L);
-        String emitterId = "emitter-" + System.currentTimeMillis();
-        emitters.put(emitterId, emitter);
-
-        emitter.onCompletion(() -> emitters.remove(emitterId));
-        emitter.onTimeout(() -> emitters.remove(emitterId));
-
-        return emitter;
-    }
-	
+		
 	/* 공지 등록, 수정 */
 	@PostMapping(value="/updatenotice.ajax")
 	@ResponseBody
 	public ResponseEntity<String> updatenotice(@RequestParam String notice, int userchat_idx){
 		chatroom_ser.updatenotice(notice, userchat_idx);
 		
-		// 공지사항 변경 사항을 SSE로 전송
-	    sendNoticeUpdate(notice);
+		// 모든 연결된 클라이언트에게 notifyNewUser 이벤트 전송
+	    sseService.updateNotice(notice);
 	    
 		return ResponseEntity.ok("Success");
-	}
-	/* 공지 SSE */
-	public void sendNoticeUpdate(String notice) {
-	    emitters.forEach((id, emitter) -> {
-	        try {
-	            emitter.send(SseEmitter.event().name("noticeUpdate").data(notice));
-	        } catch (Exception e) {
-	            emitters.remove(id);
-	        }
-	    });
 	}
 	
 	/* 개인 채팅방 삭제(비공개) */
@@ -171,26 +161,26 @@ public class ChatRoomController {
 	public String chatroom(HttpSession session, Model model, UserChatroomDTO userChatroomdto, RedirectAttributes redirectAttributes) {
 		
 		String page;
-		String user_id = (String) session.getAttribute("loginId");
+		String loginId = (String) session.getAttribute("loginId");
 		
-		if(user_id==null) {
+		if(loginId==null) {
 			model.addAttribute("msg", "로그인 해라");
 			page = "/member/login";
 		}else {	
 			
 			// 나의 채팅방 목록
-			List<UserChatroomDTO> userchat_list = chatroom_ser.myroomlist(user_id);
+			List<UserChatroomDTO> userchat_list = chatroom_ser.myroomlist(loginId);
 			
 			int idx = userChatroomdto.getUserchat_idx();
 			String id = userChatroomdto.getUser_id();
 						
 			logger.info("idx = "+idx);
-			model.addAttribute("roomin", user_id);
+			model.addAttribute("roomin", loginId);
 
 			// 방 정보 가져오기
 			List<UserChatroomDTO> roominfo = chatroom_ser.roominfo(idx);
 			
-    		int row = chatparti_ser.userparti(user_id, idx);
+    		int row = chatparti_ser.userparti(loginId, idx);
         	if (row > 0) {
         		redirectAttributes.addFlashAttribute("msg", "참여 신청 완료");
 			    return "redirect:/userchatlist.go";
@@ -217,13 +207,21 @@ public class ChatRoomController {
 	
 	/* 지역 채팅방 리스트 */
 	@RequestMapping(value ="/localchatlist.go")
-	public String localchatlist(Model model) {
+	public String localchatlist(Model model, HttpSession session) {
 		
-		List<LocalChatroomDTO> localchat_list = chatroom_ser.localchatlist();
-		model.addAttribute("list", localchat_list);
-		logger.info("userchat_list :"+ localchat_list);
+		String page;
+		String loginId = (String) session.getAttribute("loginId");
 		
-		return "chat/localChatList";
+		if(loginId==null) {
+			model.addAttribute("msg", "로그인 해라");
+			page = "/member/login";
+		}else {	
+			List<LocalChatroomDTO> localchat_list = chatroom_ser.localchatlist();
+			model.addAttribute("list", localchat_list);
+			logger.info("userchat_list :"+ localchat_list);
+			page = "chat/localChatList";
+		}
+		return page;
 	}
 	
 	/* 지역 채팅방 참여 */
@@ -231,9 +229,9 @@ public class ChatRoomController {
 	public String localchatgo(HttpSession session, Model model, LocalChatroomDTO localChatroomdto) {
 		
 		String page;
-		String userId = (String) session.getAttribute("loginId");
+		String loginId = (String) session.getAttribute("loginId");
 		
-		if(userId==null) {
+		if(loginId==null) {
 			model.addAttribute("msg", "로그인 해라");
 			page = "/member/login";
 		}else {	
@@ -246,7 +244,7 @@ public class ChatRoomController {
 			List<PartiDTO> localtotal = chatparti_ser.localtotal(idx);
 			
 			// 지역 채팅방 입장
-			chatparti_ser.localparti(userId, idx);
+			chatparti_ser.localparti(loginId, idx);
 			
 			List<LocalChatroomDTO> localchat_list = chatroom_ser.localchatlist();
 			model.addAttribute("list", localchat_list);

@@ -64,7 +64,7 @@ function readornotalarm(alarmreadValue, alarmValue) {
 
     $.ajax({
         type: 'POST',
-        url: '/SULBAZI/notifications/readornotalarm.ajax',
+        url: 'notifications/readornotalarm.ajax',
         data: JSON.stringify({ 
             'receiverId': loggedInUserId, 
             'alarmreadValue': alarmreadValue,
@@ -114,7 +114,7 @@ var user_id='1212'; //나에게 신청 보내는 유저 */
 function roomout() {
     $.ajax({
         type: 'POST',
-        url: '/SULBAZI/notifications/chatroomout.ajax',
+        url: 'notifications/chatroomout.ajax',
         data:({'user_id': user_id,  //수신자ID
         		'chatroomboss': chatroomboss}),  //대화방 방장ID
         dataType: 'JSON',
@@ -139,7 +139,7 @@ function roomout() {
 function roomdeny() {
     $.ajax({
         type: 'POST',
-        url: '/SULBAZI/notifications/chatroomdeny.ajax',
+        url: 'notifications/chatroomdeny.ajax',
         data: {'user_id':user_id, //수신자 ID
         		'chatroomboss':chatroomboss}, //대화방 방장ID 
         dataType: 'JSON',
@@ -164,7 +164,7 @@ function roomdeny() {
 function chatroomin() {
     $.ajax({
         type: 'POST',
-        url: '/SULBAZI/notifications/chatroomin.ajax',
+        url: 'notifications/chatroomin.ajax',
         data: {'user_id':user_id,  //수신자ID
         		'chatroomboss':chatroomboss}, //채팅방 방장
         dataType: 'JSON',

@@ -318,7 +318,7 @@ $(document).ready(function() {
             localStorage.setItem('searchQuery', query); // 검색어를 로컬 스토리지에 저장
             // AJAX 요청으로 검색 결과 가져오기
             $.ajax({
-                url: './search.ajax',
+                url: 'search.ajax',
                 method: 'GET',
                 data: { query: query }, // 검색어 서버에 전달
                 dataType: 'json',
@@ -431,7 +431,7 @@ $(document).ready(function() {
 	        
 	        // 참가 상태를 확인
 	        $.ajax({
-	            url: '/SULBAZI/userchek.ajax', 
+	            url: 'userchek.ajax', 
 	            type: 'POST',
 	            data: {
 	                user_id: user_id,
@@ -462,7 +462,7 @@ $(document).ready(function() {
 	    // AJAX POST 요청을 통해 서버에 알림 전송
 	    $.ajax({
 	        type: 'POST',
-	        url: '/SULBAZI/notifications/send', // 알림을 전송할 서버 엔드포인트
+	        url: 'notifications/send', // 알림을 전송할 서버 엔드포인트
 	        data: JSON.stringify(newAlarm),
 	        contentType: 'application/json',
 	        success: function(response) {
@@ -515,7 +515,7 @@ $(document).ready(function() {
 				        // 폼 제출 후 성공 시 AJAX 실행
 				        $.ajax({
 				            type: 'POST',
-				            url: '/SULBAZI/notifications/chatroommanager.ajax',
+				            url: 'notifications/chatroommanager.ajax',
 				            data: {'getuser_id': getuser_id, 'user_id': user_id}, // 수신자 및 발신자 ID 데이터
 				            dataType: 'JSON',
 				            success: function(alarmresponse) {
@@ -547,7 +547,7 @@ $(document).ready(function() {
 	    	console.log("취소할 방"+chatroom_idx);
 			$.ajax({
 				type: 'POST',
-	            url: './cancelparti.ajax',
+	            url: 'cancelparti.ajax',
 	            data: {
 	            	user_id: user_id,
 	             	chatroom_idx: chatroom_idx

@@ -16,66 +16,61 @@ $(document).ready(function() {
       location.replace('./userchatlist.go');
    }
    
-   // SSE(EventSource) 객체 생성
+    // SSE - 메세지, 유저리스트, 공지
     var sse = new EventSource("/sse/all");
-    var sssse = new EventSource("/sssse/all");
+    // SSE - 강퇴
     var eventSource = new EventSource('/subscribe');
-    var eventSou = new EventSource('/ssubscribe');
     
+    
+    // 메세지 SSE
     sse.addEventListener("newMessage", function(event) {
         loadMessages();
     });
 
-    sssse.addEventListener("newuser", function(event) {
+    // 사용자 리스트 SSE
+    sse.addEventListener("newuser", function(event) {
     	loadUserList();
     });
     
+     // 수정 SSE
+     sse.addEventListener("updateRoom", function(event){
+    	 var updateRoom = event.data;
+    	 alert('방 정보가 업데이트되었습니다.');
+     });
+	 // 공지 SSE
+    sse.addEventListener('noticeUpdate', function(event) {
+    	var updatedNotice = event.data;
+        $('#noticeArea').text(updatedNotice); // 공지사항 영역 업데이트
+        alert('공지사항이 업데이트되었습니다.');
+    });
+    
+ 	// 강퇴 SSE
+    eventSource.addEventListener('kick', function(event) {
+        alert(event.data);
+        window.location.href = '/userchatlist.go';
+    });
+ 	
     // 연결이 성공적으로 열리면 실행되는 핸들러
     eventSource.onopen = function() {
         console.log('Connection opened');
     };
 
-    // 오류가 발생하면 실행되는 핸들러 - 메세지
-    sse.onerror = function(event) {
-        console.error('EventSource failed:', event);
-        setTimeout(function() {
-        	sse = new EventSource("/SULBAZI/sse/all");
-        }, 1000); // 1초 후 재연결 시도
-    };
-    // 오류가 발생하면 실행되는 핸들러 - 사용자 리스트
-    sssse.onerror = function(event) {
-        console.error('EventSource failed:', event);
-        setTimeout(function() {
-        	sssse = new EventSource("/SULBAZI/sssse/all");
-        }, 1000); // 1초 후 재연결 시도
-    };
-    // 오류가 발생하면 실행되는 핸들러 - 검색
+    // 오류 SSE - 메세지, 유저리스트, 공지
+    eventSource.onerror = function(event) {
+	    console.error('EventSource failed:', event);
+	    setTimeout(function() {
+	        eventSource = new EventSource("/sse/all");
+	    }, 1000); // 재연결 시도
+	};
+    
+	 // 오류가 발생하면 실행되는 핸들러 - 강퇴
     eventSource.onerror = function(event) {
         console.error('EventSource failed:', event);
         setTimeout(function() {
-        	eventSource = new EventSource('/SULBAZI/subscribe');
-        }, 1000); // 1초 후 재연결 시도
-    };
-    // 오류가 발생하면 실행되는 핸들러
-    eventSou.onerror = function(event) {
-        console.error('EventSource failed:', event);
-        setTimeout(function() {
-        	eventSou = new EventSource('/SULBAZI/ssubscribe');
+        	eventSource = new EventSource('/subscribe');
         }, 1000); // 1초 후 재연결 시도
     };
 
-    // 'kick' 이벤트가 수신되면 실행되는 핸들러
-    eventSource.addEventListener('kick', function(event) {
-        alert(event.data);
-        window.location.href = '/SULBAZI/userchatlist.go';
-    });
-    
- 	// 기존 SSE 연결 객체를 사용하여 공지사항 업데이트 이벤트 처리
-    eventSou.addEventListener('noticeUpdate', function(event) {
-    	var updatedNotice = event.data;
-        $('#noticeArea').text(updatedNotice); // 공지사항 영역 업데이트
-        alert('공지사항이 업데이트되었습니다.');
-    });
     window.onbeforeunload = function() {
         eventSource.close();
     };
@@ -264,28 +259,28 @@ $(document).ready(function() {
 		            return;
 		        }
 				
-	         $.ajax({
-	             url: '/SULBAZI/reportuser.ajax',
-	             type: 'POST',
-	             data: {
-	                reported_id: reported_id,  // 신고받은사람
-	                reporting_id: reporting_id, // 신고한사람
-	                report_category: report_category,
-	                reported_idx: reported_idx,
-	                report_content: report_content                 
-	             },
-	             success: function(response) {
-	            	 console.log("신고한사람 : "+reporting_id);			
-	     			 console.log("신고받은사람 : "+reported_id);
-	                 alert(reported_nick +' 신고 완료');
-	                 $('textarea[name="report_content"]').val('');
-	                 $('.reportuserform').hide();
-	                 loadMessages();
-	             },
-	             error: function() {
-	                 alert(reported_nick +'신고 실패');
-	             }
-	         });
+		         $.ajax({
+		             url: 'reportuser.ajax',
+		             type: 'POST',
+		             data: {
+		                reported_id: reported_id,  // 신고받은사람
+		                reporting_id: reporting_id, // 신고한사람
+		                report_category: report_category,
+		                reported_idx: reported_idx,
+		                report_content: report_content                 
+		             },
+		             success: function(response) {
+		            	 console.log("신고한사람 : "+reporting_id);			
+		     			 console.log("신고받은사람 : "+reported_id);
+		                 alert(reported_nick +' 신고 완료');
+		                 $('textarea[name="report_content"]').val('');
+		                 $('.reportuserform').hide();
+		                 loadMessages();
+		             },
+		             error: function() {
+		                 alert(reported_nick +'신고 실패');
+		             }
+		         });
 	         
 	      });
 	      
@@ -303,7 +298,7 @@ $(document).ready(function() {
 	    // AJAX POST 요청을 통해 서버에 알림 전송
 	    $.ajax({
 	        type: 'POST',
-	        url: '/SULBAZI/notifications/send', // 알림을 전송할 서버 엔드포인트
+	        url: 'notifications/send', // 알림을 전송할 서버 엔드포인트
 	        data: JSON.stringify(newAlarm),
 	        contentType: 'application/json',
 	        success: function(response) {
@@ -328,7 +323,7 @@ $(document).ready(function() {
        function roomout() {
     	   $.ajax({
     	        type: 'POST',
-    	        url: '/SULBAZI/notifications/chatroomout.ajax',
+    	        url: 'notifications/chatroomout.ajax',
     	        data: {'user_id': user_id,  //수신자ID
     	        		'chatroomboss': loginId},  //대화방 방장ID
     	        dataType: 'JSON',
@@ -351,7 +346,7 @@ $(document).ready(function() {
        
        if (confirm(reported_nick+"를 내보낼거야?")) {
           $.ajax({
-              url: '/SULBAZI/kickuser.ajax',
+              url: 'kickuser.ajax',
               type: 'POST',
               data: {
                  user_id: user_id,
@@ -374,7 +369,7 @@ $(document).ready(function() {
        }
    });
    
-   var eventsource = new EventSource('/SULBAZI/subscribe');
+   var eventsource = new EventSource('/subscribe');
 
    eventsource.addEventListener('kick', function(event) {
        if (event && event.data) {
@@ -382,7 +377,7 @@ $(document).ready(function() {
        } else {
            alert("강퇴 당했다~");
        }
-       window.location.href = '/SULBAZI/userchatlist.go';
+       window.location.href = '/userchatlist.go';
    });
    
    
@@ -393,7 +388,7 @@ $(document).ready(function() {
    
    function loadUserList() {
        $.ajax({
-           url: '/SULBAZI/userlist.ajax',
+           url: 'userlist.ajax',
            type: 'GET',
            data: { chatroom_idx: chatroom_idx },
            dataType: 'json',
@@ -448,7 +443,7 @@ $(document).ready(function() {
        }
 
        $.ajax({
-           url: '/SULBAZI/sendMessage.ajax',
+           url: 'sendMessage.ajax',
            type: 'POST',
            data: {
               user_id: user_id,
@@ -485,7 +480,7 @@ $(document).ready(function() {
     
     function loadMessages() {
         $.ajax({
-            url: '/SULBAZI/loadMessages.ajax',
+            url: 'loadMessages.ajax',
             type: 'GET',
             data: { userchat_idx: userchat_idx },
             dataType: 'json',
@@ -615,6 +610,7 @@ $(document).ready(function() {
         height: 100px;
         background-color: rgb(255, 140, 9);
         border-radius: 40px;
+        cursor: pointer;
     }
     .room div:first-child{
     	width: 160px;
@@ -631,6 +627,10 @@ $(document).ready(function() {
         display: flex;
         justify-content: flex-end;
         margin-right: 15px;
+    }
+    .room:hover{
+    	cursor: pointer;
+    	background-color: rgb(255, 140, 9);
     }
     .back{
        margin: 20px;
@@ -937,38 +937,38 @@ $(document).ready(function() {
                                    </h3>
                                    <textarea class="noticearea" name="notice" placeholder="50자 이내로 공지사항을 입력하세요." maxlength="50"></textarea>
                                    <div class="noticebtn">
-                                 <button class="notiedit">등록</button>
-                                  <button class="noticancel">취소</button>
-                              </div>
+                                   <button class="notiedit">등록</button>
+                                   <button class="noticancel">취소</button>
+                                   </div>
                                 </div>
                                 <div class="roomedit">
                                    <c:forEach items="${roominfo}" var="roominfo">
-                               <ul>
-                                  <li class="roomeditFli">
-                                      대화방 이름 : <input type="text" name="userchat_subject" maxlength="20" value="${roominfo.userchat_subject}">
-                                  </li>
-                                  <li class="roominp">
-                                       제한 인원 : <input type="range" name="max_people" min="2" max="20" value="${roominfo.max_people}" oninput="document.getElementById('value2').innerHTML=this.value;">
-                                       <p id="value2">${roominfo.max_people}</p>
-                                  </li>
-                                  <li>
-                                     <input type="hidden" name="userchat_idx" value="${roominfo.userchat_idx}" readonly/>
-                                  </li>
-                                  <li>공개여부 : 
-                                     <input type="radio" name="userchat_state" value="1"
-                                     <c:if test="${roominfo.userchat_state eq '1'}">checked</c:if>   
-                                     />공개   
-                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                     <input type="radio" name="userchat_state" value="0"
-                                     <c:if test="${roominfo.userchat_state eq '0'}">checked</c:if>   
-                                     />비공개
-                                  </li>
-                                </ul>
-                                </c:forEach>
-                              <div class="roombtn">
-                                 <button class="edit">수정</button>
-                                  <button class="cancel">취소</button>
-                              </div>
+	                               <ul>
+	                                  <li class="roomeditFli">
+	                                      대화방 이름 : <input type="text" name="userchat_subject" maxlength="20" value="${roominfo.userchat_subject}">
+	                                  </li>
+	                                  <li class="roominp">
+	                                       제한 인원 : <input type="range" name="max_people" min="2" max="20" value="${roominfo.max_people}" oninput="document.getElementById('value2').innerHTML=this.value;">
+	                                       <p id="value2">${roominfo.max_people}</p>
+	                                  </li>
+	                                  <li>
+	                                     <input type="hidden" name="userchat_idx" value="${roominfo.userchat_idx}" readonly/>
+	                                  </li>
+	                                  <li>공개여부 : 
+	                                     <input type="radio" name="userchat_state" value="1"
+	                                     <c:if test="${roominfo.userchat_state eq '1'}">checked</c:if>   
+	                                     />공개   
+	                                     &nbsp;&nbsp;&nbsp;&nbsp;
+	                                     <input type="radio" name="userchat_state" value="0"
+	                                     <c:if test="${roominfo.userchat_state eq '0'}">checked</c:if>   
+	                                     />비공개
+	                                  </li>
+	                                </ul>
+                                    </c:forEach>
+	                                <div class="roombtn">
+	                                   <button class="edit">수정</button>
+	                                    <button class="cancel">취소</button>
+	                                </div>
                                 </div>
                                 <div class="reportuserform">
                                    <h3>
@@ -999,7 +999,7 @@ $(document).ready(function() {
                         </div>
                         <div class="textarea">
                             <input type="text" name="user_id" value="${sessionScope.loginId}" readonly/>
-                            <textarea name="usermsgcontent" placeholder="메세지 입력"></textarea>
+                            <textarea name="usermsgcontent" placeholder="메세지 입력(500자 이내)" maxlength="500"></textarea>
                             <button type="button" class="sendmsg">전송</button>
                         </div>
                     </div>
@@ -1025,7 +1025,7 @@ $(document).ready(function() {
          var chatroom_idx = '${idx}';
          
          $.ajax({
-            url: '/SULBAZI/userroomout.ajax',
+            url: 'userroomout.ajax',
             type: 'POST',
             data: {chatroom_idx: chatroom_idx},
             success: function(response) {
@@ -1065,7 +1065,7 @@ $(document).ready(function() {
          console.log(userchat_idx);
          
          $.ajax({
-              url:'./updatenotice.ajax',
+              url:'updatenotice.ajax',
               type:'POST',
               data:{
                   notice:notice,
@@ -1115,7 +1115,7 @@ $(document).ready(function() {
            
            if(current <= max_people){
 	           $.ajax({
-	              url:'./updatechatroom.ajax',
+	              url:'updatechatroom.ajax',
 	              type:'POST',
 	              data:{
 	                 userchat_subject: userchat_subject,
@@ -1150,7 +1150,7 @@ $(document).ready(function() {
 	    	console.log("사람수"+current_people);
 	    	console.log("방장"+user_id);
 	        $.ajax({
-	        	url:'./deletechatroom.ajax',
+	        	url:'deletechatroom.ajax',
 	        	type:'POST',
 	        	data:{
 	                userchat_idx: userchat_idx,

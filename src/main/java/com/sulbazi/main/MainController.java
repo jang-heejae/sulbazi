@@ -22,7 +22,7 @@ public class MainController {
 		String user_id = (String) session.getAttribute("loginId");
 		
 		List<UserChatroomDTO> userchat_list = chatroom_ser.myroomlist(user_id);
-		model.addAttribute("list", userchat_list);
+		model.addAttribute("listroom", userchat_list);
 
 		main_ser.mainPage(model);
 		return "main/mainPage";

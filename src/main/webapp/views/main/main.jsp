@@ -208,13 +208,21 @@ div#notification {
             </div>
             <div>
                 <ul class="icon">
-                    <li class="userUser"><a href="login.go">로그인</a></li>
+                    <li class="userUser">
+					    <c:choose>
+					        <c:when test="${not empty sessionScope.loginId}">
+					            <a href="#">${sessionScope.loginId}님</a>
+					        </c:when>
+					        <c:otherwise>
+					            <a href="login.go">로그인</a>
+					        </c:otherwise>
+					    </c:choose>
+					</li>
                     <li>
                         <i class="fa-regular fa-message"></i>
                         <div class="sub_1">
                             <div class="sub_txt1">대화중인 대화방</div>
-                            <c:if test="loginId == ${userchat.userchat_id}">
-                            <c:forEach items="${list}" var="userchat">
+                            <c:forEach items="${listroom}" var="userchat">
                             	<form action="userchatroom.go?userchat_idx=${userchat.userchat_idx}" method="post">
 	                               <div class="sub1" onclick="submitForm(${userchat.userchat_idx})" style="cursor: pointer;">
 	                                   <div class="roominfof">${userchat.userchat_subject}</div>
@@ -223,7 +231,6 @@ div#notification {
 	                               </div>
                                </form>
                             </c:forEach>
-                            </c:if>
                         </div>
                     </li>
                     <li>
