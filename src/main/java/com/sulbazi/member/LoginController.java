@@ -3,6 +3,7 @@ package com.sulbazi.member;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -29,15 +30,23 @@ public class LoginController {
 	}
 	@PostMapping(value="/login.do")
 	public String login(HttpServletRequest req, Model model, HttpSession session) {
-	    String page = "";
-	    String msg = "아이디, 비밀번호를 확인하세요.";
+	    String page = "redirect:/login.go";
 	    String id = req.getParameter("id");
 	    String pw = req.getParameter("pw");
+	    String ip = req.getRemoteAddr();
+	    logger.info("ip 주소"+ip);
 	    String opt = req.getParameter("option");
-	    String loginResult = login_ser.login(id, pw, opt);
+	    
+	    String loggedInId = (String) session.getAttribute("loginId");
+	    if (loggedInId != null && loggedInId.equals(id)) {
+	        session.setAttribute("msg", "이미 로그인된 아이디입니다.");
+	        return page;
+	    }
+	    
+	    String loginResult = login_ser.login(id, pw, opt, ip);
 	    if (loginResult.equals("user") || loginResult.equals("store") || loginResult.equals("admin")) {
 	        if (userRevoke(id, opt)) { 
-	            msg = "이용이 제한되었습니다.";
+	        	session.setAttribute("msg", "이용이 제한되었습니다.");
 	            page = "redirect:/revokeLogin.go";
 	        } else {
 	            session.setAttribute("loginId", id);
@@ -50,9 +59,11 @@ public class LoginController {
 	                page = "redirect:/adminMain.go";
 	            }
 	        }
+	    }else {
+	    	session.setAttribute("msg", "아이디와 비밀번호를 확인하세요.");
 	    }
+	    logger.info("로그인 시도 - ID: {}, 옵션: {}, 결과: {}", id, opt, loginResult);
 	    logger.info("로그옵션:{}"+ session.getAttribute("opt"));
-	    model.addAttribute("msg", msg);
 	    return page;
 	}
 	private boolean userRevoke(String id, String opt) {
@@ -63,10 +74,17 @@ public class LoginController {
 		return "member/revokeLogin";
 	}
 	@RequestMapping(value="/logout.go")
-	public String logout(Model model, HttpSession session) {
-		session.removeAttribute("loginId");
-		model.addAttribute("result", "로그아웃 되었습니다.");
-		return "redirect:/main.go";
+	public String logout(Model model, HttpSession session, HttpServletResponse response) {
+	    // 세션에서 로그인 정보 제거
+	    session.invalidate(); // 전체 세션 무효화 (또는 removeAttribute 사용)
+	    
+	    // 캐시 방지 헤더 추가
+	    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+	    response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+	    response.setDateHeader("Expires", 0); // Proxies.
+	    
+	    model.addAttribute("result", "로그아웃 되었습니다.");
+	    return "redirect:/main.go";
 	}
 	@RequestMapping(value="/findpw.go")
 	public String findpwgo() {

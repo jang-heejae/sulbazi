@@ -3,18 +3,31 @@ package com.sulbazi.member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 @Service
+@PropertySource("classpath:super_admin.properties")
 public class LoginService {
 	@Autowired LoginDAO login_dao;
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
-	public String login(String id, String pw, String opt) {
+	@Value("${admin.id}") private String admin_id;
+	@Value("${admin.pw}") private String admin_pw;
+	@Value("${admin.ip}") private String admin_ip;
+	
+	public String login(String id, String pw, String opt, String ip) {
+	    logger.info("Admin 설정 - ID: {}, PW: {}, IP: {}", admin_id, admin_pw, admin_ip);
+	    logger.info("로그인 메서드 호출 - ID: {}, PW: {}, IP: {}, 옵션: {}", id, pw, ip, opt);
+
 	    String log = "";
-	    String row = login_dao.login(id, pw, opt);
-	    if (row != null) {
-	        log = getUserType(opt);
+	    if(id.equals(admin_id) && pw.equals(admin_pw) && "admin_log".equals(opt) && ip.equals(admin_ip)) {
+	    	return "admin";
+	    }
+    	String row = login_dao.login(id, pw, opt);
+    	if (row != null) {
+    		log = getUserType(opt);	    		
 	    }
 	    return log;
 	}

@@ -60,11 +60,11 @@
 <body>
 	<div id="loginBox">
 		<div class="logo_text">
-             <a href="./#">SULBAZI</a>
+             <a href="./mainPage.go">SULBAZI</a>
         </div>
         <hr/>
 		<div id="revoke"><h2>회원님은 현재 <span style="color: red;">이용제한</span> 상태 입니다.</h2></div>
-		<div id="inquery"><button type="submit" onclick="location.href='inqueryUserList.jsp'">고객센터 문의하기</button></div>
+		<div id="inquery"><button type="submit" onclick="location.href='userinquery.go'">고객센터 문의하기</button></div>
 	</div>
 </body>
 <script>
