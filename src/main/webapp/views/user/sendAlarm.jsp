@@ -170,13 +170,12 @@ function handleAccept(notification){
 	        success: function(alarmresponse) {
 	            // 알림 데이터 객체 생성
 	            const newAlarm = {
-	                receiverId: user_id, //수신자 id
+	                receiverId: notification.sendId, //수신자 id
 	                chatroomname: alarmresponse.chatroomname,  //문의 제목
 	                alarm: alarmresponse.alarm, //알림 내용
 	                alarm_idx: alarmresponse.alarm_idx //알림 idx
 	            };
 	            sendNotification(newAlarm); // 알림 전송 함수 호출
-	            saveNotification(newAlarm); // 알림 저장 함수 호출
 	        },
 	        error: function(e) {
 	            console.log("AJAX 요청 실패:", e);
@@ -196,13 +195,12 @@ function handleDeny(notification){
         success: function(alarmresponse) {
             // 알림 데이터 객체 생성
             const newAlarm = {
-                receiverId: user_id, //수신자 id
+                receiverId: notification.sendId, //수신자 id
                 chatroomname: alarmresponse.chatroomname,  //문의 제목
                 alarm: alarmresponse.alarm, //알림 내용
                 alarm_idx: alarmresponse.alarm_idx //알림 idx
             };
             sendNotification(newAlarm); // 알림 전송 함수 호출
-            saveNotification(newAlarm); // 알림 저장 함수 호출
         },
         error: function(e) {
             console.log("AJAX 요청 실패:", e);

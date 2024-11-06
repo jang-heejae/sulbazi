@@ -17,7 +17,7 @@
         }
         .container {
             max-width: 800px;
-            max-height: 800px;
+            max-height: 580px;
             margin: 150 auto;
             background-color: rgb(255, 140, 9);
             padding: 20px;
