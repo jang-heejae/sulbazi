@@ -164,8 +164,7 @@ function handleAccept(notification){
 	        type: 'POST',
 	        url: 'notifications/chatroomin.ajax',
 	        data: {'user_id':notification.sendId,  //수신자ID
-	        		'chatroomboss':notification.receiverId // 방장
-	        }, //채팅방 방장
+	        		'chatroomboss':notification.receiverId}, //채팅방 방장
 	        dataType: 'JSON',
 	        success: function(alarmresponse) {
 	            // 알림 데이터 객체 생성
