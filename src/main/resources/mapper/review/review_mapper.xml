@@ -52,7 +52,7 @@
         r.review_idx, r.store_idx, r.review_content, r.review_date, r.starpoint, r.review_state, 
         u.user_id,u.user_nickname, u.user_likecount, u.user_photo, rc.comm_date, rc.comm_content
     ORDER BY 
-        r.review_idx DESC;
+        r.review_idx DESC
 </select>
 	<!-- 리뷰 쓰기 -->
 	<insert 
@@ -61,7 +61,7 @@
 	keyProperty="review_idx"
 	id="reviewWriteDo" parameterType="com.sulbazi.review.ReviewDTO">
 		INSERT INTO review (user_id, store_idx, review_content,starpoint)
-       		 VALUES (#{user_id}, #{store_idx}, #{review_content},#{starpoint});
+       		 VALUES (#{user_id}, #{store_idx}, #{review_content},#{starpoint})
 	</insert>
 	
 	<!-- 리뷰 답글 -->
@@ -106,14 +106,14 @@
 	   <!-- 리뷰 좋아요 -->
     <insert id="reviewLike" parameterType="map">
 		INSERT INTO review_like (review_idx, user_id)
-       		 VALUES (#{reviewIdx}, #{loginId});
+       		 VALUES (#{reviewIdx}, #{loginId})
     </insert>
 	
 	   <!-- 리뷰 좋아요 중복체크 -->
 	<select id="reviewCount" parameterType="map">
 	    SELECT COUNT(review_idx) 
 	    FROM review_like 
-	    WHERE review_idx = #{reviewIdx} AND user_id = #{loginId};
+	    WHERE review_idx = #{reviewIdx} AND user_id = #{loginId}
 	</select>
 	<!-- 좋아요 중복 삭제 -->
 	<delete id="reviewLikeDel" parameterType="map">
@@ -193,6 +193,11 @@
 	 <!-- 매장 마이페이지 답글확인  -->
 	<select id="storelookreply" resultType="com.sulbazi.review.ReviewCommDTO">
 		SELECT * FROM review_comm WHERE store_idx=#{param1}
+	</select>
+	
+	 <!-- 리뷰 썻었는지 찾기   -->
+	<select id="dontWrite" parameterType="map" resultType="com.sulbazi.review.ReviewDTO">
+		select * from review where user_id = #{loginId} and store_idx = #{storeIdx}
 	</select>
 	
 	

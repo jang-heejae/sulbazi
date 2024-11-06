@@ -42,8 +42,12 @@ public class ReviewController {
 				'reviewContent':reviewContent,
 				'loginId':loginId,
 				'storeIdx':storeIdx,*/
-//    		logger.info("종원 files 받기 :{}",(Object[])files);
-//    		logger.info("종원 files 받기 :{}",files.length);
+    		logger.info("Received loginId: {}", params.get("loginId"));
+    		logger.info("Received storeIdx: {}", params.get("storeIdx"));
+    		logger.info("Received reviewContent: {}", params.get("reviewContent"));
+    		logger.info("Received ratingValue: {}", params.get("ratingValue"));
+    		logger.info("종원 files 받기 :{}",(Object[])files);
+    		logger.info("종원 files 받기 :{}",files.length);
     		ReviewDTO insertReview = new ReviewDTO();
     		insertReview.setUser_id(params.get("loginId"));
     		insertReview.setStore_idx(Integer.parseInt(params.get("storeIdx")));
@@ -63,6 +67,7 @@ public class ReviewController {
 				success=true;
 			}
     		if (files != null && files.length > 0) {
+
 				photo_ser.storeupdatephoto(files,idx,photo_category_idx);
 				
 			}
@@ -169,6 +174,17 @@ public class ReviewController {
     	}
     	Map<String, Object> map = new HashMap<String, Object>();
     	map.put("success", success);
+    	return map;
+    }
+    
+    //리뷰 작성 제약 걸기버튼
+    @PostMapping(value = "/dontWrite.ajax")
+    @ResponseBody
+    public Map<String, Object> dontWrite(@RequestParam Map<String, Object> params){
+    	List<ReviewDTO> reviews= review_ser.dontWrite(params);
+    	int row = reviews.size();
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map.put("success", row);
     	return map;
     }
 }

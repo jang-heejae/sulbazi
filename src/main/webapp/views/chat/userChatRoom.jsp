@@ -970,17 +970,17 @@ $(document).ready(function() {
 	                                    <button class="cancel">취소</button>
 	                                </div>
                                 </div>
-                                <div class="reportuserform">
-                                   <h3>
-                                      <i class="fas fa-exclamation-circle"></i>
-                                      신고
-                                   </h3>
-                                   <textarea class="reportarea" name="report_content" placeholder="20자 이내로 신고내용을 입력하세요." maxlength="20"></textarea>
-                                   <div class="reportbtn">
-                                 <button class="reportedit">신고</button>
-                                  <button class="reportcancel">취소</button>
-                              </div>
-                                </div>
+<div class="reportuserform">
+    <h3>
+       <i class="fas fa-exclamation-circle"></i>
+       신고
+    </h3>
+        <textarea class="reportarea" name="report_content" placeholder="20자 이내로 신고내용을 입력하세요." maxlength="20"></textarea>
+    <div class="reportbtn">
+        <button class="reportedit">신고</button>
+        <button class="reportcancel">취소</button>
+    </div>
+</div>
                      </div>
                         </div>
                     </div>

@@ -171,6 +171,11 @@ public class ReviewService {
 	    return replyMapList; // 리스트 반환
 	}
 
+	public List<ReviewDTO> dontWrite(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return review_dao.dontWrite(params);
+	}
+
 
 
 }
