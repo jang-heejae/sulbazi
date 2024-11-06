@@ -369,7 +369,7 @@ function printList(list) {
         content += '<td>' + formatDate(item.revoke_start) + '</td>'; // 이용제한 시작일
         content += '<td>' + formatDate(item.revoke_stop) + '</td>'; // 이용제한 종료일
         content += '<td>' + item.process_content + '</td>'; // 처리 사유
-        content += '<td>' + (item.report_state == 1 ? '처리완료' : '처리중') + '</td>'; // 보고 결과
+        content += '<td> 처리완료 </td>'; // 보고 결과
         content += '<td>' + formatDate(item.process_date) + '</td>'; // 처리 날짜
         content += '<td>' + item.admin_name + '</td>'; // 처리 담당자
         content += '</tr>';
