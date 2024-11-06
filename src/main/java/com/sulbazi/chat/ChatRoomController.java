@@ -110,7 +110,7 @@ public class ChatRoomController {
 	// SSE
 	@GetMapping(value="/ssubscribe")
     public SseEmitter subscribe() {
-        SseEmitter emitter = new SseEmitter(0L);
+        SseEmitter emitter = new SseEmitter(3600000L);
         String emitterId = "emitter-" + System.currentTimeMillis();
         emitters.put(emitterId, emitter);
 
