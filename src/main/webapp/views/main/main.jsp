@@ -255,9 +255,9 @@ div#notification {
                     <li><a href="MyBookmark.go">즐겨찾기 매장</a></li>
                     <li><a href="userAlarm.go">알림 리스트</a></li>
                 </ul>
-                <div class="logout">
+                <div id="logoutButton">
                     <i class="fas fa-sign-out-alt"></i>
-                    <a href="logout.go">로그아웃</a>
+                    <a href="#">로그아웃</a>
                 </div>
             </div>
         </div>  
@@ -265,38 +265,57 @@ div#notification {
 </body>
 <div id="loginModal" class="modal_madal" style="display: none;">
     <div class="modal-content_madal">
-        <span class="close_madal" onclick="closeLoginModal()">&times;</span>
+        <span class="close_madal" onclick="$('#loginModal').hide();">&times;</span>
         <p>로그인이 필요한 페이지 입니다.</p>
         <p>로그인 페이지로 이동하시겠습니까?</p>
         <br/>
         <button class="btn_madal" onclick="redirectToLogin()">로그인</button>
     </div>
 </div>
+<div id="logoutModal" class="modal_madal" style="display: none;">
+    <div class="modal-content_madal">
+        <span class="close_madal" onclick="$('#logoutModal').hide();">&times;</span>
+        <p>로그아웃 하시겠습니까?</p>
+        <br/>
+        <button class="btn_madal" id="confirmLogout">로그아웃</button>
+        <button class="btn_madal" id="cancelLogout">취소</button>
+    </div>
+</div>
 <script>
 var loginId ='${sessionscope.loginId}';
 
-const isLoggedIn = "${sessionScope.loginId != null}";
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
+    const isLoggedIn = "${sessionScope.loginId != null}";
+
     // .go 링크 클릭 이벤트에 로그인 확인 추가
-    document.querySelectorAll('a[href*=".go"]').forEach(link => {
-        link.addEventListener('click', function(event) {
-        	if (!this.href.includes('login.go') && isLoggedIn !== "true") {
-                event.preventDefault(); // 기본 링크 이동 막기
-                document.getElementById('loginModal').style.display = 'block'; // 모달 표시
-            }
-        });
+    $('a[href*=".go"]').on('click', function(event) {
+        if (!$(this).attr('href').includes('login.go') && isLoggedIn !== "true") {
+            event.preventDefault(); // 기본 링크 이동 막기
+            $('#loginModal').show(); // 로그인 모달 표시
+        }
+    });
+    
+    // 로그아웃 버튼 클릭 시 로그아웃 확인 모달 표시
+    $('#logoutButton').on('click', function(event) {
+        event.preventDefault(); // 기본 로그아웃 동작 막기
+        $('#logoutModal').show(); // 로그아웃 모달 표시
+    });
+
+ // 로그아웃 수행
+    $('#confirmLogout').on('click', function() {
+        $('#logoutModal').hide();
+        window.location.href = 'logout.go'; // 로그아웃 경로로 이동
+    });
+	
+    // 로그아웃 모달 닫기
+    $('#cancelLogout').on('click', function() {
+        $('#logoutModal').hide(); // 로그아웃 모달 닫기
     });
 });
-
-function closeLoginModal() {
-    document.getElementById('loginModal').style.display = 'none';
-}
-
 function redirectToLogin() {
-	closeLoginModal();
+    $('#loginModal').hide();
     window.location.href = 'login.go'; // 로그인 페이지로 이동
 }
-
 // 내 대화방 입장
 function submitForm(userchatIdx) {
         // 폼을 찾아서 제출합니다.
