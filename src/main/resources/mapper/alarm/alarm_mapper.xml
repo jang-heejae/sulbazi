@@ -5,41 +5,36 @@
 
 <mapper namespace="com.sulbazi.alarm.AlarmDAO">
 
-	<!-- ++속도개선 추가쿼리 1-->
+	<!-- 속도개선 즐찾쿼리-->
 	<select id="storealarm" resultType="com.sulbazi.alarm.AlamDTO">
-		SELECT 
-			store_name,
-			store_idx,
-			bookmark_idx,
-			user_id,
+		SELECT *
 		FROM 
 			store
 		INNER JOIN 
 			bookmark ON store.store_idx=bookmark.store_idx
 		INNER JOIN 
 			board ON board.store_idx=store.store_idx
-		WHERE user_id = #{param1}
+		WHERE user_id = #{param1} ORDER BY board_idx DESC LIMIT 1
 	</select>
 	
-	<!-- 만약 1번이 된다면 -->
-	<!-- 매장이름  -->
-	<select id="storename">
-		SELECT store_name FROM store WHERE store_idx=#{param1}
-	</select>
-
-	<!-- 나의 즐겨찾기 정보 -->
-	<select id="bookmarkinfo" resultType="com.sulbazi.member.BookMarkDTO">
-		SELECT bookmark_idx, user_id, store_idx FROM bookmark
-			WHERE user_id = #{param1}
-	</select>
-
-	<!-- 홍보 게시판 정보 -->
-	<select id="storeboardinfo" resultType="com.sulbazi.board.BoardDTO">
-		SELECT store_idx FROM board ORDER BY board_idx DESC LIMIT 1;
-	</select>
-	<!-- 여기까지 삭제가능 1 -->
 	
-
+	
+	<!-- 속도개선 대화방 쿼리 -->
+	<select id="chatallalarm" resultType="com.sulbazi.alarm.AlamDTO">
+		SELECT parti_idx,
+					parti.user_id AS partiuser, 
+					parti_state,	
+					chatroom_category, 
+					chatroom_idx
+		FROM 
+			userchat 
+		INNER JOIN 
+			parti ON userchat.userchat_idx=parti.chatroom_idx	
+		WHERE parti_state=#{parti_state} 
+			AND userchat.user_id=#{chatroomboss}
+			AND parti.user_id=#{partiuser}
+	</select>
+	
 	<!-- 개인 대화방 정보 by user_id-->
 	<select id="userchatroominfo" resultType="com.sulbazi.chat.UserChatroomDTO">
 		SELECT userchat_idx, user_id, userchat_subject FROM userchat

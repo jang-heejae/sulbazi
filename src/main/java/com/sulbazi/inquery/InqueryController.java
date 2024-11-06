@@ -44,7 +44,9 @@ public class InqueryController {
 											Model model, HttpSession session) {
 		logger.info("params: {}", params);
 		logger.info("file count:"+inqueryfiles.length);
-		inquery_ser.userinquerywrite(inqueryfiles, params, session);
+		if(session.getAttribute("loginId") != null){
+			inquery_ser.userinquerywrite(inqueryfiles, params, session);
+		}
 		return "redirect:/userinquery.go";
 	}
 	
@@ -56,8 +58,10 @@ public class InqueryController {
 		String id = (String) session.getAttribute("loginId");
 		logger.info(id);
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<HashMap<String, Object>> list = inquery_ser.userlistinquery(id);
-		map.put("list", list);
+		if(id != null) {
+			List<HashMap<String, Object>> list = inquery_ser.userlistinquery(id);
+			map.put("list", list);
+		}
 		return map;
 	}
 	
@@ -69,7 +73,7 @@ public class InqueryController {
 		if(!session.getAttribute("opt").equals("admin_log")) {
 			model.addAttribute("result", "로그인이 필요한 서비스 입니다");
 		}else {
-			page="inquery/inqueryList";
+			page="redirect:/login.go";
 		}
 		return page;
 	}
@@ -77,11 +81,15 @@ public class InqueryController {
 	//관리자 문의 글 리스트
 	@GetMapping(value="/inqueryList.do")
 	@ResponseBody
-	public Map<String, Object> admininquerylist(@RequestParam String page, @RequestParam String cnt) {
+	public Map<String, Object> admininquerylist(@RequestParam String page, @RequestParam String cnt,HttpSession session) {
 		logger.info("문의리스트 관리자컨트롤러");
 		int page_ = Integer.parseInt(page);
 		int cnt_ = Integer.parseInt(cnt);
-		return inquery_ser.admininquerylist(page_,cnt_);
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(!session.getAttribute("opt").equals("admin_log")) {
+			map=inquery_ser.admininquerylist(page_,cnt_);
+		}
+		return map;
 	}
 	
 	//문의 글 리스트 필터링
@@ -141,7 +149,7 @@ public class InqueryController {
     public String admininquerydetail(@RequestParam("inqueryIdx") int inqueryIdx, Model model, HttpSession session) {
 		logger.info("문의상세가기 관리자컨트롤러");
 		String page= "login";
-		if(session.getAttribute("loginId") == null) {
+		if(session.getAttribute("loginId") == null || !session.getAttribute("opt").equals("admin_log")) {
 			model.addAttribute("result", "로그인이 필요한 서비스");
 		}else {
 			InqueryDTO userinquerydetail = null; //문의 글
@@ -172,10 +180,10 @@ public class InqueryController {
 	    logger.info(loginId);
 	    logger.info(answer);
 	    logger.info("" + inqueryIdx);
-	    
-	    inquery_ser.adminanswerdo(inqueryIdx, loginId, answer);
-	    inquery_ser.inquerystateupdate(inqueryIdx);
-	    
+	    if(session.getAttribute("loginId")!=null && !session.getAttribute("opt").equals("admin_log")) {	    	
+	    	inquery_ser.adminanswerdo(inqueryIdx, loginId, answer);
+	    	inquery_ser.inquerystateupdate(inqueryIdx);
+	    }
 	    // 리다이렉트 시 inqueryIdx 파라미터를 함께 전달
 	    return "redirect:/inqueryDetail.go?inqueryIdx=" + inqueryIdx;
 	}
