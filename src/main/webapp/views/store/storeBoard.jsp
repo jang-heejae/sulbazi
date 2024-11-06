@@ -86,7 +86,7 @@ td {
                 <c:forEach var="board" items="${myboard}">
                     <tr>
                         <td>${board.board_category}</td>
-                        <td>${board.board_subject}</td>
+                        <td><a href="storeDetail.do?storeidx=${board.board_idx}">${board.board_subject}</a></td>
                         <td>${board.like_count}</td>
                         <td>${board.board_bHit}</td>
                         <td>${board.board_date}</td>

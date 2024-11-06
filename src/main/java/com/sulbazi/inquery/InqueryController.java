@@ -58,10 +58,8 @@ public class InqueryController {
 		String id = (String) session.getAttribute("loginId");
 		logger.info(id);
 		Map<String, Object> map = new HashMap<String, Object>();
-		if(id != null) {
-			List<HashMap<String, Object>> list = inquery_ser.userlistinquery(id);
-			map.put("list", list);
-		}
+		List<HashMap<String, Object>> list = inquery_ser.userlistinquery(id);
+		map.put("list", list);
 		return map;
 	}
 	
@@ -73,7 +71,7 @@ public class InqueryController {
 		if(!session.getAttribute("opt").equals("admin_log")) {
 			model.addAttribute("result", "로그인이 필요한 서비스 입니다");
 		}else {
-			page="redirect:/login.go";
+			page="inquery/inqueryList";
 		}
 		return page;
 	}

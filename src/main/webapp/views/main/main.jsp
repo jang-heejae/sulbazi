@@ -199,7 +199,7 @@ div#notification {
 }
 </style>
 <body>
-    <%-- <jsp:include page="../user/sendAlarm.jsp"/> --%>
+   	<jsp:include page="../user/sendAlarm.jsp"/>
     <header>
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
