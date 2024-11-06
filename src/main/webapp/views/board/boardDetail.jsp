@@ -43,7 +43,7 @@
       font-size: 17px;
    }
    .category2{
-   		font-size: 25px;
+         font-size: 25px;
    }
    .date{
       font-size: 16px;
@@ -74,7 +74,7 @@
     align-items: center;
     padding: 1% 3%;
     border-radius: 12px;
- 	margin-left: 47%;
+    margin-left: 47%;
    }
    #likeCount{
    color: white;
@@ -83,7 +83,7 @@
        margin-right: 5px;
    }
    .photo4{
-   	width: 85%;
+      width: 85%;
     height: 85%; 
     object-fit: cover;
     margin: 3% 7%;
@@ -102,12 +102,12 @@
     cursor: pointer;
     float: right;
     margin: 1%;
-	}
+   }
 
-	.button:hover, .buttonn:hover, .buttonnn:hover {
-	    background-color: #bbb; 
-	}
-	textarea{
+   .button:hover, .buttonn:hover, .buttonnn:hover {
+       background-color: #bbb; 
+   }
+   textarea{
         width: 100%;
         height: 250px;
         border-radius: 8px;
@@ -115,7 +115,7 @@
         border: none;
     }
     .shit{
-    	padding-left: 5%;
+       padding-left: 5%;
     }
 </style>
 </head>
@@ -134,7 +134,7 @@
     <div class="boardlist">
        <div class="bboard">
        <input type="hidden" id="board_idx" value="${info.board_idx}">
-    	<input type="hidden" id="user_id" value="${sessionScope.loginId}">
+       <input type="hidden" id="user_id" value="${sessionScope.loginId}">
          <table>
             <tr>
                <th class="category">${info.board_category}</th>
@@ -165,16 +165,16 @@
                <hr class="alxwnf">
             <table>
                <tr>
-                  	<th class="subject">
-						<c:if test="${not empty files4}">
-		                   <c:forEach var="photo" items="${files4}">
-		                       <img src="/photo/${photo}" alt="사진" class="photo4"/>
-		                   </c:forEach>
-              		 	</c:if>
-              		 	<c:if test="${empty files4}">
-		                   <p>사진이 없습니다.</p>
-			            </c:if>
-					</th>
+                     <th class="subject">
+                  <c:if test="${not empty files4}">
+                         <c:forEach var="photo" items="${files4}">
+                             <img src="/photo/${photo}" alt="사진" class="photo4"/>
+                         </c:forEach>
+                        </c:if>
+                        <c:if test="${empty files4}">
+                         <p>사진이 없습니다.</p>
+                     </c:if>
+               </th>
                </tr>
                <tr>
                   <th><textarea name="board_content">${info.board_content}</textarea></th>               
@@ -182,72 +182,72 @@
            </table>
        </div>
            <table>
-	           <tr>
-	           		<th></th>
-	           		<th></th>
-		            <th class="shit" style="width: 600px;">
-			            <c:if test="${sessionScope.opt == 'user_log'}">
-				            <c:if test="${detailcheck == 1}">
-							    <button id="likeButton" class="like-button" onclick="like()">
-							        <i class="fa-solid fa-heart" id="heartIcon" style="color: red;"></i> 
-							        <span id="likeCount">${info.like_count}</span>
-							    </button>
-							</c:if>
-							<c:if test="${detailcheck == 0}">
-							    <button id="likeButton" class="like-button" onclick="like()">
-							        <i class="fa-solid fa-heart" id="heartIcon" style="color: blue;"></i> 
-							        <span id="likeCount">${info.like_count}</span>
-							    </button>
-							</c:if>
-			            </c:if>
-		            </th>
-		           <th>
-			            <c:if test="${sessionScope.loginId == store}">
-						    <a href="delete.go?board_idx=${info.board_idx}" class="buttonn">삭제</a>
-						</c:if>
-		            </th>
-	           		<th>
-	           		<a href="boardList.go" class="buttonnn">목록</a>
-	           		</th>
-	           		<th>
-			            <c:if test="${sessionScope.loginId == store}">
-			            	<a href="update.go?board_idx=${info.board_idx}" class="button">수정</a>
-						</c:if>
-	           		</th>
-	           </tr>
+              <tr>
+                    <th></th>
+                    <th></th>
+                  <th class="shit" style="width: 600px;">
+                     <c:if test="${sessionScope.opt == 'user_log'}">
+                        <c:if test="${detailcheck == 1}">
+                         <button id="likeButton" class="like-button" onclick="like()">
+                             <i class="fa-solid fa-heart" id="heartIcon" style="color: red;"></i> 
+                             <span id="likeCount">${info.like_count}</span>
+                         </button>
+                     </c:if>
+                     <c:if test="${detailcheck == 0}">
+                         <button id="likeButton" class="like-button" onclick="like()">
+                             <i class="fa-solid fa-heart" id="heartIcon" style="color: blue;"></i> 
+                             <span id="likeCount">${info.like_count}</span>
+                         </button>
+                     </c:if>
+                     </c:if>
+                  </th>
+                 <th>
+                     <c:if test="${sessionScope.loginId == store}">
+                      <a href="delete.go?board_idx=${info.board_idx}" class="buttonn">삭제</a>
+                  </c:if>
+                  </th>
+                    <th>
+                    <a href="boardList.go" class="buttonnn">목록</a>
+                    </th>
+                    <th>
+                     <c:if test="${sessionScope.loginId == store}">
+                        <a href="update.go?board_idx=${info.board_idx}" class="button">수정</a>
+                  </c:if>
+                    </th>
+              </tr>
            </table>
     </div>
 </body>
 <script>
 function like(){
-	var board_idx = '${info.board_idx}';
-	var user_id = '${sessionScope.loginId}';
-	var heartIcon = $('#heartIcon');
-	console.log(board_idx);
-	console.log(user_id);
-	$.ajax({
-		type: 'POST',
-		url : 'boardLike.ajax',
-		data : {'user_id':user_id, 'board_idx':board_idx},
-		dataType : 'JSON',
-		success : function(data) {
-			if(data.success) {
-				alert('좋아요 성공');
-				$('#likeCount').text(data.like);
-				$('#likeCount2').text(data.like);
-				if (data.Check) {
-		            $('#heartIcon').removeClass('fa-heart-o').addClass('fa-heart').css('color', 'red'); // 좋아요 한 경우
-		        } else {
-		        	$('#heartIcon').removeClass('fa-heart-o').addClass('fa-heart').css('color', 'blue'); // 좋아요 취소한 경우
-		        }
-			}else {
-				alert('좋아요 실패');
-			}
-		},
-		error : function(error) {
-			console.error('Error', error);
-		}
-	})
+   var board_idx = '${info.board_idx}';
+   var user_id = '${sessionScope.loginId}';
+   var heartIcon = $('#heartIcon');
+   console.log(board_idx);
+   console.log(user_id);
+   $.ajax({
+      type: 'POST',
+      url : 'boardLike.ajax',
+      data : {'user_id':user_id, 'board_idx':board_idx},
+      dataType : 'JSON',
+      success : function(data) {
+         if(data.success) {
+            alert('좋아요 성공');
+            $('#likeCount').text(data.like);
+            $('#likeCount2').text(data.like);
+            if (data.Check) {
+                  $('#heartIcon').removeClass('fa-heart-o').addClass('fa-heart').css('color', 'red'); // 좋아요 한 경우
+              } else {
+                 $('#heartIcon').removeClass('fa-heart-o').addClass('fa-heart').css('color', 'blue'); // 좋아요 취소한 경우
+              }
+         }else {
+            alert('좋아요 실패');
+         }
+      },
+      error : function(error) {
+         console.error('Error', error);
+      }
+   })
 }
 </script>
 </html>
