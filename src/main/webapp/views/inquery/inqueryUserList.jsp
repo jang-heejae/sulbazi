@@ -158,7 +158,6 @@
 </head>
 <body>
 <jsp:include page="../main/main.jsp"/>
-
 	<form action="userinqueryWrite.do" method="post" enctype="multipart/form-data">
     	<div class="container">
         	<div class="header">고객센터<i class='fas fa-headphones' style='font-size:48px'></i></div>
@@ -170,11 +169,11 @@
                     	<input type="text" placeholder="제목을 입력하세요" name="inquerysubject" value="">
                 	</div>
                 	<div class="form-group">
-                    	<textarea id="inquiryContent" name="inquerycontent" rows="4" placeholder="내용을 입력하세요" value=""></textarea>
+                    	<textarea id="inquiryContent" name="inquerycontent" rows="4" placeholder="내용을 입력하세요"></textarea>
 						<input type="file" name="inqueryfiles" multiple="multiple"/>
                 	</div>
                 	<div>
-                    	<button type="button">등록</button>
+                    	<button type="submit">등록</button>
                 	</div>
             	</div>
         	</div>
@@ -196,11 +195,10 @@
 	        </div>
     	</div>
 	</form>
-        <div class="pagination"></div>
 </body>
 <script>
 var loginId = '${sessionScope.loginId}';
-var btn = document.getElementsByTagName('button');
+/* var btn = document.getElementsByTagName('button');
 btn[0].addEventListener('click', function(event) {
     var result = confirm('등록하시겠습니까?');
     console.log(result);
@@ -210,7 +208,16 @@ btn[0].addEventListener('click', function(event) {
     } else {
     	addquery();
     }
-});
+}); */
+$('form').on('submit', function(event) {
+    var result = confirm('등록하시겠습니까?');
+    if (!result) {
+        event.preventDefault(); // 폼 제출을 중단합니다.
+        addquery(); // 조건에 따라 다른 함수를 호출할 수도 있습니다.
+    } else {
+        alert('등록되었습니다');
+    }
+});	
 	
 addquery(); // 리스트 업데이트 함수 호출
     function addquery() {
