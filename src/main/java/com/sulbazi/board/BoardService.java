@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sulbazi.alarm.AlarmService;
+import com.sulbazi.member.UserDTO;
 import com.sulbazi.photo.PhotoDAO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
@@ -46,7 +47,7 @@ public class BoardService {
 			board_dao.bHit(board_idx);
 		}
 		int store_idx = boarddto.getStore_idx();
-		String store_name = selectidx(store_idx);
+		String store_id = selectidx(store_idx);
 		logger.info("detail에 가져올 store_idx : "+store_idx);
 		List<PhotoDTO> photo1 = photo_ser.detail1(store_idx, 1);
 		List<PhotoDTO> photo4 = photo_ser.detail4(store_idx, 4);
@@ -57,7 +58,7 @@ public class BoardService {
 			logger.info(file1);
 			model.addAttribute("info", boarddto);
 			model.addAttribute("files", file1);
-			model.addAttribute("store", store_name);
+			model.addAttribute("store", store_id);
 			for (PhotoDTO photodto4 : photo4) {
 				String file4 = photodto4.getNew_filename();
 				logger.info(file4);
@@ -111,11 +112,6 @@ public class BoardService {
 		return row;
 	}
 
-	public List<BoardDTO> stream() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public List<BoardDTO> getAllcategory() {
 		return board_dao.getAllcategory();
 	}
@@ -142,5 +138,19 @@ public class BoardService {
 	public void boardCountUpdate(int likeCount, int board_idx) {
 		board_dao.boardLikeUpDate(likeCount, board_idx);
 	}
+
+	public void detailCheck(String user_id, String board_idx, Model model) {
+		int board_idxx = Integer.parseInt(board_idx);
+		int row = board_dao.boardLike(user_id, board_idxx);
+		UserDTO dto = new UserDTO();
+		dto.getUser_id();
+		logger.info("디테일 체크 : " + row);
+		model.addAttribute("user", dto);
+		model.addAttribute("detailcheck", row);
+	}
+
+
+
+	
 
 }

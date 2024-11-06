@@ -79,10 +79,10 @@
     SELECT * 
     FROM category_opt 
     WHERE opt_idx IN 
-       <foreach item="item" index="index" collection="opt_idx" open="(" separator="," close=")">
-           #{item}
-       </foreach>
-   </select>
+	    <foreach item="item" index="index" collection="opt_idx" open="(" separator="," close=")">
+	        #{item}
+	    </foreach>
+	</select>
 
 	
 	<!-- 채팅 신고 기능 -->

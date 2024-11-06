@@ -12,6 +12,7 @@
     .boardlist{
         position: relative;
         width: 1200px;
+        height: 0 auto;
         background-color: rgb(255, 140, 9);
         border-radius: 10px;
         margin-top: 10%;
@@ -21,24 +22,28 @@
     }
     .bboard{
        background-color: white;
+       border-radius: 10px;
     }
     th{
        width: 100px;
     }
     .photo1{
-    width: 150px;
-    height: 150px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
     position: absolute; /* 테이블 내 원하는 위치에 배치 가능 */
-    top: 55px; /* 원하는 Y 좌표 */
-    left: 35px; /* 원하는 X 좌표 */
+    top: 89px; /* 원하는 Y 좌표 */
+    left: 243px; /* 원하는 X 좌표 */
    }
    .what{
       height: 60px;
    }
    .category{
-      font-size: 20px;
+      font-size: 17px;
+   }
+   .category2{
+   		font-size: 25px;
    }
    .date{
       font-size: 16px;
@@ -78,9 +83,11 @@
        margin-right: 5px;
    }
    .photo4{
-   	width: 100%;
-    height: 100%; 
-    object-fit: cover; 
+   	width: 85%;
+    height: 85%; 
+    object-fit: cover;
+    margin: 3% 7%;
+    border-radius: 10px;
    }
    .button, .buttonn, .buttonnn {
     display: inline-block; 
@@ -105,6 +112,10 @@
         height: 250px;
         border-radius: 8px;
         resize: none;
+        border: none;
+    }
+    .shit{
+    	padding-left: 5%;
     }
 </style>
 </head>
@@ -127,12 +138,14 @@
          <table>
             <tr>
                <th class="category">${info.board_category}</th>
-               <th colspan="2" class="category" style="text-align: left; width: 400px;">${info.board_subject}</th>
+               <th colspan="2" class="category2" style="text-align: left; width: 400px;">${info.board_subject}</th>
+               <th></th>
                <th></th>
                <th><i class="fa-solid fa-heart" style="color: red; margin-right: 5px;"></i><span id="likeCount2">${info.like_count}</span></th>
                <th><i class="fa-solid fa-eye" style="color: #999999; margin-right: 5px;"></i>${info.board_bHit}</th>
             </tr>
             <tr class="what">
+               <th></th>
                <th>${store}</th>
                <th></th>
                <th></th>
@@ -167,17 +180,42 @@
                   <th><textarea name="board_content">${info.board_content}</textarea></th>               
                </tr>
            </table>
-            <c:if test="${sessionScope.loginId == store}">
-            	<a href="update.go?board_idx=${info.board_idx}" class="button">수정</a>
-			</c:if>
-			<a href="boardList.go" class="buttonnn">목록</a>
-            <c:if test="${sessionScope.loginId == store}">
-			    <a href="delete.go?board_idx=${info.board_idx}" class="buttonn">삭제</a>
-			</c:if>
-            <button id="likeButton" class="like-button" onclick="like()">
-			    <i class="fa-solid fa-heart" id="heartIcon"></i> <span id="likeCount">${info.like_count}</span>
-			</button>
        </div>
+           <table>
+	           <tr>
+	           		<th></th>
+	           		<th></th>
+		            <th class="shit" style="width: 600px;">
+			            <c:if test="${sessionScope.opt == 'user_log'}">
+				            <c:if test="${detailcheck == 1}">
+							    <button id="likeButton" class="like-button" onclick="like()">
+							        <i class="fa-solid fa-heart" id="heartIcon" style="color: red;"></i> 
+							        <span id="likeCount">${info.like_count}</span>
+							    </button>
+							</c:if>
+							<c:if test="${detailcheck == 0}">
+							    <button id="likeButton" class="like-button" onclick="like()">
+							        <i class="fa-solid fa-heart" id="heartIcon" style="color: blue;"></i> 
+							        <span id="likeCount">${info.like_count}</span>
+							    </button>
+							</c:if>
+			            </c:if>
+		            </th>
+		           <th>
+			            <c:if test="${sessionScope.loginId == store}">
+						    <a href="delete.go?board_idx=${info.board_idx}" class="buttonn">삭제</a>
+						</c:if>
+		            </th>
+	           		<th>
+	           		<a href="boardList.go" class="buttonnn">목록</a>
+	           		</th>
+	           		<th>
+			            <c:if test="${sessionScope.loginId == store}">
+			            	<a href="update.go?board_idx=${info.board_idx}" class="button">수정</a>
+						</c:if>
+	           		</th>
+	           </tr>
+           </table>
     </div>
 </body>
 <script>

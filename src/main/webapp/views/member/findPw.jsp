@@ -76,7 +76,7 @@
         </div>
         <hr/>
        	<div class="check">
-			<input type="radio" name="a" id="일반 사용자">일반 사용자
+			<input type="radio" name="a" id="일반 사용자" checked="checked">일반 사용자
 			<input type="radio" name="a" id="매장 사용자">매장 사용자
        	</div>
 	 <br>
@@ -85,14 +85,14 @@
 			<h2>회원정보에 등록된 아이디와 이메일을 입력해주세요.</h2>
 			<input class="inp" type="text" name="user_id" placeholder="아이디" value=""/>
 			<br>
-			<input class="inp" type="text" name="user_id" placeholder="이메일" value=""/>
+			<input class="inp" type="text" name="user_email" placeholder="이메일" value=""/>
 			<button type="submit">다음</button>
 		</div>
 	</form>
 	 
 	<form action="storefindpw.do" method="post">
 		<div class="bb">
-			<h2>회원정보에 등록된 사업자 번호를 입력해주세요.</h2>
+			<h2>회원정보에 등록된 아이디와 사업자 번호를 입력해주세요.</h2>
 			<input class="inp" type="text" name="store_id" placeholder="아이디" value=""/>
 			<br>
 			<input class="inp" type="text" name="store_number" placeholder="사업자번호" value=""/>

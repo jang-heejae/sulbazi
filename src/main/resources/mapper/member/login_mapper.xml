@@ -15,7 +15,7 @@
 		</if> 
 	</select>
 	<select id="userfindpw" resultType="String">
-		SELECT user_pw FROM user WHERE user_id=#{id} AND user_email=#{email}
+		SELECT user_pw FROM user WHERE user_id=#{id} AND user_email=#{user_email}
 	</select>
 	
 	<select id="storefindpwdo" resultType="String">
