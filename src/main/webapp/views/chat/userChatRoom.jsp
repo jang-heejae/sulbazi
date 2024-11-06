@@ -16,7 +16,7 @@ $(document).ready(function() {
       location.replace('./userchatlist.go');
    }
    
-    // SSE - 메세지, 유저리스트, 공지
+    // SSE - 메세지, 유저리스트, 수정, 공지
     var sse = new EventSource("/sse/all");
     // SSE - 강퇴
     var eventSource = new EventSource('/subscribe');
@@ -37,6 +37,7 @@ $(document).ready(function() {
     	 var updateRoom = event.data;
     	 alert('방 정보가 업데이트되었습니다.');
      });
+     
 	 // 공지 SSE
     sse.addEventListener('noticeUpdate', function(event) {
     	var updatedNotice = event.data;
@@ -50,20 +51,25 @@ $(document).ready(function() {
         window.location.href = '/userchatlist.go';
     });
  	
-    // 연결이 성공적으로 열리면 실행되는 핸들러
+    // 성공 SSE - 메세지, 유저리스트, 수정, 공지
+    sse.onopen = function() {
+        console.log('Connection opened');
+    };
+    
+    // 성공 SSE - 강퇴
     eventSource.onopen = function() {
         console.log('Connection opened');
     };
 
-    // 오류 SSE - 메세지, 유저리스트, 공지
-    eventSource.onerror = function(event) {
+    // 오류 SSE - 메세지, 유저리스트, 수정, 공지
+    sse.onerror = function(event) {
 	    console.error('EventSource failed:', event);
 	    setTimeout(function() {
 	        eventSource = new EventSource("/sse/all");
 	    }, 1000); // 재연결 시도
 	};
     
-	 // 오류가 발생하면 실행되는 핸들러 - 강퇴
+	 // 오류 SSE - 강퇴
     eventSource.onerror = function(event) {
         console.error('EventSource failed:', event);
         setTimeout(function() {
