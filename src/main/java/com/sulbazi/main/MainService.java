@@ -34,14 +34,14 @@ public class MainService {
 	
 	public void mainPage(Model model) {
         List<StoreDTO> storeList = main_dao.mainStore(); // 상위 4개 store 정보
-        log.info("storeList:{}"+storeList);
+        //log.info("storeList:{}"+storeList);
         Map<Integer, PhotoDTO> map = new HashMap<Integer, PhotoDTO>();
         // 각 store에 대한 사진 리스트 추가
         for (StoreDTO store : storeList) {
             PhotoDTO photoDto = photo_ser.mainStore(store.getStore_idx());
             map.put(store.getStore_idx(), photoDto);
-            log.info("store_idx:{}"+store.getStore_idx());
-            log.info("new_filename:{}"+photoDto.getNew_filename());
+            //log.info("store_idx:{}"+store.getStore_idx());
+            //log.info("new_filename:{}"+photoDto.getNew_filename());
         } 
         model.addAttribute("files", map); // store_idx별로 저장하여 JSP에서 사용 가능
         model.addAttribute("info", storeList); // 전체 store 정보 추가
@@ -55,9 +55,9 @@ public class MainService {
             UserDTO userProfile = main_dao.profile(user_id);
             if (userProfile != null) {
             	profile.put(user_id, userProfile);
-                log.info("user_id: {}", user_id);
-                log.info("user_photo: {}", userProfile.getUser_photo());
-                log.info("user_nickname: {}", userProfile.getUser_nickname());
+                //log.info("user_id: {}", user_id);
+                //log.info("user_photo: {}", userProfile.getUser_photo());
+                //log.info("user_nickname: {}", userProfile.getUser_nickname());
             }
         }
         model.addAttribute("profiles", profile);

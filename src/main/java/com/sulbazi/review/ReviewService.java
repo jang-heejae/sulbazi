@@ -1,5 +1,6 @@
 package com.sulbazi.review;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,10 +13,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sulbazi.category.ReviewCategoryDTO;
 import com.sulbazi.member.UserDTO;
+import com.sulbazi.photo.PhotoDAO;
 
 @Service
 public class ReviewService {
 	@Autowired ReviewDAO review_dao;
+	@Autowired PhotoDAO photo_dao;
+	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	public String reportedIdx(int reported_idx) {
@@ -116,35 +120,56 @@ public class ReviewService {
 	}
 
 	//매장 마이페이지 리뷰
-	public List<ReviewDTO> storelookreview(int store_idx) {
-		List<ReviewDTO> reviewlist = review_dao.storelookreview(store_idx);
-		for (ReviewDTO reviewdto : reviewlist) {
-			reviewdto.getReview_idx();
-			reviewdto.getUser_id();
-			reviewdto.getStore_idx();
-			reviewdto.getReview_content();
-			reviewdto.getReview_date();			
-		}
-		return null;
+	public List<Map<String, Object>> storelookreview(int store_idx) {
+	    // 리뷰 리스트 가져오기
+	    List<ReviewDTO> reviewlist = review_dao.storelookreview(store_idx);
+	    List<Map<String, Object>> reviewMapList = new ArrayList<>(); // 리뷰를 담을 리스트
+	    boolean photoexist = false;
 
+	    // 각 리뷰를 Map으로 변환하여 리스트에 추가
+	    for (ReviewDTO reviewdto : reviewlist) {
+	        Map<String, Object> reviewMap = new HashMap<>();
+	        reviewMap.put("review_idx", reviewdto.getReview_idx());
+	        List<Integer> row = photo_dao.reviewphotoexist(reviewdto.getReview_idx());
+	        if(row != null) {
+	        	photoexist = true;
+	        }
+	        reviewMap.put("Starpoint", reviewdto.getStarpoint());
+	        String uesrname = review_dao.reviewusername(reviewdto.getUser_id());
+	        reviewMap.put("user_name", uesrname);
+	        reviewMap.put("store_idx", reviewdto.getStore_idx());
+	        reviewMap.put("review_content", reviewdto.getReview_content());
+	        reviewMap.put("review_date", reviewdto.getReview_date());
+	        reviewMap.put("photoexist", photoexist);
+
+	        reviewMapList.add(reviewMap); // 변환한 Map을 리스트에 추가
+	        logger.info("map확인:{}",reviewMap);
+	    }
+	    
+	    return reviewMapList; // 리스트 반환
 	}
+
 
 	//매장 마이페이지 댓글
-	public List<ReviewCommDTO> storelookreply(int store_idx) {
-		List<ReviewCommDTO> reviewlist = review_dao.storelookreply(store_idx);
-		for (ReviewCommDTO reviewCommdto : reviewlist) {
-			reviewCommdto.getComm_content();
-			reviewCommdto.getReview_idx();
-			reviewCommdto.getStore_idx();
-			reviewCommdto.getComm_date();
-			
-		}
-		return null;
+	public List<Map<String, Object>> storelookreply(int store_idx) {
+	    // 리뷰 댓글 리스트 가져오기
+	    List<ReviewCommDTO> reviewlist = review_dao.storelookreply(store_idx);
+	    List<Map<String, Object>> replyMapList = new ArrayList<>(); // 댓글을 담을 리스트
+
+	    // 각 댓글을 Map으로 변환하여 리스트에 추가
+	    for (ReviewCommDTO reviewCommdto : reviewlist) {
+	        Map<String, Object> replyMap = new HashMap<>();
+	        replyMap.put("comm_content", reviewCommdto.getComm_content());
+	        replyMap.put("review_idx", reviewCommdto.getReview_idx());
+	        replyMap.put("store_idx", reviewCommdto.getStore_idx());
+	        replyMap.put("comm_date", reviewCommdto.getComm_date());
+
+	        replyMapList.add(replyMap); // 변환한 Map을 리스트에 추가
+	        logger.info("map확인:{}",replyMap);
+	    }
+
+	    return replyMapList; // 리스트 반환
 	}
-
-
-	
-	
 
 
 

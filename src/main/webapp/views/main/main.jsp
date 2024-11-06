@@ -191,6 +191,12 @@
     	overflow: hidden;
     }
     
+div#notification {
+	margin-top:15;
+    height: 260px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
 </style>
 <body>
     <%-- <jsp:include page="../user/sendAlarm.jsp"/> --%>

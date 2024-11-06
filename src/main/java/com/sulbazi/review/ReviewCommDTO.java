@@ -8,6 +8,7 @@ public class ReviewCommDTO {
     private int store_idx;  
     private Timestamp comm_date; 
     private String comm_content;
+    
 	public int getReview_idx() {
 		return review_idx;
 	}
