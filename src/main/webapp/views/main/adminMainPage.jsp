@@ -16,12 +16,12 @@
 		<ul>
 			<li>
 				<select id="search_cate" name="search_cate">
-                	<option value="search_menu">메뉴 이름</option>
-                    <option value="store_name">매장 이름</option>
-                    <option value="store_address">매장 주소</option>
+                	<option value="menu">메뉴 이름</option>
+                    <option value="name">매장 이름</option>
+                    <option value="addr">매장 주소</option>
                	</select>
            		<input type="text" id="mainSearch" name="mainSearch" value=""/>
-           		<i class="fas fa-search" id="searchIcon"></i>
+           		<i class="fas fa-search" id="searchIcon" style="color:rgb(255, 140, 9);"></i>
            </li>
 		</ul>
 	</div>
@@ -82,20 +82,16 @@
 </body>
 <script>
 $(document).ready(function() {
-    $('#searchButton').on('click', function() {
-        // 선택된 옵션 값과 입력된 키워드 가져오기
+    $('#searchIcon').on('click', function() {
         var category = $('#search_cate').val();
         var keyword = $('#mainSearch').val().trim();
 
-        // 입력된 키워드가 있는지 확인
-        if (keyword === "") {
-            alert("검색어를 입력하세요.");
-            return;
-        }
+        // JavaScript에서 카테고리와 키워드를 URL에 인코딩하여 이동합니다.
+        var encodedCategory = encodeURIComponent(category);
+        var encodedKeyword = encodeURIComponent(keyword);
 
-        // storeList 페이지로 이동하면서 쿼리 파라미터 추가
-        var url = 'storeList.go?category=' + encodeURIComponent(category) + '&keyword=' + encodeURIComponent(keyword);
-        window.location.href = url;
+        // storeList 페이지로 이동하면서 카테고리와 키워드 값 전달
+        window.location.href = "storeList.go?category=" + encodedCategory + "&keyword=" + encodedKeyword;
     });
 });
 </script>

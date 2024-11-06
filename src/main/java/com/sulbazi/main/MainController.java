@@ -1,5 +1,7 @@
 package com.sulbazi.main;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +12,7 @@ public class MainController {
 	@Autowired MainService main_ser;
 	
 	@RequestMapping(value={"/", "/main.go", "/mainPage.go"})
-	public String mainPage(Model model) {
+	public String mainPage(Model model, HttpSession session) {
 		main_ser.mainPage(model);
 		return "main/mainPage";
 	}

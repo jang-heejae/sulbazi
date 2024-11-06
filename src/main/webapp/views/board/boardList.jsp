@@ -9,7 +9,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="resources/jquery.twbsPagination.js" type="text/javascript"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/6282a8ba62.js" crossorigin="anonymous"></script>
 </head>
 <style>
     .boardlist{
@@ -92,7 +91,7 @@
     	border-color: #73734F;
 </style>
 <body>
-<%-- <c:choose>
+<c:choose>
     <c:when test="${sessionScope.opt == 'admin_log'}">
         <jsp:include page="../main/adminMain.jsp" />
     </c:when>
@@ -102,7 +101,7 @@
     <c:when test="${sessionScope.opt == 'store_log'}">
         <jsp:include page="../main/storeMain.jsp" />
     </c:when>
-</c:choose> --%>
+</c:choose>
     <div id="reportList">
 		<input type="radio" name="board_category" value="all" checked/> 전체 보기&nbsp;&nbsp;
 		<input type="radio" name="board_category" value="홍보"/>홍보&nbsp;&nbsp;

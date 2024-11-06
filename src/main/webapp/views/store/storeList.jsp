@@ -307,6 +307,16 @@ var markers = []; // 마커를 저장할 배열
 // 기본 중심 위치를 저장
 var defaultCenter = map.getCenter();
 
+const urlParams = new URLSearchParams(window.location.search);
+const category = urlParams.get('category');
+const keyword = urlParams.get('keyword');
+
+if (category && keyword) {
+    searchPageCall(category, keyword, 1);
+    pageCall = function() {};
+} else {
+    pageCall(1);
+}
 /* 리스트 페이징  */
 var show = 1;
 pageCall(show);
@@ -334,6 +344,7 @@ function pageCall(page) {
             if (data.list && data.list.length) {
                 drawList(data.list, data.photos, data.categoryOpts, data.storeCategorys);
                 drawMarkers(data.list);
+                $('#pagination').twbsPagination('destroy');
                 $('#pagination').twbsPagination({
                     startPage: 1,
                     totalPages: data.totalPages,
@@ -351,7 +362,6 @@ function pageCall(page) {
         }
     });
 }
-
 // 매장 리스트를 표시하는 함수
 function drawList(storeList, photos, categoryOpts, storeCategorys) {
     var listContainer = document.getElementById('list');
@@ -504,18 +514,11 @@ function storeListPage(alchol, food, mood, visit, page) {
     });
 }
 
-$('#performSearch').click(function() {
-    var category = document.getElementById("searchCategory").value;
-    var keyword = document.getElementById("searchQuery").value;
-    $('#pagination').twbsPagination('destroy');
-    $('#list').empty();
-    searchPageCall(category, keyword, 1);
-});
 
 function searchPageCall(category, keyword, page) {
     $.ajax({
         type: 'GET',
-        url: category + 'search.ajax',
+        url: category + 'search.ajax', // URL 형식에 맞게 호출
         data: {
             'keyword': keyword,
             'page': page,
@@ -526,10 +529,12 @@ function searchPageCall(category, keyword, page) {
             if (data.searchresult && data.searchresult.length) {
                 drawList(data.searchresult, data.photos, data.categoryOpts, data.storeCategorys);
                 drawMarkers(data.searchresult);
+                $('#pagination').twbsPagination('destroy');
                 $('#pagination').twbsPagination({
-                    startPage: 1,
+                    startPage: page,
                     totalPages: data.totalPages,
                     visiblePages: 5,
+                    initiateStartPageClick: false,
                     onPageClick: function(evt, page) {
                         searchPageCall(category, keyword, page);
                     }
@@ -543,6 +548,5 @@ function searchPageCall(category, keyword, page) {
         }
     });
 }
-
 </script>
 </html>

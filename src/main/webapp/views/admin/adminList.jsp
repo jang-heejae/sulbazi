@@ -34,6 +34,7 @@
     	font-family: "Yeon Sung", system-ui;
     	color: #20290E;
     	font-weight: normal;
+    	border: 2px solid rgb(255, 140, 9);
 	}
 	table, th, td{
 		border-bottom: 1px solid rgb(255, 140, 9);
