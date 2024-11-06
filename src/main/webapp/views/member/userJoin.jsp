@@ -107,7 +107,7 @@
     <header>
         <nav class="navbar">
             <div class="logo_text">
-                <a href="./">SULBAZI</a>
+                <a href="./mainPage.go">SULBAZI</a>
             </div>
         </nav>
     </header>
