@@ -103,7 +103,7 @@ public class BoardService {
 		return board_dao.selectidx(store_idx);
 	}
 
-	public boolean updateajax(BoardDTO boardDTO, MultipartFile[] file) {
+	public boolean updateajax(BoardDTO boardDTO) {
 		return board_dao.updateajax(boardDTO);
 	}
 

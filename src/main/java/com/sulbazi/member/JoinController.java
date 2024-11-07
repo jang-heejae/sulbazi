@@ -58,7 +58,7 @@ public class JoinController {
 		 try {
 			 int store_idx = join_ser.storeJoin(files, fileone, param, latitude, longitude);
 			 map.put("success", true); 
-			 map.put("link", "/SULBAZI/menu.go?store_idx="+store_idx);
+			 map.put("link", "menu.go?store_idx="+store_idx);
 		} catch (Exception e) {
 			map.put("success", false);
             map.put("message", "오류가 발생했습니다: " + e.getMessage());
@@ -102,6 +102,18 @@ public class JoinController {
 		logger.info("checkid boolean : " + response);
 		return response;
 	}
+	
+	@PostMapping(value="/checkstoreid.ajax")
+	@ResponseBody
+	public Map<String, Object> checkstoreid(@RequestParam("store_id") String store_id){
+		logger.info(store_id);
+		boolean exists = join_ser.checkstoreid(store_id);
+		logger.info("참트루 : " + exists);
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("exixts", exists);
+		return response;
+	}
+	
 	
 	@PostMapping(value="/checkEmail.ajax")
 	@ResponseBody
@@ -163,33 +175,5 @@ public class JoinController {
 		map.put("menuphoto", photodto);
 		return map;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		/*
-		 * @PostMapping(value="/storeJoin.ajax")
-		 * 
-		 * @ResponseBody public Map<String, Object> storeJoin( MultipartFile[] files,
-		 * 
-		 * @RequestParam Map<String, String> param) { StoreDTO dto = new StoreDTO();
-		 * dto.setStore_id(param.get("store_id"));
-		 * dto.setStore_pw(param.get("store_pw"));
-		 * dto.setStore_name(param.get("store_name"));
-		 * dto.setStore_number(param.get("store_number"));
-		 * dto.setStore_phone(param.get("store_phone"));
-		 * dto.setStore_time(param.get("store_time"));
-		 * dto.setStore_address(param.get("store_address")); int store_idx =
-		 * dto.getStore_idx(); join_ser.storeJoin(dto); try { for (MultipartFile file :
-		 * files) { if(!file.isEmpty()) { photo_ser.fileSave(files, store_idx, 1); } } }
-		 * catch (IOException e) { e.printStackTrace(); logger.info("{}:",e); }
-		 * Map<String, Object> map = new HashMap<String, Object>(); map.put("success",
-		 * true); map.put("link", "redirect:/login.go"); return map; }
-		 */
 	
 }
