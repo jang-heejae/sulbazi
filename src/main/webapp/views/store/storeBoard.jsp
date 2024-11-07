@@ -9,7 +9,6 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
 body.storeboard {
-    display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -32,17 +31,20 @@ body.storeboard .navbar {
 
 body.storeboard .board {
     width: 900px;
-    background-color: rgb(255, 140, 9);
+    background-color: #73734F;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    top: 200;
+    left: 515px;
 }
 
 .table-container {
+
     width: 100%;
-    height: 500px;
+    height: 650px;
     overflow-y: scroll;
 }
 
@@ -65,6 +67,9 @@ th {
 td {
     color: white;
     text-align: center;
+	font-size:20;
+	border-bottom: 1px solid white;
+	padding:3;
 }
 </style>
 </head>
@@ -86,7 +91,7 @@ td {
                 <c:forEach var="board" items="${myboard}">
                     <tr>
                         <td>${board.board_category}</td>
-                        <td><a href="storeDetail.do?storeidx=${board.board_idx}">${board.board_subject}</a></td>
+                        <td><a href="boardDetail.go?board_idx=${board.board_idx}">${board.board_subject}</a></td>
                         <td>${board.like_count}</td>
                         <td>${board.board_bHit}</td>
                         <td>${board.board_date}</td>

@@ -247,7 +247,8 @@
 	<!-- 매장 마이페이지  홍보글 정보 보기 -->
 	<select id="storemyboard" resultType="com.sulbazi.board.BoardDTO">
 		SELECT * 
-			FROM board WHERE store_idx=#{param1} and board_state=true;
+			FROM board WHERE store_idx=#{param1} and board_state=true 
+			ORDER BY board_date DESC;
 	</select>
 	
 	<select id="storeidx" resultType="int">
