@@ -21,4 +21,6 @@ public interface JoinDAO {
 	void menudo(StoreMenuDTO menuDTO);
 
 	List<StoreMenuDTO> menulist(int store_idx);
+
+	boolean checkstoreid(String store_id);
 }

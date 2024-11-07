@@ -121,12 +121,5 @@
 	        $(".aa").show();
 	    });
 	 
-	 $(document).ready(function() {
-	        const message = "${msg}";
-	        if (message) {
-	            alert(message);
-	            window.location.href = "login.do"; //
-	        }
-	    });
 </script>
 </html>
