@@ -254,6 +254,7 @@ public class AlarmService {
 		dto.setPartiuser(user_id);
 		dto.setChatroomboss(getuser_id);
 		dto.setParti_state(0);
+		
 		AlamDTO alarmdto = alarm_dao.chatallalarm(dto);
 		
 //		logger.info("참여신청 대화방 : {}"+alarmdto.getChatroom_idx());

@@ -7,11 +7,11 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <title>리뷰와 댓글</title>
 <style>
-    .reviewallarea {
-        background-color: #041d03;
+    .area {
+        background-color: #73734F;
         width: 1300px;
         height: auto;
-        display: grid;
+        display: flex;
         grid-template-columns: 1fr 1fr;
         margin: auto;
         border-radius: 10px;
@@ -19,42 +19,29 @@
         gap: 20px;
         padding: 20px;
     }
-    .reviewarea, .replyarea {
-        background-color: rgb(255, 140, 9);
-        border-radius: 10px;
 
-    }
-    .review-item, .reply-item {
-        margin-bottom: 20px;
-        height:50px;
-    }
+	.review-item{
+	
+	}
 </style>
 </head>
 <body>
 <jsp:include page="../main/storeMain.jsp"/>
-<div class="reviewallarea">
+<div class="area">
     <div class="reviewarea">
         <c:forEach var="review" items="${totalReviews}">
             <div class="review-item">
                 <h3>리뷰 작성자: ${review.user_name}</h3> <!-- 리뷰 유저 이름 -->
                 <p>리뷰 내용: ${review.review_content}</p> <!-- 리뷰 내용 -->
                 <p>리뷰 날짜: ${review.review_date}</p> <!-- 리뷰 날짜 -->
-                <c:if test="${review.photoexist}">
-                    <p>(사진이 첨부됨)</p>
-                </c:if>
+				<p>사진: ${review.photoexist}</p> 
                 <hr/>
             </div>
-        </c:forEach>
-    </div>
-    <div class="replyarea">
-        <c:forEach var="review" items="${totalReviews}">
-            <c:forEach var="reply" items="${review.replies}">
-                <div class="reply-item">
-                    <p>댓글 내용: ${reply.comm_content}</p> <!-- 댓글 내용 -->
-                    <p>댓글 날짜: ${reply.comm_date}</p> <!-- 댓글 날짜 -->
-                </div>
+			<div class="replyarea">
+				<p>댓글 내용: ${review.comm_content}</p> <!-- 댓글 내용 -->
+				<p>댓글 날짜: ${review.comm_date}</p> <!-- 댓글 날짜 -->
                 <hr/>
-            </c:forEach>
+			</div>
         </c:forEach>
     </div>
 </div>

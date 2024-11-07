@@ -363,6 +363,21 @@ public class PhotoService {
 			return photo_dao.reviewPhotoDel(params);
 		}
 
+		public Map<String, Object> photoexist(int i, int reviewidx) {
+			
+			List<PhotoDTO> photodtolist = photo_dao.photoexist(3, reviewidx);
+			Map<String, Object> photo = new HashMap<String, Object>();
+			for (PhotoDTO photodto : photodtolist) {
+				if(photodto!=null) {
+					photo.put("photoexist",photodto.getPhoto_folder_idx()); //사진 있음
+				}else {
+					photo.put("photoexist", 0); //사진 없음		
+				}
+			} 
+			return photo;
+			
+		}
+
 
 
 

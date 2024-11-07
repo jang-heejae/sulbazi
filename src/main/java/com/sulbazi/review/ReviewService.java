@@ -124,23 +124,19 @@ public class ReviewService {
 	    // 리뷰 리스트 가져오기
 	    List<ReviewDTO> reviewlist = review_dao.storelookreview(store_idx);
 	    List<Map<String, Object>> reviewMapList = new ArrayList<>(); // 리뷰를 담을 리스트
-	    boolean photoexist = false;
 
 	    // 각 리뷰를 Map으로 변환하여 리스트에 추가
 	    for (ReviewDTO reviewdto : reviewlist) {
 	        Map<String, Object> reviewMap = new HashMap<>();
-	        reviewMap.put("review_idx", reviewdto.getReview_idx());
-	        List<Integer> row = photo_dao.reviewphotoexist(reviewdto.getReview_idx());
-	        if(row != null) {
-	        	photoexist = true;
-	        }
-	        reviewMap.put("Starpoint", reviewdto.getStarpoint());
+	        reviewMap.put("review_idx", reviewdto.getReview_idx()); //리뷰 idx
+	        reviewMap.put("Starpoint", reviewdto.getStarpoint()); //별점
 	        String uesrname = review_dao.reviewusername(reviewdto.getUser_id());
 	        reviewMap.put("user_name", uesrname);
 	        reviewMap.put("store_idx", reviewdto.getStore_idx());
 	        reviewMap.put("review_content", reviewdto.getReview_content());
 	        reviewMap.put("review_date", reviewdto.getReview_date());
-	        reviewMap.put("photoexist", photoexist);
+	        reviewMap.put("comm_content", reviewdto.getComm_content());
+	        reviewMap.put("comm_date", reviewdto.getComm_date());
 
 	        reviewMapList.add(reviewMap); // 변환한 Map을 리스트에 추가
 	        //logger.info("map확인:{}",reviewMap);
@@ -150,26 +146,6 @@ public class ReviewService {
 	}
 
 
-	//매장 마이페이지 댓글
-	public List<Map<String, Object>> storelookreply(int store_idx) {
-	    // 리뷰 댓글 리스트 가져오기
-	    List<ReviewCommDTO> reviewlist = review_dao.storelookreply(store_idx);
-	    List<Map<String, Object>> replyMapList = new ArrayList<>(); // 댓글을 담을 리스트
-
-	    // 각 댓글을 Map으로 변환하여 리스트에 추가
-	    for (ReviewCommDTO reviewCommdto : reviewlist) {
-	        Map<String, Object> replyMap = new HashMap<>();
-	        replyMap.put("comm_content", reviewCommdto.getComm_content());
-	        replyMap.put("review_idx", reviewCommdto.getReview_idx());
-	        replyMap.put("store_idx", reviewCommdto.getStore_idx());
-	        replyMap.put("comm_date", reviewCommdto.getComm_date());
-
-	        replyMapList.add(replyMap); // 변환한 Map을 리스트에 추가
-	        //logger.info("map확인:{}",replyMap);
-	    }
-
-	    return replyMapList; // 리스트 반환
-	}
 
 	public List<ReviewDTO> dontWrite(Map<String, Object> params) {
 		// TODO Auto-generated method stub

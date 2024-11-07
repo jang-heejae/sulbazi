@@ -11,7 +11,7 @@
     display: flex;
     margin-bottom:0;
     margin-top:10;
-    border:1px solid rgb(255, 140, 9);
+    border:1px solid #73734;
 }
 
 #menufiltering{
@@ -28,20 +28,20 @@ table{
     margin-right:auto;
 }
 table,th, td{
-    border: 1px solid rgb(255, 140, 9);
+    border: 1px solid #73734F;
     border-collapse: collapse;
 }
 td{
 	max-width:100;
 	height: 20;
-	border-top: 1px solid rgb(255, 140, 9); /* 위쪽 경계선 */
+	border-top: 1px solid #73734F; /* 위쪽 경계선 */
     border-bottom: 2px solid white; /* 아래쪽 경계선 */
     border-left: none; /* 왼쪽 경계선 제거 */
     border-right: none; /* 오른쪽 경계선 제거 */
     padding: 5px 5px; /* 여백 조정 */
 }
 th{
-    background-color: rgb(255, 140, 9);
+    background-color: #73734F;
     padding:0 23;
 }
 label{
@@ -54,29 +54,30 @@ label.selected{
 }
 
 .insert{
-	background-color: rgb(255, 140, 9);
+	background-color: #979767;
 	width: 300;
-	margin: 100 auto;
+	margin: 61 auto;
 	border-radius: 10px;
 	padding: 40;
 	margin-right: 0;
 	margin-left: 40;
+	margin-top: 50;
 }
 
 .all{
 	display:flex;
 	width: 970;
 	margin:200 auto;
-	background-color: rgb(255, 140, 9);
+	background-color:#73734F;
 	height: 600;
 	border-radius: 10px;
 }
 
 .table{
-	background-color: rgb(255, 140, 9);
-	border:solid 1px rgb(255, 140, 9);
+	background-color: #73734F;
+	border:solid 1px #73734F;
 	color: white;
-	width: 500;
+	width: 520;
 	height: 500;
 	overflow-y: scroll;
 
@@ -87,20 +88,26 @@ label.selected{
 }
 .menuinsert{
 	padding: 10;
-	height: 200;
-	width:200;
+	height: 400;
+	width:300;
 }
 
 fieldset{
 	display:flex;
-	padding:5;
-	border: rgb(255, 140, 9);
+	padding:10;
+	border: #73734F;
+	margin: auto;
 }
 
 input[type="text"] {
 	width: 100;
 	height: 30;
 	border-radius:5px;
+}
+
+input[type="radio"] {
+	width: 20;
+	height: 20;
 }
  td[type="button"] {
  	width:40;
@@ -114,13 +121,13 @@ button[type="submit"]{
 }
 
 #preview {
-	margin-top: 10px;
-	max-width: 100%; /* 최대 너비 설정 */
+	margin-top: 1px;
+	max-width: 65%; /* 최대 너비 설정 */
 	height: auto; /* 높이는 자동 조정 */
 }
 
 button.up{
-	background-color: rgb(255, 140, 9); /* 배경색 */
+	background-color: #73734F; /* 배경색 */
 	color: white; /* 글자색 */
 	border: none; /* 테두리 없애기 */
 	border-radius: 5px; /* 둥근 모서리 */
@@ -129,12 +136,17 @@ button.up{
 }
 
 button.del{
-	background-color: rgb(255, 140, 9); /* 배경색 */
+	background-color: #73734F; /* 배경색 */
 	color: red; /* 글자색 */
 	border: none; /* 테두리 없애기 */
 	border-radius: 5px; /* 둥근 모서리 */
 	cursor: pointer; /* 마우스 커서 변경 */
 	font-size: 16px; /* 글자 크기 */
+}
+fieldset label {
+    margin-right: 10px; /* 라디오 버튼과 텍스트 사이의 간격을 설정 */
+    display: inline-block; /* 라벨을 인라인으로 표시 */
+    width: 60px;
 }
 </style>
 </head>
@@ -154,8 +166,8 @@ button.del{
 		        <tr>
 		            <td>
 		                <select class="search-select" id="searchCategory" name="menu_category">
-		                    <option name="menu_category" value="안주">안주</option>
-		                    <option name="menu_category" value="술">주류</option>
+		                    <option value="안주">안주</option>
+		                    <option value="술">주류</option>
 		                </select>
 		            </td>
 		        </tr>
@@ -175,10 +187,13 @@ button.del{
 		<form>
 			<div class="stateselect">
 				<fieldset>
-					<input type="radio" name="menu_category" value="안주" checked/> 안주 <br/>
-					<input type="radio" name="menu_category" value="주류"/> 주류<br/>
+			    <label>
+			        <input type="radio" name="menu_category" value="안주" checked/> 안주
+			    </label>
+			    <label>
+			        <input type="radio" name="menu_category" value="주류"/> 주류
+			    </label>
 				</fieldset>
-				<button type ="button" id="menufiltering">필터 적용</button>
 			</div>
 		</form>
 		<div class="table">
@@ -199,7 +214,7 @@ button.del{
 </body>
 <script>
 
-var menu_category = $(':input:radio[name=menu_category]:checked').val();
+/* var menu_category = $(':input:radio[name=menu_category]:checked').val();
 
 menulist();
 
@@ -221,15 +236,28 @@ function menulist() {
 	        console.log(e);
 	    }
 	});
-}		
+}	 */	
 
- //메뉴 등록
+//메뉴 등록
 document.querySelector('button[type="submit"]').addEventListener('click', function(event) {
+    // 필수 필드 요소들
+    var imageInput = document.querySelector('input[name="files"]');
+    var categorySelect = document.querySelector('select[name="menu_category"]');
+    var menuName = document.querySelector('input[name="menu_name"]');
+    var menuPrice = document.querySelector('input[name="menu_price"]');
+
+    // 필드 유효성 검사
+    if (!imageInput.files.length || !categorySelect.value || !menuName.value || !menuPrice.value) {
+        alert('모든 항목을 채워주세요.');
+        event.preventDefault(); // 제출 방지
+        return;
+    }
+
     var result = confirm('등록하시겠습니까?');
     if (!result) {
-        event.preventDefault(); // 제출을 방지
+        event.preventDefault(); // 제출 방지
     } else {
-        event.preventDefault(); // 기본 제출을 방지
+        event.preventDefault(); // 기본 제출 방지
 
         // 폼 데이터를 수집
         var formData = new FormData(document.querySelector('form'));
@@ -237,13 +265,12 @@ document.querySelector('button[type="submit"]').addEventListener('click', functi
         // AJAX 요청
         $.ajax({
             type: 'POST',
-            url: 'menuInsert.ajax', // 폼이 제출될 URL
+            url: 'menuInsert.ajax',
             data: formData,
-            contentType: false, // multipart/form-data 전송을 위한 설정
-            processData: false, // jQuery가 데이터를 변환하지 않도록 설정
+            contentType: false,
+            processData: false,
             success: function(response) {
                 alert('등록되었습니다');
-                // 필요 시 페이지를 새로고침
                 location.reload(); // 페이지 새로고침
             },
             error: function(xhr, status, error) {
@@ -253,9 +280,64 @@ document.querySelector('button[type="submit"]').addEventListener('click', functi
         });
     }
 });
+
+
+$(document).ready(function() {
+    // 기본 체크된 메뉴 카테고리에 따라 AJAX 요청 실행
+    var menu_category = $(':input:radio[name=menu_category]:checked').val();
+    executeFiltering(menu_category); // 페이지 로드 시 자동 실행
+
+    // 라디오 버튼 변경 시 AJAX 요청 실행
+    $(':input:radio[name=menu_category]').change(function() {
+        var menu_category = $(this).val(); // 변경된 카테고리 값 가져오기
+        executeFiltering(menu_category); // 필터링 실행
+    });
+});
+
+// 선택된 카테고리에 맞는 필터링 함수
+function executeFiltering(menu_category) {
+    if (menu_category === "안주") {
+        // 안주일 경우 ajax1 실행
+        $.ajax({
+            type: 'GET',
+            url: 'menuFiltering.ajax',
+            data: { 'menu_category': menu_category },
+            dataType: 'JSON',
+            success: function(data) {
+                console.log(data);
+                if (data && Array.isArray(data.menulist) && Array.isArray(data.menuphoto)) {
+                    drawList(data.menuphoto, data.menulist);
+                } else {
+                    console.error('Unexpected response format:', data);
+                }
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    } else if (menu_category === "주류") {
+        // 주류일 경우 ajax2 실행
+        $.ajax({
+            type: 'GET',
+            url: 'alcholmenuFiltering.ajax',
+            data: { 'menu_category': menu_category },
+            dataType: 'JSON',
+            success: function(data) {
+                console.log(data);
+                if (data && Array.isArray(data.menulist) && Array.isArray(data.menuphoto)) {
+                    drawList(data.menuphoto, data.menulist);
+                } else {
+                    console.error('Unexpected response format:', data);
+                }
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    }
+}	
 	
-	
-	/* 메뉴 필터링*/
+/* 
 $(document).ready(function() {
     $('#menufiltering').click(function(event) {
         event.preventDefault(); // 기본 제출 방지
@@ -303,32 +385,43 @@ $(document).ready(function() {
             });
         }
     }); // click 이벤트 끝
-}); 
+});  */
 	
-	function drawList(menuphoto, menulist) {
-	    if (!Array.isArray(menuphoto) || !Array.isArray(menulist)) {
-	        console.error('Provided parameters are not arrays:', menuphoto, menulist);
-	        return;
-	    }
-	
-	    if (menuphoto.length !== menulist.length) {
-	        console.error('The lists do not have the same length:', menuphoto.length, menulist.length);
-	        return;
-	    }
-	
-	    var content = '';
-	    menulist.forEach(function(item, idx) {
-	        content += '<tr>';
-	        content += '<td><img src="/photo/' + menuphoto[idx].new_filename + '" width="100" height="100"></td>';
-	        content += '<td><input type="text" id="menu_name_' + item.menu_idx + '" value="' + item.menu_name + '"/></td>'; // 고유 ID 추가
-	        content += '<td><input type="text" id="menu_price_' + item.menu_idx + '" value="' + item.menu_price + '"/></td>';
-	        content += '<td><button type="button" class="up" onclick="menuUpdate('+item.menu_idx+')">수정</button></td>';
-	        content += '<td><button type="button" class="del" onclick="menuDelete('+item.menu_idx+')">삭제</button></td>';
-	        content += '</tr>';
-	    });
-	
-	    $('#list').html(content);
-	}
+function drawList(menuphoto, menulist) {
+    if (!Array.isArray(menuphoto) || !Array.isArray(menulist)) {
+        console.error('Provided parameters are not arrays:', menuphoto, menulist);
+        return;
+    }
+
+    var content = '';
+    
+    // menulist의 길이를 기준으로 loop
+    menulist.forEach(function(item, idx) {
+        content += '<tr>';
+        
+        // menuphoto가 없으면 "사진 없음" 텍스트를 표시
+        var photo = (menuphoto[idx] && menuphoto[idx].new_filename) ? '/photo/' + menuphoto[idx].new_filename : '사진 없음';
+        
+        content += '<td>';
+        if (photo === '사진 없음') {
+            content += '<span>' + photo + '</span>'; // 사진이 없으면 텍스트로 "사진 없음" 표시
+        } else {
+            content += '<img src="' + photo + '" width="100" height="100">';
+        }
+        content += '</td>';
+
+        // 메뉴 이름, 가격, 수정, 삭제 버튼은 계속 표시
+        content += '<td><input type="text" id="menu_name_' + item.menu_idx + '" value="' + item.menu_name + '"/></td>';
+        content += '<td><input type="text" id="menu_price_' + item.menu_idx + '" value="' + item.menu_price + '"/></td>';
+        content += '<td><button type="button" class="up" onclick="menuUpdate('+item.menu_idx+')">수정</button></td>';
+        content += '<td><button type="button" class="del" onclick="menuDelete('+item.menu_idx+')">삭제</button></td>';
+        content += '</tr>';
+    });
+
+    $('#list').html(content);
+}
+
+
 	
 	function menuUpdate(menu_idx) {
 	    // 입력 필드에서 값을 가져옵니다.
@@ -364,7 +457,7 @@ $(document).ready(function() {
 	
 	
 	function menuDelete(menu_idx) {
-
+		var menu_category = $(':input:radio[name=menu_category]:checked').val();
 		console.log(menu_category);
 	    // AJAX 요청
 	    $.ajax({

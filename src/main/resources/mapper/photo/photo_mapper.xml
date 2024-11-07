@@ -58,12 +58,12 @@
 	
 	<!-- 매장 메뉴 사진 -->
 	<select id="storemenuphoto" resultType="com.sulbazi.photo.PhotoDTO">
-		SELECT new_filename FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=2
+		SELECT new_filename,photo_folder_idx FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=2
 	</select>
 	
 	<!-- 매장 술메뉴 사진 -->
 	<select id="alcholmenuphoto" resultType="com.sulbazi.photo.PhotoDTO">
-		SELECT new_filename FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=6
+		SELECT new_filename,photo_folder_idx FROM photo WHERE photo_folder_idx=#{param1} AND photo_category_idx=6
 	</select>
 	
 	
@@ -117,7 +117,7 @@
 
 
 	<!-- 매장 리뷰 사진 유무 확인 -->
-	<select id="reviewphotoexist">
+	<select id="photoexist">
 	 	SELECT * FROM photo WHERE photo_folder_idx = #{param1}
 	</select>
 

@@ -5,6 +5,15 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+.inoutbutton{
+	height:30;
+	background-color:rgb(255, 160, 19);
+	width: 45px;
+    margin: 3;
+    border-radius:10px;
+    border: 1px solid white;
+    color:white
+}
 
 </style>
 </head>
@@ -14,11 +23,16 @@
 
 <script>
 
-//로그인한 사용자의 ID (세션에서 가져옴)
-const loggedInUserId = '${sessionScope.loginId}'; 
+if (typeof loggedInUserId === 'undefined') {
+    var loggedInUserId = '${sessionScope.loginId}';
+}
 
 //알림을 저장할 배열
-let notificationsList = [];
+
+if (typeof notificationsList === 'undefined') {
+	var notificationsList = [];
+}
+
 
 //SSE 연결 시작
 function startSseConnection() {
@@ -69,10 +83,12 @@ function displayNotifications() {
      if (notification.alarm === "개설하신 대화방에 참여 신청이 왔습니다.") {
          const acceptButton = document.createElement('button');
          acceptButton.textContent = '수락';
+         acceptButton.setAttribute('class',"inoutbutton");
          acceptButton.onclick = () => handleAccept(notification);  //수락클릭시 호출함수(notification은 map 형태)
 
          const denyButton = document.createElement('button');
          denyButton.textContent = '거절';
+         denyButton.setAttribute('class',"inoutbutton");
          denyButton.onclick = () => handleDeny(notification); //거절 클릭시 호출함수(notification은 map 형태)
 
          notificationItem.appendChild(acceptButton);
