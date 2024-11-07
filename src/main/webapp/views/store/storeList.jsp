@@ -555,9 +555,27 @@ function searchPageCall(category, keyword, page) {
         },
         error: function(e) {
             console.log(e);
+            showNoStoresMessage();
         }
     });
 }
+
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const category = urlParams.get('category');
+    const keyword = urlParams.get('keyword');    
+    if (category) {
+        document.getElementById('searchCategory').value = category;
+    }
+    
+    if (keyword) {
+        document.getElementById('searchQuery').value = keyword;
+
+        // 특정 버튼을 자동으로 클릭
+        document.getElementById('performSearch').click();
+    }
+};
 
 
 

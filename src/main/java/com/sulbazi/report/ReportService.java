@@ -163,6 +163,7 @@ public class ReportService {
 		int row = report_dao.reportReview(params);
 		//유저 테이블 신고횟수 업데이트
 		int dao = report_dao.userReportedCount(params);
+		int sow = report_dao.userReportingCount(params);
 		
 		return row;
 	}

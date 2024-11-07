@@ -128,6 +128,39 @@
 		WHERE user_id = #{userId};
 	</update>
 	
+	<!-- 유저 프로필 상세보기 가져오기 -->
+	<select id="letItgo" parameterType="map" resultType="com.sulbazi.member.UserDTO">
+SELECT 
+	u.user_id,
+    u.user_nickname,
+    u.user_gender,
+    u.user_likecount,
+    u.user_photo,
+    GROUP_CONCAT(co.opt_name) AS opt_name,
+    GROUP_CONCAT(uc.opt_idx) AS opt_idx
+FROM 
+    user u
+INNER JOIN 
+    user_category uc ON u.user_id = uc.user_id
+INNER JOIN 
+    category_opt co ON uc.opt_idx = co.opt_idx
+WHERE 
+    u.user_id = #{userId}
+GROUP BY 
+    u.user_id
+	</select>
 	
-	
+	<!-- 유저 프로필 유저 좋아요 가죠와 -->
+	<select id="gogoLike" parameterType="map" resultType="int">
+		select count(pressed_id) from user_like ul where user_id = #{userId} and pressed_id = #{loginId}
+	</select>
+	<!-- 종원 유저좋아요 삭제 2 -->
+	<delete id="gogoLikeDel" parameterType="map">
+		DELETE FROM user_like WHERE user_id = #{loginId} AND pressed_id = #{userId}
+	</delete>
+	<!-- 좋원 유저 좋아요 2인서트 -->
+	<insert id="gogoLikeInsert" parameterType="map">
+		INSERT INTO user_like(user_id,pressed_id)
+			VALUES (#{loginId},#{userId})
+	</insert>
 </mapper>

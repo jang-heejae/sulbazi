@@ -55,5 +55,13 @@ public interface UserDAO {
 	int userLikeDel(Map<String, Object> params);
 
 	int userUpdateLike(Map<String, Object> params);
+
+	UserDTO letItgo(Map<String, Object> params);
+
+	int gogoLike(Map<String, Object> params);
+
+	int gogoLikeDel(Map<String, Object> params);
+
+	int gogoLikeInsert(Map<String, Object> params);
 	
 }
