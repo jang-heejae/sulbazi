@@ -525,7 +525,7 @@ function bookmarknew(user_id) {
 	return new Promise((resolve, reject) => {
 	    $.ajax({
 	        type: 'POST',
-	        url: '/SULBAZI/notifications/bookmarknew.ajax',
+	        url: 'notifications/bookmarknew.ajax',
 	        data: JSON.stringify({ user_id: user_id }), // user_id를 JSON 형식으로 변환
 	        contentType: 'application/json', // JSON 형식으로 전송
 	        dataType: 'json',
@@ -557,7 +557,7 @@ function sendNotification(newAlarm) {
     // AJAX POST 요청을 통해 서버에 알림 전송
     $.ajax({
         type: 'POST',
-        url: '/SULBAZI/notifications/send', // 알림을 전송할 서버 엔드포인트
+        url: 'notifications/send', // 알림을 전송할 서버 엔드포인트
         data: JSON.stringify(newAlarm),
         contentType: 'application/json',
         success: function(response) {

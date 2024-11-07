@@ -132,7 +132,7 @@
 		color: white;
 		padding: 5px;
 		border-radius: 5px;
-		font-size: 14;
+		font-size: 13;
 		font-weight: bold;
 	}
 	.parti2{

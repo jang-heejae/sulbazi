@@ -5,30 +5,109 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+	.chatBox2 {
+    	display: flex;
+    	justify-content: center;
+    	align-items: flex-start; /* 시작점에서부터 정렬 */
+    	width: 100%;
+    	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
+	}
+	.chatitems2 {
+    	width: 940px;
+    	min-height: 650px; /* 초기 최소 높이 설정 */
+    	height: auto; /* 내용에 따라 높이 자동 조절 */
+    	display: flex;
+    	align-content: center;
+    	background-color: #73734F;
+    	border-radius: 20px;
+    	padding: 20px; /* 내부 여백 추가 */
+    	margin-top: 140px; 
+    	font-family: "Yeon Sung", system-ui;
+    	border: 2px solid rgb(255, 140, 9);
+	}
+	.userProfile {
+        display: flex;
+        width: 50%;
+        align-items: flex-start; /* 상단 정렬 */
+        justify-content: center;
+    }
 
+    .userProfile2 {
+        width: 45%; /* 왼쪽에 위치 */
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        margin-top:14px;
+    	margin-left: -25px;
+    }
+
+    .userNickname{
+   		font-size: 96px;
+   		margin-left: 31px;
+   	 	margin-bottom: 12px;
+   	 	color: rgb(255, 140, 9);
+   	 	-webkit-text-stroke: 1px #20290E;
+    }
+
+	.profile-image {
+    	width: 250px;
+    	height: 250px;
+    	border-radius: 50%; /* 동그란 모양으로 만들기 */
+    	object-fit: cover; /* 이미지의 비율을 유지하면서 크기를 맞춤 */
+	}
+	
+	.alarmarea{
+	    margin-top: 20;
+	    width: 450px;
+	    height: 613px;
+	}
+	.stateselect{
+		width:300;
+		font-size:20;
+	}
+	fieldset{
+		display:flex;
+		border-color:#73734F;
+	}
+	#submitbutton{
+		width: 64px;
+    	height: 44px;
+    	border-radius:10px;
+    	border:1px solid white;
+    	background-color: #73734F;
+    	font-size: 20;
+	}
+</style>
 </head>
 <body>
-    <jsp:include page="../user/sendAlarm.jsp" />
-    <h2>알림</h2>
-	<div class="stateselect">
-		<fieldset>
-			<input type="radio" name="alarmread" value="0" checked/> 안읽음<br/>
-			<input type="radio" name="alarmread" value="1"/>읽음<br/>
-		</fieldset>
-	</div>
-    <div class="stateselect">
-		<fieldset>
-			<input type="radio" name="alarm" value="3"checked/> 대화방<br/>
-			<input type="radio" name="alarm" value="4"/>즐겨찾기<br/>
-			<input type="radio" name="alarm" value="6"/>고객센터<br/>
-		</fieldset>
-	</div>
-	<button id="submitButton">확인</button>
-    <div id="notification"></div>
-    <script>
-            //displayNotifications(); // 화면에 표시
+<% 
+    // C.jsp에서 B.jsp로 조건 전달
+    request.setAttribute("includeSendAlarm", false);  // sendAlarm.jsp 포함 여부를 false로 설정
+%>
 
-    </script>
+<%@ include file="../main/main.jsp" %> 
+<%-- 	<jsp:include page="../main/main.jsp"/>--%>
+			<div class="alarmarea">
+    		<c:import url="../user/sendAlarm.jsp"/> 
+			    <h1>알림</h1>
+				<div class="stateselect">
+					<fieldset>
+						<input type="radio" name="alarmread" value="0" checked/> 안읽음<br/>
+						<input type="radio" name="alarmread" value="1"/>읽음<br/>
+					</fieldset>
+				</div>
+			    <div class="stateselect">
+					<fieldset>
+						<input type="radio" name="alarm" value="3"checked/> 대화방<br/>
+						<input type="radio" name="alarm" value="4"/>즐겨찾기<br/>
+						<input type="radio" name="alarm" value="6"/>고객센터<br/>
+					</fieldset>
+				</div>
+				<button id="submitButton">확인</button>
+			    <div class="notification"></div>
+			</div>
 
 </body>
 <script>
@@ -86,207 +165,8 @@ function readornotalarm(alarmreadValue, alarmValue) {
 }
 
 	
-/* 	function noreadalarm() {
-	    $.ajax({
-	        type: 'GET',
-	        url: '/SULBAZI/notifications/noreadalarm.ajax',
-	        data: { 'receiverId': loggedInUserId },
-	        dataType: 'json',
-	        success: function(notifications) {
-	            notifications.forEach(notification => {
-	                addAlarm(notification);
-	            });
-	            displayNotifications();
-	        },
-	        error: function(error) {
-	            console.error("초기 알림 가져오기 실패:", error);
-	        }
-	    });
-	} */
-
-/* const loggedInUserId = localStorage.getItem('loggedInUserId'); // 현재 로그인한 사용자 ID*/
-
-/* var my_id = '${sessionScope.loginId}'; //내 아이디
-var chatroomboss = '1212'; //내가 보낸 채팅방에서의 방장
-var user_id='1212'; //나에게 신청 보내는 유저 */
-
-// 강퇴
-function roomout() {
-    $.ajax({
-        type: 'POST',
-        url: 'notifications/chatroomout.ajax',
-        data:({'user_id': user_id,  //수신자ID
-        		'chatroomboss': chatroomboss}),  //대화방 방장ID
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-            // 알림 데이터 객체 생성
-            const newAlarm = {
-                receiverId: user_id, //수신자 id
-                chatroomname: alarmresponse.chatroomname,  //문의 제목
-                alarm: alarmresponse.alarm, //알림 내용
-                alarm_idx: alarmresponse.alarm_idx //알림 idx
-            };
-            sendNotification(newAlarm); // 알림 전송 함수 호출
-            saveNotification(newAlarm); // 알림 저장 함수 호출
-        },
-        error: function(e) {
-            console.log("AJAX 요청 실패:", e); // 에러 메시지 출력
-        }
-    });
-}
-
-//거절
-function roomdeny() {
-    $.ajax({
-        type: 'POST',
-        url: 'notifications/chatroomdeny.ajax',
-        data: {'user_id':user_id, //수신자 ID
-        		'chatroomboss':chatroomboss}, //대화방 방장ID 
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-            // 알림 데이터 객체 생성
-            const newAlarm = {
-                receiverId: user_id, //수신자 id
-                chatroomname: alarmresponse.chatroomname,  //문의 제목
-                alarm: alarmresponse.alarm, //알림 내용
-                alarm_idx: alarmresponse.alarm_idx //알림 idx
-            };
-            sendNotification(newAlarm); // 알림 전송 함수 호출
-            saveNotification(newAlarm); // 알림 저장 함수 호출
-        },
-        error: function(e) {
-            console.log("AJAX 요청 실패:", e);
-        }
-    });
-}
-
-//수락
-function chatroomin() {
-    $.ajax({
-        type: 'POST',
-        url: 'notifications/chatroomin.ajax',
-        data: {'user_id':user_id,  //수신자ID
-        		'chatroomboss':chatroomboss}, //채팅방 방장
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-            // 알림 데이터 객체 생성
-            const newAlarm = {
-                receiverId: user_id, //수신자 id
-                chatroomname: alarmresponse.chatroomname,  //문의 제목
-                alarm: alarmresponse.alarm, //알림 내용
-                alarm_idx: alarmresponse.alarm_idx //알림 idx
-            };
-            sendNotification(newAlarm); // 알림 전송 함수 호출
-            saveNotification(newAlarm); // 알림 저장 함수 호출
-        },
-        error: function(e) {
-            console.log("AJAX 요청 실패:", e);
-        }
-    });
-}
 
 
-//수락/거절 선택
-function chatroommanager() {
-    $.ajax({
-        type: 'POST',
-        url: 'chatroommanager.ajax',
-        data: {'getuser_id':getuser_id, //수신자 ID
-        		'user_id':user_id}, //발신자 ID
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-            // 알림 데이터 객체 생성
-            const newAlarm = {
-                receiverId: getuser_id, //수신자 id
-                chatroomname: alarmresponse.chatroomname,  //문의 제목
-                alarm: alarmresponse.alarm, //알림 내용
-                alarm_idx: alarmresponse.alarm_idx //알림 idx
-            };
-            sendNotification(newAlarm); // 알림 전송 함수 호출
-            saveNotification(newAlarm); // 알림 저장 함수 호출
-        },
-        error: function(e) {
-            console.log("AJAX 요청 실패:", e);
-        }
-    });
-}
-
-
-
-
-
-
-
-
-//즐찾 새소식
-/* function bookmarknew(userIds) {
-    $.ajax({
-        type: 'POST',
-        url: '/SULBAZI/notifications/bookmarknew.ajax',
-        data: JSON.stringify({ 'user_ids: userIds }),//수신자 ID  //게시물 idx
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-            // 알림 데이터 객체 생성
-            const newAlarm = {
-                receiverId: user_id, //수신자 id
-                chatroomname: alarmresponse.chatroomname,  //문의 제목
-                alarm: alarmresponse.alarm, //알림 내용
-                alarm_idx: alarmresponse.alarm_idx //알림 idx
-            };
-            sendNotification(newAlarm); // 알림 전송 함수 호출
-        },
-        error: function(e) {
-            console.log("AJAX 요청 실패:", e);
-        }
-    });
-} */
-
-
-
-//문의 답글 새소식
-/*function inquirynewanswer(id_write,inquery_idx) {
-    $.ajax({
-        type: 'POST',
-        url: '/SULBAZI/notifications/inquiryanswer.ajax',
-        data: { 'id_write': id_write,  //수신자 id
-        		'inquery_idx': inquery_idx }, //문의 idx
-        dataType: 'JSON',
-        success: function(alarmresponse) {
-            // 알림 데이터 객체 생성
-            const newAlarm = {
-                receiverId: id_write, //수신자 id
-                chatroomname: alarmresponse.chatroomname,  //문의 제목
-                alarm: alarmresponse.alarm, //알림 내용
-                alarm_idx: alarmresponse.alarm_idx //알림 idx
-            };
-            sendNotification(newAlarm); // 알림 전송 함수 호출
-            saveNotification(newAlarm); // 알림 저장 함수 호출
-        },
-        error: function(e) {
-            console.error("AJAX 요청 실패:", e);
-            console.log("응답 내용:", e.responseText);
-        }
-    });
-}*/
-
-// 서버에 알림 전송 함수 
-/* function sendNotification(newAlarm) {
-    const receiverId = newAlarm.receiverId;
-
-    // AJAX POST 요청을 통해 서버에 알림 전송
-    $.ajax({
-        type: 'POST',
-        url: '/SULBAZI/notifications/send', // 알림을 전송할 서버 엔드포인트
-        data: JSON.stringify(newAlarm),
-        contentType: 'application/json',
-        success: function(response) {
-            console.log("알림이 성공적으로 전송되었습니다:", response);
-        },
-        error: function(e) {
-            console.error("알림 전송 실패:", e);
-        }
-    });
-} */
 
 </script>
 </html>

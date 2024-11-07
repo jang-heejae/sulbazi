@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.security.Provider.Service;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -382,6 +384,7 @@ public class StoreController {
 	 */
 
 
+
 	
 	//매장 나의 홍보글
 	@RequestMapping(value="/storeMyBoard.go")
@@ -414,6 +417,7 @@ public class StoreController {
         Map<String, Object> response = new HashMap<>();
         response.put("menulist", menulist);
         response.put("menuphoto", menuphoto);
+        
         return ResponseEntity.ok(response);
     }
 	
@@ -447,6 +451,8 @@ public class StoreController {
     @ResponseBody
     public String menudelete(@RequestParam Map<String, String> map) {
     	String menu_idx = map.get("menu_idx"); // 메뉴 인덱스
+    	logger.info("menu_idx: {}",map.get("menu_idx"));
+    	logger.info("menu_category: {}",map.get("menu_category"));
     	String menu_category = map.get("menu_category");
     	photo_ser.totalmenudelete(menu_category, menu_idx);
         boolean isUpdated = store_ser.menudelete(menu_idx);

@@ -87,7 +87,7 @@ public interface StoreDAO {
 
 	int menuupdate(String menu_name, String menu_price, String menu_idx);
 
-	int menuudelete(String menu_idx);
+	int menudelete(String menu_idx);
 
 	int menuinsert(StoreMenuDTO store_menu);
 
