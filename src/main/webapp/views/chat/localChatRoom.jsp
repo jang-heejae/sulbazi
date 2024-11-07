@@ -91,7 +91,7 @@
 		
 	    localloadUserList();
 		
-	 // 신고 팝업창 - 메세지
+		 // 신고 팝업창 - 메세지
 		$(document).off('click', '.usermsg');
 		
 		$(document).on('contextmenu', '.usermsg', function(event) {
@@ -633,7 +633,7 @@ a{
                         </div>
                         <div class="textarea">
                         	<input type="text" name="user_id" value="${sessionScope.loginId}" readonly>
-                            <textarea name="usermsgcontent" placeholder="메세지 입력(500자 이내)" maxlength="500"></textarea>
+                            <textarea name="usermsgcontent" placeholder="메세지 입력(100자 이내)" maxlength="100"></textarea>
                             <button type="button" class="sendmsg">전송</button>
                         </div>
                     </div>

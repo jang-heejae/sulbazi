@@ -239,12 +239,13 @@
 	                </li>
 	            </ul>
 	            <div class="roombtn">
-	            	<button type="button" onclick="validateForm()">개설</button>
+	            	<button class="dobtn" type="button">개설</button>
 	                <button class="cancel" type="button">취소</button>
 	            </div>
 	        </div>
 	    </form>  
         <div class="chatitems">
+        <div class="searchno"></div>
           <c:forEach items="${list}" var="userchat">
           <c:set var="user" value="${userinfo[userchat.user_id]}" />
           <form action="userchatroom.go?idx=${userchat.userchat_idx}" method="post">
@@ -289,6 +290,7 @@
 </body>
 <script>
 
+
 $(document).ready(function() {
 	var user_id = '${sessionScope.loginId}';
 	console.log(user_id);
@@ -327,7 +329,11 @@ $(document).ready(function() {
                         searchlist(response);
                         checkParticipantStatus();
                     } else {
-                        $('.chatitems').html('<p>검색 결과가 없습니다. 현재 개설된 채팅방</p>');
+                    	var no = $('.searchInput').val();
+                    	console.log(no);
+                    	$('.searchInput').val('');  // 기존 입력 값 비우기
+                    	$('.searchInput').attr('placeholder', '검색 결과가 없습니다.');
+                        checkParticipantStatus();
                     }
                 },
                 error: function(error, status, xhr) {
@@ -404,19 +410,19 @@ $(document).ready(function() {
         }
     });
     
-    function validateForm() {
+    $('.dobtn').on('click', function(event) {
+    	var subject = $('.createroom').find('input[name="userchat_subject"]').val();
+    	console.log("제목 : "+subject);
     	
-    	var subject = $("input[name='userchat_subject']").val();
-
-        // 입력값이 비어있으면 경고를 표시하고, submit 방지
-        if (!subject.trim()) {
-            alert("대화방 이름을 입력하세요.");
+        event.preventDefault(); // 기본 제출 방지
+        if (subject.trim() === "") {
+            alert("대화방 이름을 입력해주세요.");
             return;
+        }else{
+        	$(this).closest('form').submit();
         }
+    });
 
-        // 입력값이 모두 있을 경우 폼을 제출
-        document.querySelector(".createroom").submit();
-    }
     
     // 서버에서 보내온 model alert
     var msg = "${msg}";
@@ -584,5 +590,6 @@ $(document).ready(function() {
     
    
 });
+
 </script>
 </html>
