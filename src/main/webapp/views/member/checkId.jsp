@@ -82,7 +82,7 @@
 <body>
     <div id="loginBox">
         <div class="logo_text">
-            <a href="./#">SULBAZI</a>
+            <a href="./mainPage.go">SULBAZI</a>
         </div>
         <hr/>
         
@@ -109,5 +109,6 @@
 
         <br/>
 		<button type="submit" onclick="location.href='login.go'" >로그인 페이지로 돌아가기</button>
+    </div>
 </body>
 </html>

@@ -101,7 +101,7 @@ public class LoginController {
 			page = "member/changePw";
 		}else {
 			model.addAttribute("msg", "해당 아이디와 이메일로 등록된 비밀번호가 없습니다.");
-			page = "member/login";
+			page = "member/changePw";
 		}
 		return page;
 	}
@@ -116,7 +116,7 @@ public class LoginController {
 			page = "member/changePw";
 		}else {
 			model.addAttribute("msg", "해당 아이디와 이메일로 등록된 비밀번호가 없습니다.");
-			page = "member/login";
+			page = "member/changePw";
 		}
 		return page;
 	}
@@ -151,7 +151,7 @@ public class LoginController {
 			page = "member/checkId";
 		}else {
 			model.addAttribute("msg", "해당 이메일로 등록된 아이디가 없습니다.");
-			page = "member/login";
+			page = "member/checkId";
 		}
 		return page;
 	}
@@ -160,15 +160,16 @@ public class LoginController {
 	public String storefindiddo(String number, Model model) {
 		logger.info("확인할 아이디의 매장 사용자 사업자 번호 : " + number);
 		String page = "";
-		String sid = login_ser.storefindiddo(number);
+		String sid = "";
 		logger.info("가져온 매장 사용자의 아이디 : " + sid);
-		if (sid != null) {
+		if (login_ser.storefindiddo(number) != null) {
+			sid = login_ser.storefindiddo(number);
 			model.addAttribute("findtype", "store");
 			model.addAttribute("store_id", sid);
 			page = "member/checkId";
-		}else {
+		}else{
 			model.addAttribute("msg", "해당 사업자 번호로 등록된 아이디가 없습니다.");
-			page = "member/login";
+			page = "member/checkId";
 		}
 		return page;
 	}

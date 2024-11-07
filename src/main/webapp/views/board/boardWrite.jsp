@@ -294,7 +294,10 @@ width: 50px;
          		<input type="file" id="file" name="file" multiple="multiple" onchange="previewFile()">
          		</th>
          		<th></th>
-         		<th><button onclick="location.href='redirect:/boardList.go'">취소</button>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="등록" onclick="save(event)"/></th>
+         		<th>
+				  <button type="button" onclick="cancelPost()">취소</button>&nbsp;&nbsp;&nbsp;&nbsp;
+				  <input type="button" value="등록" onclick="confirmPost(event)"/>
+				</th>
          	</tr>
          </table>
          <input type="hidden" id="store_id" value="'${sessionScope.loginId}'">
@@ -362,6 +365,25 @@ document.querySelectorAll('.main_menu').forEach(function(menu) {
         }
     });
 });
+
+function cancelPost() {
+    // '취소' 버튼 클릭 시 확인 창 표시
+    if (confirm("게시글 작성을 취소하시겠습니까?")) {
+      // 확인을 누르면 boardList.go로 이동 (취소)
+      location.href = 'boardList.go';
+    }
+    // 취소를 누르면 아무 것도 하지 않음
+  }
+
+  // 등록 버튼 클릭 시 처리 함수
+  function confirmPost(event) {
+    // '등록' 버튼 클릭 시 확인 창 표시
+    if (confirm("게시글을 작성하시겠습니까?")) {
+      // 확인을 누르면 save(event) 함수 호출 (등록)
+      save(event);
+    }
+    // 취소를 누르면 아무 것도 하지 않음
+  }
 
 // mypage 클릭 이벤트
 document.querySelectorAll('.mypage').forEach(function(mypage) {

@@ -19,7 +19,7 @@
             font-weight: bolder; 
         }
         hr {
-            margin-left: -24px;
+            margin-left: 8px;
             width: 371px;
         }
         .inp {
@@ -72,7 +72,7 @@
         <div class="logo_text">
             <a href="./mainPage.go">SULBAZI</a>
         </div>
-        <hr/>
+        <hr class="hr"/>
         <div class="check">
             <input type="radio" name="a" id="일반 사용자" checked> 일반 사용자
             <input type="radio" name="a" id="매장 사용자"> 매장 사용자
@@ -116,7 +116,7 @@
     });
     
     $(document).ready(function() {
-        const message = "${msg}";
+        var message = '${msg}';
         if (message) {
             alert(message);
             window.location.href = "login.do"; //

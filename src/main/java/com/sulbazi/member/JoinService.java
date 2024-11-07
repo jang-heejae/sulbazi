@@ -64,7 +64,7 @@ public class JoinService {
 			 if(store_idx > 0 && row >0) {
 				 try {
 					photo_ser.filesaveone(fileone, store_idx, 1);
-					photo_ser.fileSave(files, store_idx, 2);
+					photo_ser.fileSave(files, store_idx, 7);
 					StoreCategoryDTO storecategorydto = new StoreCategoryDTO();
 					int category1 = Integer.parseInt(param.get("category1"));
 					int category2 = Integer.parseInt(param.get("category2"));
@@ -95,19 +95,25 @@ public class JoinService {
 		    userDTO.setUser_phone(params.get("user_phone"));
 		    userDTO.setUser_email(params.get("user_email"));
 			String photo = "";
-			try {
-				String ori = files.getOriginalFilename();
-				int ext = ori.lastIndexOf(".");
-				String extt = ori.substring(ext);
-				photo = UUID.randomUUID()+extt;
-				Path path = Paths.get(bpath+photo);
-				byte[] arr;
+				String ori = "0b94e4af-c21a-4541-b155-d3541196d873.png";
+				if(!files.isEmpty()) {
+					try {		
+					ori = files.getOriginalFilename();					
+					int ext = ori.lastIndexOf(".");
+					String extt = ori.substring(ext);
+					photo = UUID.randomUUID()+extt;
+					Path path = Paths.get(bpath+photo);
+					byte[] arr;
 					arr = files.getBytes();
-				Files.write(path, arr);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			userDTO.setUser_photo(photo);
+					Files.write(path, arr);
+					userDTO.setUser_photo(photo);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				}else {
+					photo = ori;
+					userDTO.setUser_photo(photo);
+				}
 			int row = join_dao.userJoindo(userDTO);
 			String user_id = userDTO.getUser_id();
 			logger.info("성공한 row 값 : " + row + "가져온 user_id : " + user_id);
@@ -144,6 +150,10 @@ public class JoinService {
 
 		public List<StoreMenuDTO> menulist(int store_idx) {
 			return join_dao.menulist(store_idx);
+		}
+
+		public boolean checkstoreid(String store_id) {
+			return join_dao.checkstoreid(store_id);
 		}
 
 }
