@@ -119,16 +119,17 @@
         margin-top: 5px;
     }
     .sub, .sub1{
-        margin: 10px;
-        width: 180px;
-        height: 80px;
-        background-color: aliceblue;
-        display: flex;
-        justify-content: space-around;
-        border-radius: 10px;
-        align-items: center;
-        flex-direction: column;
-        text-align: center;
+	    margin: 10px;
+	    width: 180px;
+	    height: 100px;
+	    background-color: aliceblue;
+	    display: flex;
+	    border-radius: 10px;
+	    text-align: center;
+	    flex-wrap: wrap;
+	    align-content: center;
+	    padding: 0px;
+	    justify-content: center;
     }
     .modal_madal {
     display: none;
@@ -192,14 +193,27 @@
     }
     
 div#notification {
-	margin-top:15;
-    height: 260px;
+	margin-top:5;
+    height: 250px;
     overflow-y: scroll;
     scrollbar-width: none;
 }
+
 </style>
 <body>
-   	<jsp:include page="../user/sendAlarm.jsp"/>
+<%
+    // C.jsp에서 전달된 속성을 확인
+    Boolean includeSendAlarm = (Boolean) request.getAttribute("includeSendAlarm");
+    
+    // includeSendAlarm이 null이거나 true이면 sendAlarm.jsp를 포함
+    if (includeSendAlarm == null || includeSendAlarm) {
+        // sendAlarm.jsp를 포함하려면 true일 때만 포함
+%>
+        <jsp:include page="../user/sendAlarm.jsp" />
+<% 
+    }
+%>
+<%--    	<jsp:include page="../user/sendAlarm.jsp"/> --%>
     <header>
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
@@ -237,7 +251,7 @@ div#notification {
                         <i class="fa-regular fa-bell"></i>
                         <div class="sub_">
                             <div class="sub_txt">알림</div>
-                            <div id="notification"></div>
+                            <div class="notification"></div>
                         </div>
                     </li>
                     <li class="mypage"><i class="fa-regular fa-user"></i></li>

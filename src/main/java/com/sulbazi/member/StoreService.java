@@ -362,11 +362,11 @@ public class StoreService {
 
 	public boolean menudelete(String menu_idx) {
 		boolean success = false;
-		int row = store_dao.menuudelete(menu_idx);
+		int row = store_dao.menudelete(menu_idx);
 		if(row != 0) {
 			success = true;
 		}
-		return false;
+		return success;
 	}
 
 	

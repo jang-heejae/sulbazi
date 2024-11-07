@@ -156,7 +156,7 @@ public class BoardController {
 	        success = board_ser.boardWriteajax(boardDTO, file);
 	        if (success) {
 	        	response.put("success", true);
-	        	response.put("link", "/SULBAZI/boardList.go");
+	        	response.put("link", "boardList.go");
 				response.put("message", "게시글을 등록하시겠습니까?");
 			}else {
 				response.put("message", "게시글 등록에 실패했습니다.");

@@ -186,13 +186,14 @@
 	
 	<!-- 매장 마이페이지 리뷰 확인 -->
 	<select id="storelookreview" resultType="com.sulbazi.review.ReviewDTO">
-		SELECT * FROM review WHERE store_idx=#{param1}
-	</select>
-	
-	
-	 <!-- 매장 마이페이지 답글확인  -->
-	<select id="storelookreply" resultType="com.sulbazi.review.ReviewCommDTO">
-		SELECT * FROM review_comm WHERE store_idx=#{param1}
+		SELECT * 
+		FROM
+		 	review 
+		INNER JOIN 
+		 	review_comm ON review.review_idx=review_comm.review_idx
+		 INNER JOIN 
+		 	user ON review.user_id=user.user_id
+		WHERE review_comm.store_idx=#{param1}
 	</select>
 	
 	 <!-- 리뷰 썻었는지 찾기   -->

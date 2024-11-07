@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.security.Provider.Service;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -350,40 +352,34 @@ public class StoreController {
 	public String storemyreply(Model model, HttpSession session) {
 	    int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
 	    List<Map<String, Object>> reviews = review_ser.storelookreview(store_idx);
-	    List<Map<String, Object>> replies = review_ser.storelookreply(store_idx);
 
 	    List<Map<String, Object>> totalReviews = new ArrayList<>();
 
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	    for (Map<String, Object> review : reviews) {
 	        Map<String, Object> reviewData = new HashMap<>();
 	        reviewData.put("review_content", review.get("review_content")); // 리뷰 내용
-	        reviewData.put("review_date", review.get("review_date")); // 리뷰 날짜
+	        reviewData.put("review_date", review.get("review_date") != null ? dateFormat.format((Timestamp) review.get("review_date")) : "00-00-00"); 
 	        reviewData.put("user_id", review.get("user_id")); // 리뷰 유저
-	        reviewData.put("review_idx", review.get("review_idx")); // 리뷰 idx
+	        int reviewidx = (int) review.get("review_idx");
+	        reviewData.put("review_idx",reviewidx ); // 리뷰 idx
+	        Map<String, Object> photo = photo_ser.photoexist(3,reviewidx);
+	        reviewData.put("photoexist",(int) photo.get("photoexist") != 0 ? "사진있음" : "사진 없음");
 
-	        // 해당 리뷰에 대한 댓글 리스트
-	        List<Map<String, Object>> associatedReplies = new ArrayList<>();
-	        for (Map<String, Object> reply : replies) {
-	            if (review.get("review_idx").equals(reply.get("review_idx"))) {
-	                associatedReplies.add(reply); // 리뷰에 해당하는 댓글 추가
-	            }
-	        }
+	        // 댓글 내용이 없으면 "댓글이 없습니다"로 설정
+	        String commContent = (String) review.get("comm_content");
+	        reviewData.put("comm_content", commContent != null ? commContent : "댓글이 없습니다");
 
-	        // 댓글이 없는 경우 기본 메시지 추가
-	        if (associatedReplies.isEmpty()) {
-	            Map<String, Object> noReply = new HashMap<>();
-	            noReply.put("comm_content", "댓글이 없습니다");
-	            noReply.put("comm_date", "");
-	            associatedReplies.add(noReply);
-	        }
+	        // 댓글 날짜가 없으면 "00-00-00"로 설정
+	        reviewData.put("comm_date", review.get("comm_date") != null ? dateFormat.format((Timestamp) review.get("comm_date")) : "00-00-00");
 
-	        reviewData.put("replies", associatedReplies); // 댓글 리스트 추가
 	        totalReviews.add(reviewData); // 전체 리뷰 리스트에 추가
 	    }
 
 	    model.addAttribute("totalReviews", totalReviews); // 전체 리뷰 리스트 모델에 추가
 	    return "store/storeReview";
 	}
+
 
 
 
@@ -419,6 +415,7 @@ public class StoreController {
         Map<String, Object> response = new HashMap<>();
         response.put("menulist", menulist);
         response.put("menuphoto", menuphoto);
+        
         return ResponseEntity.ok(response);
     }
 	
@@ -452,6 +449,8 @@ public class StoreController {
     @ResponseBody
     public String menudelete(@RequestParam Map<String, String> map) {
     	String menu_idx = map.get("menu_idx"); // 메뉴 인덱스
+    	logger.info("menu_idx: {}",map.get("menu_idx"));
+    	logger.info("menu_category: {}",map.get("menu_category"));
     	String menu_category = map.get("menu_category");
     	photo_ser.totalmenudelete(menu_category, menu_idx);
         boolean isUpdated = store_ser.menudelete(menu_idx);
