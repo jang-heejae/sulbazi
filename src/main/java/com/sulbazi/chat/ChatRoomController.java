@@ -117,6 +117,9 @@ public class ChatRoomController {
 	@ResponseBody
 	public ResponseEntity<String> updatechatroom(@RequestParam Map<String, String> params) {
 		chatroom_ser.updatechatroom(params);
+		
+		sseService.updateRoom(params);
+		
 		return ResponseEntity.ok("Success");
 	}
 		
@@ -127,7 +130,7 @@ public class ChatRoomController {
 		chatroom_ser.updatenotice(notice, userchat_idx);
 		
 		// 모든 연결된 클라이언트에게 notifyNewUser 이벤트 전송
-	    sseService.updateNotice(notice);
+		sseService.sendNoticeUpdate(notice);
 	    
 		return ResponseEntity.ok("Success");
 	}

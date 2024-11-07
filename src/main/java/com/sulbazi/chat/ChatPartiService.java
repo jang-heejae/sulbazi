@@ -61,14 +61,19 @@ public class ChatPartiService {
 		}
 	}
 	
-	
 	/* 개인 채팅방 강퇴 */
-	public boolean kickuser(Map<String, String> params) {
-		int row = chatparti_dao.kickuser(params);
+	@Transactional
+	public boolean kickuser(String user_id, int chatroom_idx) {
+		boolean success = false;
 		
-		return row > 0;
+		int row = chatparti_dao.kickuser(user_id, chatroom_idx);
+		if(row>0) {
+			Integer total = chatparti_dao.usertotal(chatroom_idx);
+			chatroom_dao.userroomout(total, chatroom_idx);
+			success = true;
+		}
+		return success;
 	}
-	
 	
     /*  참여 신청 취소 */
 	public int cancelparti(String user_id, int chatroom_idx) {
@@ -106,7 +111,7 @@ public class ChatPartiService {
 	public void localroomout(String user_id, int chatroom_idx) {
 		chatparti_dao.localroomout(user_id, chatroom_idx);
 	}
-	
+
 	
 
 	

@@ -70,25 +70,26 @@ public class ChatPartiController {
 		
 		String user_id = (String) session.getAttribute("loginId");
 		chatparti_ser.userroomout(user_id, chatroom_idx);
-		
+		// 모든 연결된 클라이언트에게 newuser 이벤트 전송
+	    sseService.notifyNewUser();
+	    
 		return "success";
 	}
 	
 	/* 개인 채팅방 강퇴 */
 	@PostMapping(value="/kickuser.ajax")
 	@ResponseBody
-	public Map<String, Object> kickuser(@RequestParam Map<String, String> params) {
+	public Map<String, Object> kickuser(@RequestParam String user_id, @RequestParam int chatroom_idx) {
 		
-		boolean success = chatparti_ser.kickuser(params);
-		
+		boolean success = chatparti_ser.kickuser(user_id, chatroom_idx);
+		logger.info("강퇴 당할 사람~ : " + user_id);
+		logger.info("강퇴 당할 방 번호 : " + chatroom_idx);
 		if (success) {
-	        String userId = params.get("user_id");  // params에서 user_id 추출
-	        String userchatIdx = params.get("userchat_idx");  // params에서 값 가져오기
-	        int chatroom_idx = Integer.parseInt(userchatIdx);  // String을 int로 변환
-	       
-	        sseService.notifyKick(userId);  // 강퇴된 사용자에게 알림
-	        chatparti_ser.userroomout(userId, chatroom_idx);
-	    }
+	        logger.info("강퇴 성공 : "+user_id);
+	        logger.info("지금 방 : "+chatroom_idx);
+	        
+	        sseService.notifyKick(user_id);  // 강퇴된 사용자에게 알림
+		}
 		 
 		Map<String, Object> response = new HashMap<String, Object>();
 	    response.put("redirect", success); // 클라이언트에게 리다이렉션 요청
@@ -96,7 +97,24 @@ public class ChatPartiController {
 	    
 	    return response;
 	}
-
+//	/* 개인 채팅방 강퇴 */
+//	@PostMapping(value="/kickuser.ajax")
+//	@ResponseBody
+//	public Map<String, Object> kickuser(@RequestParam Map<String, String> params) {
+//		
+//		boolean success = chatparti_ser.kickuser(params);
+//		
+//		 if (success) {
+//			 chatparti_ser.notifyUserOfKick(params.get("user_id"));
+//		 }
+//		 
+//		Map<String, Object> response = new HashMap<String, Object>();
+//	    response.put("redirect", success); // 클라이언트에게 리다이렉션 요청
+//	    
+//	    
+//	    return response;
+//	}
+	
 	/* 참여 신청 취소 */
 	@PostMapping(value="/cancelparti.ajax")
 	@ResponseBody
@@ -142,6 +160,10 @@ public class ChatPartiController {
 		String user_id = (String) session.getAttribute("loginId");
 		
 		chatparti_ser.localroomout(user_id, chatroom_idx);
+		
+		// 모든 연결된 클라이언트에게 newuser 이벤트 전송
+	    sseService.notifyNewUser();
+	    
 		return "success";
 	}
 	

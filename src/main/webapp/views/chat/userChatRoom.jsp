@@ -16,71 +16,130 @@ $(document).ready(function() {
       location.replace('./userchatlist.go');
    }
    
-    // SSE - 메세지, 유저리스트, 수정, 공지
-    var sse = new EventSource("/sse/all");
-    // SSE - 강퇴
-    var eventSource = new EventSource('/subscribe');
-    
-    
-    // 메세지 SSE
-    sse.addEventListener("newMessage", function(event) {
-        loadMessages();
-    });
+ 	// SSE 연결을 한 번만 열도록 관리하는 변수
+    let sseAll = null;
+    let eventSourceKick = null;
 
-    // 사용자 리스트 SSE
-    sse.addEventListener("newuser", function(event) {
-    	loadUserList();
-    });
-    
-     // 수정 SSE
-     sse.addEventListener("updateRoom", function(event){
-    	 var updateRoom = event.data;
-    	 alert('방 정보가 업데이트되었습니다.');
-     });
-     
-	 // 공지 SSE
-    sse.addEventListener('noticeUpdate', function(event) {
-    	var updatedNotice = event.data;
-        $('#noticeArea').text(updatedNotice); // 공지사항 영역 업데이트
-        alert('공지사항이 업데이트되었습니다.');
-    });
-    
- 	// 강퇴 SSE
-    eventSource.addEventListener('kick', function(event) {
-        alert(event.data);
-        window.location.href = '/userchatlist.go';
-    });
- 	
-    // 성공 SSE - 메세지, 유저리스트, 수정, 공지
-    sse.onopen = function() {
-        console.log('Connection opened');
-    };
-    
-    // 성공 SSE - 강퇴
-    eventSource.onopen = function() {
-        console.log('Connection opened');
-    };
+    // 메세지, 유저리스트, 수정, 공지 관련 SSE
+    function setupSseAll() {
+        if (sseAll) {
+            console.log("메세지, 유저리스트, 수정, 공지 SSE 이미 연결됨");
+            return; // 이미 연결되어 있으면 추가 연결을 하지 않음
+        }
 
-    // 오류 SSE - 메세지, 유저리스트, 수정, 공지
-    sse.onerror = function(event) {
-	    console.error('EventSource failed:', event);
-	    setTimeout(function() {
-	        eventSource = new EventSource("/sse/all");
-	    }, 1000); // 재연결 시도
-	};
+        sseAll = new EventSource("/sse/all");
+
+        // 새로고침 SSE
+        sseAll.addEventListener('reload', function(event) {
+            location.reload();  
+    	});
+        
+        // 메세지 SSE
+        sseAll.addEventListener("newMessage", function(event) {
+            loadMessages();
+        });
+
+        // 사용자 리스트 SSE
+        sseAll.addEventListener("newuser", function(event) {
+            loadUserList();
+        });
+
+        // 수정 SSE
+        sseAll.addEventListener("updateRoom", function(event){
+            var updateRoom = event.data;
+            location.reload();
+            alert('방 정보가 업데이트되었습니다.');
+        });
+
+        // 공지 SSE
+        sseAll.addEventListener('noticeUpdate', function(event) {
+            var updatedNotice = event.data;
+        	
+         	// DOM이 준비된 후 업데이트 작업 실행
+            $(document).ready(function() {
+                if (updatedNotice.trim() !== '') {
+                    $('#noticeArea').text(updatedNotice);
+                    $('.noti').show();
+                } else {
+                    $('#noticeArea').text('');
+                    $('.noti').hide();
+                }
+                
+                alert('공지사항이 업데이트되었습니다.');
+            });
+        });
+
+        sseAll.onopen = function() {
+            console.log('메세지, 유저리스트, 수정, 공지 SSE 연결 열림');
+        };
+
+        sseAll.onerror = function(event) {
+            reconnectEventSource("/sse/all"); // 오류 발생 시 /sse/all로 재연결 시도
+        };
+    }
+
+    // 강퇴 관련 SSE
+    function setupSseKick() {
+        if (eventSourceKick) {
+            console.log("강퇴 SSE 이미 연결됨");
+            return; // 이미 연결되어 있으면 추가 연결을 하지 않음
+        }
+        
+        eventSourceKick = new EventSource('/subscribe');
+
+        // 강퇴 SSE
+        eventSourceKick.addEventListener('kick', function(event) {
+            if (event && event.data) {
+                alert(event.data);
+                alert("강퇴 당해찌~");
+                window.location.href = 'userchatlist.go';
+                
+                
+                location.reload();
+            } else {
+                alert("??");
+            }
+         
+        });
+
+        eventSourceKick.onopen = function() {
+            console.log('강퇴 SSE 연결 열림');
+        };
+
+        eventSourceKick.onerror = function(event) {
+            reconnectEventSource('/subscribe'); // 오류 발생 시 /subscribe로 재연결 시도
+        };
+	   
+    }
     
-	 // 오류 SSE - 강퇴
-    eventSource.onerror = function(event) {
-        console.error('EventSource failed:', event);
+
+
+    
+    // SSE 재연결 함수
+    function reconnectEventSource(url) {
+        console.error('EventSource failed, reconnecting...');
         setTimeout(function() {
-        	eventSource = new EventSource('/subscribe');
-        }, 1000); // 1초 후 재연결 시도
+            if (url === "/sse/all") {
+                setupSseAll(); // /sse/all 연결 재설정
+            } else if (url === '/subscribe') {
+                setupSseKick(); // /subscribe 연결 재설정
+            } else if( url === '/reload'){
+            	eventAlluser();
+            }
+        }, 1000); // 재연결 시도
+    }
+
+    // 페이지가 닫힐 때 SSE 연결 종료
+    window.onbeforeunload = function() {
+        if (sseAll) sseAll.close();
+        if (eventSourceKick) eventSourceKick.close();
+        if (eventAlluser) eventAlluser.close();
     };
 
-    window.onbeforeunload = function() {
-        eventSource.close();
-    };
- 	
+    // 페이지 로딩 시 필요한 SSE 설정을 호출
+    setupSseAll(); // 메세지, 유저리스트, 수정, 공지 관련 SSE 설정
+    setupSseKick(); // 강퇴 관련 SSE 설정
+
    // 방장 권한 준다
    var userId = $('h2').data('userid').toString();
    var menu = $('.menu').css('display');
@@ -342,7 +401,6 @@ $(document).ready(function() {
     	                alarm_idx: alarmresponse.alarm_idx //알림 idx
     	            };
     	            sendNotification(newAlarm); // 알림 전송 함수 호출
-    	            saveNotification(newAlarm); // 알림 저장 함수 호출
     	        },
     	        error: function(e) {
     	            console.log("AJAX 요청 실패:", e); // 에러 메시지 출력
@@ -358,14 +416,28 @@ $(document).ready(function() {
                  user_id: user_id,
                  chatroom_idx: chatroom_idx
               },
-              success: function(response) {
+				success: function(response) {
                   
-                  alert(reported_nick +' 아웃');
-                  $('.chatlist').append(kickmsg);
-                  $('.popup').remove();
-                  $('.popup2').remove();
-                  loadMessages();
-                  roomout();
+                alert(reported_nick +' 아웃');
+                $('.popup').remove();
+                $('.popup2').remove();
+                roomout();
+                loadMessages();
+                
+            	 // 서버에 새로고침 알림을 요청
+                $.ajax({
+                    url: '/reload',  // 새로고침 알림을 처리하는 서버 엔드포인트
+                    type: 'GET',
+                    success: function(response) {
+                        // 10초 후에 페이지 새로 고침
+                        setTimeout(function() {
+                            location.reload();
+                        }, 5000);  // 10초 후 새로 고침
+                    },
+                    error: function() {
+                        alert("새로고침 알림 전송 실패");
+                    }
+                });
               },
               error: function() {
                   alert(reported_nick +'강퇴 실패');
@@ -375,17 +447,6 @@ $(document).ready(function() {
        }
    });
    
-   var eventsource = new EventSource('/subscribe');
-
-   eventsource.addEventListener('kick', function(event) {
-       if (event && event.data) {
-           alert(event.data);
-       } else {
-           alert("강퇴 당했다~");
-       }
-       window.location.href = '/userchatlist.go';
-   });
-   
    
 	// 참여자 리스트
    
@@ -393,41 +454,50 @@ $(document).ready(function() {
    var ownerId = '${userid}';
    
    function loadUserList() {
-       $.ajax({
-           url: 'userlist.ajax',
-           type: 'GET',
-           data: { chatroom_idx: chatroom_idx },
-           dataType: 'json',
-           success: function(data) {
-               $('.ajax').empty(); // 기존 사용자 목록 비우기
+	    $.ajax({
+	        url: 'userlist.ajax',
+	        type: 'GET',
+	        data: { chatroom_idx: chatroom_idx },
+	        dataType: 'json',
+	        success: function(data) {
+	            // 사용자 목록을 갱신하기 전에, 기존 사용자 목록을 캐시
+	            var currentUserList = $('.ajax');
+	            var existingUsers = currentUserList.children().map(function() {
+	                return $(this).find('.useridf').text();
+	            }).get();
 
-               $.each(data, function (index, user) {
-                   var userlist = '<div class="room2">';
-                   userlist += '<img width="20" alt="프로필" src="/photo/' + user.user_photo + '">';
+	            $.each(data, function(index, user) {
+	                var userlist = '<div class="room2">';
+	                var userPhotoUrl = "/photo/" + user.user_photo;
+	                var userImage = '<img width="20" alt="프로필" src="' + userPhotoUrl + '" onerror="this.src=\'/default-photo.jpg\'">';
 
-                   if (user.user_id === loginId && user.user_id === ownerId) {
-                       userlist += '<div class="usernickf" style="font-weight: bold; color: blue;"><i class="fas fa-crown"></i>' + user.user_nickname + ' ㉯</div>';
-                       userlist += '<div class="useridf" style="display:none;">' + user.user_id + '</div>';
-                   } else if (user.user_id === loginId) {
-                       userlist += '<div class="usernickf" style="font-weight: bold;">' + user.user_nickname + '㉯</div>';
-                       userlist += '<div class="useridf" style="display:none;">' + user.user_id + '</div>';
-                   } else if (user.user_id === ownerId) {
-                       userlist += '<div class="usernickf" style="font-weight: bold; color: blue;"><i class="fas fa-crown"></i>' + user.user_nickname + '</div>';
-                       userlist += '<div class="useridf" style="display:none;">' + user.user_id + '</div>';
-                   } else {
-                       userlist += '<div class="usernickf">' + user.user_nickname + '</div>';
-                       userlist += '<div class="useridf" style="display:none;">' + user.user_id + '</div>';
-                   }
+	                userlist += userImage;
 
-                   userlist += '</div>';
-                   $('.ajax').append(userlist);
-               });
-           },
-           error: function(xhr, status, error) {
-               console.error('AJAX 요청 실패:', status, error);
-           }
-       });
-   }
+	                if (user.user_id === loginId && user.user_id === ownerId) {
+	                    userlist += '<div class="usernickf" style="font-weight: bold; color: blue;"><i class="fas fa-crown"></i>' + user.user_nickname + ' ㉯</div>';
+	                } else if (user.user_id === loginId) {
+	                    userlist += '<div class="usernickf" style="font-weight: bold;">' + user.user_nickname + '㉯</div>';
+	                } else if (user.user_id === ownerId) {
+	                    userlist += '<div class="usernickf" style="font-weight: bold; color: blue;"><i class="fas fa-crown"></i>' + user.user_nickname + '</div>';
+	                } else {
+	                    userlist += '<div class="usernickf">' + user.user_nickname + '</div>';
+	                }
+
+	                userlist += '<div class="useridf" style="display:none;">' + user.user_id + '</div>';
+	                userlist += '</div>';
+
+	                // 기존에 있는 사용자가 아니라면 새로 추가
+	                if ($.inArray(user.user_id, existingUsers) === -1) {
+	                    currentUserList.append(userlist);
+	                }
+	            });
+	        },
+	        error: function(xhr, status, error) {
+	            console.error('AJAX 요청 실패:', status, error);
+	        }
+	    });
+	}
+   
    // 초기 로드
    loadUserList();
 
@@ -810,6 +880,9 @@ $(document).ready(function() {
 		width: 580px;
         background-color: lightblue;
     }
+    .noti{
+    	display: none;
+    }
     .chatlist{
         width: 100%;
         height: 550px;
@@ -991,23 +1064,21 @@ $(document).ready(function() {
                         </div>
                     </div>
                     <div class="msgform">
-                    <c:if test="${not empty roominfo}">
-                       <c:forEach items="${roominfo}" var="roominfo">
-                           <c:if test="${not empty roominfo.notice}">
-                               <div class="noti">
-                                   <i class="fas fa-bullhorn"></i>
-                                   <p id="noticeArea">${roominfo.notice}</p>
-                               </div>
-                           </c:if>
-                       </c:forEach>
-                   </c:if>
-                        <div class="chatlist">
-                        </div>
-                        <div class="textarea">
-                            <input type="text" name="user_id" value="${sessionScope.loginId}" readonly/>
-                            <textarea name="usermsgcontent" placeholder="메세지 입력(500자 이내)" maxlength="500"></textarea>
-                            <button type="button" class="sendmsg">전송</button>
-                        </div>
+	                    <c:forEach items="${roominfo}" var="roominfo">
+						    <c:if test="${not empty roominfo.notice}">
+						        <div class="noti">
+						            <i class="fas fa-bullhorn"></i>
+						            <p id="noticeArea">${roominfo.notice}</p>
+						        </div>
+						    </c:if>
+						</c:forEach>	
+	                    <div class="chatlist">
+	                    </div>
+	                    <div class="textarea">
+	                        <input type="text" name="user_id" value="${sessionScope.loginId}" readonly/>
+	                        <textarea name="usermsgcontent" placeholder="메세지 입력(100자 이내)" maxlength="100"></textarea>
+	                        <button type="button" class="sendmsg">전송</button>
+	                    </div>
                     </div>
                 </div>
             </div>
@@ -1078,10 +1149,18 @@ $(document).ready(function() {
                   userchat_idx: userchat_idx
               },
               success: function(response){
-                 $('.notice').hide();
-                 $('textarea[name="notice"]').val('');
-                 location.reload();
-                 alert('수정 완료.');
+            		// 공지사항을 수정한 후 박스 갱신
+                  	if (notice.trim() !== '') {
+	                      // 공지사항이 존재하면 박스를 보이게 하고 내용을 업데이트
+	                      $('#noticeArea').text(notice);
+	                      $('.noti').show();
+                  	} else {
+	                      // 공지사항이 비어있으면 박스를 숨김
+	                      $('#noticeArea').text('');
+	                      $('.noti').hide();
+                  	}
+	                 $('.notice').hide();
+	                 alert('공지사항이 수정되었습니다.');
               }, error: function(){
                  alert('수정 실패.');
               }
@@ -1119,7 +1198,7 @@ $(document).ready(function() {
            console.log("지금 방 번호"+userchat_idx);
            console.log("현재 인원"+current);
            
-           if(current <= max_people){
+           if(parseInt(current) <= parseInt(max_people)){
 	           $.ajax({
 	              url:'updatechatroom.ajax',
 	              type:'POST',
