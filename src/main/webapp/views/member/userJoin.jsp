@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+	<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="ko">
 <head>
@@ -58,7 +58,7 @@
 	h2, h3{
 		color: white;
 	}
-    input[type="text"]{
+    input[type="text"], input[type="password"]{
         text-align: left;
         width: 400px;
         height: 30px;
@@ -101,7 +101,41 @@
         display: inline-block;
         margin-right: 10px;
     }
-    
+    fieldset {
+    border: 2px solid #e98d1c; /* 테두리 색을 파란색으로 설정 */
+    padding: 10px; /* 내부 여백 */
+    border-radius: 5px; /* 둥근 모서리 */
+	}
+
+	legend {
+	    font-weight: bold; /* legend 텍스트를 굵게 */
+	    color: white; /* legend 색상 */
+	}
+	#idc{
+    	margin-left: 10%;
+    }
+    #numb{
+    	margin-left: 10%;
+    }
+    #idCheckMessage{
+    	font-size: 11px;
+    	margin-left: -33%;
+    }
+    #emailCheckMessage{
+    	font-size: 11px;
+    	margin-left: -33%;
+    }
+    #pwCheckMessage{
+	    position: absolute;
+	    top: 186px;
+	    right: 71px;
+	    font-size: 13;
+	}
+	.preview{
+		width: 100px;
+		height: 100px;
+		border-radius: 100%;
+	}
 </style>
 <body>
     <header>
@@ -115,25 +149,27 @@
         <div class="container">
             <div class="wrapper">
                 <h2>사용자 회원가입</h2>
-                <input type="text" name="user_id" value="" placeholder="아이디(필수)"/>&nbsp;<button type="button" id="checkIdBtn">중복확인</button>
-	            <span id="idCheckMessage" style="color: red;"></span>
-	            <span id="idAvailableMessage" style="color: blue;"></span><br> <!-- 사용 가능한 아이디 메시지 추가 -->
-                <input type="text" name="user_pw" value="" placeholder="비밀번호(필수)">
-                <input type="text" name="user_pwcheck" value="" placeholder="비밀번호 확인(필수)">
+                <input id="idc" type="text" name="user_id" value="" placeholder="아이디(필수)"/>&nbsp;<button type="button" id="checkIdBtn">중복확인</button>
+	            <br>
+	            <span id="idCheckMessage"></span>
+	            <br>
+                <input type="password" id="user_pw" name="user_pw" value="" placeholder="비밀번호(필수)">
+                <input type="password" id="user_pwcheck" name="user_pwcheck" value="" placeholder="비밀번호 확인(필수)"><span id="pwCheckMessage"></span>
                 <h6>※ 비밀번호 8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해주세요.</h6>
-                <input type="text" name="user_email" value="" placeholder="이메일(필수)"/>&nbsp;<button type="button" id="checkEmailBtn">중복확인</button>
-	            <span id="emailCheckMessage" style="color: red;"></span>
-	            <span id="emailAvailableMessage" style="color: blue;"></span><br> <!-- 사용 가능한 아이디 메시지 추가 -->
+                <input id="numb" type="text" name="user_email" value="" placeholder="이메일(필수)"/>&nbsp;<button type="button" id="checkEmailBtn">중복확인</button>
                 <br>
+	            <span id="emailCheckMessage"></span>
+	            <br>
                 <input type="radio" name="user_gender" value="남">남
                 <input type="radio" name="user_gender" value="여">여
                 <br>
                 <input type="text" name="user_nickname" value="" placeholder="닉네임(필수)">
                 <input type="text" name="user_name" value="" placeholder="이름(필수)">
                 <input type="text" name="user_birth" value="" placeholder="생년월일(필수)">
-                <input type="text" name="user_phone" value="" placeholder="핸드폰번호(필수)">
+                <input type="text" name="user_phone" value="" placeholder="핸드폰번호(필수)" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 <h2>프로필 사진</h2>
-                <input type="file" name="files" multiple="multiple">
+                <div id="img_list"><img class="preview" src="resources/img/sulbazi.png" style="max-width: 100px; max-height: 100px; margin: 5px;"/></div>
+                <input type="file" name="files" multiple="multiple" onchange="readFile(this)">
                 <h2>카테고리(각 1개 선택가능(필수))</h2>
         		<fieldset>
 				    <legend>주종</legend>
@@ -191,11 +227,9 @@
 	                data: { user_id: userId },
 	                success: function(response) {
 	                    if (response.exists) {
-	                        $('#idCheckMessage').text("이미 있는 아이디입니다.");
-	                        $('#idAvailableMessage').text(""); // 아이디 사용 가능 메시지 초기화
+	                        $('#idCheckMessage').text("이미 있는 아이디입니다.").css("color", "red");
 	                    } else {
-	                        $('#idCheckMessage').text(""); // 중복 메시지 초기화
-	                        $('#idAvailableMessage').text("사용 가능한 아이디입니다."); // 사용 가능 메시지 출력
+	                        $('#idCheckMessage').text("사용 가능한 아이디입니다.").css("color", "blue"); // 중복 메시지 초기화
 	                    }
 	                }
 	            });
@@ -211,11 +245,9 @@
 		                data: { user_email: userEmail },
 		                success: function(response) {
 		                    if (response.exists) {
-		                        $('#emailCheckMessage').text("이미 있는 이메일입니다.");
-		                        $('#emailAvailableMessage').text(""); // 아이디 사용 가능 메시지 초기화
+		                        $('#emailCheckMessage').text("이미 있는 이메일입니다.").css("color", "red");
 		                    } else {
-		                        $('#emailCheckMessage').text(""); // 중복 메시지 초기화
-		                        $('#emailAvailableMessage').text("사용 가능한 이메일입니다."); // 사용 가능 메시지 출력
+		                        $('#emailCheckMessage').text("사용 가능한 이메일입니다.").css("color", "blue"); // 중복 메시지 초기화
 		                    }
 		                }
 		            });
@@ -237,6 +269,41 @@
 	    var msg = '${msg}';
 		if(msg != ''){
 			alert(msg);
+		}
+		$('#user_pw, #user_pwcheck').on('keyup blur', function(){
+			var password = $('#user_pw').val();
+			var passwordCheck = $('#user_pwcheck').val();
+			var message = $('#pwCheckMessage');
+			if (passwordCheck.length > 0) {
+				if (password === passwordCheck) {
+					message.text('비밀번호가 맞습니다.').css('color', '#39FF14');
+				}else {
+					message.text('비밀번호가 다릅니다.').css('color', '#FF073A');
+				}
+			}else {
+				message.text('');
+			}
+		});
+		
+		function readFile(input){
+			console.log(input.files);
+			const files = input.files;
+		    const maxFileCount = 1;
+		    const maxFileSize = 5 * 1024 * 1024;
+		    if (files.length > maxFileCount) {
+		      alert("프로필 사진은 최대 1개까지만 선택 가능합니다.");
+		      input.value = ''; 
+		      return;
+		    }
+			var reader;
+			$('#img_list').empty();
+			for (var file of input.files) {
+				reader = new FileReader(); 
+				reader.readAsDataURL(file); 
+				reader.onload = function(e){ 
+				$('#img_list').append('<img class="preview" src="'+e.target.result+'" style="max-width: 100px; max-height: 100px; margin: 5px;"/>');
+				}
+			}
 		}
     </script>
 </html>

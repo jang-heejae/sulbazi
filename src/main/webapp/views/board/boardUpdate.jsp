@@ -201,7 +201,12 @@
 	width: 50px;
 }
 input[type="button"]{
-width: 50px;
+width: 80px;
+border-radius: 8px;
+}
+.fuck{
+	border-radius: 8px;
+	width: 50px;
 }
 </style>
 </head>
@@ -292,9 +297,10 @@ width: 50px;
          		<th><input type="file" id="file" multiple="multiple"></th>
          		<th></th>
          		<th>
-	         		<button onclick="location.href='boardList.go'">취소</button>
-	         		&nbsp;&nbsp;&nbsp;&nbsp;
-	         		<input type="button" value="수정하기" onclick="save(event)"/></th>
+	         		<button class="fuck" type="button" onclick="cancelEdit()">취소</button>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<input class="fuck2" type="button" value="수정하기" onclick="confirmEdit(event)"/>
+
          	</tr>
          </table>
          <input type="hidden" id="store_id" value="'${sessionScope.loginId}'">
@@ -330,6 +336,24 @@ document.querySelectorAll('.main_menu').forEach(function(menu) {
     });
 });
 
+function cancelEdit() {
+    // '취소' 버튼 클릭 시 확인 창 표시
+    if (confirm("게시글 수정을 취소하시겠습니까?")) {
+      // 확인을 누르면 boardList.go로 이동 (취소)
+      location.href = 'boardList.go';
+    }
+    // 취소를 누르면 아무 것도 하지 않음
+  }
+
+  // 수정하기 버튼 클릭 시 처리 함수
+  function confirmEdit(event) {
+    // '수정하기' 버튼 클릭 시 확인 창 표시
+    if (confirm("게시글을 수정하시겠습니까?")) {
+      // 확인을 누르면 save(event) 함수 호출 (수정)
+      save(event);
+    }
+    // 취소를 누르면 아무 것도 하지 않음
+  }
 // mypage 클릭 이벤트
 document.querySelectorAll('.mypage').forEach(function(mypage) {
     mypage.addEventListener('click', function() {
@@ -430,7 +454,6 @@ function save(event) {
         success: function(data) {
             console.log(data);
             if (data.success) {
-            	alert(data.message);
 				location.href=data.link
 			}
         },

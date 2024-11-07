@@ -201,19 +201,19 @@
                      </c:if>
                      </c:if>
                   </th>
-                 <th>
-                     <c:if test="${sessionScope.loginId == store}">
-                      <a href="delete.go?board_idx=${info.board_idx}" class="buttonn">삭제</a>
-                  </c:if>
-                  </th>
+                 	<th>
+					   <c:if test="${sessionScope.loginId == store}">
+					      <a href="javascript:void(0);" class="buttonn" onclick="confirmDelete('${info.board_idx}')">삭제</a>
+					   </c:if>
+					</th>
                     <th>
                     <a href="boardList.go" class="buttonnn">목록</a>
                     </th>
                     <th>
-                     <c:if test="${sessionScope.loginId == store}">
-                        <a href="update.go?board_idx=${info.board_idx}" class="button">수정</a>
-                  </c:if>
-                    </th>
+					   <c:if test="${sessionScope.loginId == store}">
+					      <a href="javascript:void(0);" class="button" onclick="confirmUpdate('${info.board_idx}')">수정</a>
+					   </c:if>
+					</th>
               </tr>
            </table>
     </div>
@@ -249,5 +249,21 @@ function like(){
       }
    })
 }
+function confirmUpdate(board_idx) {
+	   var result = confirm("수정하시겠습니까?");
+	   if (result) {
+	      window.location.href = "update.go?board_idx=" + board_idx;  // 수정 페이지로 이동
+	   }
+	   // 취소 시 아무 것도 하지 않음
+	}
+
+	// 삭제 버튼 클릭 시
+	function confirmDelete(board_idx) {
+	   var result = confirm("삭제하시겠습니까?");
+	   if (result) {
+	      window.location.href = "delete.go?board_idx=" + board_idx;  // 삭제 처리
+	   }
+	   // 취소 시 아무 것도 하지 않음
+	}
 </script>
 </html>

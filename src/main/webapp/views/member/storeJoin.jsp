@@ -55,7 +55,7 @@
    h2, h3{
       color: white;
    }
-    input[type="text"]{
+    input[type="text"], input[type="password"]{
         text-align: left;
         width: 400px;
         height: 30px;
@@ -109,6 +109,40 @@
         border: 1px solid #ccc;
         margin: 1%;
     }
+    #iduncheck{
+    	font-size: 11px;
+    	margin-left: -95%;
+    }
+    #idoncheck{
+    	font-size: 11px;
+    	margin-left: -34%;
+    }
+    #idc{
+    	margin-left: 10%;
+    }
+    #numb{
+    	margin-left: 10%;
+    }
+    #numberCheckMessage{
+    	font-size: 11px;
+    	margin-left: -29%;
+    }
+    #pwCheckMessage{
+	    position: absolute;
+	    top: 186px;
+	    right: 71px;
+	    font-size: 13;
+	}
+	fieldset {
+    border: 2px solid #e98d1c; /* 테두리 색을 파란색으로 설정 */
+    padding: 10px; /* 내부 여백 */
+    border-radius: 5px; /* 둥근 모서리 */
+	}
+
+	legend {
+	    font-weight: bold; /* legend 텍스트를 굵게 */
+	    color: white; /* legend 색상 */
+	}
 </style>
 <body>
 <form id="joinForm" method="post" enctype="multipart/form-data">
@@ -122,29 +156,34 @@
         <div class="container">
             <div class="wrapper">
                 <h2>사업자 회원가입</h2>
-                <input type="text" name="store_id" value="" placeholder="아이디(필수)"/>&nbsp;<button>중복확인</button><br>
-                <input type="text" name="store_pw" value="" placeholder="비밀번호(필수)">
-                <input type="text" name="storepwcheck" value="" placeholder="비밀번호 확인(필수)">
+                <input id="idc" type="text" name="store_id" value="" placeholder="아이디(필수)"/>&nbsp;<button type="button" id="checkid">중복확인</button>
+                <br>
+                <span id="idoncheck"></span>
+                <br>
+                <input type="password" id="store_pw" name="store_pw" value="" placeholder="비밀번호(필수)">
+                <input type="password" id="storepwcheck" name="storepwcheck" value="" placeholder="비밀번호 확인(필수)"><span id="pwCheckMessage"></span>
                 <h6>※ 비밀번호 8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해주세요.</h6>
-                <input type="text" name="store_number" value="" placeholder="사업자번호(필수)"/>&nbsp;<button id="checknumberBtn">중복확인</button>
-                <span id="numberCheckMessage" style="color: red;"></span>
-	            <span id="numberAvailableMessage" style="color: blue;"></span><br> <!-- 사용 가능한 아이디 메시지 추가 -->
+                <input id="numb" type="text" name="store_number" value="" placeholder="사업자번호(필수)" oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>&nbsp;<button id="checknumberBtn">중복확인</button>
+                <br>
+                <span id="numberCheckMessage"></span>
+	            <br> <!-- 사용 가능한 아이디 메시지 추가 -->
                 <input type="text" name="store_name" value="" placeholder="매장 이름(필수)">
-                <input type="text" name="store_phone" value="" placeholder="매장 전화번호(선택사항)">
+                <input type="text" name="store_phone" value="" placeholder="매장 전화번호(선택사항)" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 <input type="text" id="addressInput" name="store_address" value="" placeholder="매장 주소(필수)">
                 <input type="hidden" id="latitude" name="latitude" value="">
 				<input type="hidden" id="longitude" name="longitude" value="">
                 <textarea name="store_time" placeholder="ex) 운영 시간                                                      월요일 15:00 ~ 02:00                                    화요일 휴무                                             수요일 15:00 ~ 02:00"></textarea>
                 <h2>대표 사진</h2>
-                <input type="file" name="fileone" multiple="multiple">
+                <div id="img_list2"></div>
+                <input type="file" name="fileone" multiple="multiple" onchange="readFileone(this)">
                 <h6>※ 대표메뉴는 필수 등록입니다. 최대 1개</h6>
                 <h2>가게 내, 외부사진</h2>
-                <input type="file" name="files" value="1" multiple="multiple" onchange="readFile(this)"/>
                 <div id="img_list"></div>
+                <input type="file" name="files" value="1" multiple="multiple" onchange="readFile(this)"/>
                 <h6>※파일은 5MB 이하, 최대 5개까지 가능합니다.</h6>
                 <h2>카테고리(각 1개 선택가능(필수))</h2>
                 <fieldset>
-				    <legend>Category 1</legend>
+				    <legend>주종</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 1}">
 				            <input type="radio" id="category_${category.category_idx}" name=category1 value="${category.opt_idx}" />
@@ -154,7 +193,7 @@
 				</fieldset>
 
 				<fieldset>
-				    <legend>Category 2</legend>
+				    <legend>안주</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 2}">
 				            <input type="radio" id="category_${category.category_idx}" name=category2 value="${category.opt_idx}" />
@@ -164,7 +203,7 @@
 				</fieldset>
 				
 				<fieldset>
-				    <legend>Category 3</legend>
+				    <legend>분위기</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 3}">
 				            <input type="radio" id="category_${category.category_idx}" name=category3 value="${category.opt_idx}" />
@@ -174,7 +213,7 @@
 				</fieldset>
 				
 				<fieldset>
-				    <legend>Category 4</legend>
+				    <legend>방문목적</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 4}">
 				            <input type="radio" id="category_${category.category_idx}" name=category4 value="${category.opt_idx}" />
@@ -182,16 +221,6 @@
 				        </c:if>
 				    </c:forEach>
 				</fieldset>
-            <!--     <h2>메뉴 등록</h2>
-                <select name="menu_category" id="category">
-                    <option value="food">안주</option>
-                    <option value="sul">주류</option>
-                </select>
-                <input type="text" name="menu_name" value="" placeholder="메뉴 이름"/>
-                <input type="text" name="menu_price" value="" placeholder="메뉴 가격"/><span class="price">원</span>
-                <input type="file" name="files" multiple="multiple"/>
-                <button type="button" id="menu_go">등록</button>
-                <div id="menu_list"></div> -->
             </div>
         </div>
         <button type="button" id="save" onclick="save(event)">회원가입</button>
@@ -220,18 +249,59 @@ function save(event){
 		}
 	});
 }
+
 function readFile(input){
 	console.log(input.files);
+	const files = input.files;
+    const maxFileCount = 5;
+    const maxFileSize = 5 * 1024 * 1024; // 2MB 제한
+
+    // 파일 개수 체크
+    if (files.length > maxFileCount) {
+      alert("사진은 최대 5개까지만 가능합니다.");
+      input.value = ''; // 파일 선택 초기화
+      return;
+    }
 	var reader;
 	$('#img_list').empty();
 	for (var file of input.files) {
 		reader = new FileReader(); 
 		reader.readAsDataURL(file); 
 		reader.onload = function(e){ 
-		$('#img_list').append('<img class="preview" src="'+e.target.result+'"/>');
+		$('#img_list').append('<img class="preview" src="'+e.target.result+'" style="max-width: 100px; max-height: 100px; margin: 5px;"/>');
 		}
 	}
 }
+
+function readFileone(input){
+	console.log(input.files);
+	const files = input.files;
+    const maxFileCount = 1;
+    const maxFileSize = 5 * 1024 * 1024; // 2MB 제한
+
+    // 파일 개수 체크
+    if (files.length > maxFileCount) {
+      alert("대표메뉴는 최대 1개까지만 등록 가능합니다.");
+      input.value = ''; // 파일 선택 초기화
+      return;
+    }
+	var reader;
+	$('#img_list2').empty();
+	const file = files[0];
+	if (file.size > maxFileSize) {
+        alert("파일 크기는 최대 5MB까지 가능합니다.");
+        input.value = ''; // 파일 선택 초기화
+        return;
+    }
+	$('#img_list2').empty(); // 기존 이미지 초기화
+    reader = new FileReader(); 
+    reader.readAsDataURL(file); 
+    reader.onload = function(e){ 
+        $('#img_list2').append('<img class="previews" src="'+e.target.result+'" style="max-width: 100px; max-height: 100px; margin: 5px;"/>');
+    }
+}
+
+
 $(document).ready(function() {
     $('#save').click(function(event) {
         save(event); // 여기서 save 함수를 호출
@@ -252,16 +322,48 @@ $(document).ready(function() {
             data: { store_number: storenumber },
             success: function(response) {
                 if (response.exists) {
-                    $('#numberCheckMessage').text("이미 있는 사업자 번호입니다.");
-                    $('#numberAvailableMessage').text(""); // 아이디 사용 가능 메시지 초기화
+                    $('#numberCheckMessage').text("이미 있는 사업자 번호입니다.").css("color", "red");
                 } else {
-                    $('#numberCheckMessage').text(""); // 중복 메시지 초기화
-                    $('#numberAvailableMessage').text("사용 가능한 사업자 번호입니다."); // 사용 가능 메시지 출력
+                    $('#numberCheckMessage').text("사용 가능한 사업자 번호입니다.").css("color", "blue");
                 }
             }
         });
     });
+
+    $('#store_pw, #storepwcheck').on('keyup blur', function(){
+		var password = $('#store_pw').val();
+		var passwordCheck = $('#storepwcheck').val();
+		var message = $('#pwCheckMessage');
+		if (passwordCheck.length > 0) {
+			if (password === passwordCheck) {
+				message.text('비밀번호가 맞습니다.').css('color', '#39FF14');
+			}else {
+				message.text('비밀번호가 다릅니다.').css('color', '#FF073A');
+			}
+		}else {
+			message.text('');
+		}
+	});
 });
+    
+    
+    $('#checkid').click(function(event) {
+    	event.preventDefault();
+    	console.log("checkIdBtn 클릭됨");
+        const userId = $('input[name="store_id"]').val();
+        $.ajax({
+            type: 'POST',
+            url: 'checkid.ajax',
+            data: { user_id: userId },
+            success: function(response) {
+                if (response.exists) {
+                    $('#idoncheck').text("사용 가능한 아이디입니다.").css("color", "blue");
+                } else {
+                    $('#idoncheck').text("이미 있는 아이디입니다.").css("color", "red"); // 중복 메시지 초기화
+                }
+            }
+        });
+    });
 
 function getCoordinates() {
     const address = document.getElementById('addressInput').value.trim(); 
