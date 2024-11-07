@@ -68,13 +68,22 @@
 		top : 10;
 		left: 40;
 	}
+	.error{
+			margin-left: 10%;
+		}
+	#pwCheckMessage{
+	    position: absolute;
+	    top: 261px;
+	    right: 157px;
+	    font-size: 13;
+	}
 </style>
 </head>
 <body>
     <body>
     	<div id="loginBox">
 		<div class="logo_text">
-             <a href="/mainPage.go">SULBAZI</a>
+             <a href="./mainPage.go">SULBAZI</a>
         </div>
         	<hr/>
 	 		<br>
@@ -82,35 +91,19 @@
 			<form action="changepw.do" method="post" onsubmit="return validateForm()">
 				<input type="hidden" name="findtype" value="${findtype}"/>
 		        <input type="hidden" name="identifier" value="${identifier}"/>
-				<input type="password" id="newPassword" name="newPassword" class="inp" placeholder="비밀번호" required/>
-				<br>
-				<input type="password" id="confirmPassword" name="confirmPassword" class="inp" placeholder="비밀번호 확인" required/>
-		        <div id="errorMessage" style="color: red; display: none;">
-		           &nbsp;&nbsp; 비밀번호가 틀렸습니다.
-		        </div>
-		        <button type="submit" >비밀번호 변경</button>
+				<c:if test="${not empty identifier}">
+					<input type="password" id="newPassword" name="newPassword" class="inp" placeholder="비밀번호" required/>
+					<br>
+					<input type="password" id="confirmPassword" name="confirmPassword" class="inp" placeholder="비밀번호 확인" required/><span id="pwCheckMessage"></span>
+			        <button type="submit" >비밀번호 변경</button>
+		        </c:if>
+			        <c:if test="${empty identifier}">
+			            <p class="error">아이디를 찾을 수 없습니다.</p>
+			            <button type="button" onclick="location.href='login.go'">로그인 페이지로 돌아가기</button>
+			        </c:if>
 			</form>
         </div>
-    <!-- <h2>비밀번호 변경</h2>
-    <form action="changepw.do" method="post" onsubmit="return validateForm()">
-        
-        <div>
-            <label for="newPassword">새 비밀번호</label>
-            <input type="password" id="newPassword" name="newPassword" required/>
-        </div>
-        
-        <div>
-            <label for="confirmPassword">비밀번호 확인</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required/>
-        </div>
-        
-        <div id="errorMessage" style="color: red; display: none;">
-            비밀번호가 틀렸습니다.
-        </div>
-        
-        <button type="submit" >비밀번호 변경</button>
-    </form> -->
-    
+
     <script>
         function validateForm() {
             const newPassword = document.getElementById('newPassword').value;
@@ -128,6 +121,21 @@
 </body>
 </body>
 <script>
-
+$(document).ready(function(){
+	$('#newPassword, #confirmPassword').on('keyup blur', function(){
+		var password = $('#newPassword').val();
+		var passwordCheck = $('#confirmPassword').val();
+		var message = $('#pwCheckMessage');
+		if (passwordCheck.length > 0) {
+			if (password === passwordCheck) {
+				message.text('비밀번호가 맞습니다.').css('color', '#39FF14');
+			}else {
+				message.text('비밀번호가 다릅니다.').css('color', '#FF073A');
+			}
+		}else {
+			message.text('');
+		}
+	});
+});
 </script>
 </html>

@@ -195,10 +195,10 @@ public class BoardController {
 	        if (file != null) {
 	        	photo_ser.updateajax(file, store_idxx ,4);
 			}
-	        success = board_ser.updateajax(boardDTO, file);
+	        success = board_ser.updateajax(boardDTO);
 	        if (success) {
 	        	response.put("success", true);
-	        	response.put("link", "/SULBAZI/boardList.go");
+	        	response.put("link", "boardList.go");
 				response.put("message", "수정하시겠습니까?");
 			}else {
 				response.put("message", "수정에 실패했습니다.");

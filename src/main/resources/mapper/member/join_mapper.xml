@@ -32,6 +32,10 @@
    		SELECT COUNT(*) > 0 FROM store WHERE store_number = #{storenumber}
    </select>
    
+   <select id="checkstoreid" resultType="boolean">
+   		SELECT COUNT(*) > 0 FROM store WHERE store_id = #{store_id}
+   </select>
+   
    <insert id="menudo" parameterType="com.sulbazi.member.StoreMenuDTO">
    		INSERT INTO store_menu(menu_name, menu_price, menu_category, store_idx)
    			VALUES(#{menu_name}, #{menu_price}, #{menu_category}, #{store_idx})
