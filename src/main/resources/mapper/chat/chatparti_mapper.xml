@@ -55,7 +55,7 @@
 	
 	<!-- 방에 참여중인 총 사용자 - 개인 -->
 	<select id="usertotal" parameterType="int" resultType="int">
-		SELECT COUNT(user_id) FROM parti WHERE chatroom_idx = #{roomidx} AND chatroom_category = 'userchat' AND parti_state = 1
+		SELECT COUNT(user_id) FROM parti WHERE chatroom_idx = #{idx} AND chatroom_category = 'userchat' AND parti_state = 1
 	</select>
 	
 	<!-- 방에 참여중인 사용자 - 개인 -->
