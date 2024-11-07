@@ -78,11 +78,17 @@
     	INSERT INTO report (reported_id, reporting_id, report_category, reported_idx, report_content)
     				VALUES(#{reportedId}, #{reportingId}, #{reportCategory}, #{reportedIdx}, #{reportReason})
     </insert>
-    <!-- 유저 테이블 신고 업데이트 -->
+    <!-- 유저 신고 당한 유저 업데이트 -->
     <update id="userReportedCount" parameterType="map">
 		UPDATE user
-		SET user_reportno = (SELECT COUNT(reporting_id) from report where reporting_id = #{reportingId}), user_reportedcases = (SELECT COUNT(reported_id) from report where reported_id=#{reportedId} )
-		WHERE user_id = #{reportedId} or user_id = #{reportingId} 
+		SET user_reportedcases = (SELECT COUNT(reporting_id) from report where reported_id = #{reportedId})
+		WHERE user_id = #{reportedId}
+    </update>
+    <!-- 유저 신고 한 업데이트 -->
+    <update id="userReportingCount" parameterType="map">
+		UPDATE user
+		SET user_reportno = (SELECT COUNT(reporting_id) from report where reporting_id = #{reportingId})
+		WHERE user_id = #{reportingId}
     </update>
     
 

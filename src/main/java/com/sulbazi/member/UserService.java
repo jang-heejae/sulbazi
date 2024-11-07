@@ -198,12 +198,19 @@ public class UserService {
 			int row  = user_dao.userLike(params);
 		if (row >=1) {
 			int sow = user_dao.userLikeDel(params);
-			
 		}else {
 			int dow = user_dao.insertLike(params);
 		//유저테이블 업데이트 총 라이크 수
-		int how = user_dao.userUpdateLike(params);
 		}
+		int how = user_dao.userUpdateLike(params);
 		return row;
+	}
+	public UserDTO letItgo(Map<String, Object> params) {
+		
+		return user_dao.letItgo(params);
+	}
+	public int gogoLike(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return user_dao.gogoLike(params);
 	}
 }

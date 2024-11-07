@@ -1,6 +1,7 @@
 package com.sulbazi.member;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -107,6 +108,8 @@ public class UserController {
     @ResponseBody
     public Map<String, Object> insertLike(@RequestParam Map<String, Object> params) {
     	int row = user_ser.insertLike(params);
+    	System.out.println("이종원 유저좋아요 확인 : "+params.get("userId"));
+    	System.out.println("이종원 유저좋아요 확인 로그인: "+params.get("loginId"));
     	if (row == 0) {
     	    row = 0; // 혹은 다른 기본 값으로 설정
     	}
@@ -115,7 +118,34 @@ public class UserController {
     	
     	return map;
     }
+    //유저 좋아요 눌럿을때 나오는 함수2
+    @PostMapping(value = "profile2.ajax")
+    @ResponseBody
+    public Map<String, Object> profile2(@RequestParam Map<String, Object> params) {
+    	int row = user_ser.insertLike(params);
+    	System.out.println("이종원 유저좋아요 확인 : "+params.get("userId"));
+    	System.out.println("이종원 유저좋아요 확인 로그인: "+params.get("loginId"));
+    	if (row == 0) {
+    		row = 0; // 혹은 다른 기본 값으로 설정
+    	}
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	map.put("success", row);
+    	
+    	return map;
+    }
 
+    
+    //종원 유저 찾기
+    @PostMapping(value="/letItgo.ajax")
+    @ResponseBody
+    public Map<String, Object> userGetDO(@RequestParam Map<String, Object> params){
+    	UserDTO user = user_ser.letItgo(params);
+    	int userLike = user_ser.userLike(params);
+    		Map<String, Object> map = new HashMap<String, Object>();
+    		map.put("user", user);
+    		map.put("userLike", userLike);
+    	return map;
+    }
     
 	
 }

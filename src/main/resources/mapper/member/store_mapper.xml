@@ -52,7 +52,7 @@
 	</select>
 	
 	<select id="getBoard" parameterType="int" resultType="com.sulbazi.board.BoardDTO">
-		select * from board where store_idx=#{param1} ORDER BY board_date DESC LIMIT 1
+		select * from board where store_idx=#{param1} ORDER BY board_date DESC, board_idx DESC LIMIT 1
 	</select>
 	<!-- 북마크 인서트 -->
 	<insert id="bookmarkCheck" parameterType="map" >

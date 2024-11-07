@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.sulbazi.category.UserCategoryDTO;
+
 @Entity
 public class UserDTO {
 	
@@ -27,8 +29,23 @@ public class UserDTO {
 	private int user_likecount;
 	private String user_photo;
 	private Date user_date;
+	private String opt_name;
+	private String opt_idx;
 	
 	
+	
+	public String getOpt_name() {
+		return opt_name;
+	}
+	public void setOpt_name(String opt_name) {
+		this.opt_name = opt_name;
+	}
+	public String getOpt_idx() {
+		return opt_idx;
+	}
+	public void setOpt_idx(String opt_idx) {
+		this.opt_idx = opt_idx;
+	}
 	public String getUser_id() {
 		return user_id;
 	}
