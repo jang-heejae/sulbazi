@@ -171,7 +171,7 @@
     	height: 2px;
    		background-color: rgb(255, 140, 9);
     }
-.modal_madal {
+#adminModal {
     display: none; /* 초기 상태에서 숨김 */
     position: fixed;
     z-index: 1000;
@@ -191,12 +191,12 @@
     overflow: auto; /* 내용이 넘칠 때 스크롤 */
 }
 
-.modal-content_madal {
+#mcm2 {
     padding: 20px;
     text-align: center;
     color: #041d03;
 }
-.close_madal {
+.close_madal2 {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -204,8 +204,8 @@
     cursor: pointer;
 }
 
-.close_madal:hover,
-.close_madal:focus {
+.close_madal2:hover,
+.close_madal2:focus {
     color: black;
 }
 </style>
@@ -293,11 +293,11 @@
 	</div>
 	</section>
 </body>
-<div id="adminModal" class="modal_madal" style="display:none;">
-    <div class="modal-content_madal">
-        <span class="close_madal" onclick="closeModal()">&times;</span>
+<div id="adminModal" class="modal_madal2" style="display:none;">
+    <div class="modal-content_madal2" id="mcm2">
+        <span class="close_madal2" onclick="closeModal()">&times;</span>
         <!-- JSP 내용을 불러올 위치 -->
-        <div id="modalContent"></div>
+        <div id="modalContent2"></div>
     </div>
 </div>
 <script>
@@ -412,7 +412,7 @@ function openModal() {
         method: "GET",
         success: function(data) {
             // 불러온 JSP 내용을 모달에 삽입
-            $('#modalContent').html(data);
+            $('#modalContent2').html(data);
             $('#adminModal').css('display', 'block');
         },
         error: function() {
@@ -420,7 +420,7 @@ function openModal() {
         }
     });
 }
-$('#closeModal').off('click').on('click', function() {
+$('#closeModal2').off('click').on('click', function() {
     $('#adminModal').css('display', 'none'); // 모달 숨기기
     window.location.reload();
 });

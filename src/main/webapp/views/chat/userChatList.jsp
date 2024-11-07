@@ -328,8 +328,6 @@ $(document).ready(function() {
                         checkParticipantStatus();
                     } else {
                         $('.chatitems').html('<p>검색 결과가 없습니다. 현재 개설된 채팅방</p>');
-                        searchlist(response);
-                        checkParticipantStatus();
                     }
                 },
                 error: function(error, status, xhr) {

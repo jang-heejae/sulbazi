@@ -496,7 +496,7 @@ $(document).ready(function() {
         // 확인 버튼 클릭 이벤트 설정 (취소 작업 수행)
         $('#confirmAction').off('click').on('click', function() {
             // 취소 확인 시 페이지 이동
-            location.href = '/SULBAZI/userMyPage.go';
+            location.href = 'userMyPage.go';
         });
 
         // 취소 버튼 클릭 시 모달 닫기 (확인 버튼과 이벤트 겹치지 않도록 함)

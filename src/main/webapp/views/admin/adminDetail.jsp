@@ -52,7 +52,7 @@
     	display: flex;
     	flex-direction: column;
 	} 
-	.modal_madal2 {
+	.modal_madal3 {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -71,7 +71,7 @@
     font-family: "Yeon Sung", system-ui;
 }
 
-.modal-content_madal2 {
+.modal-content_madal3 {
     padding: 20px;
     text-align: center;
     color: #041d03;
@@ -79,7 +79,7 @@
     border-radius: 10px;
 }
 
-.btn_madal2 {
+.btn_madal3 {
     background-color: rgb(255, 140, 9);
     color: #041d03;
     padding: 10px 20px;
@@ -91,12 +91,12 @@
     font-family: "Yeon Sung", system-ui;
 }
 
-.btn_madal2:hover {
+.btn_madal3:hover {
     background-color: #20290E;
     color: white;
 }
 
-.close_madal2 {
+.close_madal3 {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -104,8 +104,8 @@
     cursor: pointer;
 }
 
-.close_madal2:hover,
-.close_madal2:focus {
+.close_madal3:hover,
+.close_madal3:focus {
     color: black;
 }
 </style>
@@ -136,12 +136,12 @@
 		</div>
 	</form>
 </body>
-<div id="confirmationModal2" class="modal_madal2">
-    <div class="modal-content_madal2">
-        <span class="close_modal2" id="closeModal2">&times;</span>
-        <p id="confirmationMessage2"></p>
-        <button type="button" class="btn_madal2" id="confirmAction2">확인</button>
-        <button type="button" class="btn_madal2" id="cancelAction2">취소</button>
+<div id="confirmationModal3" class="modal_madal3">
+    <div class="modal-content_madal3">
+        <span class="close_modal3" id="closeModal3">&times;</span>
+        <p id="confirmationMessage3"></p>
+        <button type="button" class="btn_madal3" id="confirmAction3">확인</button>
+        <button type="button" class="btn_madal3" id="cancelAction3">취소</button>
     </div>
 </div>
 
@@ -149,14 +149,14 @@
 $(document).ready(function() {
     // 모달을 표시하는 이벤트 등록
     $('#add').on('click', function() {
-        $('#confirmationMessage2').text('추가하시겠습니까?');
-        $('#confirmationModal2').css('display', 'block'); // 모달을 보이도록 설정
+        $('#confirmationMessage3').text('추가하시겠습니까?');
+        $('#confirmationModal3').css('display', 'block'); // 모달을 보이도록 설정
     });
 
     // 확인 버튼 클릭 시 폼 제출
-    $('#confirmAction2').off('click').on('click', function() {
+    $('#confirmAction3').off('click').on('click', function() {
         // 모달 숨기기
-        $('#confirmationModal2').css('display', 'none');
+        $('#confirmationModal3').css('display', 'none');
 
          // 폼을 제출하고, 부모 창을 새로고침한 후 현재 창 닫기
         $('form').submit(); // 폼 제출
@@ -170,8 +170,8 @@ $(document).ready(function() {
     });
 
     // 취소 버튼 클릭 시 모달 닫기
-    $('#cancelAction2, #closeModal2').off('click').on('click', function() {
-        $('#confirmationModal2').css('display', 'none'); // 모달 숨기기
+    $('#cancelAction3, #closeModal3').off('click').on('click', function() {
+        $('#confirmationModal3').css('display', 'none'); // 모달 숨기기
     });
 });
 function closeModal2() {     // adminAdd 영역 숨기기

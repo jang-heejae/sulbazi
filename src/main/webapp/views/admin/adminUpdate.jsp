@@ -53,7 +53,7 @@
 		color:#041d03;
 		font-family: "Yeon Sung", system-ui;
 	}
-	.modal_madal2 {
+	.modal_madal4 {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -72,7 +72,7 @@
     font-family: "Yeon Sung", system-ui;
 }
 
-.modal-content_madal2 {
+.modal-content_madal4 {
     padding: 20px;
     text-align: center;
     color: #041d03;
@@ -80,7 +80,7 @@
     border-radius: 10px;
 }
 
-.btn_madal2 {
+.btn_madal4 {
     background-color: rgb(255, 140, 9);
     color: #041d03;
     padding: 10px 20px;
@@ -92,12 +92,12 @@
     font-family: "Yeon Sung", system-ui;
 }
 
-.btn_madal2:hover {
+.btn_madal4:hover {
     background-color: #20290E;
     color: white;
 }
 
-.close_madal2 {
+.close_madal4 {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -105,8 +105,8 @@
     cursor: pointer;
 }
 
-.close_madal2:hover,
-.close_madal2:focus {
+.close_madal4:hover,
+.close_madal4:focus {
     color: black;
 }
 </style>
@@ -140,12 +140,12 @@
 		</div>
 	</form>
 </body>
-<div id="confirmationModal2" class="modal_madal2">
-    <div class="modal-content_madal2">
-        <span class="close_modal2" id="closeModal2">&times;</span>
-        <p id="confirmationMessage2"></p>
-        <button type="button" class="btn_madal2" id="confirmAction2">확인</button>
-        <button type="button" class="btn_madal2" id="cancelAction2">취소</button>
+<div id="confirmationModal4" class="modal_madal4">
+    <div class="modal-content_madal4">
+        <span class="close_modal4" id="closeModal4">&times;</span>
+        <p id="confirmationMessage4"></p>
+        <button type="button" class="btn_madal4" id="confirmAction4">확인</button>
+        <button type="button" class="btn_madal4" id="cancelAction4">취소</button>
     </div>
 </div>
 <script>
@@ -164,14 +164,14 @@ $(document).ready(function() {
 
     // 비밀번호 변경 확인 모달 열기
     $('#change').on('click', function() {
-        $('#confirmationMessage2').text('수정하시겠습니까?');
-        $('#confirmationModal2').css('display', 'block'); // 확인 모달을 보이도록 설정
+        $('#confirmationMessage4').text('수정하시겠습니까?');
+        $('#confirmationModal4').css('display', 'block'); // 확인 모달을 보이도록 설정
     });
 
     // 확인 버튼 클릭 시 비밀번호가 일치할 때만 adminChanPw 함수 실행
-    $('#confirmAction2').on('click', function() {
+    $('#confirmAction4').on('click', function() {
         // 모달 숨기기
-        $('#confirmationModal2').css('display', 'none');
+        $('#confirmationModal4').css('display', 'none');
         
         var new_pw = $('#new_password').val();
         var confirm_pw = $('#new_passwordOk').val();
@@ -185,8 +185,8 @@ $(document).ready(function() {
     });
 
     // 취소 버튼 클릭 시 모달 닫기
-    $('#cancelAction2, #closeModal2').on('click', function() {
-        $('#confirmationModal2').css('display', 'none'); // 모달 숨기기
+    $('#cancelAction4, #closeModal4').on('click', function() {
+        $('#confirmationModal4').css('display', 'none'); // 모달 숨기기
     });
 });
 function closeModal2() {     // adminAdd 영역 숨기기

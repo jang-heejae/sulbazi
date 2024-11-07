@@ -124,6 +124,62 @@
         justify-content: space-around;
         border-radius: 10px;
     }
+   .modal_madal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: auto;
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px #041d03;
+    color: #041d03;
+    text-align: center;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.modal-content_madal {
+    padding: 20px;
+    text-align: center;
+    color: #041d03;
+    background-color: #fefefe;
+    border-radius: 10px;
+}
+
+.btn_madal {
+    background-color: rgb(255, 140, 9);
+    color: #041d03;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 10px;
+    font-family: "Yeon Sung", system-ui;
+}
+
+.btn_madal:hover {
+    background-color: #20290E;
+    color: white;
+}
+
+.close_madal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close_madal:hover,
+.close_madal:focus {
+    color: black;
+}
 </style>
 <body>
     <header>
@@ -159,15 +215,51 @@
                     <li><a href="categoryUpdate.go">카테고리 관리</a></li>
                     <li><a href="adminList.go">관리자 리스트</a></li>
                 </ul>
-                <div class="logout">
+                <div id="logoutButton">
                     <i class="fas fa-sign-out-alt"></i>
-                    <a href="logout.go">로그아웃</a>
+                    <a href="#">로그아웃</a>
                 </div>
             </div>
             </div>
     </header>
 </body>
+<div id="logoutModal" class="modal_madal" style="display: none;">
+    <div class="modal-content_madal">
+        <span class="close_madal" onclick="$('#logoutModal').hide();">&times;</span>
+        <p>로그아웃 하시겠습니까?</p>
+        <br/>
+        <button class="btn_madal" id="confirmLogout">로그아웃</button>
+        <button class="btn_madal" id="cancelLogout">취소</button>
+    </div>
+</div>
 <script>
+var loginId ='${sessionscope.loginId}';
+
+$(document).ready(function() {
+    const isLoggedIn = "${sessionScope.loginId != null}";
+
+    
+    // 로그아웃 버튼 클릭 시 로그아웃 확인 모달 표시
+    $('#logoutButton').on('click', function(event) {
+        event.preventDefault(); // 기본 로그아웃 동작 막기
+        $('#logoutModal').show(); // 로그아웃 모달 표시
+    });
+
+ // 로그아웃 수행
+    $('#confirmLogout').on('click', function() {
+        $('#logoutModal').hide();
+        window.location.href = 'logout.go'; // 로그아웃 경로로 이동
+    });
+	
+    // 로그아웃 모달 닫기
+    $('#cancelLogout').on('click', function() {
+        $('#logoutModal').hide(); // 로그아웃 모달 닫기
+    });
+});
+
+
+
+
 
 //main_menu 클릭 이벤트
 

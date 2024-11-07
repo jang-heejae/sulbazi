@@ -58,7 +58,7 @@ public class JoinController {
 		 try {
 			 int store_idx = join_ser.storeJoin(files, fileone, param, latitude, longitude);
 			 map.put("success", true); 
-			 map.put("link", "/SULBAZI/menu.go?store_idx="+store_idx);
+			 map.put("link", "menu.go?store_idx="+store_idx);
 		} catch (Exception e) {
 			map.put("success", false);
             map.put("message", "오류가 발생했습니다: " + e.getMessage());

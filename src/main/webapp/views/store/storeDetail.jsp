@@ -986,7 +986,9 @@ background: linear-gradient(0deg, rgba(255,27,0,1) 0%, rgba(251,75,2,1) 100%);
  				reviewDataList.push(review); 
  			   console.log("reviews img:", review.review_photos);
  				var reviewDate = review.review_date.split('T')[0];
- 			    if (review.review_photos) {
+ 			    
+ 				
+ 				if (review.review_photos) {
  			        const photoArray = review.review_photos.split(',');  // 쉼표를 기준으로 문자열 분리
  			       review.photos = photoArray;
  			    }
@@ -1674,7 +1676,7 @@ function replyUp(button) {
 	
  	//유저 좋아요
 	   function openPopup(user_nickname) {
-	      var popupUrl = '/SULBAZI/userPopup.go?user_nickname=' + user_nickname;
+	      var popupUrl = 'userPopup.go?user_nickname=' + user_nickname;
 	       window.open(popupUrl, 'userPopup', 'width=600,height=400');
 	   }
  	

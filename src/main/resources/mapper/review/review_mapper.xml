@@ -122,7 +122,9 @@
 	</delete>
 	
 
-	 
+	 <select id="allStoreCount" parameterType="map" resultType="int">
+    	SELECT CEIL(COUNT(*) / #{cnt}) FROM review WHERE store_idx = #{store_idx} AND review_state = 1
+	</select>
 	 <!-- 유저 마이페이지 나의 리뷰 -->
 	<select id="allCount" parameterType="map" resultType="int">
     	SELECT CEIL(COUNT(*) / #{cnt}) FROM review WHERE user_id = #{user_id} AND review_state = 1
@@ -176,7 +178,53 @@
         	r.review_idx DESC
     	LIMIT #{limit} OFFSET #{offset}
 </select>
-
+<!-- 매장 마이페이지 리뷰목록 페이지네이션 -->
+<select id="getReviewAlluser2" parameterType="map" resultType="com.sulbazi.review.ReviewDTO">
+    SELECT 
+        r.review_idx,
+        r.store_idx,
+        r.review_content,
+        r.review_date,
+        r.starpoint,
+        r.review_state,
+        u.user_id,
+        u.user_nickname,
+        u.user_likecount,
+        u.user_photo,
+        rc.comm_date,
+        rc.comm_content,
+        COUNT(rl.user_id) AS like_count,
+        GROUP_CONCAT(rl.user_id) AS like_user_ids,
+        (
+            SELECT GROUP_CONCAT(co.opt_name SEPARATOR ', ') 
+            FROM review_category AS rcg 
+            JOIN category_opt AS co ON rcg.opt_idx = co.opt_idx 
+            WHERE rcg.review_idx = r.review_idx
+        ) AS opt_names,
+        (
+            SELECT GROUP_CONCAT(p.new_filename) 
+            FROM photo AS p
+            WHERE p.photo_category_idx = 3 
+            AND p.photo_folder_idx = r.review_idx
+        ) AS review_photos
+    FROM 
+        review AS r
+    INNER JOIN 
+        user AS u ON r.user_id = u.user_id
+    LEFT JOIN 
+        review_comm AS rc ON r.review_idx = rc.review_idx
+    LEFT JOIN 
+        review_like AS rl ON r.review_idx = rl.review_idx
+    WHERE 
+        r.store_idx = #{store_idx}
+        AND r.review_state = 1
+    GROUP BY 
+        r.review_idx, r.store_idx, r.review_content, r.review_date, r.starpoint, r.review_state, 
+        u.user_id,u.user_nickname, u.user_likecount, u.user_photo, rc.comm_date, rc.comm_content
+    ORDER BY 
+        r.review_idx DESC
+        LIMIT #{limit} OFFSET #{offset}
+</select>
 	
 	<!-- 리뷰 유저 이름 -->
 	<select id="reviewusername" resultType="String" >

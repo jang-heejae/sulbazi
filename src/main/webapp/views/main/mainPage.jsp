@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SULBAZI</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
@@ -243,7 +243,7 @@
 					<ul>
 						<li class="${status.index % 2 == 0 ? 'even' : 'odd'}">
 							<span style="width:10%;">${board.board_category}</span>
-							<span style="width:50%;" onclick="location.href='boardDetail.go?board_idx=${board.board_idx}'">
+							<span style="width:50%; cursor: pointer;" onclick="location.href='boardDetail.go?board_idx=${board.board_idx}'">
 								${board.board_subject}</span>
 							<span style="color:pink; width:10%;"><i class="far fa-kiss-wink-heart"></i>
 								${board.like_count}</span>

@@ -335,56 +335,51 @@ public class StoreController {
 		photo_ser.mystoreinoutUpdate(newmystoreinout, store_idx);
 		return "redirect:/storeMyPage.go";
 	}
-	
-
-	
-	//나의 매장 리뷰 댓글 보기
-	/*@RequestMapping(value="/storeMyReview.do")
-	public String storemyreply(Model model, HttpSession session) {
-		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
-		model.addAttribute("review", review_ser.storelookreview(store_idx));
-		model.addAttribute("reply", review_ser.storelookreply(store_idx)) ;
-		return "store/storeReview";
-	}*/
 	@RequestMapping(value="/storeMyReview.go")
 	public String storemyreply(Model model, HttpSession session) {
 	    int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
-	    List<Map<String, Object>> reviews = review_ser.storelookreview(store_idx);
-	    List<Map<String, Object>> replies = review_ser.storelookreply(store_idx);
-
-	    List<Map<String, Object>> totalReviews = new ArrayList<>();
-
-	    for (Map<String, Object> review : reviews) {
-	        Map<String, Object> reviewData = new HashMap<>();
-	        reviewData.put("review_content", review.get("review_content")); // 리뷰 내용
-	        reviewData.put("review_date", review.get("review_date")); // 리뷰 날짜
-	        reviewData.put("user_id", review.get("user_id")); // 리뷰 유저
-	        reviewData.put("review_idx", review.get("review_idx")); // 리뷰 idx
-
-	        // 해당 리뷰에 대한 댓글 리스트
-	        List<Map<String, Object>> associatedReplies = new ArrayList<>();
-	        for (Map<String, Object> reply : replies) {
-	            if (review.get("review_idx").equals(reply.get("review_idx"))) {
-	                associatedReplies.add(reply); // 리뷰에 해당하는 댓글 추가
-	            }
-	        }
-
-	        // 댓글이 없는 경우 기본 메시지 추가
-	        if (associatedReplies.isEmpty()) {
-	            Map<String, Object> noReply = new HashMap<>();
-	            noReply.put("comm_content", "댓글이 없습니다");
-	            noReply.put("comm_date", "");
-	            associatedReplies.add(noReply);
-	        }
-
-	        reviewData.put("replies", associatedReplies); // 댓글 리스트 추가
-	        totalReviews.add(reviewData); // 전체 리뷰 리스트에 추가
-	    }
-
-	    model.addAttribute("totalReviews", totalReviews); // 전체 리뷰 리스트 모델에 추가
+	    model.addAttribute("store", store_idx);
 	    return "store/storeReview";
 	}
-
+	@GetMapping(value="/storeMyReview.ajax")
+	@ResponseBody
+	public Map<String, Object> storeMyReview(String store_idx, String cnt, String page) {
+		int store_idx_ = Integer.parseInt(store_idx);
+		int page_ = Integer.parseInt(page);
+		int cnt_ = Integer.parseInt(cnt);
+		return store_ser.storeMyReview(store_idx_, cnt_, page_);
+	}
+	/*
+	 * @RequestMapping(value="/storeMyReview.go") public String storemyreply(Model
+	 * model, HttpSession session) { int store_idx = store_ser.storeidx((String)
+	 * session.getAttribute("loginId")); List<Map<String, Object>> reviews =
+	 * review_ser.storelookreview(store_idx); List<Map<String, Object>> replies =
+	 * review_ser.storelookreply(store_idx);
+	 * 
+	 * List<Map<String, Object>> totalReviews = new ArrayList<>();
+	 * 
+	 * for (Map<String, Object> review : reviews) { Map<String, Object> reviewData =
+	 * new HashMap<>(); reviewData.put("review_content",
+	 * review.get("review_content")); // 리뷰 내용 reviewData.put("review_date",
+	 * review.get("review_date")); // 리뷰 날짜 reviewData.put("user_id",
+	 * review.get("user_id")); // 리뷰 유저 reviewData.put("review_idx",
+	 * review.get("review_idx")); // 리뷰 idx
+	 * 
+	 * // 해당 리뷰에 대한 댓글 리스트 List<Map<String, Object>> associatedReplies = new
+	 * ArrayList<>(); for (Map<String, Object> reply : replies) { if
+	 * (review.get("review_idx").equals(reply.get("review_idx"))) {
+	 * associatedReplies.add(reply); // 리뷰에 해당하는 댓글 추가 } }
+	 * 
+	 * // 댓글이 없는 경우 기본 메시지 추가 if (associatedReplies.isEmpty()) { Map<String, Object>
+	 * noReply = new HashMap<>(); noReply.put("comm_content", "댓글이 없습니다");
+	 * noReply.put("comm_date", ""); associatedReplies.add(noReply); }
+	 * 
+	 * reviewData.put("replies", associatedReplies); // 댓글 리스트 추가
+	 * totalReviews.add(reviewData); // 전체 리뷰 리스트에 추가 }
+	 * 
+	 * model.addAttribute("totalReviews", totalReviews); // 전체 리뷰 리스트 모델에 추가 return
+	 * "store/storeReview"; }
+	 */
 
 
 	

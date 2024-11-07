@@ -24,7 +24,9 @@ import com.sulbazi.category.CategoryOptDTO;
 import com.sulbazi.category.StoreCategoryDTO;
 import com.sulbazi.photo.PhotoDTO;
 import com.sulbazi.photo.PhotoService;
+import com.sulbazi.review.ReviewDAO;
 import com.sulbazi.review.ReviewDTO;
+import com.sulbazi.review.ReviewService;
 
 
 @Service
@@ -33,6 +35,8 @@ public class StoreService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired StoreDAO store_dao;
 	@Autowired PhotoService photo_ser;
+	@Autowired ReviewDAO review_dao;
+	@Autowired ReviewService review_ser;
 	
 	public StoreDTO getStoreDetail(int idx) {
 		StoreDTO sd = store_dao.getStoreDetail(idx);
@@ -302,6 +306,24 @@ public class StoreService {
 	public int storeidx(String attribute) {
 		return store_dao.storeidx(attribute);
 	}
+	
+	public Map<String, Object> storeMyReview(int store_idx, int cnt, int page) {
+		int limit = cnt;
+		int offset = (page -1) * cnt;
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("store_idx", store_idx);
+		param.put("cnt", cnt);
+		param.put("limit", limit);
+		param.put("offset", offset);
+		int totalPages = review_dao.allStoreCount(param);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<ReviewDTO> review = review_dao.getReviewAlluser2(param);
+		map.put("totalPages", totalPages);
+		map.put("list", review);
+		return map;
+	}
 
 
 	public StoreDTO mystore(int store_idx) {
@@ -428,6 +450,7 @@ public class StoreService {
 		map.put("success",row );
 		return map;
 	}
+
 
 
 

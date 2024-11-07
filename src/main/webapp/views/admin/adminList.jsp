@@ -5,8 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="resources/css/common.css">
+<title>SULBAZI</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <style>
@@ -54,7 +53,7 @@
 	    display: flex;
     	flex-direction: column;
 	}
-.modal_madal {
+#adminModal {
     display: none; /* 초기 상태에서 숨김 */
     position: fixed;
     z-index: 1000;
@@ -74,12 +73,12 @@
     overflow: auto; /* 내용이 넘칠 때 스크롤 */
 }
 
-.modal-content_madal {
+#mcm2 {
     padding: 20px;
     text-align: center;
     color: #041d03;
 }
-.close_madal {
+.close_madal2 {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -87,12 +86,12 @@
     cursor: pointer;
 }
 
-.close_madal:hover,
-.close_madal:focus {
+.close_madal2:hover,
+.close_madal2:focus {
     color: black;
 }
 </style>
-<body>
+<body data-login-id="${sessionScope.loginId}">
 <jsp:include page="../main/adminMain.jsp"/>
 	    <section class="chatBox2">
         	<div class="chatitems2">
@@ -119,15 +118,15 @@
 			</div>
 		</section>
 </body>
-<div id="adminModal" class="modal_madal" style="display:none;">
-    <div class="modal-content_madal">
-        <span class="close_madal" onclick="closeModal()">&times;</span>
+<div id="adminModal" class="modal_madal2" style="display:none;">
+    <div class="modal-content_madal2" id="mcm2">
+        <span class="close_madal2" onclick="closeModal()">&times;</span>
         <!-- JSP 내용을 불러올 위치 -->
-        <div id="modalContent"></div>
+        <div id="modalContent2"></div>
     </div>
 </div>
 <script>
-const loginId = '${sessionScope.loginId}';
+var loginId = document.body.getAttribute('data-login-id');
 listCall();
 	function listCall(){
 		$.ajax({
@@ -179,7 +178,7 @@ listCall();
 	        data: { admin_id: admin_id }, // 전달할 데이터
 	        success: function(data) {
 	            // 받은 데이터를 모달에 삽입
-	            $('#modalContent').html(data);
+	            $('#modalContent2').html(data);
 	            $('#adminModal').css('display', 'block'); // 모달 표시
 	        },
 	        error: function() {
@@ -193,7 +192,7 @@ listCall();
 	        method: "GET",
 	        success: function(data) {
 	            // 불러온 JSP 내용을 모달에 삽입
-	            $('#modalContent').html(data);
+	            $('#modalContent2').html(data);
 	            $('#adminModal').css('display', 'block');
 	        },
 	        error: function() {
@@ -201,7 +200,7 @@ listCall();
 	        }
 	    });
 	}
-	$('#closeModal').off('click').on('click', function() {
+	$('#closeModal2').off('click').on('click', function() {
         $('#adminModal').css('display', 'none'); // 모달 숨기기
         window.location.reload();
     });

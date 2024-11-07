@@ -47,6 +47,10 @@ public interface ReviewDAO {
 
 	List<ReviewDTO> dontWrite(Map<String, Object> params);
 
+	int allStoreCount(Map<String, Object> param);
+
+	List<ReviewDTO> getReviewAlluser2(Map<String, Object> param);
+
 	
 
 	
