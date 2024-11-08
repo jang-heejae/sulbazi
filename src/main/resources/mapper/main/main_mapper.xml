@@ -7,7 +7,7 @@
 		SELECT * FROM store ORDER BY star_average DESC LIMIT 4
 	</select>
 	<select id="mainChat" parameterType="com.sulbazi.chat.UserChatroomDTO">
-		SELECT * FROM userchat ORDER BY userchat_state = 1 ORDER BY userchat_date DESC LIMIT 4
+		SELECT * FROM userchat WHERE userchat_state = 1 ORDER BY userchat_date DESC LIMIT 4
 	</select>
 	<select id="profile" parameterType="com.sulbazi.member.UserDTO">
 		SELECT user_photo, user_nickname FROM user WHERE user_id = #{user_id}
