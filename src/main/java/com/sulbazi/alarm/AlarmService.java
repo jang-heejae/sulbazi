@@ -145,6 +145,8 @@ public class AlarmService {
 			insertalarm.setAlarm_subject(chatroomname);
 			alarm_dao.alarminsert(insertalarm);
 			int alarm_idx= insertalarm.getAlarm_idx();
+			chatroom.put("getuser_id", chatroomboss); //발신자
+			chatroom.put("user_id", user_id); //수신자
 			chatroom.put("alarm_idx", alarm_idx);
 			chatroom.put("chatroomname", chatroomname);
 			chatroom.put("alarm", alarm);
@@ -157,7 +159,7 @@ public class AlarmService {
     
 	//대화방 거절 당함 알림
 	public Map<String, Object> chatroomdeny(String chatroomboss, String user_id) {
-		logger.info(chatroomboss);
+		logger.info(chatroomboss); 
 		logger.info(user_id);
 		UserChatroomDTO userchatroomdto = alarm_dao.userchatroominfo(chatroomboss);
 		int chatroom_idx = userchatroomdto.getUserchat_idx();//대화방 idx
@@ -186,6 +188,8 @@ public class AlarmService {
 			insertalarm.setAlarm_subject(chatroomname);
 			alarm_dao.alarminsert(insertalarm);
 			int alarm_idx= insertalarm.getAlarm_idx();
+			chatroom.put("getuser_id", chatroomboss); //발신자
+			chatroom.put("user_id", user_id); //수신자
 			chatroom.put("alarm_idx", alarm_idx);
 			chatroom.put("chatroomname", chatroomname);
 			chatroom.put("alarm", alarm);	
@@ -230,6 +234,8 @@ public class AlarmService {
 			insertalarm.setAlarm_subject(chatroomname);
 			alarm_dao.alarminsert(insertalarm);
 			int alarm_idx= insertalarm.getAlarm_idx();
+			chatroom.put("getuser_id", chatroomboss); //발신자
+			chatroom.put("user_id", user_id); //수신자
 			chatroom.put("alarm_idx", alarm_idx);
 			chatroom.put("alarm", alarm);
 			chatroom.put("chatroomname", chatroomname);
@@ -279,6 +285,8 @@ public class AlarmService {
 			alarm_dao.alarminsert(insertalarm);
 			insertalarm.getAlarm_idx();
 			int alarm_idx= insertalarm.getAlarm_idx();
+			chatroom.put("getuser_id", getuser_id); //발신자
+			chatroom.put("user_id", user_id); //수신자
 			chatroom.put("alarm_idx", alarm_idx);
 			chatroom.put("alarm", alarm);
 			chatroom.put("chatroomname", chatroomname);

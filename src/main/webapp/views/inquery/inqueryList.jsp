@@ -4,7 +4,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="resources/css/common.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="resources/jquery.twbsPagination.js" type="text/javascript"></script>
@@ -205,8 +204,16 @@
 
 var showPage = 1;
 var isPaginationInitialized = false; // 초기화 여부 플래그
+var currentFilter = ''; // 현재 필터 상태 저장
+var currentFilterState = ''; // 현재 필터 상태 값 저장
+var currentSearchTerm = ''; // 검색어 저장
+
+// 기본 페이지 호출
 pageCall(showPage);
+
+// 기본 페이지 호출 함수 (필터가 없을 때)
 function pageCall(page) {
+    currentFilter = 'default'; // 필터 상태 업데이트
     $.ajax({
         type: 'GET',
         url: 'inqueryList.do',
@@ -216,25 +223,11 @@ function pageCall(page) {
         },
         dataType: 'JSON',
         success: function(data) {
-            console.log(data);
             if (data && Array.isArray(data.list)) {
                 drawList(data.list);
-
-                if (!isPaginationInitialized) {
-                    // 초기화가 안 되어 있을 때만 페이지네이션 초기화
-                    $('.pagination').twbsPagination({
-                        startPage: page,
-                        totalPages: data.inquerytotalPages,
-                        visiblePages: 3,
-                        onPageClick: function(evt, page) {
-                            console.log('Page:', page);
-                            pageCall(page);
-                        }
-                    });
-                    isPaginationInitialized = true; // 초기화 완료 상태로 설정
-                }
-            } else {
-                console.error('Unexpected response format:', data);
+                setPagination(data.inquerytotalPages, function(evt, page) {
+                    pageCall(page); // 기본 페이지 호출 시
+                });
             }
         },
         error: function(e) {
@@ -243,139 +236,138 @@ function pageCall(page) {
     });
 }
 
-/* 문의 리스트 필터링 */
+// 필터링된 페이지 호출
 $('#inqueryfiltering').click(function() {
     var inquerystate = $(':input:radio[name=inquerystate]:checked').val();
-    console.log(inquerystate);
-    var page = 1;
+    showPage = 1;
+    currentFilterState = inquerystate; // 필터 상태 값 저장
+    currentFilter = 'filter'; // 필터 상태 업데이트
     isPaginationInitialized = false; // 초기화 상태 리셋
-    pageCallfiltering(page);
-
-    function pageCallfiltering(page) {
-        $.ajax({
-            type: 'GET',
-            url: 'inqueryFiltering.ajax',
-            data: {
-                'inquerystate': inquerystate,
-                'page': page,
-                'cnt': 15
-            },
-            dataType: 'JSON',
-            success: function(data) {
-                console.log(data);
-                if (data && Array.isArray(data.list)) {
-                    drawList(data.list);
-
-                    if (!isPaginationInitialized) {
-                        $('.pagination').twbsPagination({
-                            startPage: page,
-                            totalPages: data.inquerytotalPages,
-                            visiblePages: 5,
-                            onPageClick: function(evt, page) {
-                                console.log('Page:', page);
-                                pageCallfiltering(page);
-                            }
-                        });
-                        isPaginationInitialized = true;
-                    }
-                } else {
-                    console.error('Unexpected response format:', data);
-                }
-            },
-            error: function(e) {
-                console.log(e);
-            }
-        });
-    }
+    pageCallfiltering(showPage, inquerystate); // 필터링에 맞는 페이지 호출
 });
 
-/* 문의자 필터 + ID 검색 */
+function pageCallfiltering(page, inquerystate) {
+    $.ajax({
+        type: 'GET',
+        url: 'inqueryFiltering.ajax',
+        data: {
+            'inquerystate': inquerystate,
+            'page': page,
+            'cnt': 15
+        },
+        dataType: 'JSON',
+        success: function(data) {
+            if (data && Array.isArray(data.list)) {
+                drawList(data.list);
+                setPagination(data.inquerytotalPages, function(evt, page) {
+                    pageCallfiltering(page, inquerystate); // 필터링된 데이터에 맞는 페이지 호출
+                });
+            }
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+// 검색 + 필터링 페이지 호출
 $('#searchIcon').click(function() {
     var inquery_state = $(':input:radio[name=inquerystate]:checked').val();
-    var id_write = document.getElementById("searchinquery").value;
-    console.log(inquery_state);
-    console.log(id_write);
-    var page = 1;
+    var id_write = $('#searchinquery').val();
+    showPage = 1;
+    currentSearchTerm = id_write; // 검색어 저장
+    currentFilter = 'search'; // 검색 상태 업데이트
     isPaginationInitialized = false; // 초기화 상태 리셋
-    pageCallsearch(page);
-
-    function pageCallsearch(page) {
-        $.ajax({
-            type: 'POST',
-            url: 'inquerySearch.ajax',
-            data: {
-                'id_write': id_write,
-                'inquery_state': inquery_state,
-                'page': page,
-                'cnt': 15
-            },
-            dataType: 'JSON',
-            success: function(data) {
-                console.log(data);
-                if (data && Array.isArray(data.list)) {
-                    drawList(data.list);
-
-                    if (!isPaginationInitialized) {
-                        $('.pagination').twbsPagination({
-                            startPage: page,
-                            totalPages: data.inquerytotalPages,
-                            visiblePages: 5,
-                            first: '<<',     
-                            prev: '<',       
-                            next: '>',       
-                            last: '>>', 
-                            onPageClick: function(evt, page) {
-                                console.log('Page:', page);
-                                pageCallsearch(page);
-                            }
-                        });
-                        isPaginationInitialized = true;
-                    }
-                } else {
-                    console.error('Unexpected response format:', data);
-                }
-            },
-            error: function(e) {
-                console.log(e);
-            }
-        });
-    }
+    pageCallsearch(showPage, inquery_state, id_write); // 검색에 맞는 페이지 호출
 });
 
+function pageCallsearch(page, inquery_state, id_write) {
+    $.ajax({
+        type: 'POST',
+        url: 'inquerySearch.ajax',
+        data: {
+            'id_write': id_write,
+            'inquery_state': inquery_state,
+            'page': page,
+            'cnt': 15
+        },
+        dataType: 'JSON',
+        success: function(data) {
+            if (data && Array.isArray(data.list)) {
+                drawList(data.list);
+                setPagination(data.inquerytotalPages, function(evt, page) {
+                    pageCallsearch(page, inquery_state, id_write); // 검색된 데이터에 맞는 페이지 호출
+                });
+            }
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+// 페이지네이션 설정
+function setPagination(totalPages, onPageClick) {
+    if (!isPaginationInitialized) {
+        $('.pagination').twbsPagination({
+            startPage: showPage,
+            totalPages: totalPages,
+            visiblePages: 5,
+            first: '<<',
+            prev: '<',
+            next: '>',
+            last: '>>',
+            onPageClick: function(evt, page) {
+                showPage = page; // 클릭된 페이지 저장
+                if (currentFilter === 'default') {
+                    pageCall(page); // 기본 페이지 호출
+                } else if (currentFilter === 'filter') {
+                    pageCallfiltering(page, currentFilterState); // 필터링된 페이지 호출
+                } else if (currentFilter === 'search') {
+                    pageCallsearch(page, currentFilterState, currentSearchTerm); // 검색된 페이지 호출
+                }
+            }
+        });
+        isPaginationInitialized = true; // 한 번만 초기화되도록 설정
+    }
+}
+
+// 리스트 렌더링 함수
+function drawList(list) {
+    if (!Array.isArray(list)) {
+        console.error('The provided list is not an array:', list);
+        return;
+    }
+    var content = '';
+    list.forEach(function(item) {
+        content += '<tr>';
+        content += '<td>' + item.id_write + '</td>';
+        content += '<td><a href="inqueryDetail.go?inqueryIdx=' + item.inquery_idx + '">' + item.inquery_subject + '</a></td>';
+        content += '<td>' + formatDate(item.inquery_date) + '</td>';
+        content += '<td>' + getInqueryStatus(item.inquery_state) + '</td>';
+        content += '<td>' + "관리자" + '</td>';
+        content += '</tr>';
+    });
+    $('#list').html(content);
+}
+
+// 날짜 포맷 함수
 function formatDate(dateString) {
-    // Date 객체 생성
     const date = new Date(dateString);
     const today = new Date(); // 오늘 날짜 객체 생성
     if (date.toDateString() === today.toDateString()) {
-        // 오늘이면 시간만 표시
         return date.toLocaleTimeString('en-GB'); // 'HH:mm:ss' 형식
     } else {
-        // 오늘이 아니면 날짜만 표시
         return date.toLocaleDateString('en-CA'); // 'YYYY-MM-DD' 형식
     }
 }
 
+// 문의 상태 처리 함수
 function getInqueryStatus(inqueryState) {
     return inqueryState ? "처리완료" : "처리중";
 }
 
-function drawList(list) {
-    if (!Array.isArray(list)) {
-        console.error('The provided list is not an array:',list);
-        return;
-    }
-	var content = '';
-	list.forEach(function(item,idx) {
-		content+='<tr>';
-		content+='<td>'+item.id_write+'</td>';
-		content+='<td><a href="inqueryDetail.go?inqueryIdx=' + item.inquery_idx + '">' + item.inquery_subject + '</a></td>';
-		content+='<td>'+formatDate(item.inquery_date)+'</td>';
-		content+='<td>'+getInqueryStatus(item.inquery_state)+'</td>';
-		content+='<td>'+"관리자"+'</td>';
-		content+='</tr>';
-	});
-	$('#list').html(content);
-		
-}
+
+
 </script>
 </html>

@@ -21,18 +21,10 @@
 			VALUES(#{param1}, #{param2},#{param3})
 	</insert>
 	
-	<!-- 일단 join써봄 근데 안되는듯-->
-	<select id="userlistinquery" resultType="com.sulbazi.inquery.InqueryDTO">
-		SELECT * 
-		FROM 
-			inquery
-		INNER JOIN 
-			answer ON inquery.inquery_idx=answer.inquery_idx
-		INNER JOIN 
-			admin ON answer.admin_id=admin.admin_id
-		WHERE
-			inquery.id_write=#{param1}
-		ORDER BY inquery_date DESC		
+	<select id="userlistinquery" resultType="map">
+		SELECT inquery_idx,inquery_subject,inquery_state, inquery_date 
+			FROM inquery WHERE id_write=#{param1}	
+			ORDER BY inquery_date DESC
 	</select>
 	
 
@@ -131,7 +123,7 @@
 	</update>
 	
 	<select id="answeradmin" resultType="com.sulbazi.admin.AdminDTO">
-		SELECT admin_name,admin_id 
+		SELECT admin_name,admin_id
 			FROM admin 
 			WHERE admin_id IN (SELECT admin_id FROM answer WHERE inquery_idx = #{param1})
 	</select>
