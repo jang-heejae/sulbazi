@@ -188,6 +188,15 @@ public class UserService {
 	      return response;
 	   }
 	
+	
+	//나의 알림 리스트
+	public void userAlarmgo(String user_id, Model model) { 
+		UserDTO userDto = user_dao.getUserInfo(user_id);
+		model.addAttribute("info", userDto);
+		List<UserDTO> userList = user_dao.files(user_id);
+		model.addAttribute("files", userList); 
+	}
+	
 	//좋아요 눌럿는지 찾아보는 메서드
 	public int userLike(Map<String, Object> params) {
 		

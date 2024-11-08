@@ -22,7 +22,7 @@
 	</insert>
 	
 	<!-- 일단 join써봄 -->
-	<select id="userlistinquery">
+	<select id="userlistinquery" resultType="com.sulbazi.inquery.InqueryDTO">
 		SELECT * 
 		FROM 
 			inquery
@@ -31,7 +31,8 @@
 		INNER JOIN 
 			admin ON answer.admin_id=admin.admin_id
 		WHERE
-			inquery.id_write=#{param1}		
+			inquery.id_write=#{param1}
+		ORDER BY inquery_date DESC		
 	</select>
 	
 
