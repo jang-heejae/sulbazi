@@ -116,6 +116,15 @@
 		UPDATE userchat SET current_people = #{total} WHERE userchat_idx = #{chatroom_idx}
 	</update>
 	
+	<!-- 메뉴바 나의 채팅방 리스트 -->
+	<select id="myroom" resultType="com.sulbazi.chat.UserChatroomDTO">
+		SELECT 
+	</select>
+	
+	
+	
+	
+	
 	
 	
 	<!-- 지역 채팅방 리스트 -->
