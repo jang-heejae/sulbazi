@@ -46,6 +46,7 @@ function startSseConnection() {
      // 로그인한 사용자에게 맞는 알림만 추가
      if (newAlarm.receiverId === loggedInUserId) {
          addAlarm(newAlarm);
+         addAlarm2(newAlarm); 
          displayNotifications();
      	}
  	};
@@ -62,10 +63,6 @@ function clearNotifications() {
     // 모든 .notification 클래스를 가진 요소들 가져오기
     const notificationsElements = document.querySelectorAll('.notification');
     
-    // 두 번째 .notification 요소가 있을 경우 그 요소의 알림을 제거
-    if (notificationsElements.length > 1) {
-        notificationsElements[1].innerHTML = ''; // 두 번째 .notification 요소의 알림 제거
-    }
 }
 
 //알림 추가 함수
@@ -76,20 +73,16 @@ function addAlarm(notification) {
 
 
 function clearNotifications2() {
-    notificationsList = []; // 기존 알림 리스트 초기화
+    notificationsList2 = []; // 기존 알림 리스트 초기화
 
     // 모든 .notification 클래스를 가진 요소들 가져오기
     const notificationsElements = document.querySelectorAll('.notification2');
     
-    // 두 번째 .notification 요소가 있을 경우 그 요소의 알림을 제거
-    if (notificationsElements.length > 1) {
-        notificationsElements[1].innerHTML = ''; // 두 번째 .notification 요소의 알림 제거
-    }
 }
 
 //알림 추가 함수
 function addAlarm2(notification) {
- 	notificationsList.push(notification);
+ 	notificationsList2.push(notification);
  	console.log("새 알림 추가:", notification);
 }
 
@@ -155,12 +148,12 @@ function displayNotifications2() {
                const acceptButton = document.createElement('button');
                acceptButton.textContent = '수락';
                acceptButton.setAttribute('class', "inoutbutton");
-               acceptButton.onclick = () => handleAccept(notification);  // 수락 클릭시 호출 함수
+               acceptButton.onclick = () => handleAccept2(notification);  // 수락 클릭시 호출 함수
 
                const denyButton = document.createElement('button');
                denyButton.textContent = '거절';
                denyButton.setAttribute('class', "inoutbutton");
-               denyButton.onclick = () => handleDeny(notification); // 거절 클릭시 호출 함수
+               denyButton.onclick = () => handleDeny2(notification); // 거절 클릭시 호출 함수
 
                notificationItem.appendChild(acceptButton);
                notificationItem.appendChild(denyButton);
@@ -176,6 +169,7 @@ function displayNotifications2() {
        });
    });
 }
+
 //읽음 처리 함수
 function markAsRead(notification) {
 	console.log(notification.alarm_idx);
@@ -193,6 +187,7 @@ function markAsRead(notification) {
             console.log("알림 읽음 처리 성공:", response);
             notificationsList = notificationsList.filter(alarm => alarm.alarm_idx !== notification.alarm_idx);
             displayNotifications(); // 업데이트된 목록 표시
+            displayNotifications2(); // 업데이트된 목록 표시
         },
         error: function(error) {
             console.error("알림 읽음 처리 실패:", error);
@@ -246,6 +241,24 @@ function sendNotification(newAlarm) {
     });
 }
 
+/* function sendNotification2(newAlarm) {
+    const receiverId = newAlarm.receiverId;
+
+    // AJAX POST 요청을 통해 서버에 알림 전송
+    $.ajax({
+        type: 'POST',
+        url: 'notifications/send', // 알림을 전송할 서버 엔드포인트
+        data: JSON.stringify(newAlarm),
+        contentType: 'application/json',
+        success: function(response) {
+            console.log("알림이 성공적으로 전송되었습니다:", response);
+        },
+        error: function(e) {
+            console.error("알림 전송 실패:", e);
+        }
+    });
+} */
+
 // 수락
 function handleAccept(notification){
 	 $.ajax({
@@ -288,6 +301,7 @@ function handleDeny(notification){
                 alarm_idx: alarmresponse.alarm_idx //알림 idx
             };
             sendNotification(newAlarm); // 알림 전송 함수 호출
+            
         },
         error: function(e) {
             console.log("AJAX 요청 실패:", e);
