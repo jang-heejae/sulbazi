@@ -1,7 +1,9 @@
 package com.sulbazi.board;
 
+import java.security.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class BoardDTO {
 	
@@ -9,7 +11,7 @@ public class BoardDTO {
 	private int store_idx;
 	private String board_subject;
 	private String board_content;
-	private LocalDate board_date;
+	private Date board_date;
 	private int board_bHit;
 	private int like_count;
 	private String board_category;
@@ -52,10 +54,10 @@ public class BoardDTO {
 	public void setBoard_content(String board_content) {
 		this.board_content = board_content;
 	}
-	public LocalDate getBoard_date() {
+	public Date getBoard_date() {
 		return board_date;
 	}
-	public void setBoard_date(LocalDate board_date) {
+	public void setBoard_date(Date board_date) {
 		this.board_date = board_date;
 	}
 	public int getBoard_bHit() {
