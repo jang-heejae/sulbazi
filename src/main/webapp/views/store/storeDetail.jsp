@@ -79,6 +79,7 @@
             .operating{
                 width: 95%;
                 height: 100%;
+                display:contents;
             }
             fieldset{
                 background-color: rgba(255, 255, 255, 0);
@@ -90,8 +91,9 @@
                 padding: 5px 10px;
             }
             .imgview {
-                width: 100%;
-                height: auto;
+                width: 130px;
+                height: 130px;
+                margin: 1px -26px 1px 24px;
             }
             #mainimg{
             	width: 100%;
@@ -135,7 +137,7 @@
 				border:0px;
 			}
 			.mapwhatname{
-				margin: 0 0 80px 0 ;
+				margin: 0 0 20px 0 ;
 				border-radius: 8px;
 				display: flex;
 			}
@@ -235,8 +237,11 @@ img.preview{
 	cursor: pointer;
 }
 img.review-photo{
-	max-width: 100px;
-	max-height: 100px;
+/* 	max-width: 100px;
+	max-height: 100px; */
+ 	width: 100px;
+	height: 100px; 
+	margin: 0px 28px 1px 17px;
 }
 			
 .reply-btn > button {
@@ -441,9 +446,9 @@ img.review-photo{
 }
 /* 영업시간 */
 #timeStamp{
-	margin-right: 50px;
 	float: right;
 	opacity: 0.5;
+	margin: 0 0 0 0;
 }   
 
 #inoutphoto{
@@ -580,6 +585,7 @@ background: linear-gradient(0deg, rgba(255,27,0,1) 0%, rgba(251,75,2,1) 100%);
    4px 4px 5px 0px rgba(0,0,0,.1);
   outline: none;
   align-items:center;
+  justify-content:space-around;
 }
 /* 유저 프로필 모달 */
 .user_profile {
@@ -714,6 +720,16 @@ cursor: pointer;
             padding: 5px 10px; /* 여백 추가 */
             text-align: center;
 }
+.updown{
+	position: relative;
+	top: 4px;
+	left: -8px;
+}
+.update-photo{
+    width: 100px;
+    height: 100px;
+}
+
 
     
 
@@ -736,7 +752,7 @@ cursor: pointer;
 </c:choose>
 
 
-<!--  	<form id="somesearch">
+  	<form id="somesearch">
        <div class="search-container">
            <select class="search-select" id="searchCategory">
                <option value="menu">메뉴</option>
@@ -750,7 +766,7 @@ cursor: pointer;
                </button>
            </div>
        </div>
-   </form> -->
+   </form>
  
         <main>
         
@@ -926,7 +942,7 @@ cursor: pointer;
 						        </div>
 						            <div class="bloom">
 						                <div class="form-floating">
-						                        <textarea class="form-control" placeholder="--내용--" id="text-area" style="height: 100px"></textarea>
+						                        <textarea class="form-control" placeholder="--500자 까지밖에 작성이 불가합니다.--" id="text-area" style="height: 100px" maxlength="500"></textarea>
 						                </div>
 						            </div>
 						
@@ -1229,14 +1245,14 @@ cursor: pointer;
 
  			
 			 	if (review.comm_content != null ) {
- 			 	content +='<button class="action-button btn-light rething store-user hide" onclick="replyDown(this)">답글</button>';
+ 			 	content +='<button class="action-button btn-light rething store-user hide updown" onclick="replyDown(this)">답글</button>';
 				}else {
- 			 	content +='<button class="action-button btn-light store-user hide" onclick="replyDown(this)">답글</button>';
+ 			 	content +='<button class="action-button btn-light store-user hide updown" onclick="replyDown(this)">답글</button>';
 				}
 			 	if (review.user_id == loginId || opt == 'admin_log') {
- 			 	content += '<button id="user-check" class="action-button btn-light" onclick="reviewUpdate(this,' + idx + ',' + review.review_idx + ')">수정</button>';
+ 			 	content += '<button id="user-check" class="action-button btn-light updown" onclick="reviewUpdate(this,' + idx + ',' + review.review_idx + ')">수정</button>';
  			    } 
- 			 	content += '<button id="user-check" class="action-button btn-light hide" onclick="reviewUpdate(this,' + idx + ',' + review.review_idx + ')">수정</button>';
+ 			 	content += '<button id="user-check" class="action-button btn-light hide updown" onclick="reviewUpdate(this,' + idx + ',' + review.review_idx + ')">수정</button>';
  			 	
  			 	
  			 	/* 신고하기 버튼  */
@@ -1248,9 +1264,9 @@ cursor: pointer;
 				}
 
 			 	if (review.user_id == loginId || opt == 'admin_log' ) {
- 			 	content += '<button id="user-check" class="action-button btn-light tttt" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
+ 			 	content += '<button id="user-check" class="action-button btn-light tttt updown" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
 			 	}
- 			 	content += '<button id="user-check" class="action-button btn-light hide tttt" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
+ 			 	content += '<button id="user-check" class="action-button btn-light hide tttt updown" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
  			 	
  			 	
  			 	content += '<div id="line"></div></td></tr>';
@@ -1259,7 +1275,7 @@ cursor: pointer;
  			 	//답글영역
 content += '<tr class="hide reply-show">';
 content += '<td colspan="3" >';
-content += '<textarea class="form-control reply-text" placeholder="답글 입력은 한 번만 가능합니다. 신중히 작성해주세요. 수정은 가능합니다." style="max-height: 80px"></textarea>';
+content += '<textarea class="form-control reply-text" placeholder="답글 입력은 한 번만 가능합니다. 신중히 작성해주세요. 수정은 가능합니다.200내로 작성해 주세요" style="max-height: 80px" maxlength="200"></textarea>';
 content += '</td>';
 content += '</tr>';
 
@@ -1281,7 +1297,7 @@ content += '</tr>';
  			 	listContainer.innerHTML += content;
  			});
  			$('.thing').removeClass('hide');
-			 	if (loginId == storeId) {
+			 	if (loginId == storeId || opt == 'admin_log') {
  			 	    $('.store-user').removeClass('hide');
 				}
 			 	
@@ -1309,7 +1325,7 @@ content += '</tr>';
 					
 					
 				}else{
-					alert('작성하신 리뷰가 있습니다 한번밖에 작성안되기 떄문에 수정으로 대체 부탁드리겠습니다 ');
+					alert('작성하신 리뷰가 있습니다 한번밖에 작성안되기 때문에 수정으로 대체 부탁드리겠습니다 ');
 					
 				}
 					
@@ -1406,20 +1422,31 @@ content += '</tr>';
  		}
  		
   	   // 이미지 프리뷰
- 		function readFile(input){
- 			console.log( "온체인지 파일: "+input.files);
- 			var reader;
- 			$('#img_list').empty();
- 			
- 			for (var file of input.files) {
- 				reader = new FileReader();
- 				reader.readAsDataURL(file);
- 				reader.onload = function(e){
- 					$('#img_list').append('<img class = "preview" src="'+e.target.result+'"/>');
- 				}
- 			}
- 			
- 		}
+function readFile(input) {
+    console.log("온체인지 파일: " + input.files);
+    var reader;
+    $('#img_list').empty();
+
+    // 현재 수정 중인 리뷰의 기존 이미지 개수 가져오기
+    var existingImages = $('#qwewe img').length; // 수정 중인 리뷰의 기존 이미지 수
+    var totalImages = existingImages + input.files.length; // 총 이미지 개수
+
+    // 파일 개수 확인
+    if (totalImages > 5) {
+        alert("기존 이미지를 포함하여 최대 5개까지 이미지를 업로드할 수 있습니다.");
+        input.value = ""; // 파일 선택 초기화
+        return;
+    }
+
+    for (var file of input.files) {
+        reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(e) {
+            $('#img_list').append('<img class="preview" src="' + e.target.result + '"/>');
+        }
+    }
+}
+
   	   
   	   // 수정 할때 사진 폼
 /*  		function readPhoto(input){
@@ -1618,7 +1645,7 @@ function replyUp(button) {
  		        reviewListIdx.photos.forEach(function(photo, index) {
  		            content += '<tr class = "reviewSomePhoto">';
  		            content += '<td>';  // `<td>` 추가로 잘못된 구조를 방지합니다.
- 		            content += '<img src="photo/' + photo + '" alt="review photo" class="update-photo review-photo">';
+ 		            content += '<img src="photo/' + photo + '" alt="review photo" class="update-photo update-photo">';
  		            content += '<button type="button" onclick="photoCheck(this, \'' + photo + '\', ' + idx + ')" class="photo-check">사진 삭제</button>';
  		            content += '</td>';
  		            content += '</tr>';
@@ -1789,7 +1816,6 @@ function replyUp(button) {
                   if (data.success) {
                       alert('신고가 접수되었습니다.');
                       $('#exampleModalCenter').modal('hide');
-                      $('#exampleModalCenter')
                   } else {
                       alert('신고 처리에 실패했습니다. 다시 시도해주세요.');
                   }
@@ -1908,7 +1934,11 @@ function replyUp(button) {
                 } else if (userdto.user_gender == '여') {
                     content += '<button class="gendergirl btn-button"><span class="girl">♀</span>&nbsp;'+userdto.user_gender+'</button>';
                 }
+                if (opt == 'user_log') {
                 content += '<button class="like btn-button" id="userLike" onclick="clickLike(\'' + userdto.user_id + '\')">';
+				}else {
+	                content += '<button class="like btn-button" id="userLike" >';
+				}
                 if (userLikedto != 0) {
                 content += '<img class="jongwonIcon" src="resources/img/이종원 좋아요후.png">좋아요'+userdto.user_likecount+'</button>';
 				}else {
@@ -1955,7 +1985,13 @@ function replyUp(button) {
  				},
  				error:function(e){
  					console.log(e);
- 					alert("좋아요를 실패하셨습니다. 다시 확인해 주세요.");
+ 					if (opt == 'admin_log') {
+						alert("관리자는 좋아요를 할수없습니다 다시 확인해 주세요");
+					}else if (opt == 'store_log') {
+						alert("매장회원은 좋아요를 할수 없습니다 다시 확인해 주세요");
+					}else{
+	 					alert("좋아요를 실패하셨습니다. 다시 확인해 주세요.");
+					}
  				}
  			});
  			}else{
@@ -1977,15 +2013,27 @@ function replyUp(button) {
 		    sidebar.style.width = "0"; // 사이드바 너비 0으로 설정
 		}  */
 		
-		
+
 		// 매장 서치 이동해보자
-/* $('#performSearch').click(function() {
+$('#performSearch').click(function() {
     var category = document.getElementById("searchCategory").value;
     var keyword = document.getElementById("searchQuery").value;
     var category1 = encodeURIComponent(category);
     var keyword1 = encodeURIComponent(keyword);
-    window.location.href = '/storeList.go?category=' + category1 + '&keyword=' + keyword1;
-}); */
+    window.location.href = '/SULBAZI/storeList.go?category=' + category1 + '&keyword=' + keyword1;
+}); 
+//엔터키 이벤트
+$('#searchQuery').keydown(function(event) {
+    if (event.key == "Enter") {
+    	event.preventDefault()
+        var category = document.getElementById("searchCategory").value;
+        var keyword = document.getElementById("searchQuery").value;
+        var category1 = encodeURIComponent(category);
+        var keyword1 = encodeURIComponent(keyword);
+        window.location.href = '/SULBAZI/storeList.go?category=' + category1 + '&keyword=' + keyword1;
+    }
+});		
+		
  		
     </script>
 </html>

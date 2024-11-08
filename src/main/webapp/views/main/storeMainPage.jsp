@@ -14,7 +14,7 @@
     	width: 514px;
 	} 
 	#mainSearch{
-		width: 283px; 
+		width: 322px; 
 		padding: 10px;
 		border-radius: 20px;
 	}
@@ -189,9 +189,9 @@
 		<ul>
 			<li>
 				<select id="search_cate" name="search_cate">
-                	<option value="search_menu">메뉴</option>
-                    <option value="menu_name">메뉴 + 매장 이름</option>
-                    <option value="store_address">매장 주소</option>
+                	<option value="menu">메뉴</option>
+                    <option value="name">매장이름</option>
+                    <option value="addr">매장 주소</option>
                	</select>
            		<input type="text" id="mainSearch" name="mainSearch" value=""/>
            		<i class="fas fa-search" id="searchIcon"></i>
@@ -254,6 +254,23 @@
 </section>
 </body>
 <script>
-
+$('#searchIcon').click(function() {
+    var category = document.getElementById("search_cate").value;
+    var keyword = document.getElementById("mainSearch").value;
+    var category1 = encodeURIComponent(category);
+    var keyword1 = encodeURIComponent(keyword);
+    window.location.href = '/SULBAZI/storeList.go?category=' + category1 + '&keyword=' + keyword1;
+}); 
+//엔터키 이벤트
+$('#mainSearch').keydown(function(event) {
+    if (event.key == "Enter") {
+    	event.preventDefault()
+        var category = document.getElementById("search_cate").value;
+        var keyword = document.getElementById("mainSearch").value;
+        var category1 = encodeURIComponent(category);
+        var keyword1 = encodeURIComponent(keyword);
+        window.location.href = '/SULBAZI/storeList.go?category=' + category1 + '&keyword=' + keyword1;
+    }
+});
 </script>
 </html>
