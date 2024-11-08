@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
     .boardlist{
         position: absolute;
         width: 1200px;
@@ -23,6 +24,7 @@
         padding: 20px;
         box-sizing: border-box;
         top: 80px;
+        font-family: "Yeon Sung", system-ui;
     }
     td{
         padding: 1%;
@@ -45,6 +47,7 @@
        position: absolute;
        top: 216px;
        right: 327px;
+       font-family: "Yeon Sung", system-ui;
     }
     .pagination {
        display: flex; /* Flexbox로 설정 */
@@ -107,27 +110,17 @@
         padding: 5px 10px;
         cursor: pointer;
         border-radius: 5px;
+        font-family: "Yeon Sung", system-ui;
     }
 
     #reportList input[type="radio"]:checked + label.category {
         background-color: rgb(255, 140, 9);
         color: white;
     }
-    .sear{
+    #sear{
     	position: absolute;
     	top: 154px;
     	left: 835px;
-    }
-    .sear::before {
-        content: '\f002';
-        font-family: 'Font Awesome 5 Free';
-        font-weight: 900;
-        position: absolute;
-        left: 80%;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 18px;
-        color: #000;
     }
     .boar{
     	width: 240px;
@@ -136,6 +129,7 @@
     }
 </style>
 <body>
+<c:import url="../main/main.jsp"/>
 <c:choose>
     <c:when test="${sessionScope.opt == 'admin_log'}">
         <jsp:include page="../main/adminMain.jsp" />
@@ -163,8 +157,8 @@
 	    <input type="radio" name="board_category" id="category_newopen" value="신규오픈">
 	    <label for="category_newopen" class="category">신규오픈</label>
 	</div>
-   <div class="sear">
-	    <input type="text" name="board_search" value="" class="boar" />
+   <div class="sear" id="sear">
+	    <input type="text" id="searchInput" name="board_search" value="" class="boar" />
    </div>
     <div class="writebutton" style="text-align: right; margin: 10px;">
        <c:if test="${not empty sessionScope.opt && sessionScope.opt == 'store_log'}">
@@ -184,10 +178,9 @@
          </nav>
       </div>
     </div>
-    
+    <div class="si"></div>
 </body>
 <script>
-
 var showPage = 1;
 pageCall(showPage);
 
@@ -241,7 +234,7 @@ function drawList(list) {
                 item.board_bHit + 
                 '</td>';
             content += '<td>' + item.store_name + '</td>'; // store_id가 포함되어 있어야 함
-            content += '<td>' + item.board_date + '</td>';
+            content += '<td>' + formatDateTime(item.board_date) + '</td>';
             content += '<td style="display: none;">' + item.board_state + '</td>'; // 숨김 처리
             content += '</tr>';
         }
@@ -254,9 +247,11 @@ $(document).ready(function() {
     $('input[name="board_state"], input[name="board_category"]').change(function() {
         board_filter('filter');
     });
-    $('#searchButton').click(function() {
-       board_filter('search');   
-    });   
+    $('input[name="board_search"]').keypress(function(event) {
+        if (event.key === 'Enter') {
+            board_filter('search');
+        }
+    });
    });
 
 
@@ -281,25 +276,18 @@ function board_filter(action) {
       }
    });
 }
-
-$(document).ready(function() {
-    pageCall(showPage);
-
-    $('input[name="board_state"], input[name="board_category"]').change(function() {
-        board_filter('filter');
-    });
-
-    $('#searchButton').click(function() {
-        board_filter('search');   
-    });
-
-    // Enter key 이벤트 추가
-    $('input[name="board_search"]').keypress(function(event) {
-        if (event.key === 'Enter') {
-            board_filter('search');
-        }
-    });
-});
-
+function formatDateTime(date) {
+    var d = new Date(date); // Date 객체로 변환
+    var options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    };
+    return d.toLocaleString('ko-KR', options); // 한국 시간대 형식으로 출력
+}
 </script>
 </html>

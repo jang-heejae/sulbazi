@@ -145,18 +145,18 @@
             </div>
         </nav>
     </header>
-    <form action="userJoin.do" method="post" enctype="multipart/form-data">
+    <form action="userJoin.do" method="post"  id="joinForm" enctype="multipart/form-data" onsubmit="return validateForm()">
         <div class="container">
             <div class="wrapper">
                 <h2>사용자 회원가입</h2>
-                <input id="idc" type="text" name="user_id" value="" placeholder="아이디(필수)"/>&nbsp;<button type="button" id="checkIdBtn">중복확인</button>
+                <input id="idc" type="text" name="user_id" value="" placeholder="아이디(필수)" oninput="validateIdInput(event)" required />&nbsp;<button type="button" id="checkIdBtn">중복확인</button>
 	            <br>
 	            <span id="idCheckMessage"></span>
 	            <br>
-                <input type="password" id="user_pw" name="user_pw" value="" placeholder="비밀번호(필수)">
-                <input type="password" id="user_pwcheck" name="user_pwcheck" value="" placeholder="비밀번호 확인(필수)"><span id="pwCheckMessage"></span>
+                <input type="password" id="user_pw" name="user_pw" value="" placeholder="비밀번호(필수)" required>
+                <input type="password" id="user_pwcheck" name="user_pwcheck" value="" placeholder="비밀번호 확인(필수)" required><span id="pwCheckMessage"></span>
                 <h6>※ 비밀번호 8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해주세요.</h6>
-                <input id="numb" type="text" name="user_email" value="" placeholder="이메일(필수)" />
+                <input id="numb" type="text" name="user_email" value="" placeholder="이메일(필수)" required/>
 				<button type="button" id="checkEmailBtn">중복확인</button>
                 <br>
 	            <span id="emailCheckMessage"></span>
@@ -164,10 +164,10 @@
                 <input type="radio" name="user_gender" value="남">남
                 <input type="radio" name="user_gender" value="여">여
                 <br>
-                <input type="text" name="user_nickname" value="" placeholder="닉네임(필수)">
-                <input type="text" name="user_name" value="" placeholder="이름(필수)">
-                <input type="text" name="user_birth" value="" placeholder="생년월일(필수)">
-                <input type="text" name="user_phone" value="" placeholder="핸드폰번호(필수)" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                <input type="text" name="user_nickname" value="" placeholder="닉네임(필수)" required>
+                <input type="text" name="user_name" value="" placeholder="이름(필수)" required>
+                <input type="text" name="user_birth" value="" placeholder="생년월일(필수)" required>
+                <input type="text" name="user_phone" value="" placeholder="핸드폰번호(필수)" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                 <h2>프로필 사진</h2>
                 <div id="img_list"><img class="preview" src="resources/img/sulbazi.png" style="max-width: 100px; max-height: 100px; margin: 5px;"/></div>
                 <input type="file" name="files" multiple="multiple" onchange="readFile(this)">
@@ -176,7 +176,7 @@
 				    <legend>주종</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 1}">
-				            <input type="radio" id="category_${category.category_idx}" name=category1 value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=category1 value="${category.opt_idx}" required/>
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -186,7 +186,7 @@
 				    <legend>안주</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 2}">
-				            <input type="radio" id="category_${category.category_idx}" name=category2 value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=category2 value="${category.opt_idx}" required/>
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -196,7 +196,7 @@
 				    <legend>분위기</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 3}">
-				            <input type="radio" id="category_${category.category_idx}" name=category3 value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=category3 value="${category.opt_idx}" required/>
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -206,22 +206,41 @@
 				    <legend>방문목적</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 4}">
-				            <input type="radio" id="category_${category.category_idx}" name=category4 value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=category4 value="${category.opt_idx}" required/>
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
 				</fieldset>
         	</div>
         </div>
-        <button type="submit" >회원가입</button>
+        <button type="submit">회원가입</button>
     </form>
 </body>
     <script>
+    function validateForm() {
+        var requiredFields = document.querySelectorAll('input[required]');
+        for (var i = 0; i < requiredFields.length; i++) {
+            if (requiredFields[i].value.trim() === "") {
+                alert("회원정보 양식에 맞춰 작성해주세요.");
+                requiredFields[i].focus(); // 빈 입력란에 포커스를 맞추기
+                return false; // 폼 제출 방지
+            }
+        }
+        
+        alert("회원가입에 성공하셨습니다.");
+        return true; // 폼 제출 허용
+    }
+    function validateIdInput(event) {
+        // 입력값이 영어 대소문자만 포함되도록 필터링
+        var input = event.target;
+        input.value = input.value.replace(/[^a-zA-Z0-9]/g, ''); // 영어 외의 문자는 제거
+    }
 	    $(document).ready(function() {
 	        $('#checkIdBtn').click(function(event) {
 	        	event.preventDefault();
 	        	console.log("checkIdBtn 클릭됨");
 	            const userId = $('input[name="user_id"]').val();
+	        
 	            $.ajax({
 	                type: 'POST',
 	                url: 'checkid.ajax',
@@ -235,6 +254,17 @@
 	                }
 	            });
 	        });
+	        $("#joinForm").submit(function(event) {
+	            var password = $("#user_pw").val();
+	            var confirmPassword = $("#user_pwcheck").val();
+
+	            // 비밀번호와 비밀번호 확인이 다를 경우
+	            if (password !== confirmPassword) {
+	                event.preventDefault(); // 폼 제출 방지
+	                alert("비밀번호가 다릅니다."); // 경고창 띄우기
+	                return false; // 화면 유지
+	            }
+	        });	
 	     
 		        $('#checkEmailBtn').click(function(event) {
 		        	event.preventDefault();

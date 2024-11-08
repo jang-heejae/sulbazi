@@ -9,6 +9,7 @@
     <script src="https://kit.fontawesome.com/6282a8ba62.js" crossorigin="anonymous"></script>
 </head>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
     .boardlist{
         position: relative;
         width: 1200px;
@@ -19,6 +20,7 @@
         left: 20%;
         padding: 3% 10% 3% 10%;
         box-sizing: border-box;
+        font-family: "Yeon Sung", system-ui;
     }
     .bboard{
        background-color: white;
@@ -65,7 +67,7 @@
       vertical-align: top;
    }
    .like-button {
-    background-color: #041d03;
+    background-color: rgb(255, 140, 9);
     border: none;
     color: red;
     font-size: 15px;
@@ -120,6 +122,9 @@
 </style>
 </head>
 <body>
+
+<c:import url="../main/main.jsp"/>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:choose>
     <c:when test="${sessionScope.opt == 'admin_log'}">
         <jsp:include page="../main/adminMain.jsp" />
@@ -151,7 +156,9 @@
                <th></th>
                <th></th>
                <th></th>
-               <th class="date">${info.board_date}</th>
+               <th class="date">
+			       <fmt:formatDate value="${info.board_date}" pattern="yyyy.MM.dd HH:mm:ss" />
+			   </th>
             </tr>
          </table>
                <c:if test="${not empty files}">
@@ -195,14 +202,14 @@
                      </c:if>
                      <c:if test="${detailcheck == 0}">
                          <button id="likeButton" class="like-button" onclick="like()">
-                             <i class="fa-solid fa-heart" id="heartIcon" style="color: blue;"></i> 
+                             <i class="fa-solid fa-heart" id="heartIcon" style="color: gray;"></i> 
                              <span id="likeCount">${info.like_count}</span>
                          </button>
                      </c:if>
                      </c:if>
                   </th>
                  	<th>
-					   <c:if test="${sessionScope.loginId == store}">
+					   <c:if test="${sessionScope.loginId == store || sessionScope.opt == 'admin_log'}">
 					      <a href="javascript:void(0);" class="buttonn" onclick="confirmDelete('${info.board_idx}')">삭제</a>
 					   </c:if>
 					</th>
@@ -238,7 +245,7 @@ function like(){
             if (data.Check) {
                   $('#heartIcon').removeClass('fa-heart-o').addClass('fa-heart').css('color', 'red'); // 좋아요 한 경우
               } else {
-                 $('#heartIcon').removeClass('fa-heart-o').addClass('fa-heart').css('color', 'blue'); // 좋아요 취소한 경우
+                 $('#heartIcon').removeClass('fa-heart-o').addClass('fa-heart').css('color', 'gray'); // 좋아요 취소한 경우
               }
          }else {
             alert('좋아요 실패');
