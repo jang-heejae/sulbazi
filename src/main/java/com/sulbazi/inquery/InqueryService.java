@@ -78,8 +78,8 @@ public class InqueryService {
 	
 	}
 
-	public List<HashMap<String, Object>> userlistinquery(String id) {
-	    List<HashMap<String, Object>> userinquerylist = inquery_dao.userlistinquery(id);
+	public List<InqueryDTO> userlistinquery(String id) {
+	    List<InqueryDTO> userinquerylist = inquery_dao.userlistinquery(id);
 	    return userinquerylist;
 	}
 	

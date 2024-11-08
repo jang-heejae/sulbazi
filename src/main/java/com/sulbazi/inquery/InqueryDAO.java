@@ -15,7 +15,7 @@ public interface InqueryDAO {
 
 	int inqueryfileWrite(int photocategory, String newFileName,int photofolderidx);
 
-	List<HashMap<String, Object>> userlistinquery(String id);
+	List<InqueryDTO> userlistinquery(String id);
 
 	List<HashMap<String, Object>> admininquerylist(int limit, int cnt);
 

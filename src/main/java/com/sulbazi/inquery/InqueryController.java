@@ -58,7 +58,7 @@ public class InqueryController {
 		String id = (String) session.getAttribute("loginId");
 		logger.info(id);
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<HashMap<String, Object>> list = inquery_ser.userlistinquery(id);
+		List<InqueryDTO> list = inquery_ser.userlistinquery(id);
 		map.put("list", list);
 		return map;
 	}
