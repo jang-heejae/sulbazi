@@ -58,7 +58,7 @@ public class InqueryController {
 		String id = (String) session.getAttribute("loginId");
 		logger.info(id);
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<InqueryDTO> list = inquery_ser.userlistinquery(id);
+		List<HashMap<String, Object>> list = inquery_ser.userlistinquery(id);
 		map.put("list", list);
 		return map;
 	}
@@ -83,8 +83,12 @@ public class InqueryController {
 		logger.info("문의리스트 관리자컨트롤러");
 		int page_ = Integer.parseInt(page);
 		int cnt_ = Integer.parseInt(cnt);
+		logger.info(page);
+		logger.info(cnt);
 		Map<String, Object> map = new HashMap<String, Object>();
-		if(!session.getAttribute("opt").equals("admin_log")) {
+		if(session.getAttribute("opt").equals("admin_log")) {
+			logger.info("page"+page_);
+			logger.info("cnt"+cnt_);	
 			map=inquery_ser.admininquerylist(page_,cnt_);
 		}
 		return map;

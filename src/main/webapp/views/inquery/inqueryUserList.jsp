@@ -185,7 +185,6 @@
 	                        <th>문의제목</th>
 	                        <th>문의 날짜</th>
 	                        <th>처리상태</th>
-	                        <th>처리자</th>
 	                    </tr>
 	                </thead>
 	                <tbody id="list">
@@ -216,11 +215,11 @@ $('form').on('submit', function(event) {
         addquery(); // 조건에 따라 다른 함수를 호출할 수도 있습니다.
     } else {
         alert('등록되었습니다');
-        addquery();
     }
 });	
 	
 addquery(); // 리스트 업데이트 함수 호출
+
     function addquery() {
         $.ajax({
             type: 'GET',
@@ -245,25 +244,25 @@ addquery(); // 리스트 업데이트 함수 호출
         var content = '';
         list.forEach(function(item, idx) {
             var state = '처리중';
-            var admin_name = item.admin_name;
-            console.log(item.inquery_state);
-            if(item.admin_name == null) {
-            	admin_name="관리자없음";
-            }
-            if (item.inquery_state == true) {
+            if (item.inquery_state === true) {
                 state = '처리 완료';
             }
+
+            // answeradmin 배열에서 해당 문의 사항 번호에 맞는 관리자 이름을 찾습니다.
+            var adminName = '관리자';
+
+
             content += '<tr>';
             content += '<td>' + loginId + '</td>';
             content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '" class="white-link">' + item.inquery_subject + '</a></td>'; // 상세보기 링크 추가
-            content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '" class="white-link">' + item.inquery_date + '</td>';
-            content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '" class="white-link">' + state + '</td>';
-            content += '<td>' +admin_name + '</td>'; // 관리자 이름 출력
+            content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '" class="white-link">' + item.inquery_date + '</a></td>';
+            content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '" class="white-link">' + state + '</a></td>';
             content += '</tr>';
         });
         console.log("갱신된 테이블 내용:", content);
         $('#list').html(content); // 테이블 업데이트
     }
+
 </script>
 </body>
 </html>

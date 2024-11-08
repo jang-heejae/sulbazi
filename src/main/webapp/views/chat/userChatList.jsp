@@ -506,6 +506,7 @@ $(document).ready(function() {
 	    });
 	}
     
+    
     var getuser_id;
     // 참가 신청   
 	$('.gobtn').on('click', function(event) {
@@ -602,6 +603,59 @@ $(document).ready(function() {
     
    
 });
+
+//수락
+function handleAccept2(notification){
+	 $.ajax({
+	        type: 'POST',
+	        url: 'notifications/chatroomin.ajax',
+	        data: {'user_id' :user_id,  //수신자ID
+	        		'chatroomboss':getuser_id}, //채팅방 방장
+	        dataType: 'JSON',
+	        success: function(alarmresponse) {
+	            // 알림 데이터 객체 생성
+	            const newAlarm = {
+	                receiverId: alarmresponse.user_id, //수신자 id
+	                chatroomname: alarmresponse.chatroomname,  //문의 제목
+	                alarm: alarmresponse.alarm, //알림 내용
+	                alarm_idx: alarmresponse.alarm_idx //알림 idx
+	            };
+	            sendNotification(newAlarm); // 알림 전송 함수 호출
+	            
+	        },
+	        error: function(e) {
+	            console.log("AJAX 요청 실패:", e);
+	        }
+	    });
+	
+}
+
+// 거절
+function handleDeny2(notification){
+    $.ajax({
+        type: 'POST',
+        url: 'notifications/chatroomdeny.ajax',
+        data: {'user_id':user_id, //수신자 ID
+        		'chatroomboss':getuser_id}, //대화방 방장ID 
+        dataType: 'JSON',
+        success: function(alarmresponse) {
+            // 알림 데이터 객체 생성
+            const newAlarm = {
+                receiverId: notification.user_id, //수신자 id
+                chatroomname: alarmresponse.chatroomname,  //문의 제목
+                alarm: alarmresponse.alarm, //알림 내용
+                alarm_idx: alarmresponse.alarm_idx //알림 idx
+            };
+            sendNotification(newAlarm); // 알림 전송 함수 호출
+            
+        },
+        error: function(e) {
+            console.log("AJAX 요청 실패:", e);
+        }
+    });
+}
+
+
 
 </script>
 </html>
