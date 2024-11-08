@@ -21,7 +21,7 @@
 			VALUES(#{param1}, #{param2},#{param3})
 	</insert>
 	
-	<!-- 일단 join써봄 -->
+	<!-- 일단 join써봄 근데 안되는듯-->
 	<select id="userlistinquery" resultType="com.sulbazi.inquery.InqueryDTO">
 		SELECT * 
 		FROM 

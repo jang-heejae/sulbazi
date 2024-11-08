@@ -216,7 +216,7 @@ $('form').on('submit', function(event) {
         addquery(); // 조건에 따라 다른 함수를 호출할 수도 있습니다.
     } else {
         alert('등록되었습니다');
-        addquery();
+        
     }
 });	
 	
@@ -245,20 +245,23 @@ addquery(); // 리스트 업데이트 함수 호출
         var content = '';
         list.forEach(function(item, idx) {
             var state = '처리중';
-            var admin_name = item.admin_name;
-            console.log(item.inquery_state);
-            if(item.admin_name == null) {
-            	admin_name="관리자없음";
-            }
             if (item.inquery_state == true) {
                 state = '처리 완료';
             }
+/* 
+            // answeradmin 배열이 있는 경우, 첫 번째 관리자 이름을 가져옵니다.
+            var adminName = '';
+            if (item.answeradmin && item.answeradmin.length > 0) {
+                adminName = item.answeradmin[0].admin_name;
+            }
+
+            console.log(adminName); */
             content += '<tr>';
             content += '<td>' + loginId + '</td>';
             content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '" class="white-link">' + item.inquery_subject + '</a></td>'; // 상세보기 링크 추가
             content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '" class="white-link">' + item.inquery_date + '</td>';
             content += '<td><a href="inqueryuserDetail.go?inqueryIdx=' + item.inquery_idx + '" class="white-link">' + state + '</td>';
-            content += '<td>' +admin_name + '</td>'; // 관리자 이름 출력
+            content += '<td>' + item.admin_name + '</td>'; // 관리자 이름 출력
             content += '</tr>';
         });
         console.log("갱신된 테이블 내용:", content);
