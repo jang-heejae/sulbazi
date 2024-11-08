@@ -190,6 +190,12 @@
     .hover-td:hover {
         background-color: #f0f0f0;
     }
+    .filtering-thing{
+    	color: blue;
+    }
+    .hide{
+    	display: none;
+    }
 </style>
 </head>
 
@@ -243,7 +249,7 @@
                    </c:if>
                </c:forEach>
            </fieldset>
-           
+           <p class="hide filtering-thing">필터링은 필수 체크 입니다 확인해 주세요.</p>
            <button type="button" id="filtering">필터 적용</button>
        </div>
    </form>
@@ -309,8 +315,9 @@ var markers = []; // 마커를 저장할 배열
 var defaultCenter = map.getCenter();
 
 /* 리스트 페이징  */
-var show = 1;
-pageCall(show);
+
+
+
 
 function pageCall(page) {
     var center = map.getCenter(); // 지도 중심 좌표 가져오기
@@ -469,8 +476,10 @@ $('#filtering').click(function() {
  	
  	// 체크했는지 확인하는 작업
  	  if (!alchol || !food || !mood || !visit) {
-          alert('다시 확인해 주세요');
+ 		  $('.filtering-thing').removeClass('hide');
+          alert('필터링확인 다시 부탁드립니다');
       }else{
+    	  $('.filtering-thing').addClass('hide');
 	    //페이징 존재여부
 	    if ($.fn.twbsPagination) {
 	        $('#pagination').twbsPagination('destroy');
@@ -518,6 +527,7 @@ function storeListPage(alchol, food, mood, visit, page) {
         }
     });
 }
+//검색창 버튼 이벤트
 
 $('#performSearch').click(function() {
     var category = document.getElementById("searchCategory").value;
@@ -525,6 +535,17 @@ $('#performSearch').click(function() {
     $('#pagination').twbsPagination('destroy');
     $('#list').empty();
     searchPageCall(category, keyword, 1);
+});
+//엔터키 이벤트
+$('#searchQuery').keydown(function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // 기본 엔터키 제출 동작 막기
+        var category = document.getElementById("searchCategory").value;
+        var keyword = document.getElementById("searchQuery").value;
+        $('#pagination').twbsPagination('destroy');
+        $('#list').empty();
+        searchPageCall(category, keyword, 1);
+    }
 });
 
 function searchPageCall(category, keyword, page) {
@@ -565,17 +586,33 @@ window.onload = function() {
 
     const category = urlParams.get('category');
     const keyword = urlParams.get('keyword');    
+    
+    if (!category && !keyword) {
+    	var show = 1;
+    	pageCall(show);
+    }
+    
+
     if (category) {
         document.getElementById('searchCategory').value = category;
     }
-    
+
     if (keyword) {
         document.getElementById('searchQuery').value = keyword;
+        
+        searchPageCall(category, keyword, 1);
+        
+        
 
-        // 특정 버튼을 자동으로 클릭
-        document.getElementById('performSearch').click();
+/*         // 특정 버튼을 1초 뒤에 자동으로 클릭하도록 설정
+        setTimeout(function() {
+            document.getElementById('performSearch').click();
+        }, 1000); // 1000ms = 1초 */
+        
+    
     }
 };
+
 
 
 
