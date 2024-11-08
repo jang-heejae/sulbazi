@@ -78,10 +78,19 @@ public class InqueryService {
 	
 	}
 
-	public List<InqueryDTO> userlistinquery(String id) {
-	    List<InqueryDTO> userinquerylist = inquery_dao.userlistinquery(id);
+	public List<HashMap<String, Object>> userlistinquery(String id) {
+	    List<HashMap<String, Object>> userinquerylist = inquery_dao.userlistinquery(id);
+	    for (HashMap<String, Object> inquery : userinquerylist) {
+	        int inqueryidx = (int) inquery.get("inquery_idx");
+	        logger.info("inqueryidx: " + inqueryidx);
+	        
+	        // answeradmin 정보를 가져와서 현재 inquery에 추가
+	        List<AdminDTO> answeradmin = inquery_dao.answeradmin(inqueryidx);
+	        inquery.put("answeradmin", answeradmin);  // 개별 inquery에 "answeradmin" 추가
+	    }
 	    return userinquerylist;
 	}
+	
 	
 	//관리자 문의 리스트
 	public Map<String, Object> admininquerylist(int page, int cnt) {
