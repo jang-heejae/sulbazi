@@ -217,6 +217,7 @@
 		
 		$(document).on('contextmenu', '.usermsg', function(event) {
 			
+			event.preventDefault();
 	        // 클릭한 위치 좌표
 	        var x = event.pageX;
 	        var y = event.pageY;
