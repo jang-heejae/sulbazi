@@ -145,7 +145,7 @@
 	}
 </style>
 <body>
-<form id="joinForm" method="post" enctype="multipart/form-data">
+<form id="joinForm" method="post" id="joinForm" enctype="multipart/form-data" onsubmit="return validateForm()">
     <header>
         <nav class="navbar">
             <div class="logo_text">
@@ -156,26 +156,26 @@
         <div class="container">
             <div class="wrapper">
                 <h2>사업자 회원가입</h2>
-                <input id="idc" type="text" name="store_id" value="" placeholder="아이디(필수)"/>&nbsp;<button type="button" id="checkid">중복확인</button>
+                <input id="idc" type="text" name="store_id" value="" placeholder="아이디(필수)" required/>&nbsp;<button type="button" id="checkid">중복확인</button>
                 <br>
                 <span id="idoncheck"></span>
                 <br>
-                <input type="password" id="store_pw" name="store_pw" value="" placeholder="비밀번호(필수)">
-                <input type="password" id="storepwcheck" name="storepwcheck" value="" placeholder="비밀번호 확인(필수)"><span id="pwCheckMessage"></span>
+                <input type="password" id="store_pw" name="store_pw" value="" placeholder="비밀번호(필수)" required>
+                <input type="password" id="storepwcheck" name="storepwcheck" value="" placeholder="비밀번호 확인(필수)" required><span id="pwCheckMessage"></span>
                 <h6>※ 비밀번호 8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해주세요.</h6>
-                <input id="numb" type="text" name="store_number" value="" placeholder="사업자번호(필수)" oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>&nbsp;<button id="checknumberBtn">중복확인</button>
+                <input id="numb" type="text" name="store_number" value="" placeholder="사업자번호(필수)" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required/>&nbsp;<button id="checknumberBtn">중복확인</button>
                 <br>
                 <span id="numberCheckMessage"></span>
 	            <br> <!-- 사용 가능한 아이디 메시지 추가 -->
-                <input type="text" name="store_name" value="" placeholder="매장 이름(필수)">
+                <input type="text" name="store_name" value="" placeholder="매장 이름(필수)" required>
                 <input type="text" name="store_phone" value="" placeholder="매장 전화번호(선택사항)" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                <input type="text" id="addressInput" name="store_address" value="" placeholder="매장 주소(필수)">
-                <input type="hidden" id="latitude" name="latitude" value="">
-				<input type="hidden" id="longitude" name="longitude" value="">
-                <textarea name="store_time" placeholder="ex) 운영 시간                                                      월요일 15:00 ~ 02:00                                    화요일 휴무                                             수요일 15:00 ~ 02:00"></textarea>
+                <input type="text" id="addressInput" name="store_address" value="" placeholder="매장 주소(필수)" required>
+                <input type="hidden" id="latitude" name="latitude" value="" required>
+				<input type="hidden" id="longitude" name="longitude" value="" required>
+                <textarea name="store_time" maxlength="1000" placeholder="ex) 운영 시간                                                      월요일 15:00 ~ 02:00                                    화요일 휴무                                             수요일 15:00 ~ 02:00"></textarea>
                 <h2>대표 사진</h2>
                 <div id="img_list2"></div>
-                <input type="file" name="fileone" multiple="multiple" onchange="readFileone(this)">
+                <input type="file" name="fileone" multiple="multiple" onchange="readFileone(this)" required>
                 <h6>※ 대표메뉴는 필수 등록입니다. 최대 1개</h6>
                 <h2>가게 내, 외부사진</h2>
                 <div id="img_list"></div>
@@ -186,7 +186,7 @@
 				    <legend>주종</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 1}">
-				            <input type="radio" id="category_${category.category_idx}" name=category1 value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=category1 value="${category.opt_idx}" required/>
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -196,7 +196,7 @@
 				    <legend>안주</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 2}">
-				            <input type="radio" id="category_${category.category_idx}" name=category2 value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=category2 value="${category.opt_idx}" required/>
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -206,7 +206,7 @@
 				    <legend>분위기</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 3}">
-				            <input type="radio" id="category_${category.category_idx}" name=category3 value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=category3 value="${category.opt_idx}" required/>
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -216,7 +216,7 @@
 				    <legend>방문목적</legend>
 				    <c:forEach var="category" items="${category}">
 				        <c:if test="${category.category_state && category.category_idx == 4}">
-				            <input type="radio" id="category_${category.category_idx}" name=category4 value="${category.opt_idx}" />
+				            <input type="radio" id="category_${category.category_idx}" name=category4 value="${category.opt_idx}" required/>
 				            <label for="category_${category.category_idx}">${category.opt_name}</label>
 				        </c:if>
 				    </c:forEach>
@@ -227,27 +227,70 @@
     </form>
 </body>
 <script>
-function save(event){
-	var form = new FormData($('#joinForm')[0]);
-	$.ajax({
-		type:'POST',
-		url:'storeJoin.ajax',
-		encType:'multipart/form-data',
-		processData:false,
-		contentType:false, 
-		data:form,
-		dataType:'JSON',
-		success:function(data){
-			console.log(data);
-			if(data.success){
-				location.href=data.link
-			}else{
-				alert(data.message);
-			}
-		},error:function(e){
-			console.log(e);
-		}
-	});
+$('#idc').on('input', function() {
+    this.value = this.value.replace(/[^a-zA-Z0-9]/g, ''); // 영문자, 숫자 외 문자 삭제
+});
+
+// 폼 제출 시 비밀번호 확인, 필수 입력 체크
+function validateForm() {
+    var store_pw = $('#store_pw').val();
+    var storepwcheck = $('#storepwcheck').val();
+
+    // 비밀번호 확인
+    if (store_pw !== storepwcheck) {
+        alert('비밀번호를 확인해주세요.');
+        return false;
+    }
+
+    // 필수 입력값 체크
+    if ($('#idc').val() === '' || $('#store_pw').val() === '' || $('#store_name').val() === '' || $('#store_address').val() === '' || $('#store_number').val() === '') {
+        alert('모든 필수 항목을 입력해주세요.');
+        return false;
+    }
+
+    return true;
+}
+
+// 회원가입 버튼 클릭 시 validateForm 함수 호출
+function save(event) {
+    // validateForm 호출
+    if (!validateForm()) {
+        return;
+    }
+
+    var form = new FormData($('#joinForm')[0]);
+    $.ajax({
+        type: 'POST',
+        url: 'storeJoin.ajax',
+        encType: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        data: form,
+        dataType: 'JSON',
+        success: function(data) {
+            console.log(data);
+            if (data.success) {
+                alert("회원가입에 성공하셨습니다.");
+                location.href = data.link;
+            } else {
+                alert(data.message);
+            }
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+    $("#joinForm").submit(function(event) {
+        var password = $("#store_pw").val();
+        var confirmPassword = $("#storepwcheck").val();
+
+        // 비밀번호와 비밀번호 확인이 다를 경우
+        if (password !== confirmPassword) {
+            event.preventDefault(); // 폼 제출 방지
+            alert("비밀번호가 다릅니다."); // 경고창 띄우기
+            return false; // 화면 유지
+        }
+    });	
 }
 
 function readFile(input){
@@ -353,13 +396,13 @@ $(document).ready(function() {
         const userId = $('input[name="store_id"]').val();
         $.ajax({
             type: 'POST',
-            url: 'checkid.ajax',
-            data: { user_id: userId },
+            url: 'checkstoreid.ajax',
+            data: { store_id: userId },
             success: function(response) {
                 if (response.exists) {
-                    $('#idoncheck').text("사용 가능한 아이디입니다.").css("color", "blue");
+                	$('#idoncheck').text("이미 있는 아이디입니다.").css("color", "red"); 
                 } else {
-                    $('#idoncheck').text("이미 있는 아이디입니다.").css("color", "red"); // 중복 메시지 초기화
+                    $('#idoncheck').text("사용 가능한 아이디입니다.").css("color", "blue");
                 }
             }
         });
