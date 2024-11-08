@@ -112,6 +112,23 @@ $(document).ready(function() {
             content += '</li></ul></div>';
         });
         $('#bestBoard').html(content);
+        
+$('#searchIcon').click(function() {
+    var category = document.getElementById("search_cate").value;
+    var keyword = document.getElementById("mainSearch").value;
+    var category1 = encodeURIComponent(category);
+    var keyword1 = encodeURIComponent(keyword);
+    window.location.href = '/SULBAZI/storeList.go?category=' + category1 + '&keyword=' + keyword1;
+}); 
+//엔터키 이벤트
+$('#mainSearch').keydown(function(event) {
+    if (event.key == "Enter") {
+    	event.preventDefault()
+        var category = document.getElementById("search_cate").value;
+        var keyword = document.getElementById("mainSearch").value;
+        var category1 = encodeURIComponent(category);
+        var keyword1 = encodeURIComponent(keyword);
+        window.location.href = '/SULBAZI/storeList.go?category=' + category1 + '&keyword=' + keyword1;
     }
 });
 </script>

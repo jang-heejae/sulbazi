@@ -7,17 +7,36 @@
 <link rel="stylesheet" href="resources/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
-
+	#mainSearchBar{
+		position: absolute;
+		top: 120px;
+    	left: 718px;
+    	width: 514px;
+	} 
+	#mainSearch{
+		width: 322px;
+		padding: 10px;
+		border-radius: 20px;
+	}
+	#search_cate, option{
+		padding: 10px;
+		border-radius: 20px;
+	}
+	#searchIcon {
+		left: 393px;
+    	top: 8px;
+    	position: absolute;
+    	cursor: pointer;
+	}
 </style>
 </head>
-<body>
-    <c:import url="../main/adminMain.jsp"/>
-    <div id="mainSearchBar">
-        <ul>
-            <li>
-                <select id="search_cate" name="search_cate">
-                    <option value="menu">메뉴 이름</option>
-                    <option value="name">매장 이름</option>
+	<c:import url="../main/adminMain.jsp"/>
+		<div id="mainSearchBar">
+		<ul>
+			<li>
+				<select id="search_cate" name="search_cate">
+                	<option value="menu">메뉴</option>
+                    <option value="name">매장이름</option>
                     <option value="addr">매장 주소</option>
                 </select>
                 <input type="text" id="mainSearch" name="mainSearch" value=""/>
@@ -63,7 +82,6 @@ $(document).ready(function() {
             }
         });
     }
-
     function renderStores(storeList) {
         var content = '';
         storeList.forEach(function(store) {
@@ -114,5 +132,26 @@ $(document).ready(function() {
         $('#bestBoard').html(content);
     }
 });
+
+// 매장 서치 이동해보자
+$('#searchIcon').click(function() {
+    var category = document.getElementById("search_cate").value;
+    var keyword = document.getElementById("mainSearch").value;
+    var category1 = encodeURIComponent(category);
+    var keyword1 = encodeURIComponent(keyword);
+    window.location.href = '/SULBAZI/storeList.go?category=' + category1 + '&keyword=' + keyword1;
+}); 
+//엔터키 이벤트
+$('#mainSearch').keydown(function(event) {
+    if (event.key == "Enter") {
+    	event.preventDefault()
+        var category = document.getElementById("search_cate").value;
+        var keyword = document.getElementById("mainSearch").value;
+        var category1 = encodeURIComponent(category);
+        var keyword1 = encodeURIComponent(keyword);
+        window.location.href = '/SULBAZI/storeList.go?category=' + category1 + '&keyword=' + keyword1;
+    }
+});	
+
 </script>
 </html>
