@@ -133,6 +133,12 @@ $(document).ready(function() {
     }
 });
 
+
+
+
+
+
+
 // 매장 서치 이동해보자
 $('#searchIcon').click(function() {
     var category = document.getElementById("search_cate").value;

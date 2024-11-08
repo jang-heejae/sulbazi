@@ -112,6 +112,12 @@ $(document).ready(function() {
             content += '</li></ul></div>';
         });
         $('#bestBoard').html(content);
+    }
+});      
+        
+        
+        
+        
         
 $('#searchIcon').click(function() {
     var category = document.getElementById("search_cate").value;
