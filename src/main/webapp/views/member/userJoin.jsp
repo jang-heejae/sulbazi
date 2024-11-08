@@ -123,7 +123,7 @@
     }
     #emailCheckMessage{
     	font-size: 11px;
-    	margin-left: -33%;
+    	margin-left: -31%;
     }
     #pwCheckMessage{
 	    position: absolute;
@@ -135,12 +135,6 @@
 		width: 100px;
 		height: 100px;
 		border-radius: 100%;
-	}
-	.emailerr{
-		position: absolute;
-		top: 288px;
-	    left: 614px;
-	    font-size: 13px;
 	}
 </style>
 <body>
@@ -164,9 +158,6 @@
                 <h6>※ 비밀번호 8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해주세요.</h6>
                 <input id="numb" type="text" name="user_email" value="" placeholder="이메일(필수)" />
 				<button type="button" id="checkEmailBtn">중복확인</button>
-				<div class="emailerr">
-				<span id="emailError" style="color: red; display: none;">유효한 이메일을 입력하세요.</span>
-				</div>
                 <br>
 	            <span id="emailCheckMessage"></span>
 	            <br>
@@ -249,18 +240,24 @@
 		        	event.preventDefault();
 		        	console.log("checkEmailBtn 클릭됨");
 		            const userEmail = $('input[name="user_email"]').val();
-		            $.ajax({
-		                type: 'POST',
-		                url: 'checkEmail.ajax',
-		                data: { user_email: userEmail },
-		                success: function(response) {
-		                    if (response.exists) {
-		                        $('#emailCheckMessage').text("이미 있는 이메일입니다.").css("color", "red");
-		                    } else {
-		                        $('#emailCheckMessage').text("사용 가능한 이메일입니다.").css("color", "blue"); // 중복 메시지 초기화
+		            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		            if (!emailPattern.test(userEmail)) {
+		                $('#emailCheckMessage').text("이메일 형식에 맞지 않습니다.").css("color", "red");
+		            } else {
+		                // 이메일 형식이 맞는 경우에만 AJAX 요청
+		                $.ajax({
+		                    type: 'POST',
+		                    url: 'checkEmail.ajax',
+		                    data: { user_email: userEmail },
+		                    success: function(response) {
+		                        if (response.exists) {
+		                            $('#emailCheckMessage').text("이미 있는 이메일입니다.").css("color", "red");
+		                        } else {
+		                            $('#emailCheckMessage').text("사용 가능한 이메일입니다.").css("color", "blue");
+		                        }
 		                    }
-		                }
-		            });
+		                });
+		            }
 		        });
 	    
 	
@@ -315,17 +312,6 @@
 				}
 			}
 		}
-		document.getElementById('checkEmailBtn').addEventListener('click', function () {
-		    const emailInput = document.getElementById('numb').value;
-		    const emailError = document.getElementById('emailError');
-		    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-		    if (emailPattern.test(emailInput)) {
-		        emailError.style.display = 'none';
-		        // 여기에 중복 확인 로직을 추가하세요.
-		    } else {
-		        emailError.style.display = 'inline';
-		    }
-		});
+	
     </script>
 </html>
