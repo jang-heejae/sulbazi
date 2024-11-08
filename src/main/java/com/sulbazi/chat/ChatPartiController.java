@@ -97,23 +97,6 @@ public class ChatPartiController {
 	    
 	    return response;
 	}
-//	/* 개인 채팅방 강퇴 */
-//	@PostMapping(value="/kickuser.ajax")
-//	@ResponseBody
-//	public Map<String, Object> kickuser(@RequestParam Map<String, String> params) {
-//		
-//		boolean success = chatparti_ser.kickuser(params);
-//		
-//		 if (success) {
-//			 chatparti_ser.notifyUserOfKick(params.get("user_id"));
-//		 }
-//		 
-//		Map<String, Object> response = new HashMap<String, Object>();
-//	    response.put("redirect", success); // 클라이언트에게 리다이렉션 요청
-//	    
-//	    
-//	    return response;
-//	}
 	
 	/* 참여 신청 취소 */
 	@PostMapping(value="/cancelparti.ajax")
@@ -129,9 +112,6 @@ public class ChatPartiController {
 	    return response;
 	    
 	}
-	
-	
-	
 	
 	/* 지역 채팅방 참여자 총 인원 */
 	@GetMapping(value="/localusertotal.ajax")
@@ -167,6 +147,7 @@ public class ChatPartiController {
 		return "success";
 	}
 	
+	/* 지역 채팅방 이동시 참여상태 false */
 	@PostMapping(value="/localroomtrans.ajax")
 	@ResponseBody
 	public String localroomtrans(HttpSession session, @RequestParam int chatroom_idx) {

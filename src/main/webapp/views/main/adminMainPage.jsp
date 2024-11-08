@@ -62,6 +62,7 @@
     </section>
 </body>
 <script>
+
 $(document).ready(function() {
     loadAdminMainContent();
 
@@ -132,6 +133,7 @@ $(document).ready(function() {
         $('#bestBoard').html(content);
     }
 });
+
 
 
 

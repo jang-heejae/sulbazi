@@ -38,6 +38,7 @@
         align-items: center;
     }
     .icon{
+    	font-family: "Yeon Sung", system-ui;
         display: flex;
     }
     .logo_text a{
@@ -56,6 +57,7 @@
         display: flex;
     }
     .full{
+    	font-family: "Yeon Sung", system-ui;
         position: fixed;
     	top: 0;
     	left: 0; 
@@ -75,6 +77,7 @@
         padding: 20px;
     }
     .full2{
+    	font-family: "Yeon Sung", system-ui;
         z-index: 999;
         position: fixed;
     	top: 0;
@@ -104,6 +107,11 @@
 		display: block;
     	overflow-y: auto;
 	}
+	/* 스크롤바 숨기기 */
+	.sub_1::-webkit-scrollbar {
+	    width: 0px;
+	    height: 0px;
+	}
     .sub_, .sub_1{
         position: absolute;
         width: 200px;
@@ -131,6 +139,10 @@
 	    align-content: center;
 	    padding: 0px;
 	    justify-content: center;
+    }
+    .sub1:hover{
+    	cursor: pointer;
+    	font-weight: bold;
     }
     .modal_madal {
     display: none;
@@ -223,11 +235,19 @@ div.notification {
 					        </c:otherwise>
 					    </c:choose>
 					</li>
-                    <li id="info" onclick="loadInfo()">
+                    <li>
                         <i class="fa-regular fa-message"></i>
                         <div class="sub_1">
                             <div class="sub_txt1">대화중인 대화방</div>
-                            <div id="mylist"></div>
+                            <c:forEach items="${listroom}" var="userchat">
+                            	<form action="userchatroom.go?userchat_idx=${userchat.userchat_idx}" method="post">
+	                               <div class="sub1" style="cursor: pointer;">
+	                                   <div class="roominfof">${userchat.userchat_subject}</div>
+	                                   <input type="hidden" name="userchat_idx" value="${userchat.userchat_idx}">
+	                                   <div class="roominfof">${userchat.current_people} / ${userchat.max_people}</div>   
+	                               </div>
+                               </form>
+                            </c:forEach>
                         </div>
                     </li>
                     <li>
@@ -321,14 +341,22 @@ function redirectToLogin() {
     $('#loginModal').hide();
     window.location.href = 'login.go'; // 로그인 페이지로 이동
 }
+
 // 내 대화방 입장
-function submitForm(userchatIdx) {
-        // 폼을 찾아서 제출합니다.
-        const form = document.getElementById(`chatForm_${userchatIdx}`);
-        if (form) {
-            form.submit();
-        }
-    }
+// 페이지 로드 후 각 .sub1 div에 클릭 이벤트 추가
+document.addEventListener('DOMContentLoaded', function() {
+    var sub1Elements = document.querySelectorAll('.sub1'); // .sub1 요소들을 선택
+
+    sub1Elements.forEach(function(sub1) {
+        sub1.addEventListener('click', function() {
+            // 클릭된 .sub1 요소의 부모 form을 찾고 그 폼을 제출
+            var form = sub1.closest('form');
+            if (form) {
+                form.submit(); // 폼 제출
+            }
+        });
+    });
+});
 //main_menu 클릭 이벤트
 
 document.querySelectorAll('.main_menu').forEach(function(menu) {
@@ -382,53 +410,6 @@ document.querySelectorAll('.fa-message').forEach(function(message) {
             });
             // .sub_1 클래스 요소 보이기
             sub1Element.style.display = 'block';
-          //내가 참여한 채팅방 목록
-
-            function loadInfo() {
-            		var loginId = '${sessionScope.loginId}';
-            		
-            		console.log("로그인아ㄴ이디",loginId);
-            		fetch('myroomList.ajax?loginId=' + encodeURIComponent(loginId), {
-            	        method: 'GET',
-            	        headers: {
-            	            'Content-Type': 'application/json'
-            	        },
-            	        body: JSON.stringify({ loginId: loginId})  // loginId를 JSON 형식으로 전달
-            	    })  // 데이터를 가져올 엔드포인트로 변경하세요
-                    .then(function(response) {
-                        if (!response.ok) {
-                            throw new Error('네트워크 응답에 문제가 있습니다.');
-                        }
-                        return response.json();  // JSON 형식으로 응답을 파싱
-                    })
-                    .then(function(data) {
-                        // 데이터를 성공적으로 가져온 후 화면에 표시
-                        var mylist = document.getElementById('mylist');
-                        var result = '';
-
-                        // data가 배열인지, 그 안에 userchat 객체들이 있는지 확인 후 반복
-                        if (Array.isArray(data)) {
-                            data.forEach(function(userchat) {
-                                console.log(userchat);  // userchat 객체 내용 확인
-                                result += '<form action="userchatroom.go?userchat_idx=' + userchat.userchat_idx + '" method="post">';
-                                result += '<div class="sub1" onclick="submitForm(' + userchat.userchat_idx + ')" style="cursor: pointer;">';
-                                result += '<div class="roominfof">' + userchat.userchat_subject + '</div>';
-                                result += '<input type="hidden" name="userchat_idx" value="' + userchat.userchat_idx + '">';
-                                result += '<div class="roominfof">' + userchat.current_people + ' / ' + userchat.max_people + '</div>';
-                                result += '</div>';
-                                result += '</form>';
-                            });
-                        } else {
-                            console.error('Invalid data format');
-                        }
-
-                        mylist.innerHTML = result;  // 생성한 HTML을 displayDiv에 추가하여 표시
-                    })
-                    .catch(function(error) {
-                        console.error('정보를 불러오는 중 오류 발생:', error);
-                    });
-            }
-            loadInfo();
             // 선택된 방의 폼을 제출하는 함수
             function submitForm(userchatIdx) {
                 document.querySelector(`form[action="userchatroom.go?userchat_idx=${userchatIdx}"]`).submit();

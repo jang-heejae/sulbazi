@@ -8,9 +8,11 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <style>
-    *{
+ @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+   *{
         margin: 0;
         padding: 0;
+        font-family: "Yeon Sung", system-ui;
     }
     a{
         text-decoration: none;
@@ -46,6 +48,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
+        align-items: center;
 		margin : 5px;
 		width: 230px;
 		height: 230px;
@@ -57,10 +60,11 @@
 		margin-left: 15px;
 	}
     .roomname{
+        margin-left: 18px;
 	    display: flex;
 	    align-items: center;
-	    justify-content: flex-end;
-	    color: white;
+	    justify-content: center;
+	    color: white;;
     }
     .gobtn{
         width: 50px;
@@ -78,7 +82,17 @@
 </style>
 </head>
 <body>
-<jsp:include page="../main/main.jsp" />
+<c:choose>
+    <c:when test="${sessionScope.opt == 'admin_log'}">
+        <jsp:include page="../main/adminMain.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.opt == 'user_log'}">
+        <jsp:include page="../main/main.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.opt == 'store_log'}">
+        <jsp:include page="../main/storeMain.jsp" />
+    </c:when>
+</c:choose>
 	<section class="chatBox">
         <div class="chatitems">
           <c:forEach items="${list}" var="localchat" varStatus="status">
