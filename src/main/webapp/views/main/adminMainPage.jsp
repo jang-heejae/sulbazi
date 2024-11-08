@@ -101,19 +101,7 @@
 </section>
 </body>
 <script>
-/* $(document).ready(function() {
-    $('#searchIcon').on('click', function() {
-        var category = $('#search_cate').val();
-        var keyword = $('#mainSearch').val().trim();
 
-        // JavaScript에서 카테고리와 키워드를 URL에 인코딩하여 이동합니다.
-        var encodedCategory = encodeURIComponent(category);
-        var encodedKeyword = encodeURIComponent(keyword);
-
-        // storeList 페이지로 이동하면서 카테고리와 키워드 값 전달
-        window.location.href = "storeList.go?category=" + encodedCategory + "&keyword=" + encodedKeyword;
-    });
-}); */
 // 매장 서치 이동해보자
 $('#searchIcon').click(function() {
     var category = document.getElementById("search_cate").value;
