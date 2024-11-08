@@ -184,7 +184,7 @@
 					<c:forEach var="chat" items="${chatRoom}">
 						<form action="userchatroom.go?userchat_idx=${chat.userchat_idx}" method="post">
 						<div class="chatList">
-						<input type="hidden" name="userchat_idx" value="${chat.userchat_idx}"/>
+						<input type="hidden" class="ucIdx" name="userchat_idx" value="${chat.userchat_idx}"/>
 							<div class="chatList2"><span style="font-size:24px;">${chat.userchat_subject}</span></div>
 							<div class="parti">
 								<div class="count" style="width: 13%;">${chat.current_people} / ${chat.max_people}</div>
@@ -231,7 +231,7 @@ $('.roomoutbtn').click(function() {
        var chatroom_idx = $('.ucIdx').val();
        
        $.ajax({
-          url: '/SULBAZI/userroomout.ajax',
+          url: 'userroomout.ajax',
           type: 'POST',
           data: {chatroom_idx: chatroom_idx},
           success: function(response) {

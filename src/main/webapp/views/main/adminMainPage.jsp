@@ -11,88 +11,108 @@
 </style>
 </head>
 <body>
-	<c:import url="../main/adminMain.jsp"/>
-		<div id="mainSearchBar">
-		<ul>
-			<li>
-				<select id="search_cate" name="search_cate">
-                	<option value="menu">메뉴 이름</option>
+    <c:import url="../main/adminMain.jsp"/>
+    <div id="mainSearchBar">
+        <ul>
+            <li>
+                <select id="search_cate" name="search_cate">
+                    <option value="menu">메뉴 이름</option>
                     <option value="name">매장 이름</option>
                     <option value="addr">매장 주소</option>
-               	</select>
-           		<input type="text" id="mainSearch" name="mainSearch" value=""/>
-           		<i class="fas fa-search" id="searchIcon" style="color:rgb(255, 140, 9);"></i>
-           </li>
-		</ul>
-	</div>
-	<section class="chatBox2">
+                </select>
+                <input type="text" id="mainSearch" name="mainSearch" value=""/>
+                <i class="fas fa-search" id="searchIcon" style="color:rgb(255, 140, 9);"></i>
+            </li>
+        </ul>
+    </div>
+    <section class="chatBox2">
         <div class="chatitems2"> 
-        <span class="span">#추천 술집</span>
-			<div id="bestStore" style="width:100%; height:230px; background-color:#041d03; margin:15px; border: 6px solid rgb(255, 140, 9);">
-				<c:forEach var="store" items="${info}">
-					<div class="store">
-           				<img class="storeDetail" src="/photo/${files[store.store_idx].new_filename}" loading="lazy"
-           				onclick="location.href='storeDetail.do?storeidx=${store.store_idx}'"/>
-						<div><span class="store-name">${store.store_name}</span>
-						<i class="fas fa-star" style="color: yellow;"></i>
-						${store.star_average}&nbsp;(<span>${store.review_total}</span>)
-						</div>
-					</div>
-				</c:forEach>
-			</div>
-			<span class="span">#추천 대화방</span>
-		<div id="bestChat" style="width:100%; height:230px; background-color:#041d03; margin:15px; border: 6px solid rgb(255, 140, 9);">
-			<c:forEach var="chat" items="${chatRoom}">
-				<div class="chatList">
-					<div class="chatList2"><span class="chatsub">${chat.userchat_subject}</span></div>
-					<div class="userProfile">
-						<img class="userImg" src="/photo/${profiles[chat.user_id].user_photo}" loading="lazy"/>&nbsp;
-						<div class="chatUser">${profiles[chat.user_id].user_nickname}</div>
-						<div class="count">${chat.current_people} / ${chat.max_people}</div>
-					</div>
-					<div class="Parti">
-						<div class="Parti2">${chat.userchat_date}</div>
-						<div class="chatParti"><button type="button" onclick="location.href='userchatroom.go?idx=${chat.userchat_idx}'">참여</button></div>
-					</div>
-				</div>
-			</c:forEach>
-		</div>
-		<span class="span">#추천 게시글</span>
-		<div id="bestBoard" style="width:100%; height:230px; background-color:#041d03; margin:15px; border: 6px solid rgb(255, 140, 9);">
-			<c:forEach var="board" items="${boards}" varStatus="status">
-				<div class="board">
-					<ul>
-						<li class="${status.index % 2 == 0 ? 'even' : 'odd'}">
-							<span style="width:10%;">${board.board_category}</span>
-							<span style="width:50%; cursor: pointer;" onclick="location.href='boardDetail.go?board_idx=${board.board_idx}'">
-								${board.board_subject}</span>
-							<span style="color:pink; width:10%;"><i class="far fa-kiss-wink-heart"></i>
-								${board.like_count}</span>
-							<span style="color:#041d03; width:10%;"><i class="fas fa-eye"></i>
-								${board.board_bHit}</span>
-							<span style="width:10%;">${storeInfo[board.store_idx].store_name}</span>
-							<span style="width:10%;">${board.board_date}</span>
-						</li>
-					</ul>
-				</div>			
-			</c:forEach>
-		</div>
-	</div>
-</section>
+            <span class="span">#추천 술집</span>
+            <div id="bestStore" style="width:100%; height:230px; background-color:#041d03; margin:15px; border: 6px solid rgb(255, 140, 9);">
+                <!-- AJAX 응답으로 채워질 영역 -->
+            </div>
+            <span class="span">#추천 대화방</span>
+            <div id="bestChat" style="width:100%; height:230px; background-color:#041d03; margin:15px; border: 6px solid rgb(255, 140, 9);">
+                <!-- AJAX 응답으로 채워질 영역 -->
+            </div>
+            <span class="span">#추천 게시글</span>
+            <div id="bestBoard" style="width:100%; height:230px; background-color:#041d03; margin:15px; border: 6px solid rgb(255, 140, 9);">
+                <!-- AJAX 응답으로 채워질 영역 -->
+            </div>
+        </div>
+    </section>
 </body>
 <script>
 $(document).ready(function() {
-    $('#searchIcon').on('click', function() {
-        var category = $('#search_cate').val();
-        var keyword = $('#mainSearch').val().trim();
+    loadAdminMainContent();
 
-        // JavaScript에서 카테고리와 키워드를 URL에 인코딩하여 이동합니다.
-        var encodedCategory = encodeURIComponent(category);
-        var encodedKeyword = encodeURIComponent(keyword);
+    function loadAdminMainContent() {
+        $.ajax({
+            type: 'GET',
+            url: 'main.ajax', // 데이터를 가져올 URL 설정
+            dataType: 'json',
+            success: function(data) {
+                if (data) {
+                    renderStores(data.stores);
+                    renderChatrooms(data.chatRooms, data.profiles);
+                    renderBoards(data.boards);
+                }
+            },
+            error: function(e) {
+                console.error('AJAX 에러:', e);
+            }
+        });
+    }
 
-        // storeList 페이지로 이동하면서 카테고리와 키워드 값 전달
-        window.location.href = "storeList.go?category=" + encodedCategory + "&keyword=" + encodedKeyword;
-    });
+    function renderStores(storeList) {
+        var content = '';
+        storeList.forEach(function(store) {
+            content += '<div class="store">';
+            content += '<img class="storeDetail" src="/photo/' + store.new_filename + '" loading="lazy"';
+            content += ' onclick="location.href=\'storeDetail.do?storeidx=' + store.store_idx + '\'"/>';
+            content += '<div><span class="store-name">' + store.store_name + '</span>';
+            content += '<i class="fas fa-star" style="color: yellow;"></i>';
+            content += store.star_average + '&nbsp;(<span>' + store.review_total + '</span>)';
+            content += '</div></div>';
+        });
+        $('#bestStore').html(content);
+    }
+    function renderChatrooms(chatList, profiles) {
+        var content = '';
+        chatList.forEach(function(chat) {
+            var userProfile = profiles[chat.user_id]; // user_id로 프로필 정보 가져오기
+            
+            content += '<div class="chatList">';
+            content += '<div class="chatList2"><span class="chatsub">' + chat.userchat_subject + '</span></div>';
+            content += '<div class="userProfile">';
+            content += '<img class="userImg" src="/photo/' + userProfile.user_photo + '" loading="lazy"/>&nbsp;';
+            content += '<div class="chatUser">' + userProfile.user_nickname + '</div>';
+            content += '<div class="count">' + chat.current_people + ' / ' + chat.max_people + '</div>';
+            content += '</div>';
+            content += '<div class="Parti">';
+            content += '<div class="Parti2">' + chat.userchat_date + '</div>';
+            content += '<div class="chatParti"><button type="button" onclick="location.href=\'userchatroom.go?idx=' + chat.userchat_idx + '\'">참여</button></div>';
+            content += '</div></div>';
+        });
+        $('#bestChat').html(content);
+    }
+
+    function renderBoards(boardList) {
+        var content = '';
+        boardList.forEach(function(board, index) {
+            content += '<div class="board">';
+            content += '<ul>';
+            content += '<li class="' + (index % 2 == 0 ? 'even' : 'odd') + '">';
+            content += '<span style="width:10%;">' + board.board_category + '</span>';
+            content += '<span style="width:50%; cursor: pointer;" onclick="location.href=\'boardDetail.go?board_idx=' + board.board_idx + '\'">' + board.board_subject + '</span>';
+            content += '<span style="color:pink; width:10%;"><i class="far fa-kiss-wink-heart"></i>' + board.like_count + '</span>';
+            content += '<span style="color:#041d03; width:10%;"><i class="fas fa-eye"></i>' + board.board_bHit + '</span>';
+            content += '<span style="width:10%;">' + board.store_name + '</span>';
+            content += '<span style="width:10%;">' + board.board_date + '</span>';
+            content += '</li></ul></div>';
+        });
+        $('#bestBoard').html(content);
+    }
 });
 </script>
 </html>
