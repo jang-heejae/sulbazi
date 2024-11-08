@@ -59,7 +59,7 @@ $(document).ready(function() {
             success: function(data) {
                 if (data) {
                     renderStores(data.stores);
-                    renderChatrooms(data.chatRooms, data.profiles);
+                    renderChatrooms(data.chatRooms);
                     renderBoards(data.boards);
                 }
             },
@@ -82,16 +82,15 @@ $(document).ready(function() {
         });
         $('#bestStore').html(content);
     }
-    function renderChatrooms(chatList, profiles) {
+
+    function renderChatrooms(chatList) {
         var content = '';
         chatList.forEach(function(chat) {
-            var userProfile = profiles[chat.user_id]; // user_id로 프로필 정보 가져오기
-            
             content += '<div class="chatList">';
             content += '<div class="chatList2"><span class="chatsub">' + chat.userchat_subject + '</span></div>';
             content += '<div class="userProfile">';
-            content += '<img class="userImg" src="/photo/' + userProfile.user_photo + '" loading="lazy"/>&nbsp;';
-            content += '<div class="chatUser">' + userProfile.user_nickname + '</div>';
+            content += '<img class="userImg" src="/photo/' + chat.user_photo + '" loading="lazy"/>&nbsp;';
+            content += '<div class="chatUser">' + chat.user_nickname + '</div>';
             content += '<div class="count">' + chat.current_people + ' / ' + chat.max_people + '</div>';
             content += '</div>';
             content += '<div class="Parti">';
@@ -117,6 +116,8 @@ $(document).ready(function() {
             content += '</li></ul></div>';
         });
         $('#bestBoard').html(content);
+    }
+});
         
 $('#searchIcon').click(function() {
     var category = document.getElementById("search_cate").value;
