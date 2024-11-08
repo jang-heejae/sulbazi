@@ -75,10 +75,6 @@ public class UserController {
 		user_ser.userBookmark(userId, model);
 		return "user/MyBookmark";
 	} 
-    @RequestMapping(value="/userAlarm.go")
-    public String useralarm() {
-    	return "user/userAlarm";
-    }
     
 
     @GetMapping(value="/userPopup.go")
@@ -147,5 +143,13 @@ public class UserController {
     	return map;
     }
     
+    
+    //나의 알림리스트
+    @RequestMapping(value="/userAlarm.go")
+    public String userAlarmgo(Model model, HttpSession session) {
+		String userId = (String) session.getAttribute("loginId");
+		user_ser.userAlarmgo(userId, model);
+    	return "user/userAlarm";
+    }
 	
 }
