@@ -192,7 +192,7 @@
     	overflow: hidden;
     }
     
-div#notification {
+div.notification {
 	margin-top:5;
     height: 250px;
     overflow-y: scroll;
@@ -201,19 +201,7 @@ div#notification {
 
 </style>
 <body>
-<%
-    // C.jsp에서 전달된 속성을 확인
-    Boolean includeSendAlarm = (Boolean) request.getAttribute("includeSendAlarm");
-    
-    // includeSendAlarm이 null이거나 true이면 sendAlarm.jsp를 포함
-    if (includeSendAlarm == null || includeSendAlarm) {
-        // sendAlarm.jsp를 포함하려면 true일 때만 포함
-%>
-        <jsp:include page="../user/sendAlarm.jsp" />
-<% 
-    }
-%>
-<%--    	<jsp:include page="../user/sendAlarm.jsp"/> --%>
+   	<jsp:include page="../user/sendAlarm.jsp"/>
     <header>
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>

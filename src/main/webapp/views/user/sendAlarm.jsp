@@ -58,8 +58,14 @@ function startSseConnection() {
 
 function clearNotifications() {
     notificationsList = []; // 기존 알림 리스트 초기화
-    const notificationsElement = document.getElementById('notification');
-    notificationsElement.innerHTML = ''; // DOM에서 기존 알림 제거
+
+    // 모든 .notification 클래스를 가진 요소들 가져오기
+    const notificationsElements = document.querySelectorAll('.notification');
+    
+    // 두 번째 .notification 요소가 있을 경우 그 요소의 알림을 제거
+    if (notificationsElements.length > 1) {
+        notificationsElements[1].innerHTML = ''; // 두 번째 .notification 요소의 알림 제거
+    }
 }
 
 //알림 추가 함수
@@ -68,43 +74,108 @@ function addAlarm(notification) {
  	console.log("새 알림 추가:", notification);
 }
 
-//알림 표시 함수
-function displayNotifications() {
- const notificationsElement = document.getElementById('notification');
- notificationsElement.innerHTML = ''; // 기존 알림 초기화
 
- notificationsList.forEach(notification => {
-     const notificationItem = document.createElement('div');
-     notificationItem.innerHTML = notification.chatroomname+'의'+ notification.alarm;
-     notificationItem.setAttribute('data-alarm-idx', notification.alarm_idx);
-     notificationItem.setAttribute('class', "sub");
+function clearNotifications2() {
+    notificationsList = []; // 기존 알림 리스트 초기화
 
-     // 특정 알림일 경우 수락/거절 버튼 추가
-     if (notification.alarm === "개설하신 대화방에 참여 신청이 왔습니다.") {
-         const acceptButton = document.createElement('button');
-         acceptButton.textContent = '수락';
-         acceptButton.setAttribute('class',"inoutbutton");
-         acceptButton.onclick = () => handleAccept(notification);  //수락클릭시 호출함수(notification은 map 형태)
-
-         const denyButton = document.createElement('button');
-         denyButton.textContent = '거절';
-         denyButton.setAttribute('class',"inoutbutton");
-         denyButton.onclick = () => handleDeny(notification); //거절 클릭시 호출함수(notification은 map 형태)
-
-         notificationItem.appendChild(acceptButton);
-         notificationItem.appendChild(denyButton);
-     }
-
-     // 알림 클릭 시 읽음 처리 및 알림 삭제
-     notificationItem.addEventListener('click', function() {
-         markAsRead(notification); // 읽음 처리
-         notificationsElement.removeChild(notificationItem); // 화면에서 제거
-     });
-
-     notificationsElement.appendChild(notificationItem); // 화면에 추가
- });
+    // 모든 .notification 클래스를 가진 요소들 가져오기
+    const notificationsElements = document.querySelectorAll('.notification2');
+    
+    // 두 번째 .notification 요소가 있을 경우 그 요소의 알림을 제거
+    if (notificationsElements.length > 1) {
+        notificationsElements[1].innerHTML = ''; // 두 번째 .notification 요소의 알림 제거
+    }
 }
 
+//알림 추가 함수
+function addAlarm2(notification) {
+ 	notificationsList.push(notification);
+ 	console.log("새 알림 추가:", notification);
+}
+
+
+//알림 표시 함수
+function displayNotifications() {
+   // 모든 notification 클래스를 가진 요소들 가져오기
+   const notificationsElements = document.querySelectorAll('.notification');
+
+   notificationsElements.forEach(function(notificationsElement) {
+       notificationsElement.innerHTML = ''; // 기존 알림 초기화
+
+       notificationsList.forEach(notification => {
+           const notificationItem = document.createElement('div');
+           notificationItem.innerHTML = notification.chatroomname + '의 ' + notification.alarm;
+           notificationItem.setAttribute('data-alarm-idx', notification.alarm_idx);
+           notificationItem.setAttribute('class', "sub");
+
+           // 특정 알림일 경우 수락/거절 버튼 추가
+           if (notification.alarm === "개설하신 대화방에 참여 신청이 왔습니다.") {
+               const acceptButton = document.createElement('button');
+               acceptButton.textContent = '수락';
+               acceptButton.setAttribute('class', "inoutbutton");
+               acceptButton.onclick = () => handleAccept(notification);  // 수락 클릭시 호출 함수
+
+               const denyButton = document.createElement('button');
+               denyButton.textContent = '거절';
+               denyButton.setAttribute('class', "inoutbutton");
+               denyButton.onclick = () => handleDeny(notification); // 거절 클릭시 호출 함수
+
+               notificationItem.appendChild(acceptButton);
+               notificationItem.appendChild(denyButton);
+           }
+
+           // 알림 클릭 시 읽음 처리 및 알림 삭제
+           notificationItem.addEventListener('click', function() {
+               markAsRead(notification); // 읽음 처리
+               notificationsElement.removeChild(notificationItem); // 화면에서 제거
+           });
+
+           notificationsElement.appendChild(notificationItem); // 화면에 추가
+       });
+   });
+}
+
+
+//알림 표시 함수2
+function displayNotifications2() {
+   // 모든 notification 클래스를 가진 요소들 가져오기
+   const notificationsElements = document.querySelectorAll('.notification2');
+
+   notificationsElements.forEach(function(notificationsElement) {
+       notificationsElement.innerHTML = ''; // 기존 알림 초기화
+
+       notificationsList.forEach(notification => {
+           const notificationItem = document.createElement('div');
+           notificationItem.innerHTML = notification.chatroomname + '의 ' + notification.alarm;
+           notificationItem.setAttribute('data-alarm-idx', notification.alarm_idx);
+           notificationItem.setAttribute('class', "sub22");
+
+           // 특정 알림일 경우 수락/거절 버튼 추가
+           if (notification.alarm === "개설하신 대화방에 참여 신청이 왔습니다.") {
+               const acceptButton = document.createElement('button');
+               acceptButton.textContent = '수락';
+               acceptButton.setAttribute('class', "inoutbutton");
+               acceptButton.onclick = () => handleAccept(notification);  // 수락 클릭시 호출 함수
+
+               const denyButton = document.createElement('button');
+               denyButton.textContent = '거절';
+               denyButton.setAttribute('class', "inoutbutton");
+               denyButton.onclick = () => handleDeny(notification); // 거절 클릭시 호출 함수
+
+               notificationItem.appendChild(acceptButton);
+               notificationItem.appendChild(denyButton);
+           }
+
+           // 알림 클릭 시 읽음 처리 및 알림 삭제
+           notificationItem.addEventListener('click', function() {
+               markAsRead(notification); // 읽음 처리
+               notificationsElement.removeChild(notificationItem); // 화면에서 제거
+           });
+
+           notificationsElement.appendChild(notificationItem); // 화면에 추가
+       });
+   });
+}
 //읽음 처리 함수
 function markAsRead(notification) {
 	console.log(notification.alarm_idx);
@@ -142,6 +213,7 @@ function fetchInitialNotifications() {
                 addAlarm(notification);
             });
             displayNotifications();
+            displayNotifications2();
         },
         error: function(error) {
             console.error("초기 알림 가져오기 실패:", error);
