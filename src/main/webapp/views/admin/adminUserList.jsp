@@ -161,6 +161,13 @@ $('#searchIcon').on('click', function(){
 	var keyword = $('#userSearch2').val();
 	pageCall(1, category, keyword);
 });
+$('#userSearch2').on('keydown', function(event) {
+    if (event.key === "Enter") {
+        var category = $('#user_cate').val();
+        var keyword = $('#userSearch2').val();
+        pageCall(1, category, keyword);
+    }
+});
  function pageCall(page, category, keyword) {
     $.ajax({
         type: 'GET',
@@ -202,12 +209,12 @@ $('#searchIcon').on('click', function(){
 	    // Date 객체 생성
 	    const date = new Date(dateString);
 	    const today = new Date(); // 오늘 날짜 객체 생성
-
-	    // 날짜와 시간을 원하는 형식으로 조합
-	    if (date.toDateString() == today.toDateString()) {
-	        return '00:00:00'; // 오늘 날짜이면 시간만 표시
+	    if (date.toDateString() === today.toDateString()) {
+	        // 오늘이면 시간만 표시
+	        return date.toLocaleTimeString('en-GB'); // 'HH:mm:ss' 형식
 	    } else {
-	        return date.toISOString().split('T')[0]; // 'YYYY-MM-DD-00:00:00' 형태로 리턴
+	        // 오늘이 아니면 날짜만 표시
+	        return date.toLocaleDateString('en-CA'); // 'YYYY-MM-DD' 형식
 	    }
 	}
 	function listPrint(list) {

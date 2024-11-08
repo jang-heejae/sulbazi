@@ -166,6 +166,13 @@ $('#searchIcon').on('click', function(){
 	var keyword = $('#storeSearch2').val();
 	pageCall(1, category, keyword);
 });
+$('#storeSearch2').on('keydown', function(event) {
+    if (event.key === "Enter") {
+        var category = $('#store_cate').val();
+        var keyword = $('#storeSearch2').val();
+        pageCall(1, category, keyword);
+    }
+});
  function pageCall(page, category, keyword) {
     $.ajax({
         type: 'GET',

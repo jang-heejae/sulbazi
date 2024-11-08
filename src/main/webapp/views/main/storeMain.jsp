@@ -9,6 +9,7 @@
 </head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
     *{
         margin: 0;
         padding: 0;

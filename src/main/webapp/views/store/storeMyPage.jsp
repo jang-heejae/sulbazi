@@ -235,7 +235,7 @@
 </style>
 </head>
 <body>
-<jsp:include page="../main/adminMain.jsp"/>
+<jsp:include page="../main/storeMain.jsp"/>
     <section class="chatBox2">
         <div class="chatitems2">
 <div class="all"> 

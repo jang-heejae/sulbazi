@@ -165,7 +165,7 @@
         		<li>고객 센터 <i class='fas fa-headphones' id="inqueryIcon"></i></li>
         	</ul>
         	<ul id="inqueryUl">
-         		<li><input type="radio" name="inquerystate" value="all" checked/> 전체 보기<li>&nbsp;
+         		<li><input type="radio" name="inquerystate" value="all"/> 전체 보기<li>&nbsp;
             	<li><input type="radio" name="inquerystate" value="false"/> 처리중<li>&nbsp;
             	<li><input type="radio" name="inquerystate" value="true"/>처리완료<li>&nbsp;
             	<li><button type ="button" id="inqueryfiltering">필터 적용</button><li>
