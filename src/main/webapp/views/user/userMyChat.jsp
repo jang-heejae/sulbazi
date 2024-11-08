@@ -184,6 +184,7 @@
 					<c:forEach var="chat" items="${chatRoom}">
 						<form action="userchatroom.go?userchat_idx=${chat.userchat_idx}" method="post">
 						<div class="chatList">
+						<input type="hidden" class="ucIdx" name="userchat_idx" value="${chat.userchat_idx}"/>
 						<input type="hidden" name="userchat_idx" value="${chat.userchat_idx}"/>
 						<input type="hidden" name="user_id" value="${chat.user_id}"/>
 							<div class="chatList2"><span style="font-size:24px;">${chat.userchat_subject}</span></div>
@@ -235,7 +236,19 @@ $('.roomoutbtn').click(function() {
        /* var chatroom_idx = $('.ucIdx').val();
        var user_id = $('input[name="user_id"]').val();
        var current = $('.count').text();
-       
+
+       $.ajax({
+          url: 'userroomout.ajax',
+          type: 'POST',
+          data: {chatroom_idx: chatroom_idx},
+          success: function(response) {
+        	  location.reload();
+          },
+          error: function(error) {
+             console.error("에러 발생:", error);
+             alert("방 나가기에 실패했습니다.");
+          }
+       });
        cosole.log("chatroom_idx"+chatroom_idx);
        cosole.log("user_id"+user_id);
        cosole.log("current"+);
