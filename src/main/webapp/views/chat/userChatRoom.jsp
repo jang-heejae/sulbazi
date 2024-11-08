@@ -169,6 +169,7 @@ $(document).ready(function() {
    
    // 신고, 강퇴 팝업창 - 메세지
    $(document).off('click', '.usermsg');
+   $(document).off('contextmenu', '.usermsg');
    
    $(document).on('contextmenu', '.usermsg', function(event) {
       
@@ -190,6 +191,7 @@ $(document).ready(function() {
         console.log("신고할사용자 닉 :"+reported_nick);
         
         $('.popup').remove();
+        $('.popup2').remove();
        
         if (reported_id.toString() !== loginId.toString()) {
          
@@ -228,11 +230,17 @@ $(document).ready(function() {
            $('.popup').remove();
        }
    });
+   $(document).on('contextmenu', function(event) {
+       if (!$(event.target).closest('.popup, .msgtxt').length) {
+           $('.popup').remove();
+       }
+   });
    
    
    
    // 방장은 프로필에서도 강퇴시킬거야       
    $(document).off('click', '.room2');
+   $(document).off('contextmenu', '.room2');
    
    $(document).on('contextmenu', '.room2', function(event) {
 	   
@@ -283,6 +291,11 @@ $(document).ready(function() {
    
    // 팝업 제거
    $(document).on('click', function(event) {
+       if (!$(event.target).closest('.popup2, .room2').length) {
+           $('.popup2').remove();
+       }
+   });
+   $(document).on('contextmenu', function(event) {
        if (!$(event.target).closest('.popup2, .room2').length) {
            $('.popup2').remove();
        }
@@ -422,9 +435,10 @@ $(document).ready(function() {
                 $('.popup').remove();
                 $('.popup2').remove();
                 roomout();
+                location.reload();
                 loadMessages();
                 
-            	 // 서버에 새로고침 알림을 요청
+            	// 서버에 새로고침 알림을 요청
                 $.ajax({
                     url: '/reload',  // 새로고침 알림을 처리하는 서버 엔드포인트
                     type: 'GET',
@@ -435,7 +449,7 @@ $(document).ready(function() {
                         }, 5000);  // 10초 후 새로 고침
                     },
                     error: function() {
-                        alert("새로고침 알림 전송 실패");
+                        console.log("새로고침 알림 전송 실패");
                     }
                 });
               },
@@ -787,13 +801,13 @@ $(document).ready(function() {
        font-weight: bold;
     }
     .setting{
-       display: none;
-       position: absolute;
-          width: 95px;
-         height: 65px;
-         background-color: aliceblue;
-         bottom: 25px;
-         padding: 5px;
+        display: none;
+        position: absolute;
+        width: 95px;
+        height: 65px;
+        background-color: aliceblue;
+        bottom: 25px;
+        padding: 5px;
     }
     .setting div:hover{
        cursor: pointer;
@@ -1005,9 +1019,9 @@ $(document).ready(function() {
                              <div class="menu" name="menulist">
                                 <i class="fas fa-cog"></i>
                                 <div class="setting">
-                            <div class="notification"><p>공지사항</p></div>
-                            <div class="roominfoupdate"><p>방 정보 변경</p></div>
-                            <div class="roomdelete"><p>방 삭제</p></div>
+		                            <div class="notifi"><p>공지사항</p></div>
+		                            <div class="roominfoupdate"><p>방 정보 변경</p></div>
+		                            <div class="roomdelete"><p>방 삭제</p></div>
                                 </div>
                                 <div class="notice">
                                    <h3>
@@ -1049,17 +1063,17 @@ $(document).ready(function() {
 	                                    <button class="cancel">취소</button>
 	                                </div>
                                 </div>
-<div class="reportuserform">
-    <h3>
-       <i class="fas fa-exclamation-circle"></i>
-       신고
-    </h3>
-        <textarea class="reportarea" name="report_content" placeholder="20자 이내로 신고내용을 입력하세요." maxlength="20"></textarea>
-    <div class="reportbtn">
-        <button class="reportedit">신고</button>
-        <button class="reportcancel">취소</button>
-    </div>
-</div>
+							<div class="reportuserform">
+							    <h3>
+							       <i class="fas fa-exclamation-circle"></i>
+							       신고
+							    </h3>
+							        <textarea class="reportarea" name="report_content" placeholder="20자 이내로 신고내용을 입력하세요." maxlength="20"></textarea>
+							    <div class="reportbtn">
+							        <button class="reportedit">신고</button>
+							        <button class="reportcancel">취소</button>
+							    </div>
+							</div>
                      </div>
                         </div>
                     </div>
@@ -1075,7 +1089,7 @@ $(document).ready(function() {
 	                    <div class="chatlist">
 	                    </div>
 	                    <div class="textarea">
-	                        <input type="text" name="user_id" value="${sessionScope.loginId}" readonly/>
+	                        <input type="text" name="user_id" value="${sessionScope.loginId}" style="display:none;"/>
 	                        <textarea name="usermsgcontent" placeholder="메세지 입력(100자 이내)" maxlength="100"></textarea>
 	                        <button type="button" class="sendmsg">전송</button>
 	                    </div>
@@ -1121,7 +1135,7 @@ $(document).ready(function() {
  
    
    // 공지사항 쓸래
-   $('.notification, .noticancel').click(function() {
+   $('.notifi, .noticancel').click(function() {
          var display = $('.notice').css('display');
           if (display == 'none'){
               $('.notice').show();

@@ -389,7 +389,107 @@ function readornotalarm(alarmreadValue, alarmValue) {
     });
 }
 
+//강퇴
+function roomout() {
+    $.ajax({
+        type: 'POST',
+        url: 'notifications/chatroomout.ajax',
+        data: {'user_id': user_id,  //수신자ID
+        		'chatroomboss': chatroomboss},  //대화방 방장ID
+        dataType: 'JSON',
+        success: function(alarmresponse) {
+            // 알림 데이터 객체 생성
+            const newAlarm = {
+                receiverId: user_id, //수신자 id
+                chatroomname: alarmresponse.chatroomname,  //문의 제목
+                alarm: alarmresponse.alarm, //알림 내용
+                alarm_idx: alarmresponse.alarm_idx //알림 idx
+            };
+            sendNotification(newAlarm); // 알림 전송 함수 호출
+        },
+        error: function(e) {
+            console.log("AJAX 요청 실패:", e); // 에러 메시지 출력
+        }
+    });
+}
+
+//거절
+function handleDeny(notification){
+    $.ajax({
+        type: 'POST',
+        url: 'notifications/chatroomdeny.ajax',
+        data: {'user_id':notification.sendId, //수신자 ID
+        		'chatroomboss':notification.receiverId}, //대화방 방장ID 
+        dataType: 'JSON',
+        success: function(alarmresponse) {
+            // 알림 데이터 객체 생성
+            const newAlarm = {
+                receiverId: notification.sendId, //수신자 id
+                chatroomname: alarmresponse.chatroomname,  //문의 제목
+                alarm: alarmresponse.alarm, //알림 내용
+                alarm_idx: alarmresponse.alarm_idx //알림 idx
+            };
+            sendNotification(newAlarm); // 알림 전송 함수 호출
+            sendNotification2(newAlarm); // 알림 전송 함수 호출
+        },
+        error: function(e) {
+            console.log("AJAX 요청 실패:", e);
+        }
+    });
+}
+
+//수락
+function handleAccept(notification){
+	 $.ajax({
+	        type: 'POST',
+	        url: 'notifications/chatroomin.ajax',
+	        data: {'user_id':notification.sendId,  //수신자ID
+	        		'chatroomboss':notification.receiverId}, //채팅방 방장
+	        dataType: 'JSON',
+	        success: function(alarmresponse) {
+	            // 알림 데이터 객체 생성
+	            const newAlarm = {
+	                receiverId: notification.sendId, //수신자 id
+	                chatroomname: alarmresponse.chatroomname,  //문의 제목
+	                alarm: alarmresponse.alarm, //알림 내용
+	                alarm_idx: alarmresponse.alarm_idx //알림 idx
+	            };
+	            sendNotification(newAlarm); // 알림 전송 함수 호출
+	            sendNotification2(newAlarm); // 알림 전송 함수 호출
+	        },
+	        error: function(e) {
+	            console.log("AJAX 요청 실패:", e);
+	        }
+	    });
 	
+}
+
+
+//수락/거절 선택
+function chatroommanager() {
+    $.ajax({
+        type: 'POST',
+        url: 'chatroommanager.ajax',
+        data: {'getuser_id':getuser_id, //수신자 ID
+        		'user_id':user_id}, //발신자 ID
+        dataType: 'JSON',
+        success: function(alarmresponse) {
+            // 알림 데이터 객체 생성
+            const newAlarm = {
+                receiverId: getuser_id, //수신자 id
+                chatroomname: alarmresponse.chatroomname,  //문의 제목
+                alarm: alarmresponse.alarm, //알림 내용
+                alarm_idx: alarmresponse.alarm_idx //알림 idx
+            };
+            sendNotification(newAlarm); // 알림 전송 함수 호출
+            saveNotification(newAlarm); // 알림 저장 함수 호출
+        },
+        error: function(e) {
+            console.log("AJAX 요청 실패:", e);
+        }
+    });
+}
+
 
 
 

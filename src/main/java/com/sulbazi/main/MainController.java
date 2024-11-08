@@ -16,7 +16,13 @@ public class MainController {
 	@Autowired ChatRoomService chatroom_ser;
 	
 	@RequestMapping(value={"/", "/main.go", "/mainPage.go"})
-	public String userMainPage() {
+	public String userMainPage(Model model, HttpSession session) {
+		
+		String user_id = (String) session.getAttribute("loginId");
+		
+		List<UserChatroomDTO> userchat_list = chatroom_ser.myroomlist(user_id);
+		model.addAttribute("listroom", userchat_list);
+		
 		return "main/mainPage";
 	}
 	@RequestMapping(value="/storeMain.go")

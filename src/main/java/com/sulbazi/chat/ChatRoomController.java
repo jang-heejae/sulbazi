@@ -52,7 +52,7 @@ public class ChatRoomController {
 		String loginId = (String) session.getAttribute("loginId"); // 세션에서 로그인 아이디
 		
 		if(loginId==null) {
-			model.addAttribute("msg", "로그인 해라");
+			model.addAttribute("msg", "로그인이 필요합니다.");
 			page = "/member/login";
 		}else {		
 			List<UserChatroomDTO> userchat_list = chatroom_ser.chatlist();
@@ -97,7 +97,7 @@ public class ChatRoomController {
 		String loginId = (String) session.getAttribute("loginId"); // 세션에서 로그인 아이디
 		
 		if(loginId==null) {
-			model.addAttribute("msg", "로그인 해라");
+			model.addAttribute("msg", "로그인이 필요합니다.");
 			page = "/member/login";
 		}else {		
 			int row = chatroom_ser.chatcreate(userchatroomdto, model, loginId);
@@ -147,14 +147,14 @@ public class ChatRoomController {
 			
 			if(row==0) {
 				response.put("status", "error");
-				response.put("message", "방 삭제 대실패.");
+				response.put("message", "방 삭제 실패.");
 			} else {
 				response.put("status", "success");
 				response.put("message", "삭제 완료");
 			}
 		}else {
 			response.put("status", "error");
-			response.put("message", "퇴장하지 않은 유저 있음 방 삭제 불가.");
+			response.put("message", "방 삭제 불가 - 퇴장하지 않은 유저가 있습니다.");
 		}
 		return ResponseEntity.ok(response);
 		
@@ -168,7 +168,7 @@ public class ChatRoomController {
 		String loginId = (String) session.getAttribute("loginId");
 		
 		if(loginId==null) {
-			model.addAttribute("msg", "로그인 해라");
+			model.addAttribute("msg", "로그인이 필요합니다.");
 			page = "/member/login";
 		}else {	
 			
@@ -230,7 +230,7 @@ public class ChatRoomController {
 		String loginId = (String) session.getAttribute("loginId");
 		
 		if(loginId==null) {
-			model.addAttribute("msg", "로그인 해라");
+			model.addAttribute("msg", "로그인이 필요합니다.");
 			page = "/member/login";
 		}else {	
 			List<LocalChatroomDTO> localchat_list = chatroom_ser.localchatlist();
@@ -249,7 +249,7 @@ public class ChatRoomController {
 		String loginId = (String) session.getAttribute("loginId");
 		
 		if(loginId==null) {
-			model.addAttribute("msg", "로그인 해라");
+			model.addAttribute("msg", "로그인이 필요합니다.");
 			page = "/member/login";
 		}else {	
 			

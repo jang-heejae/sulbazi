@@ -9,9 +9,11 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/6282a8ba62.js" crossorigin="anonymous"></script>
 <style>
-    *{
+    @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+   *{
         margin: 0;
         padding: 0;
+        font-family: "Yeon Sung", system-ui;
     }
     ol, ul, li{
         list-style: none;
@@ -212,7 +214,17 @@
 </style>
 </head>
 <body>
-<jsp:include page="../main/main.jsp" />
+<c:choose>
+    <c:when test="${sessionScope.opt == 'admin_log'}">
+        <jsp:include page="../main/adminMain.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.opt == 'user_log'}">
+        <jsp:include page="../main/main.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.opt == 'store_log'}">
+        <jsp:include page="../main/storeMain.jsp" />
+    </c:when>
+</c:choose>
 	<section class="searchbox">
         <div class="search">
         	<i class="fas fa-search"></i>
@@ -561,7 +573,7 @@ $(document).ready(function() {
 				    }
 				});
 			}else{
-				alert("참가가능 인원 초과핑");
+				alert("참가가능한 인원수를 초과했습니다.");
 			}
 		}else if(buttonText === "참가신청중") {
 			console.log("내아이디"+user_id);
