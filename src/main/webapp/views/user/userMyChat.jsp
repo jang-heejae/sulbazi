@@ -185,9 +185,10 @@
 						<form action="userchatroom.go?userchat_idx=${chat.userchat_idx}" method="post">
 						<div class="chatList">
 						<input type="hidden" name="userchat_idx" value="${chat.userchat_idx}"/>
+						<input type="hidden" name="user_id" value="${chat.user_id}"/>
 							<div class="chatList2"><span style="font-size:24px;">${chat.userchat_subject}</span></div>
 							<div class="parti">
-								<div class="count" style="width: 13%;">${chat.current_people} / ${chat.max_people}</div>
+								<p class="count" style="width: 13%;">${chat.current_people}</p> / <p>${chat.max_people}</p>
 								<div class="chatParti" style="width: 12%"><button type="button" class="roomoutbtn">퇴장</button></div>
 							</div>
 						</div>
@@ -209,39 +210,52 @@
 </div>
 <script>
 $(document).ready(function() {
-    // 모달을 표시하는 이벤트 등록
-    $('.chatList').click(function(){
+   
+	$('.chatList').click(function(){
+        var userchat_idx = $(this).find('input[name="userchat_idx"]').val();  // 해당 방의 userchat_idx 가져오기
+        var actionUrl = 'userchatroom.go?userchat_idx=' + userchat_idx;  // 동적으로 URL 생성
+        
+        // 모달을 표시하는 부분
         $('#confirmationMessage').text('이동하시겠습니까?');
         $('#confirmationModal').css('display', 'block'); // 모달을 보이도록 설정
 
         // 확인 버튼 클릭 시 폼 제출
         $('#confirmAction').off('click').on('click', function() {
-        	$('form').submit();
+            var form = $('form').get(0);  // 첫 번째 폼 선택
+            form.action = actionUrl;  // 동적으로 action URL 설정
+            form.submit();  // 폼 제출
             $('#confirmationModal').css('display', 'none'); // 모달 숨기기
         });
     });
-
-    // 취소 버튼 클릭 시 모달 닫기
-    $('#cancelAction, #closeModal').off('click').on('click', function() {
-        $('#confirmationModal').css('display', 'none'); // 모달 숨기기
-    });
+	
 });
+
 $('.roomoutbtn').click(function() {
-    if (confirm("방을 나가시겠?")) {
-       var chatroom_idx = $('.ucIdx').val();
+    if (confirm("방을 나가시겠습니까?")) {
+       /* var chatroom_idx = $('.ucIdx').val();
+       var user_id = $('input[name="user_id"]').val();
+       var current = $('.count').text();
        
-       $.ajax({
-          url: '/SULBAZI/userroomout.ajax',
-          type: 'POST',
-          data: {chatroom_idx: chatroom_idx},
-          success: function(response) {
-        	  location.reload();
-          },
-          error: function(error) {
-             console.error("에러 발생:", error);
-             alert("방 나가기에 실패했습니다.");
-          }
-       });
+       cosole.log("chatroom_idx"+chatroom_idx);
+       cosole.log("user_id"+user_id);
+       cosole.log("current"+);
+       // 방장일 경우
+       if(user_id === loginId){
+    	   
+       }else{ */
+	       $.ajax({
+	          url: '/SULBAZI/userroomout.ajax',
+	          type: 'POST',
+	          data: {chatroom_idx: chatroom_idx},
+	          success: function(response) {
+	        	  location.reload();
+	          },
+	          error: function(error) {
+	             console.error("에러 발생:", error);
+	             alert("방 나가기에 실패했습니다.");
+	          }
+	       });
+       }
     }else{
        alert("취소되었습니다.");
     }

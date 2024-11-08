@@ -79,6 +79,11 @@ public class ChatRoomService {
 		return chatroom_dao.myroomlist(user_id);
 	}
 	
+	/* 메뉴바 나의 채팅방 리스트 */
+	public String myroom(String loginId) {
+		return chatroom_dao.myroom(loginId);
+	}
+	
 	
 	
 	/* ************************  지역 채팅  *************************** */
@@ -92,6 +97,7 @@ public class ChatRoomService {
 	public List<LocalChatroomDTO> localroominfo(int idx) {
 		return chatroom_dao.localroominfo(idx);
 	}
+
 
 	
 
