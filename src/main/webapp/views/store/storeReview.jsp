@@ -99,10 +99,14 @@
 	.reUl{
     	width: 100%;
         padding: 10px;
+        height: 100%;
+    	display: flex;
+    	flex-direction: column;
+    	justify-content: space-between;
 	}
 	hr{
 	    margin: 10px;
-	    background-color: rgb(255, 140, 9);
+	    border-top: 3px solid rgb(255, 140, 9);
 	}
 	#userpho{
 		border-radius: 50%;
@@ -118,6 +122,14 @@
 	.userUl{
 		display: flex;
 	}
+	.reviewTop{
+	    width: 829px;
+    	display: flex;
+    	flex-direction: row;
+    	align-items: center;
+    	justify-content: space-between;
+   	    font-size: 30px;
+	}
 </style>
 </head>
 <body>
@@ -125,6 +137,16 @@
     <section class="chatBox2">
         <div class="chatitems2">
         	<input type="hidden" name="store_idx" value="${store}"/>
+        	<div>
+        		<ul>
+        			<li style="font-size:36px;">나의 매장 리뷰</li>
+        			<hr/>
+        		</ul>
+        		<ul class="reviewTop">
+        			<li>리뷰</li>
+        			<li>내 댓글</li>
+        		</ul>
+        	</div>
    			<div class="reviewarea">
         		
    			</div>

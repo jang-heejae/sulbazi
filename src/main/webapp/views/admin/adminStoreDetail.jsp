@@ -72,7 +72,6 @@
     	gap: 20px;
     	margin-left: auto;
     	margin-right: auto;
-        z-index: 9999;
 	}
 	.store_name {
     	display: flex;
