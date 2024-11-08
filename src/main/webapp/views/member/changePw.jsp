@@ -137,5 +137,15 @@ $(document).ready(function(){
 		}
 	});
 });
+function validateForm() {
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    if (newPassword !== confirmPassword) {
+        alert("비밀번호가 틀렸습니다.");
+        return false;
+    }
+    alert("비밀번호가 변경되었습니다.");
+    return true;
+}
 </script>
 </html>

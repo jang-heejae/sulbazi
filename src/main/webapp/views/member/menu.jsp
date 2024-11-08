@@ -118,7 +118,7 @@
                   </select>
                 <input type="text" name="menu_name" value="" placeholder="메뉴 이름"/>
                 <input type="text" name="menu_price" value="" placeholder="메뉴 가격"/><span class="price">원</span>
-                <input type="file" name="file" multiple="multiple"/>
+                <input type="file" name="file" multiple="multiple" id="menuImage"/>
                 <button type="button" id="menu_go">등록</button>
                 <div class="table"> <!-- 메뉴 리스트 표시 영역 -->
 			        <table>
@@ -139,8 +139,17 @@
     <button type="button" id="main" onclick="location.href='./mainPage.go'">메인 페이지로 돌아가기</button>
 </body>
 <script>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+
+
+font-family: "Yeon Sung", system-ui;
 	$(document).ready(function() {
 	    $('#menu_go').click(function() {
+	    	var menuImage = $('#menuImage')[0].files.length;
+	        if (menuImage === 0) {
+	            alert("사진을 넣어주세요.");
+	            return; // 사진이 없으면 실행 멈춤
+	        }
 	        var formData = new FormData($('#menu.go')[0]); // 올바른 ID 사용
 	
 	        // 추가적인 데이터 설정
@@ -158,6 +167,7 @@
 	        formData.append('file', $('input[name="file"]')[0].files[0]); // 파일 이름 수정
 	
 	        // AJAX 요청
+	        
 	        $.ajax({
 	            url: 'menu.do', // 요청 URL
 	            type: 'POST',

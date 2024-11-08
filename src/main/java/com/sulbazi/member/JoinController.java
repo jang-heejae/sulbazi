@@ -61,7 +61,7 @@ public class JoinController {
 			 map.put("link", "menu.go?store_idx="+store_idx);
 		} catch (Exception e) {
 			map.put("success", false);
-            map.put("message", "오류가 발생했습니다: " + e.getMessage());
+            map.put("message", "회원 정보에 맞게 입력해주세요.");
 		}
 		 return map; 
 	 }
@@ -96,7 +96,10 @@ public class JoinController {
 	@ResponseBody
 	public Map<String, Object> checkid(@RequestParam("user_id") String userId) {
 		logger.info("checkid : " + userId);
-		boolean exists = join_ser.checkid(userId);
+		boolean exists = false;
+		if(join_ser.checkid(userId)) {
+			exists = join_ser.checkid(userId);
+		}
 		Map<String, Object> response = new HashMap<>();
 		response.put("exists", exists);
 		logger.info("checkid boolean : " + response);
@@ -107,10 +110,13 @@ public class JoinController {
 	@ResponseBody
 	public Map<String, Object> checkstoreid(@RequestParam("store_id") String store_id){
 		logger.info(store_id);
-		boolean exists = join_ser.checkstoreid(store_id);
+		boolean exists = false;
+		if(join_ser.checkstoreid(store_id)) {
+			exists = join_ser.checkstoreid(store_id);
+		}
 		logger.info("참트루 : " + exists);
 		Map<String, Object> response = new HashMap<String, Object>();
-		response.put("exixts", exists);
+		response.put("exists", exists);
 		return response;
 	}
 	
@@ -119,7 +125,10 @@ public class JoinController {
 	@ResponseBody
 	public Map<String, Object> checkemail(@RequestParam("user_email") String userEmail) {
 		logger.info("checkemail : " + userEmail);
-		boolean exists = join_ser.checkEmail(userEmail);
+		boolean exists = false;
+		if(join_ser.checkEmail(userEmail)) {
+			exists = join_ser.checkEmail(userEmail);
+		}
 		Map<String, Object> response = new HashMap<>();
 		response.put("exists", exists);
 		logger.info("checkemail boolean : " + response);
@@ -130,7 +139,10 @@ public class JoinController {
 	@ResponseBody
 	public Map<String, Object> checknumber(@RequestParam("store_number") String storenumber) {
 		logger.info("checknumber : " + storenumber);
-		boolean exists = join_ser.checknumber(storenumber);
+		boolean exists = false;
+		if(join_ser.checknumber(storenumber)) {
+			exists = join_ser.checknumber(storenumber);
+		}
 		Map<String, Object> response = new HashMap<>();
 		response.put("exists", exists);
 		logger.info("checknumber boolean : " + response);
