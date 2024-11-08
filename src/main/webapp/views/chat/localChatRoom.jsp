@@ -214,6 +214,7 @@
 		
 		 // 신고 팝업창 - 메세지
 		$(document).off('click', '.usermsg');
+		$(document).off('contextmenu', '.usermsg');
 		
 		$(document).on('contextmenu', '.usermsg', function(event) {
 			
@@ -290,11 +291,16 @@
 		        $('.popup').remove();
 		    }
 		});
+		$(document).on('contextmenu', function(event) {
+		    if (!$(event.target).closest('.popup, .msgtxt').length) {
+		        $('.popup').remove();
+		    }
+		});
 		
 		
 		// 신고 할거야
 		$(document).on('click', '.reportuser', function() {
-			
+			event.preventDefault();
 			var reporting_id = '${sessionScope.loginId}';
 			var report_category = '지역 메시지';
 			
@@ -303,7 +309,7 @@
 			console.log("아작스 신고할 메세지 번호 "+reported_idx);
 			console.log("아작스 신고할사용자 닉 :"+reported_nick);
 			
-			if (confirm("신고 할거야?")) {	
+			if (confirm("신고 하시겠습니까?")) {	
 				$('.popup').remove();
 				var display = $('.reportuserform').css('display');
 				if (display == 'none'){
@@ -465,10 +471,12 @@
 	});
 </script>
 <style>
-*{
-    margin: 0;
-    padding: 0;
-}
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+   *{
+        margin: 0;
+        padding: 0;
+        font-family: "Yeon Sung", system-ui;
+    }
 a{
     text-decoration: none;
     color: black;
@@ -824,14 +832,20 @@ cursor: pointer;
             text-align: center;
 }
 
-    
-    
-    
-    
 </style>
 </head>
 <body>
-<jsp:include page="../main/main.jsp"/>
+<c:choose>
+    <c:when test="${sessionScope.opt == 'admin_log'}">
+        <jsp:include page="../main/adminMain.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.opt == 'user_log'}">
+        <jsp:include page="../main/main.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.opt == 'store_log'}">
+        <jsp:include page="../main/storeMain.jsp" />
+    </c:when>
+</c:choose>
 	<h2 style="display:none;">${loginId}님의 ${roomidx}번 채팅방</h2>
     <div class="main">
         <div class="section">
@@ -892,7 +906,7 @@ cursor: pointer;
                             </c:forEach>
                         </div>
                         <div class="textarea">
-                        	<input type="text" name="user_id" value="${sessionScope.loginId}" readonly>
+                        	<input type="text" name="user_id" value="${sessionScope.loginId}" style="display:none;">
                             <textarea name="usermsgcontent" placeholder="메세지 입력(100자 이내)" maxlength="100"></textarea>
                             <button type="button" class="sendmsg">전송</button>
                         </div>
@@ -919,7 +933,7 @@ cursor: pointer;
 	
 	// 방 이동 할거양
 	$('.room').click(function(){
-		if (confirm("방 이동할거야?")) {
+		if (confirm("방을 이동하시겠습니까?")) {
 			$(this).closest('form').submit();
 			var chatroom_idx = '${roomidx}';
 			console.log(chatroom_idx);
@@ -928,9 +942,9 @@ cursor: pointer;
 				type: 'POST',
 				data: {chatroom_idx: chatroom_idx},
 				success: function(response) {
-					alert("잘가~");
+					console.log("방 이동 성공");
 				 }, error: function(){
-	                 alert('이동 실패.');
+	                 alert('방 이동 불가.');
 	             }
 			});
 		}else{
@@ -940,7 +954,7 @@ cursor: pointer;
 
 	// 방 나가기 클릭 시 parti_state를 0으로 변경
 	$('.roomout').click(function() {
-		if (confirm("방 진짜 나가?")) {
+		if (confirm("방을 나가시겠습니까?")) {
 			var chatroom_idx = '${roomidx}';
 			
 			$.ajax({
@@ -948,7 +962,7 @@ cursor: pointer;
 				type: 'POST',
 				data: {chatroom_idx: chatroom_idx},
 				success: function(response) {
-					alert("잘가고~");
+					alert("방을 나갔습니다.");
 					window.location.href = "localchatlist.go";  // 로컬 채팅방 리스트로 이동
 				},
 				error: function(error) {
