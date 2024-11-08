@@ -74,7 +74,6 @@
     </style>
 </head>
 <body>
-<div style="display: flex; justify-content: center; align-items: center;">
     <c:choose>
     <c:when test="${sessionScope.opt == 'admin_log'}">
         <jsp:include page="../main/adminMain.jsp" />
@@ -86,7 +85,6 @@
         <jsp:include page="../main/storeMain.jsp" />
     </c:when>
 </c:choose>
-</div>
     <div class="container">
         <div class="header">고객센터<i class='fas fa-headphones' style='font-size:48px'></i></div>
         <div class="section">

@@ -79,6 +79,13 @@ public class MainService {
 		Map<String, Object> response = new HashMap<>();
 		
 		List<StoreDTO> storeList = main_dao.mainStore();
+		Map<Integer, PhotoDTO> map = new HashMap<Integer, PhotoDTO>(); 
+			for (StoreDTO store : storeList) { 
+				PhotoDTO photoDto =  photo_ser.mainStore(store.getStore_idx());
+				map.put(store.getStore_idx(), photoDto); 
+				}
+
+		response.put("files", map);
 		response.put("stores", storeList);
 
 		List<UserChatroomDTO> userchatList = main_dao.mainChat();
@@ -86,16 +93,23 @@ public class MainService {
 		for (UserChatroomDTO ucd : userchatList) {
 			String user_id = ucd.getUser_id();
 			UserDTO userProfile = main_dao.profile(user_id); 
-			if (userProfile != null) { 
-				profile.put(user_id, userProfile);
-				} 
-			}
+			if (userProfile != null) {
+                profile.put(user_id, userProfile);
+            }
+		}
 		response.put("profiles", profile);
 		response.put("chatRooms", userchatList);
 
 		List<BoardDTO> boardList = main_dao.mainBoard();
-		response.put("boards", boardList);
 
+		Map<Integer, StoreDTO> bstore = new HashMap<Integer, StoreDTO>();
+		  for (BoardDTO boardDTO : boardList) { 
+			  int store_idx = boardDTO.getStore_idx(); 
+			  StoreDTO storeDto = main_dao.storeInfo(store_idx);
+			  bstore.put(store_idx, storeDto); 
+			  } 
+		  response.put("storeInfo", bstore);
+		  response.put("boards", boardList);
 		
 		return response;
 	}

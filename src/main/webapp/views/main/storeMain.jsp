@@ -239,6 +239,15 @@
         </div>  
     </header>
 </body>
+<div id="loginModal" class="modal_madal" style="display: none;">
+    <div class="modal-content_madal">
+        <span class="close_madal" onclick="$('#loginModal').hide();">&times;</span>
+        <p>로그인이 필요한 페이지 입니다.</p>
+        <p>로그인 페이지로 이동하시겠습니까?</p>
+        <br/>
+        <button class="btn_madal" onclick="redirectToLogin()">로그인</button>
+    </div>
+</div>
 <div id="logoutModal" class="modal_madal" style="display: none;">
     <div class="modal-content_madal">
         <span class="close_madal" onclick="$('#logoutModal').hide();">&times;</span>
@@ -249,10 +258,19 @@
     </div>
 </div>
 <script>
-var loginId ='${sessionscope.loginId}';
 
 $(document).ready(function() {
+	
+	var loginId ='${sessionscope.loginId}';
     const isLoggedIn = "${sessionScope.loginId != null}";
+
+    // .go 링크 클릭 이벤트에 로그인 확인 추가
+    $('a[href*=".go"]').on('click', function(event) {
+        if (!$(this).attr('href').includes('login.go') && isLoggedIn !== "true") {
+            event.preventDefault(); // 기본 링크 이동 막기
+            $('#loginModal').show(); // 로그인 모달 표시
+        }
+    });
     
     // 로그아웃 버튼 클릭 시 로그아웃 확인 모달 표시
     $('#logoutButton').on('click', function(event) {
@@ -271,6 +289,10 @@ $(document).ready(function() {
         $('#logoutModal').hide(); // 로그아웃 모달 닫기
     });
 });
+function redirectToLogin() {
+    $('#loginModal').hide();
+    window.location.href = 'login.go'; // 로그인 페이지로 이동
+}
 
 
 //main_menu 클릭 이벤트

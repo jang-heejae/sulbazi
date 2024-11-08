@@ -3,19 +3,19 @@
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="com.sulbazi.main.MainDAO">
-	<select id="mainStore" parameterType="com.sulbazi.member.StoreDTO">
-		SELECT * FROM store ORDER BY star_average DESC LIMIT 4
+	<select id="mainStore" parameterType="com.sulbazi.member.StoreDTO" resultType="com.sulbazi.member.StoreDTO">
+		SELECT store_idx, store_name, star_average, review_total  FROM store ORDER BY star_average DESC LIMIT 4
 	</select>
 	<select id="mainChat" parameterType="com.sulbazi.chat.UserChatroomDTO">
-		SELECT * FROM userchat WHERE userchat_state = 1 ORDER BY userchat_date DESC LIMIT 4
+		SELECT user_id, userchat_idx, userchat_subject, current_people, max_people, userchat_date  FROM userchat WHERE userchat_state = 1 ORDER BY userchat_date DESC LIMIT 4
 	</select>
-	<select id="profile" parameterType="com.sulbazi.member.UserDTO">
+	<select id="profile" parameterType="String" resultType="com.sulbazi.member.UserDTO">
 		SELECT user_photo, user_nickname FROM user WHERE user_id = #{user_id}
 	</select> 
 	<select id="mainBoard" parameterType="com.sulbazi.board.BoardDTO">
-		SELECT * FROM board ORDER BY board_date AND board_state = 1 DESC LIMIT 4 
+		SELECT store_idx, board_subject, board_category, board_idx, like_count, board_bHit, board_date  FROM board WHERE board_state = 1 ORDER BY board_date DESC LIMIT 4 
 	</select>
-	<select id="storeInfo" parameterType="com.sulbazi.member.StoreDTO">
-		SELECT * FROM store WHERE store_idx = #{store_idx}
+	<select id="storeInfo" parameterType="int" resultType="com.sulbazi.member.StoreDTO">
+    	SELECT store_name FROM store WHERE store_idx = #{store_idx}
 	</select>
 </mapper>  

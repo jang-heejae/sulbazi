@@ -157,7 +157,17 @@
 </style>
 </head>
 <body>
-<jsp:include page="../main/main.jsp"/>
+<c:choose>
+    <c:when test="${sessionScope.opt == 'admin_log'}">
+        <jsp:include page="../main/adminMain.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.opt == 'user_log'}">
+        <jsp:include page="../main/main.jsp" />
+    </c:when>
+    <c:when test="${sessionScope.opt == 'store_log'}">
+        <jsp:include page="../main/storeMain.jsp" />
+    </c:when>
+</c:choose>
 	<form action="userinqueryWrite.do" method="post" enctype="multipart/form-data">
     	<div class="container">
         	<div class="header">고객센터<i class='fas fa-headphones' style='font-size:48px'></i></div>

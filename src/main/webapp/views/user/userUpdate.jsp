@@ -266,7 +266,7 @@
 					<li><span id="pwCheckMessage"></span></li>
 					<li><label>이름</label> <input type="text" name="user_name" value="${info.user_name}" readonly="readonly"/></li>
 					<li><label>닉네임</label> 
-                			<input type="text" name="user_nickname" value="${info.user_nickname}"/>
+                			<input type="text" id="user_nickname" name="user_nickname" value="${info.user_nickname}"/>
 					</li>
                 	<li><div><span id="checkNickname"></span><button type="button" id="overlay">중복확인</button></div></li>
 					<li><label>생년월일</label> <input type="text" name="user_birth" value="${info.user_birth}"/></li>
@@ -464,14 +464,19 @@ $(document).ready(function() {
         $('#confirmAction').off('click').on('click', function() {
             var password = $('#user_pw').val();
             var passwordCheck = $('#user_pwCheck').val();
-
+            var nicknameCheckMessage = $('#checkNickname').text();
+            
             // 비밀번호 일치 여부 확인
             if (password !== passwordCheck) {
                 alert('비밀번호가 일치하지 않습니다. 수정이 불가능합니다.');
                 $('#confirmationModal').hide();
                 return;
             }
-
+            if (nicknameCheckMessage === '이미 사용 중인 닉네임입니다.') {
+                alert('이미 사용 중인 닉네임입니다. 수정이 불가능합니다.');
+                $('#confirmationModal').hide();
+                return;
+            }
             // 모든 조건을 만족하면 폼 제출
             $('#userForm').submit();
             $('#confirmationModal').hide();
