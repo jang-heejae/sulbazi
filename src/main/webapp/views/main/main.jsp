@@ -201,7 +201,7 @@ div#notification {
 
 </style>
 <body>
-<%
+<%-- <%
     // C.jsp에서 전달된 속성을 확인
     Boolean includeSendAlarm = (Boolean) request.getAttribute("includeSendAlarm");
     
@@ -212,13 +212,14 @@ div#notification {
         <jsp:include page="../user/sendAlarm.jsp" />
 <% 
     }
-%>
+%> --%>
 <%--    	<jsp:include page="../user/sendAlarm.jsp"/> --%>
     <header>
         <nav class="navbar">
             <div class="main_menu"><i class="fa-solid fa-bars"></i></div>
             <div class="logo_text">
                 <a href="./mainPage.go">SULBAZI</a>
+                <div id="loginId" data-login-id="${sessionScope.loginId}" style="display:none;"></div>
             </div>
             <div>
                 <ul class="icon">
@@ -232,19 +233,11 @@ div#notification {
 					        </c:otherwise>
 					    </c:choose>
 					</li>
-                    <li>
+                    <li id="info" onclick="loadInfo()">
                         <i class="fa-regular fa-message"></i>
                         <div class="sub_1">
                             <div class="sub_txt1">대화중인 대화방</div>
-                            <c:forEach items="${listroom}" var="userchat">
-                            	<form action="userchatroom.go?userchat_idx=${userchat.userchat_idx}" method="post">
-	                               <div class="sub1" onclick="submitForm(${userchat.userchat_idx})" style="cursor: pointer;">
-	                                   <div class="roominfof">${userchat.userchat_subject}</div>
-	                                   <input type="hidden" name="userchat_idx" value="${userchat.userchat_idx}">
-	                                   <div class="roominfof">${userchat.current_people} / ${userchat.max_people}</div>   
-	                               </div>
-                               </form>
-                            </c:forEach>
+                            <div id="mylist"></div>
                         </div>
                     </li>
                     <li>
@@ -303,9 +296,10 @@ div#notification {
     </div>
 </div>
 <script>
-var loginId ='${sessionscope.loginId}';
 
 $(document).ready(function() {
+	
+	var loginId ='${sessionscope.loginId}';
     const isLoggedIn = "${sessionScope.loginId != null}";
 
     // .go 링크 클릭 이벤트에 로그인 확인 추가
@@ -398,6 +392,58 @@ document.querySelectorAll('.fa-message').forEach(function(message) {
             });
             // .sub_1 클래스 요소 보이기
             sub1Element.style.display = 'block';
+          //내가 참여한 채팅방 목록
+
+            function loadInfo() {
+            		var loginId = '${sessionScope.loginId}';
+            		
+            		console.log("로그인아ㄴ이디",loginId);
+            		fetch('myroomList.ajax?loginId=' + encodeURIComponent(loginId), {
+            	        method: 'GET',
+            	        headers: {
+            	            'Content-Type': 'application/json'
+            	        },
+            	        body: JSON.stringify({ loginId: loginId})  // loginId를 JSON 형식으로 전달
+            	    })  // 데이터를 가져올 엔드포인트로 변경하세요
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('네트워크 응답에 문제가 있습니다.');
+                        }
+                        return response.json();  // JSON 형식으로 응답을 파싱
+                    })
+                    .then(function(data) {
+                        // 데이터를 성공적으로 가져온 후 화면에 표시
+                        var mylist = document.getElementById('mylist');
+                        var result = '';
+
+                        // data가 배열인지, 그 안에 userchat 객체들이 있는지 확인 후 반복
+                        if (Array.isArray(data)) {
+                            data.forEach(function(userchat) {
+                                console.log(userchat);  // userchat 객체 내용 확인
+                                result += '<form action="userchatroom.go?userchat_idx=' + userchat.userchat_idx + '" method="post">';
+                                result += '<div class="sub1" onclick="submitForm(' + userchat.userchat_idx + ')" style="cursor: pointer;">';
+                                result += '<div class="roominfof">' + userchat.userchat_subject + '</div>';
+                                result += '<input type="hidden" name="userchat_idx" value="' + userchat.userchat_idx + '">';
+                                result += '<div class="roominfof">' + userchat.current_people + ' / ' + userchat.max_people + '</div>';
+                                result += '</div>';
+                                result += '</form>';
+                            });
+                        } else {
+                            console.error('Invalid data format');
+                        }
+
+                        mylist.innerHTML = result;  // 생성한 HTML을 displayDiv에 추가하여 표시
+                    })
+                    .catch(function(error) {
+                        console.error('정보를 불러오는 중 오류 발생:', error);
+                    });
+            }
+            loadInfo();
+            // 선택된 방의 폼을 제출하는 함수
+            function submitForm(userchatIdx) {
+                document.querySelector(`form[action="userchatroom.go?userchat_idx=${userchatIdx}"]`).submit();
+            }
+
         } else {
             // .sub_1 클래스 요소 숨기기
             sub1Element.style.display = 'none';
@@ -424,6 +470,8 @@ document.querySelectorAll('.fa-bell').forEach(function(bell) {
         }
     });
 });
+
+
 
 
 </script>

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -202,6 +203,19 @@ public class ChatRoomController {
 		}
 		
 		return page;
+	}
+	
+	// 메뉴바 나의 채팅방 리스트
+	@GetMapping("/myroomList.ajax")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> getInfo(@RequestParam("loginId") String loginId) {
+	    List<UserChatroomDTO> userchat_list = chatroom_ser.myroomlist(loginId);
+	    // loginId를 사용하여 필요한 데이터 조회
+	    Map<String, Object> data = new HashMap<>();
+	    data.put("info", userchat_list);
+	    
+	    logger.info("userchat_list{}:", userchat_list);
+	    return ResponseEntity.ok(data);
 	}
 	
 	

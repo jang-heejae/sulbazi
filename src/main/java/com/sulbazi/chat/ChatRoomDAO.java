@@ -41,6 +41,12 @@ public interface ChatRoomDAO {
 	/* 개인 채팅방 나가기 */
 	int userroomout(int total, int chatroom_idx);
 	
+	/* 메뉴바 나의 채팅방 리스트 */
+	String myroom(String loginId);
+	
+	
+	
+	
 	
 	
 	/* ************************  지역 채팅  *************************** */
@@ -53,6 +59,8 @@ public interface ChatRoomDAO {
 	
 	/* 지역 채팅방 정보 */
 	List<LocalChatroomDTO> localroominfo(int idx);
+
+	
 
 	
 

@@ -107,6 +107,9 @@
 	
 	
 	
+	
+	
+	
 	<!-- 지역 채팅방 참여자 총 인원  -->
 	<select id="localtotal" parameterType="int" resultType="int">
 		SELECT COUNT(user_id) FROM parti WHERE chatroom_idx = #{chatroom_idx} AND chatroom_category = 'localchat' AND parti_state = 1

@@ -190,7 +190,16 @@
             </div>
             <div>
                 <ul class="icon">
-                    <li><a href="login.go">로그인</a></li>
+					<li class="userUser">
+					    <c:choose>
+					        <c:when test="${not empty sessionScope.loginId}">
+					            <a href="#">${sessionScope.loginId}님</a>
+					        </c:when>
+					        <c:otherwise>
+					            <a href="login.go">로그인</a>
+					        </c:otherwise>
+					    </c:choose>
+					</li>
                     <li style="visibility: hidden;"><i class="fa-regular fa-message"></i></li>
                     <li style="visibility: hidden;"><i class="fa-regular fa-bell"></i></li>
                     <li class="mypage"><i class="fa-regular fa-user"></i></li>
