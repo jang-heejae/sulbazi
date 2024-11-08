@@ -61,6 +61,9 @@ public interface ChatPartiDAO {
 	/* 방에 참여중인 사용자 - 지역 */
 	List<PartiDTO> localuserlistajax(int localchat_idx);
 
+
+
+
 	
 
 
