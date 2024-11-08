@@ -11,6 +11,7 @@
 <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=4ae2258b561b1a937e5d3f2c155e60f9"></script>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
         <style>
+        
 /*             body{
                 background-color: #20290E;
             } */
@@ -845,6 +846,10 @@ cursor: pointer;
 									                ${board.board_subject}
 									            </a>
 									        </p>
+	                    		</td>
+	                    		<td>좋아요:${board.like_count}</td>
+	                    		<td>조회수:${board.board_bHit}</td>
+	                    		<td>등록날짜:${board.board_date}</td>
 									    </c:when>
 									    <c:otherwise>
 									        <p style="display: inline; color: red;">
@@ -852,10 +857,6 @@ cursor: pointer;
 									        </p>
 									    </c:otherwise>
 									</c:choose>
-	                    		</td>
-	                    		<td>좋아요:${board.like_count}</td>
-	                    		<td>조회수:${board.board_bHit}</td>
-	                    		<td>등록날짜:${board.board_date}</td>
 	                    	</tr>
 	                    </table>    
                 </div>
@@ -1012,6 +1013,30 @@ cursor: pointer;
 </div>
 
 
+<div id="reviewDelete" class="modal_madal" style="display: none;">
+    <div class="modal-content_madal">
+        <span class="close_madal" onclick="$('#reviewDelete').hide();">&times;</span>
+        <p>삭제 하시겠습니까?</p>
+        <br/>
+        <input type="hidden" id="hiddenReviewIdx" />
+        <button class="btn_madal" id="reviewDelete2">삭제</button>
+        <button class="btn_madal" onclick="$('#reviewDelete').hide();">취소</button>
+    </div>
+</div>
+
+<!-- 답글 삭제 모달 -->
+<div id="replyDelete" class="modal_madal" style="display: none;">
+    <div class="modal-content_madal">
+        <span class="close_madal" onclick="$('#replyDelete').hide();">&times;</span>
+        <p>삭제 하시겠습니까?</p>
+        <br/>
+        <input type="hidden" id="hiddenreply" />
+        <button class="btn_madal" id="replyDelete2">삭제</button>
+        <button class="btn_madal" onclick="$('#replyDelete').hide();">취소</button>
+    </div>
+</div>
+
+
     </body>
     <script>
 	var loginId = '${sessionScope.loginId}'; 
@@ -1154,6 +1179,8 @@ cursor: pointer;
     	
  		var reviewDataList = [];
  		function drawList(reviews){
+
+ 			
  			var listContainer = document.getElementById('review-section');
  			listContainer.innerHTML = '';
  			reviewDataList = [];
@@ -1164,7 +1191,19 @@ cursor: pointer;
  				var userIds = review.like_user_ids ? review.like_user_ids.split(',') : []; 
  				reviewDataList.push(review); 
  			   console.log("reviews img:", review.review_photos);
- 				var reviewDate = review.review_date.split('T')[0];
+ 				/* var reviewDate = review.review_date.split('T')[0]; */
+		 			function formatDate(dateString) {
+		 				  // Date 객체 생성
+		 				  const date = new Date(dateString);
+		 				  const today = new Date(); // 오늘 날짜 객체 생성
+		 				  if (date.toDateString() === today.toDateString()) {
+		 				      // 오늘이면 시간만 표시
+		 				      return date.toLocaleTimeString('en-GB'); // 'HH:mm:ss' 형식
+		 				  } else {
+		 				      // 오늘이 아니면 날짜만 표시
+		 				      return date.toLocaleDateString('en-CA'); // 'YYYY-MM-DD' 형식
+		 				  }
+		 			}
  			    
  				
  				if (review.review_photos) {
@@ -1220,7 +1259,7 @@ cursor: pointer;
  			 	content +='</br><p class="thing">ㄴ'+storeName +': '+review.comm_content+'</p>';
 				}
  			 	content +='</td></tr class="target-row">';
- 			 	content +='<tr><td colspan="3" class="action-cell reply-btn text-right">'+reviewDate;
+ 			 	content +='<tr><td colspan="3" class="action-cell reply-btn text-right">'+formatDate(review.review_date);
  			 	content +='<span class="report-section"><img src="resources/img/yellow.png" alt="좋아요" class="icon-review"></span>';
  			 	
  			 	//좋아요 버튼
@@ -1249,7 +1288,7 @@ cursor: pointer;
 				}else {
  			 	content +='<button class="action-button btn-light store-user hide updown" onclick="replyDown(this)">답글</button>';
 				}
-			 	if (review.user_id == loginId || opt == 'admin_log') {
+			 	if (review.user_id == loginId /* || opt == 'admin_log' */) {
  			 	content += '<button id="user-check" class="action-button btn-light updown" onclick="reviewUpdate(this,' + idx + ',' + review.review_idx + ')">수정</button>';
  			    } 
  			 	content += '<button id="user-check" class="action-button btn-light hide updown" onclick="reviewUpdate(this,' + idx + ',' + review.review_idx + ')">수정</button>';
@@ -1264,9 +1303,9 @@ cursor: pointer;
 				}
 
 			 	if (review.user_id == loginId || opt == 'admin_log' ) {
- 			 	content += '<button id="user-check" class="action-button btn-light tttt updown" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
+ 			 	content += '<button id="user-check" class="action-button btn-light tttt updown" onclick="reviewDel2(this,' + review.review_idx + ')">삭제</button>';
 			 	}
- 			 	content += '<button id="user-check" class="action-button btn-light hide tttt updown" onclick="reviewDel(this,' + review.review_idx + ')">삭제</button>';
+ 			 	content += '<button id="user-check" class="action-button btn-light hide tttt updown" onclick="reviewDel2(this,' + review.review_idx + ')">삭제</button>';
  			 	
  			 	
  			 	content += '<div id="line"></div></td></tr>';
@@ -1297,7 +1336,7 @@ content += '</tr>';
  			 	listContainer.innerHTML += content;
  			});
  			$('.thing').removeClass('hide');
-			 	if (loginId == storeId || opt == 'admin_log') {
+			 	if (loginId == storeId /* || opt == 'admin_log' */) {
  			 	    $('.store-user').removeClass('hide');
 				}
 			 	
@@ -1516,6 +1555,7 @@ function replyUp(button) {
     $(button).closest('tbody').find('.thing').removeClass('hide');
 }
 
+//
  	   
  	   //답글 디비 넣기
  	   function reply(button,review_idx){
@@ -1585,6 +1625,27 @@ function replyUp(button) {
 				}); 
  	 
  	   }
+ 	   
+ 	   
+ 	   //답글 삭제 모달 펑션
+ 	   
+/*  	   function replyDel2(){
+ 			    $('#hiddenreply').val(reviewIdx); // 숨겨진 input에 reviewIdx 값을 저장
+ 			    $('#replyDelete').show(); // 모달 창을 표시합니다.
+	   };
+	   
+		$('#replyDelete2').on('click', function() {
+			    // 숨겨진 input에서 reviewIdx 값을 가져옵니다.
+			    var reviewIdx = $('#hiddenreply').val();
+			    
+			    if (reviewIdx) {
+			        replyDel(reviewIdx); // 삭제 요청을 진행합니다.
+			        $('#replyDelete').hide(); // 모달 창 닫기
+			    } else {
+			        alert("삭제할 리뷰가 선택되지 않았습니다.");
+			    }
+			}); 	   
+	    */
  	   //리뷰 답글 삭제
  	   function replyDel(button,review_idx){
 	 		$.ajax({
@@ -1827,8 +1888,26 @@ function replyUp(button) {
  	  }
  	  
  	  //리뷰 삭제
- 	  function reviewDel(button,reviewIdx){
- 		  
+function reviewDel2(button, reviewIdx) {
+    $('#hiddenReviewIdx').val(reviewIdx); // 숨겨진 input에 reviewIdx 값을 저장
+    $('#reviewDelete').show(); // 모달 창을 표시합니다.
+}
+$('#reviewDelete2').on('click', function() {
+    // 숨겨진 input에서 reviewIdx 값을 가져옵니다.
+    var reviewIdx = $('#hiddenReviewIdx').val();
+    
+    if (reviewIdx) {
+        reviewDel(reviewIdx); // 삭제 요청을 진행합니다.
+        $('#reviewDelete').hide(); // 모달 창 닫기
+    } else {
+        alert("삭제할 리뷰가 선택되지 않았습니다.");
+    }
+});
+
+
+ 	  
+ 	  function reviewDel(reviewIdx){
+	
           $.ajax({
               type: 'POST',
               url: 'reviewDel.ajax',
@@ -1848,7 +1927,7 @@ function replyUp(button) {
                   alert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
               }
           });
- 	  }
+ 		}
 	//리뷰 좋아요
  	  function likebtn(button,reviewIdx){
  		 $(button).css('background-color', '#F781BE');
@@ -1916,8 +1995,7 @@ function replyUp(button) {
  	   
  	  function drawProfile(userdto,userLikedto){
 			var optNameString = userdto.opt_name; 
-			var optNameArray = optNameString.split(",");
-			console.log("유저 라이크: " + userLikedto);
+			var optNameArray = optNameString ? optNameString.split(",") : [];
          
  		 var content='';
  			content +=''
@@ -2032,7 +2110,12 @@ $('#searchQuery').keydown(function(event) {
         var keyword1 = encodeURIComponent(keyword);
         window.location.href = '/SULBAZI/storeList.go?category=' + category1 + '&keyword=' + keyword1;
     }
-});		
+});
+
+/* //삭제 모달
+$('#reviewDelete').on('click', function(event) {
+    $('#reviewDelete').show(); // 로그아웃 모달 표시
+}); */
 		
  		
     </script>
