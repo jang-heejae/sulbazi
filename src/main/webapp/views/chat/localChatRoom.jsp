@@ -6,10 +6,14 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
+
+	
 	var loginId = '${sessionScope.loginId}';
 	
 	var session = "${sessionScope.session}";
 	var msg = "${msg}";
+	
+
 	
 	// 사용자 상세정보 jsp 이동
 /* 	   function openPopup(user_nickname) {
@@ -17,85 +21,105 @@
 	       window.open(popupUrl, 'userPopup', 'width=600,height=400');
 	   } */
 		//유저 프로필 영역
+		
 		var opt = '${sessionScope.opt}';
 		
 		
 		
-		
-		// 유저프로필 닫기
-	$('#userprofileexit').on('click', function() {
-	    $('#userprofile').hide(); 
-	});
+		$(document).ready(function() {
+		    // 유저 프로필 닫기 버튼 이벤트
+		    $(document).on('click', '#userprofileexit', function() {
+		        $('#userprofile').hide();
+		    });
 
-	function letItgo(userId){
+		    // 프로필 불러오기 함수 (letItgo)
+		    $(document).on('click', '.user-profile', function() {
+		        var userId = $(this).data('user-id');
+		        if (userId) {
+		            letItgo(userId);
+		        }
+		    });
 
-	 
+		    // "좋아요" 클릭 시 동작
+		    $(document).on('click', '#userLike', function() {
+		        var userId = $(this).data('user-id');
+		        if (userId) {
+		            clickLike(userId);
+		        }
+		    });
+
+		    // 다른 초기화 코드
+
+		});
+
+	function letItgo(userId) {
 	    $.ajax({
 	        type: 'POST',
 	        url: 'letItgo.ajax',
 	        data: {
 	            "userId": userId,
-	            "loginId":loginId
-	          },
+	            "loginId": loginId
+	        },
 	        dataType: 'json',
 	        success: function(data) {
-	            if (data.user) {
-	                drawProfile(data.user,data.userLike);
+	            if (data && data.user) {
+	                drawProfile(data.user, data.userLike);
 	                $('#userprofile').show();
-
-	            }else
-	                alert('유저 정보를 불러올수가 없습니다.');
+	            } else {
+	                alert('유저 정보를 불러올 수 없습니다.');
+	            }
 	        },
-	        error: function() {
+	        error: function(xhr, status, error) {
 	            alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
 	        }
 	    });
 	}
 
-	function drawProfile(userdto,userLikedto){
-	  var optNameString = userdto.opt_name; 
-	  var optNameArray = optNameString.split(",");
-	  /* console.log("유저 라이크: " + userLikedto); */
 
-	var content='';
-	   content +=''
-	       // 유저 정보들을 동적으로 생성합니다.
-	      content += '<div class="user-details">';
-	      content += '<div class="whitebox">';
-	      content += '<table class="profile-table">';
-	      content += '<tbody>';
-	      content += '<tr>';
-	      content += '<td><button class="nickname btn-button">'+userdto.user_nickname+'</button></td></tr>';
-	      content += '<tr><td>';
-	      if (userdto.user_gender == '남') {
-	          content += '<button class="genderboy btn-button"><span class="boy">♂</span>&nbsp;'+userdto.user_gender+'</button>';
-	      } else if (userdto.user_gender == '여') {
-	          content += '<button class="gendergirl btn-button"><span class="girl">♀</span>&nbsp;'+userdto.user_gender+'</button>';
-	      }
-	      if (opt == 'user_log') {
-	      content += '<button class="like btn-button" id="userLike" onclick="clickLike(\'' + userdto.user_id + '\')">';
-	      }else {
-	          content += '<button class="like btn-button" id="userLike" >';
-	      }
-	      if (userLikedto != 0) {
-	      content += '<img class="jongwonIcon" src="resources/img/이종원 좋아요후.png">좋아요'+userdto.user_likecount+'</button>';
-	      }else {
-	          content += '<img class="jongwonIcon" src="resources/img/이종원 좋아요전.png">좋아요'+userdto.user_likecount+'</button>';
-	      }
-	      content += '</td></tr>';
-	      content += '<tr><td>';
-	      if (optNameArray && optNameArray.length > 0) {
-	           optNameArray.forEach(function(name) {
-	               content += '<button class="category btn-button">'+name+'</button>';
-	           });
-	      }
-	      content += '</td></tr>';
-	      content += '</tbody></table>';
-	      
-	       content += '<img src="photo/'+userdto.user_photo+'" alt="User Photo" class="user-ph">';
-	       $('#modalbodyprofile').html(content);
-	 
+	function drawProfile(userdto, userLikedto) {
+	    var optNameString = userdto.opt_name;
+
+	    var optNameArray = optNameString ? optNameString.split(",") : [];
+	    
+	    
+	    var content = '';
+	    content += '<div class="user-details">';
+	    content += '<div class="whitebox">';
+	    content += '<table class="profile-table">';
+	    content += '<tbody>';
+	    content += '<tr>';
+	    content += '<td><button class="nickname btn-button">' + userdto.user_nickname + '</button></td></tr>';
+	    content += '<tr><td>';
+	    if (userdto.user_gender == '남') {
+	        content += '<button class="genderboy btn-button"><span class="boy">♂</span>&nbsp;' + userdto.user_gender + '</button>';
+	    } else if (userdto.user_gender == '여') {
+	        content += '<button class="gendergirl btn-button"><span class="girl">♀</span>&nbsp;' + userdto.user_gender + '</button>';
+	    }
+	    
+	    if (opt == 'user_log') {
+	        content += '<button class="like btn-button" id="userLike" data-user-id="' + userdto.user_id + '">';
+	    } else {
+	        content += '<button class="like btn-button" id="userLike">';
+	    }
+	    if (userLikedto != 0) {
+	        content += '<img class="jongwonIcon" src="resources/img/이종원 좋아요후.png">좋아요' + userdto.user_likecount + '</button>';
+	    } else {
+	        content += '<img class="jongwonIcon" src="resources/img/이종원 좋아요전.png">좋아요' + userdto.user_likecount + '</button>';
+	    }
+	    content += '</td></tr>';
+	    content += '<tr><td>';
+	    if (optNameArray && optNameArray.length > 0) {
+	        optNameArray.forEach(function(name) {
+	            content += '<button class="category btn-button">' + name + '</button>';
+	        });
+	    }
+	    content += '</td></tr>';
+	    content += '</tbody></table>';
+
+	    content += '<img src="photo/' + userdto.user_photo + '" alt="User Photo" class="user-ph">';
+	    $('#modalbodyprofile').html(content);
 	}
+
 
 
 	function clickLike(userId){
@@ -164,7 +188,7 @@
 
 	    // 오류 SSE - 메세지, 유저리스트, 공지
 	    sse.onerror = function(event) {
-		    console.error('EventSource failed:', event);
+		   /*  console.error('EventSource failed:', event); */
 		    setTimeout(function() {
 		        eventSource = new EventSource("/sse/all");
 		    }, 1000); // 재연결 시도

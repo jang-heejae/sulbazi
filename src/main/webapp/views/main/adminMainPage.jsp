@@ -76,7 +76,6 @@
     </div>
 </div>
 <script>
-
 $(document).ready(function() {
     loadAdminMainContent();
 
@@ -151,6 +150,8 @@ $(document).ready(function() {
     }
 });
 
+var loginId = '${sessionScope.loginId}';
+const isLoggedIn = loginId !== 'null' && loginId !== '';
 
 // .go 링크 클릭 이벤트에 로그인 확인 추가 (동적 요소 포함)
 $(document).on('click', '.store, .chatList, .board', function(event) {

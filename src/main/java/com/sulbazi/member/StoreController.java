@@ -139,7 +139,6 @@ public class StoreController {
         return "store/storeMenu2";
 		}
 		return "redirect:/main.go";
-  
     }
 	
 	@PostMapping(value="/bookmark.ajax")

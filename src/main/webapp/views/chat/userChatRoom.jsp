@@ -515,7 +515,7 @@ $(document).ready(function() {
    // 초기 로드
    loadUserList();
 
-    
+
    
    // 메세지 전송
    function sendMessage(){
@@ -630,7 +630,151 @@ $(document).ready(function() {
 
       
 });
-   
+
+/* // 종원 유저 프로필 작성중
+var opt = '${sessionScope.opt}';
+$(document).on('click', '.usernickf', function() {
+    var userId = $(this).text().trim();
+    letItgo(userId);
+    
+});
+
+//종원 유저 프로필 만들기
+
+		
+		
+$(document).ready(function() {
+    // 유저 프로필 닫기 버튼 이벤트
+    $(document).on('click', '#userprofileexit', function() {
+        $('#userprofile').hide();
+    });
+
+    // 프로필 불러오기 함수 (letItgo)
+    $(document).on('click', '.user-profile', function() {
+        var userId = $(this).data('user-id');
+        if (userId) {
+            letItgo(userId);
+        }
+    });
+
+    // "좋아요" 클릭 시 동작
+    $(document).on('click', '#userLike', function() {
+        var userId = $(this).data('user-id');
+        if (userId) {
+            clickLike(userId);
+        }
+    });
+
+
+});
+
+function letItgo(userId) {
+$.ajax({
+    type: 'POST',
+    url: 'letItgo.ajax',
+    data: {
+        "userId": userId,
+        "loginId": loginId
+    },
+    dataType: 'json',
+    success: function(data) {
+        if (data && data.user) {
+            drawProfile(data.user, data.userLike);
+            $('#userprofile').show();
+        } else {
+            alert('유저 정보를 불러올 수 없습니다.');
+        }
+    },
+    error: function(xhr, status, error) {
+        alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+    }
+});
+}
+
+
+function drawProfile(userdto, userLikedto) {
+var optNameString = userdto.opt_name;
+var optNameArray = optNameString ? optNameString.split(",") : [];
+
+
+var content = '';
+content += '<div class="user-details">';
+content += '<div class="whitebox">';
+content += '<table class="profile-table">';
+content += '<tbody>';
+content += '<tr>';
+content += '<td><button class="nickname btn-button">' + userdto.user_nickname + '</button></td></tr>';
+content += '<tr><td>';
+if (userdto.user_gender == '남') {
+    content += '<button class="genderboy btn-button"><span class="boy">♂</span>&nbsp;' + userdto.user_gender + '</button>';
+} else if (userdto.user_gender == '여') {
+    content += '<button class="gendergirl btn-button"><span class="girl">♀</span>&nbsp;' + userdto.user_gender + '</button>';
+}
+
+if (opt == 'user_log') {
+    content += '<button class="like btn-button" id="userLike" data-user-id="' + userdto.user_id + '">';
+} else {
+    content += '<button class="like btn-button" id="userLike">';
+}
+if (userLikedto != 0) {
+    content += '<img class="jongwonIcon" src="resources/img/이종원 좋아요후.png">좋아요' + userdto.user_likecount + '</button>';
+} else {
+    content += '<img class="jongwonIcon" src="resources/img/이종원 좋아요전.png">좋아요' + userdto.user_likecount + '</button>';
+}
+content += '</td></tr>';
+content += '<tr><td>';
+if (optNameArray && optNameArray.length > 0) {
+    optNameArray.forEach(function(name) {
+        content += '<button class="category btn-button">' + name + '</button>';
+    });
+}
+content += '</td></tr>';
+content += '</tbody></table>';
+
+content += '<img src="photo/' + userdto.user_photo + '" alt="User Photo" class="user-ph">';
+$('#modalbodyprofile').html(content);
+}
+
+
+
+function clickLike(userId){
+if(loginId != userId){
+   console.log("유저좋아요: " + userId);
+   console.log("로그인 유저: " + loginId);
+$.ajax({
+   type:'post', 
+   url: 'profile2.ajax',
+   data:{
+       'userId':userId,
+       'loginId':loginId
+   },
+   dataType:'JSON',
+   success:function(data){
+       if (data.success >=1) {
+           letItgo(userId);
+           alert("좋아요를 취소하였습니다");
+       }else{
+           letItgo(userId);
+           
+       }
+   },
+   error:function(e){
+       console.log(e);
+       if (opt == 'admin_log') {
+          alert("관리자는 좋아요를 할수없습니다 다시 확인해 주세요");
+      }else if (opt == 'store_log') {
+          alert("매장회원은 좋아요를 할수 없습니다 다시 확인해 주세요");
+      }else{
+           alert("좋아요를 실패하셨습니다. 다시 확인해 주세요.");
+      }
+   }
+});
+}else{
+   alert('자신에게 좋아요 다메요');
+}
+}
+
+ */
 </script>
 <style>
    *{
@@ -970,6 +1114,145 @@ $(document).ready(function() {
     .sendmsg{
         width: 15%;
     }
+
+
+/*   종원   */
+/* 유저프로필 상세보기 종원 */
+/* 유저 프로필 드로우 */
+/* 유저 프로필 모달 */
+/* .hide{
+	display: none;
+}
+.user_profile {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px;
+    height: auto;
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px #2ac323;
+    color: #041d03;
+    text-align: center;
+    font-family: "Yeon Sung", system-ui;
+}
+.close_madal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: -38px -28px 1px 1px;
+}
+.close_madal:hover,
+.close_madal:focus {
+    color: black;
+}
+.btn_madal {
+    background-color: rgb(255, 140, 9);
+    color: #041d03;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 10px;
+    font-family: "Yeon Sung", system-ui;
+}
+.btn_madal:hover {
+    background-color: #20290E;
+    color: white;
+}
+.user-details {
+    position: relative;
+    border: 1px solid #ccc;
+    padding: 15px;
+    background-color: rgb(255, 140, 9);
+    color: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 300px; /* 원하는 너비로 조정 */
+    height: auto; /* 높이는 자동으로 조정 */
+    
+}
+.close-button {
+    cursor: pointer;
+    color: black;
+    float: right;
+    z-index:100;
+}
+
+.user-ph {
+    position:absolute;
+    top: -83px;
+    left: 105px;
+    display: block; /* 블록 요소로 만들어 수평 중앙 정렬 */
+    margin: 0 auto; /* 수평 중앙 정렬 */
+    width: 130px; /* 사진 너비 */
+    height: 130px; /* 사진 높이 */
+    border-radius: 50%; /* 원형으로 만들기 */
+    object-fit: cover; /* 이미지 비율 유지 */
+}
+.whitebox {
+    text-align: center;
+    background-color: white;
+    margin: 15% 5%;
+    border-radius: 15px;      	
+}
+.btn-button{
+    background-color: #041d03;
+    color: white;
+    width: 10 auto;
+    margin: 1%;
+    height: 40px;
+    border-radius: 15px;
+    border: none;
+    font-weight: bolder;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.nickname{
+    font-size: 25px;
+}
+.genderboy, .gendergirl, .like{
+    font-size: 20px;
+}
+.category{
+    font-size: 16px;
+}
+.girl{
+    font-weight: bolder;
+    font-size: 22px;
+}
+
+.jongwonIcon{
+    width: 25px;
+    height: 25px;
+    margin: 0 0 0 0;
+    position: relative;
+    top:3px;
+    left: -10px;
+}
+#userLike{
+cursor: pointer;
+}
+.profile-table{
+	width: 100%; 
+}
+.profile-table td {
+            vertical-align: top; /* 세로 정렬을 위쪽으로 설정 */
+            padding: 5px 10px; /* 여백 추가 */
+            text-align: center;
+}    
+    
+    */
+    
+    
 </style>
 </head>
 <body>
@@ -1098,6 +1381,21 @@ $(document).ready(function() {
             </div>
         </div>
     </div>
+
+<!-- 종원 -->
+    <!-- 사용자 프로필 모달창 
+    <div id="userprofile" class="user_profile" style="display: none;">
+        <div class="modal-content_madal">
+            <span class="close_madal close-button" onclick="$('#userprofile').hide();">&times;</span>
+                <div id="modalbodyprofile">
+                    
+                </div>
+            <button class="btn_madal" id="userprofileexit">닫기</button>
+        </div>
+    </div>
+-->
+
+
 </body>
 <script>   
 

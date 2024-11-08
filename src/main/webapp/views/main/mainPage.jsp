@@ -12,11 +12,7 @@
 <link rel="stylesheet" href="resources/common.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
 
-.mainSearchBar{
-	font-family: "Yeon Sung", system-ui;
-}
 </style>
 </head>
 <body>

@@ -140,9 +140,9 @@ SELECT
     GROUP_CONCAT(uc.opt_idx) AS opt_idx
 FROM 
     user u
-INNER JOIN 
+LEFT JOIN 
     user_category uc ON u.user_id = uc.user_id
-INNER JOIN 
+LEFT JOIN 
     category_opt co ON uc.opt_idx = co.opt_idx
 WHERE 
     u.user_id = #{userId}

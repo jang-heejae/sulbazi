@@ -32,7 +32,27 @@ public class UserDTO {
 	private String opt_name;
 	private String opt_idx;
 	
-	
+	  @Override
+	    public String toString() {
+	        return "UserDTO{" +
+	                "user_id='" + user_id + '\'' +
+	                ", user_pw='" + user_pw + '\'' +
+	                ", user_nickname='" + user_nickname + '\'' +
+	                ", user_name='" + user_name + '\'' +
+	                ", user_gender='" + user_gender + '\'' +
+	                ", user_birth='" + user_birth + '\'' +
+	                ", user_phone='" + user_phone + '\'' +
+	                ", user_email='" + user_email + '\'' +
+	                ", user_revoke=" + user_revoke +
+	                ", user_reportno=" + user_reportno +
+	                ", user_reportedcases=" + user_reportedcases +
+	                ", user_likecount=" + user_likecount +
+	                ", user_photo='" + user_photo + '\'' +
+	                ", user_date=" + user_date +
+	                ", opt_name='" + opt_name + '\'' +
+	                ", opt_idx='" + opt_idx + '\'' +
+	                '}';
+	  };
 	
 	public String getOpt_name() {
 		return opt_name;

@@ -137,9 +137,19 @@ public class UserController {
     public Map<String, Object> userGetDO(@RequestParam Map<String, Object> params){
     	UserDTO user = user_ser.letItgo(params);
     	int userLike = user_ser.userLike(params);
+    	
+    	Object userid = params.get("userId");
+    	Object login =  params.get("loginId");
+    	
+    	
+    	System.out.println("종원 확인 유저 , 로그인 : " + userid +", " + login);
+    	System.out.println("종원 유저객체"+user);
+    	System.out.println("유저 라이크 객체"+userLike);
+
     		Map<String, Object> map = new HashMap<String, Object>();
     		map.put("user", user);
     		map.put("userLike", userLike);
+    		
     	return map;
     }
     
