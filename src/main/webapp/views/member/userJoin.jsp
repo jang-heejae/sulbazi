@@ -156,7 +156,9 @@
                 <input type="password" id="user_pw" name="user_pw" value="" placeholder="비밀번호(필수)">
                 <input type="password" id="user_pwcheck" name="user_pwcheck" value="" placeholder="비밀번호 확인(필수)"><span id="pwCheckMessage"></span>
                 <h6>※ 비밀번호 8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해주세요.</h6>
-                <input id="numb" type="text" name="user_email" value="" placeholder="이메일(필수)"/>&nbsp;<button type="button" id="checkEmailBtn">중복확인</button>
+                <input id="numb" type="text" name="user_email" value="" placeholder="이메일(필수)" />
+				<button type="button" id="checkEmailBtn">중복확인</button>
+				<span id="emailError" style="color: red; display: none;">유효한 이메일을 입력하세요.</span>
                 <br>
 	            <span id="emailCheckMessage"></span>
 	            <br>
@@ -305,5 +307,17 @@
 				}
 			}
 		}
+		document.getElementById('checkEmailBtn').addEventListener('click', function () {
+		    const emailInput = document.getElementById('numb').value;
+		    const emailError = document.getElementById('emailError');
+		    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+		    if (emailPattern.test(emailInput)) {
+		        emailError.style.display = 'none';
+		        // 여기에 중복 확인 로직을 추가하세요.
+		    } else {
+		        emailError.style.display = 'inline';
+		    }
+		});
     </script>
 </html>
