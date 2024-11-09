@@ -12,7 +12,16 @@ public class AlamDTO {
 	private Time alarm_time;
 	private int alarm_read;
 	private String alarm_subject;
+	private String getuser_id;//발신자
 	
+	
+	
+	public String getGetuser_id() {
+		return getuser_id;
+	}
+	public void setGetuser_id(String getuser_id) {
+		this.getuser_id = getuser_id;
+	}
 	private int store_idx;
 	private String store_id;
 	private String store_pw;
