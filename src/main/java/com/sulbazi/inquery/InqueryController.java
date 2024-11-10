@@ -182,7 +182,7 @@ public class InqueryController {
 	    logger.info(loginId);
 	    logger.info(answer);
 	    logger.info("" + inqueryIdx);
-	    if(session.getAttribute("loginId")!=null && !session.getAttribute("opt").equals("admin_log")) {	    	
+	    if(session.getAttribute("loginId")!=null && session.getAttribute("opt").equals("admin_log")) {	    	
 	    	inquery_ser.adminanswerdo(inqueryIdx, loginId, answer);
 	    	inquery_ser.inquerystateupdate(inqueryIdx);
 	    }

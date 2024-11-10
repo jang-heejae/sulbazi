@@ -319,7 +319,7 @@
 	<div class="form-group">
 	    <label style="color: #041d03;">매장 대표 사진</label>
 	        <div style="margin-top: 10px;">
-				<img id="mainPhoto" class="mainPhoto" src="/photo/${mystorebestphoto.new_filename}" name="mystorebestphoto"><br/>
+				<img id="mainPhoto" class="mainPhoto" src="photo/${mystorebestphoto.new_filename}" name="mystorebestphoto"><br/>
 	        </div>
 	</div><br/>
 	<input type="file" name="bestmystore" accept="image/*" multiple="multiple" id="fileInput" style="display: none;"/>
@@ -329,7 +329,7 @@
         		<c:forEach items="${mystorephoto}" var="mystoreinout" varStatus="status">
             		<c:if test="${status.index < 5}">
                 		<div class="photo-item" id="photoItem${status.index}">
-                    		<img id="storePhoto${status.index}" name="mystoreinout" class="storePhoto" src="/photo/${mystoreinout.new_filename}" />
+                    		<img id="storePhoto${status.index}" name="mystoreinout" class="storePhoto" src="photo/${mystoreinout.new_filename}" />
                     		<input type="file" name="newmystoreinout" multiple="multiple" accept="image/*" id="fileInput${status.index}" class="fileInput" style="display: none;" data-index="${status.index}" />
                 		</div>
             		</c:if>

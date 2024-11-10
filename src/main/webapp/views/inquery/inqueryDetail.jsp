@@ -210,7 +210,7 @@ btn.addEventListener('click', function(event) {
 function inquirynewanswer(id_write,inquery_idx) {
     $.ajax({
         type: 'POST',
-        url: '/SULBAZI/notifications/inquiryanswer.ajax',
+        url: 'notifications/inquiryanswer.ajax',
         data: { 'id_write': id_write,  //수신자 id
         		'inquery_idx': inquery_idx }, //문의 idx
         dataType: 'JSON',

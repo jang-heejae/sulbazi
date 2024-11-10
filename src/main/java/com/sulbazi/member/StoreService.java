@@ -41,8 +41,6 @@ public class StoreService {
 	public StoreDTO getStoreDetail(int idx) {
 		StoreDTO sd = store_dao.getStoreDetail(idx);
 		System.out.println(sd.getStore_idx());
-		String storeTime = sd.getStore_time().replace("\n", "<br>");
-		sd.setStore_time(storeTime);
 		return sd;
 	}
 

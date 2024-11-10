@@ -47,6 +47,7 @@ public class LoginController {
 	    if (loginResult.equals("user") || loginResult.equals("store") || loginResult.equals("admin")) {
 	        if (userRevoke(id, opt)) { 
 	        	session.setAttribute("loginId", id);
+	        	session.setAttribute("opt", opt);
 	        	session.setAttribute("msg", "이용이 제한되었습니다.");
 	            page = "redirect:/revokeLogin.go";
 	        } else {

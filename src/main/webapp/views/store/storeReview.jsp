@@ -136,7 +136,7 @@
 <jsp:include page="../main/storeMain.jsp"/>
     <section class="chatBox2">
         <div class="chatitems2">
-        	<input type="hidden" name="store_idx" value="${store}"/>
+        	<input type="hidden" name="store_idx" id="storeIdx" value="${store}"/>
         	<div>
         		<ul>
         			<li style="font-size:36px;">나의 매장 리뷰</li>
@@ -159,6 +159,7 @@
 	</section>
 </body>
 <script>
+
 var showPage = 1;
 pageCall(showPage);
 
@@ -261,5 +262,9 @@ pageCall(showPage);
 	    }
 	    $('.reviewarea').html(content);
 	}
+ $(document).on('click', '.replyarea', function() {
+	    var storeIdx = $('#storeIdx').val();
+	    location.href = 'storeDetail.do?storeidx=' + storeIdx;
+	});
 </script>
 </html>

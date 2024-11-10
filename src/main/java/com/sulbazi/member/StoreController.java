@@ -335,7 +335,7 @@ public class StoreController {
 	    store_ser.mystoreupdate(params, store_idx);
 	    category_ser.mystoreoptupdate(params, store_idx);
 	    
-	    result.put("link", "store/storeMyPage.go");
+	    result.put("link", "/store/storeMyPage.go");
 	    result.put("success", true);
 	    return result;
 	}
