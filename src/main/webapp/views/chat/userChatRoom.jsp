@@ -1266,7 +1266,7 @@ $.ajax({
 
 	// 방 이동
 	$('.room').click(function(){
-		if (confirm("방 이동할거야?")) {
+		if (confirm("방을 이동하시겠습니까?")) {
 			$(this).closest('form').submit();
 		}else{
          	alert("취소되었습니다.");
@@ -1275,7 +1275,7 @@ $.ajax({
 	
    // 방 나가기
    $('.roomoutbtn').click(function() {
-      if (confirm("방을 나가시겠?")) {
+      if (confirm("방을 나가시겠습니까?")) {
          var chatroom_idx = '${idx}';
          
          $.ajax({
@@ -1283,7 +1283,7 @@ $.ajax({
             type: 'POST',
             data: {chatroom_idx: chatroom_idx},
             success: function(response) {
-               alert("잘가고~");
+            	alert("방을 나갔습니다.");
                window.location.href = "userchatlist.go";  // 로컬 채팅방 리스트로 이동
             },
             error: function(error) {
