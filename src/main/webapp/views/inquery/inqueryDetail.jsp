@@ -239,7 +239,7 @@ function sendNotification(newAlarm) {
     // AJAX POST 요청을 통해 서버에 알림 전송
     $.ajax({
         type: 'POST',
-        url: '/SULBAZI/notifications/send', // 알림을 전송할 서버 엔드포인트
+        url: 'notifications/send', // 알림을 전송할 서버 엔드포인트
         data: JSON.stringify(newAlarm),
         contentType: 'application/json',
         success: function(response) {

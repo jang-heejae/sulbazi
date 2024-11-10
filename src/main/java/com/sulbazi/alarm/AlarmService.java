@@ -104,6 +104,7 @@ public class AlarmService {
 			insertalarm.setAlarm_category_idx(4);
 			insertalarm.setUser_id(user_id);
 			insertalarm.setAlarm_subject(storename);
+			insertalarm.setGetuser_id(storename);
 			alarm_dao.alarminsert(insertalarm);
 			int alarm_idx= insertalarm.getAlarm_idx();
 			chatroom.put("alarm_idx", alarm_idx); //알림 idx
@@ -143,10 +144,11 @@ public class AlarmService {
 			insertalarm.setAlarm_category_idx(2);
 			insertalarm.setUser_id(user_id);
 			insertalarm.setAlarm_subject(chatroomname);
+			insertalarm.setGetuser_id(chatroomboss);//발신자
 			alarm_dao.alarminsert(insertalarm);
 			int alarm_idx= insertalarm.getAlarm_idx();
-			chatroom.put("getuser_id", chatroomboss); //발신자
-			chatroom.put("user_id", user_id); //수신자
+			chatroom.put("sendId", chatroomboss); //발신자
+			chatroom.put("receiverId", user_id); //수신자
 			chatroom.put("alarm_idx", alarm_idx);
 			chatroom.put("chatroomname", chatroomname);
 			chatroom.put("alarm", alarm);
@@ -186,10 +188,11 @@ public class AlarmService {
 			insertalarm.setAlarm_category_idx(3);
 			insertalarm.setUser_id(user_id);
 			insertalarm.setAlarm_subject(chatroomname);
+			insertalarm.setGetuser_id(chatroomboss);//발신자
 			alarm_dao.alarminsert(insertalarm);
 			int alarm_idx= insertalarm.getAlarm_idx();
-			chatroom.put("getuser_id", chatroomboss); //발신자
-			chatroom.put("user_id", user_id); //수신자
+			chatroom.put("sendId", chatroomboss); //발신자
+			chatroom.put("receiverId", user_id); //수신자
 			chatroom.put("alarm_idx", alarm_idx);
 			chatroom.put("chatroomname", chatroomname);
 			chatroom.put("alarm", alarm);	
@@ -232,10 +235,11 @@ public class AlarmService {
 			insertalarm.setAlarm_category_idx(5);
 			insertalarm.setUser_id(user_id);
 			insertalarm.setAlarm_subject(chatroomname);
+			insertalarm.setGetuser_id(chatroomboss);//발신자
 			alarm_dao.alarminsert(insertalarm);
 			int alarm_idx= insertalarm.getAlarm_idx();
-			chatroom.put("getuser_id", chatroomboss); //발신자
-			chatroom.put("user_id", user_id); //수신자
+			chatroom.put("sendId", chatroomboss); //발신자
+			chatroom.put("receiverId", user_id); //수신자
 			chatroom.put("alarm_idx", alarm_idx);
 			chatroom.put("alarm", alarm);
 			chatroom.put("chatroomname", chatroomname);
@@ -280,13 +284,12 @@ public class AlarmService {
 			logger.info("chatroomname:"+chatroomname);
 			AlamDTO insertalarm = new AlamDTO();
 			insertalarm.setAlarm_category_idx(1);
-			insertalarm.setUser_id(getuser_id);
+			insertalarm.setUser_id(getuser_id); // 수신자
+			insertalarm.setGetuser_id(user_id); //발신자
 			insertalarm.setAlarm_subject(chatroomname);
 			alarm_dao.alarminsert(insertalarm);
 			insertalarm.getAlarm_idx();
 			int alarm_idx= insertalarm.getAlarm_idx();
-			chatroom.put("getuser_id", getuser_id); //발신자
-			chatroom.put("user_id", user_id); //수신자
 			chatroom.put("alarm_idx", alarm_idx);
 			chatroom.put("alarm", alarm);
 			chatroom.put("chatroomname", chatroomname);
@@ -308,6 +311,7 @@ public class AlarmService {
 		insertalarm.setAlarm_category_idx(6);
 		insertalarm.setUser_id(id_write);
 		insertalarm.setAlarm_subject(inquerysubject);
+		insertalarm.setGetuser_id("admin");
 		alarm_dao.alarminsert(insertalarm);
 		insertalarm.getAlarm_idx();
 		int alarm_idx= insertalarm.getAlarm_idx();
@@ -335,6 +339,8 @@ public class AlarmService {
 			int alarm_idx = content.getAlarm_idx();
 			AlarmCategoryDTO alarm = alarm_dao.categoryalarminfo(alarmcategory);
 			String alarmmsg = alarm.getAlarm_content();
+			chatroom.put("receiverId", receiverId); //수신자
+			chatroom.put("sendId", content.getGetuser_id());
 			chatroom.put("alarm", alarmmsg); //알림 내용
 			chatroom.put("chatroomname", content.getAlarm_subject()); //알림 위치??어디 알림인지
 			chatroom.put("alarm_idx", alarm_idx); //알림 idx
@@ -378,6 +384,8 @@ public class AlarmService {
 			int alarm_idx = content.getAlarm_idx();
 			AlarmCategoryDTO alarm = alarm_dao.categoryalarminfo(alarmcategory);
 			String alarmmsg = alarm.getAlarm_content();
+			chatroom.put("receiverId", receiverId); //수신자
+			chatroom.put("sendId",  content.getGetuser_id());
 			chatroom.put("alarm", alarmmsg); //알림 내용
 			chatroom.put("chatroomname", content.getAlarm_subject()); //알림 위치??어디 알림인지
 			chatroom.put("alarm_idx", alarm_idx); //알림 idx
