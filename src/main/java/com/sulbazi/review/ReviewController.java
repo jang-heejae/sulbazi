@@ -35,6 +35,10 @@ public class ReviewController {
     @PostMapping(value = "/storeReviewWrite.ajax")
     @ResponseBody
     public Map<String, Object> reviewWriteDo(MultipartFile[] files, @RequestParam Map<String, String> params){
+    	
+    		//라스트 업데이트 
+    		
+    	
     		boolean success =false;
 /*				'ratingValue':ratingValue,
 				'purposeValue':purposeValue,
@@ -73,7 +77,7 @@ public class ReviewController {
 			}
     		int opt = category_ser.insertOption(purposeValue,moodValue,idx);
     		map.put("success", success);
-    		
+    		int dow = review_ser.updateReviewTotal(params);
     	return map;
     }
     //리뷰 답글
@@ -154,6 +158,7 @@ public class ReviewController {
     @PostMapping(value = "/reviewDel.ajax")
     @ResponseBody
     public Map<String, Object> reviewDel(@RequestParam Map<String, String> params){
+
     	boolean success = false;
     	int row = review_ser.reviewDelUpdate(params);
     	if (row>0) {
@@ -161,6 +166,7 @@ public class ReviewController {
     	}
     	Map<String, Object> map = new HashMap<String, Object>();
     	map.put("success", success);
+		int saw = review_ser.updateReviewTotal(params);
     	return map;
     }
     //리뷰 좋아요

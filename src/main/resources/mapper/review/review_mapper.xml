@@ -246,9 +246,18 @@
 	
 	 <!-- 리뷰 썻었는지 찾기   -->
 	<select id="dontWrite" parameterType="map" resultType="com.sulbazi.review.ReviewDTO">
-		select * from review where user_id = #{loginId} and store_idx = #{storeIdx}
+		select * from review where user_id = #{loginId} and store_idx = #{storeIdx} and review_state = 1
 	</select>
 	
 	
+	<!-- 리뷰 작성시 매장 업데이트 토탈 리뷰 -->
+	<update id="updateReviewTotal" parameterType="map">
+	    update store
+	    set review_total = (
+	        select count(*) from review where store_idx = #{storeIdx} and review_state = 1
+	    )
+	    where store_idx = #{storeIdx}
+	</update>
+		
 	
 </mapper>
