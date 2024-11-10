@@ -94,7 +94,7 @@ font-family: "Yeon Sung", system-ui;
 					    <!-- 같은 인덱스의 storeMenu 항목을 사용 -->
 						<tr>
 						    <!-- 이미지 표시 -->
-						    <td><img src="/photo/${file.new_filename}" alt="Store Photo" id="imgview" /></td>
+						    <td><img src="photo/${file.new_filename}" alt="Store Photo" id="imgview" /></td>
 						    <!-- 메뉴 이름 및 가격 -->
 						    <td><p>${storeMenu[status.index].menu_name}</p></td>
 						    <td><p>${storeMenu[status.index].menu_price}</p></td>

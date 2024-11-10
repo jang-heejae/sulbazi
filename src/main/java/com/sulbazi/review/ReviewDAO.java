@@ -51,6 +51,8 @@ public interface ReviewDAO {
 
 	List<ReviewDTO> getReviewAlluser2(Map<String, Object> param);
 
+	int updateReviewTotal(Map<String, String> params);
+
 	
 
 	

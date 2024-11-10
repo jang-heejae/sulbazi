@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SULBAZI</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"/>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
@@ -1504,7 +1504,7 @@ function readFile(input) {
  	   /* 노리뷰 */
  	   function errorDraw() {
  	       var listContainer = document.getElementById('review-section');
- 	       
+ 	   		   listContainer.innerHTML = '';
  	       var content = '<tr><td style="text-align: center; padding: 20px;">';
  	       		content +='리뷰가 없습니다 </td></tr>';
  	       	listContainer.innerHTML += content;
@@ -1512,7 +1512,7 @@ function readFile(input) {
  	   /* 글쓰기 오류 */
  	   function errorReviewWrite() {
  	       var listContainer = document.getElementById('review-section');
- 	       
+ 	       	   listContainer.innerHTML = '';
  	       var content = '<tr><td style="text-align: center; padding: 20px;">';
  	       		content +='글쓰기 오류 </td></tr>';
  	       	listContainer.innerHTML = content;
@@ -1771,7 +1771,7 @@ function replyUp(button) {
  		    
  		   console.log("이종원 reviewidx: " + reviewIdx);
  		   
- 		   var form = new FormData($('form')[0]);
+ 		   var form = new FormData($('#myForm')[0]);
  		  form.append('loginId', loginId);
  		  form.append('storeIdx', storeIdx);
  		  form.append('ratingValue', ratingValue);
@@ -1912,7 +1912,8 @@ $('#reviewDelete2').on('click', function() {
               type: 'POST',
               url: 'reviewDel.ajax',
               data: {
-                  "reviewIdx": reviewIdx
+                  "reviewIdx": reviewIdx,
+                  "storeIdx":storeIdx
                 },
               dataType: 'json',
               success: function(data) {

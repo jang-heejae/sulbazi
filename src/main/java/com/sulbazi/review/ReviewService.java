@@ -152,6 +152,10 @@ public class ReviewService {
 		return review_dao.dontWrite(params);
 	}
 
+	public int updateReviewTotal(Map<String, String> params) {
+		return review_dao.updateReviewTotal(params);
+	}
+
 
 
 }
