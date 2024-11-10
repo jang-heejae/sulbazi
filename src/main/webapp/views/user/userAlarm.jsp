@@ -390,7 +390,7 @@ function readornotalarm(alarmreadValue, alarmValue) {
 }
 
 //강퇴
-function roomout() {
+/* function roomout() {
     $.ajax({
         type: 'POST',
         url: 'notifications/chatroomout.ajax',
@@ -411,9 +411,9 @@ function roomout() {
             console.log("AJAX 요청 실패:", e); // 에러 메시지 출력
         }
     });
-}
+} */
 
-//거절
+/* //거절
 function handleDeny(notification){
     $.ajax({
         type: 'POST',
@@ -430,7 +430,6 @@ function handleDeny(notification){
                 alarm_idx: alarmresponse.alarm_idx //알림 idx
             };
             sendNotification(newAlarm); // 알림 전송 함수 호출
-            sendNotification2(newAlarm); // 알림 전송 함수 호출
         },
         error: function(e) {
             console.log("AJAX 요청 실패:", e);
@@ -443,8 +442,8 @@ function handleAccept(notification){
 	 $.ajax({
 	        type: 'POST',
 	        url: 'notifications/chatroomin.ajax',
-	        data: {'user_id':notification.sendId,  //수신자ID
-	        		'chatroomboss':notification.receiverId}, //채팅방 방장
+	        data: {'user_id':notification.user_id,  //수신자ID
+	        		'chatroomboss':notification.getuser_id}, //채팅방 방장
 	        dataType: 'JSON',
 	        success: function(alarmresponse) {
 	            // 알림 데이터 객체 생성
@@ -455,7 +454,6 @@ function handleAccept(notification){
 	                alarm_idx: alarmresponse.alarm_idx //알림 idx
 	            };
 	            sendNotification(newAlarm); // 알림 전송 함수 호출
-	            sendNotification2(newAlarm); // 알림 전송 함수 호출
 	        },
 	        error: function(e) {
 	            console.log("AJAX 요청 실패:", e);
@@ -482,13 +480,12 @@ function chatroommanager() {
                 alarm_idx: alarmresponse.alarm_idx //알림 idx
             };
             sendNotification(newAlarm); // 알림 전송 함수 호출
-            saveNotification(newAlarm); // 알림 저장 함수 호출
         },
         error: function(e) {
             console.log("AJAX 요청 실패:", e);
         }
     });
-}
+} */
 
 
 

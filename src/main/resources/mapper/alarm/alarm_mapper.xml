@@ -25,7 +25,7 @@
 					parti.user_id AS partiuser, 
 					parti_state,	
 					chatroom_category, 
-					chatroom_idx
+					chatroom_idx,
 					userchat_subject
 		FROM 
 			userchat 
@@ -104,8 +104,8 @@
 	  useGeneratedKeys="true"
 	  keyColumn="alarm_idx"
 	  keyProperty="alarm_idx" parameterType="com.sulbazi.alarm.AlamDTO">
-		INSERT INTO alarm(user_id, alarm_category_idx,alarm_subject) 
-			VALUES(#{user_id}, #{alarm_category_idx},#{alarm_subject})
+		INSERT INTO alarm(user_id, alarm_category_idx,alarm_subject,getuser_id) 
+			VALUES(#{user_id}, #{alarm_category_idx},#{alarm_subject},#{getuser_id})
 	</insert>
 	
 
