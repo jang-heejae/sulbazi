@@ -111,23 +111,34 @@ public class AdminController {
 	// 관리자가 보는 매장 상세보기 가기
 	@RequestMapping(value="/adminStoreDetail.go")
 	public String adminStoreDetail(int store_idx, Model model) {
-		model.addAttribute("store_idx", store_idx);
-		List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);//활성화된 카테고리
-		model.addAttribute("options", options);
-		StoreDTO storedto = store_ser.mystore(store_idx); 
-	    List<Integer> selectedValues = store_ser.mystoreopt(store_idx);
-	    PhotoDTO mystorebestphoto = photo_ser.mystorebestphoto(store_idx);
-	    List<PhotoDTO> mystorephoto = photo_ser.mystorephoto(store_idx);
-	    List<StoreMenuDTO> storeAlcohol = store_ser.getStoreAlcohol(store_idx);
-	    List<StoreMenuDTO> storeMenu = store_ser.getStoreMenuById(store_idx);
-	    List<PhotoDTO> files= store_ser.fileList(store_idx);
-	    model.addAttribute("files",files);
-	    model.addAttribute("mystorebestphoto", mystorebestphoto);
-	    model.addAttribute("mystorephoto", mystorephoto);
-	    model.addAttribute("selectedValues", selectedValues);
-	    model.addAttribute("storedto", storedto);
-	    model.addAttribute("storeAlcohol",storeAlcohol);
-	    model.addAttribute("storeMenu",storeMenu);
+		int idx = store_idx;
+		model.addAttribute("store_idx", idx);
+		
+		StoreDTO storeDetail = store_ser.getStoreDetail(idx);
+		model.addAttribute("storedto", storeDetail);
+
+		PhotoDTO mybp= store_ser.getStorePhoto(idx);
+		model.addAttribute("mystorebestphoto", mybp);
+        
+		List<PhotoDTO> mysp= store_ser.getStorePhotos(idx);
+		model.addAttribute("mystorephoto", mysp);
+
+		List<Integer> selectedValues = store_ser.mystoreopt(idx);
+		model.addAttribute("selectedValues",selectedValues);
+          
+		List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);
+        model.addAttribute("options",options);
+        
+        List<StoreMenuDTO> storeMenu = store_ser.getStoreMenuById(idx);
+        List<PhotoDTO> menufiles= store_ser.fileList(idx);
+        model.addAttribute("storeMenu", storeMenu);
+        model.addAttribute("menuphoto", menufiles);
+
+        List<StoreMenuDTO> storeAlcohol = store_ser.getStoreAlcohol(idx);    
+        List<PhotoDTO> drinkfiles= store_ser.alcoholFileList(idx);
+        model.addAttribute("storeAlcohol", storeAlcohol);
+        model.addAttribute("drinkphoto", drinkfiles);
+
 		return "admin/adminStoreDetail";
 	}
 }

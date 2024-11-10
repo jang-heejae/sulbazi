@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sulbazi.alarm.AlarmService;
+import com.sulbazi.member.StoreDTO;
 import com.sulbazi.member.UserDTO;
 import com.sulbazi.photo.PhotoDAO;
 import com.sulbazi.photo.PhotoDTO;
@@ -47,18 +48,15 @@ public class BoardService {
 			board_dao.bHit(board_idx);
 		}
 		int store_idx = boarddto.getStore_idx();
-		String store_id = selectidx(store_idx);
-		logger.info("detail에 가져올 store_idx : "+store_idx);
+		StoreDTO storeDto = board_dao.storedto(store_idx);
 		List<PhotoDTO> photo1 = photo_ser.detail1(store_idx, 1);
 		List<PhotoDTO> photo4 = photo_ser.detail4(store_idx, 4);
-		logger.info("가져온 photo1 : {}", photo1);
-		logger.info("가져온 photo4 : {}", photo4);
 		for (PhotoDTO photodto1 : photo1) {
 			String file1 = photodto1.getNew_filename();
 			logger.info(file1);
 			model.addAttribute("info", boarddto);
 			model.addAttribute("files", file1);
-			model.addAttribute("store", store_id);
+			model.addAttribute("store", storeDto);
 			for (PhotoDTO photodto4 : photo4) {
 				String file4 = photodto4.getNew_filename();
 				logger.info(file4);

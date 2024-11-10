@@ -252,14 +252,14 @@
 	<div class="form-group">
 	    <label style="color: #041d03;">매장 대표 사진</label>
 	        <div style="margin-top: 10px;">
-				<img id="mainPhoto" src="/photo/${mystorebestphoto.new_filename}"><br/>
+				<img id="mainPhoto" src="photo/${mystorebestphoto.new_filename}"><br/>
 	        </div>
 	</div><br/>
 	<div class="form-group2">
 		<label style="margin-bottom:10px;">매장 내외부 사진</label>
 			<div class="form-group3">
 				<c:forEach items="${mystorephoto}" var="mystoreinout">
-					<div><img id="storePhoto" src="/photo/${mystoreinout.new_filename}"></div><br/>
+					<div><img id="storePhoto" src="photo/${mystoreinout.new_filename}"></div><br/>
 				</c:forEach>
 			</div>
 	</div><br/>

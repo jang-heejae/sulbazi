@@ -223,7 +223,7 @@
 				</fieldset>
             </div>
         </div>
-        <button type="button" id="save" onclick="save(event)">회원가입</button>
+        <button type="button" id="save" onclick="save(event)">메뉴 등록하기</button>
     </form>
 </body>
 <script>
@@ -270,7 +270,6 @@ function save(event) {
         success: function(data) {
             console.log(data);
             if (data.success) {
-                alert("회원가입에 성공하셨습니다.");
                 location.href = data.link;
             } else {
                 alert(data.message);

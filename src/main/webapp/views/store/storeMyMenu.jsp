@@ -400,7 +400,7 @@ function drawList(menuphoto, menulist) {
         content += '<tr>';
         
         // menuphoto가 없으면 "사진 없음" 텍스트를 표시
-        var photo = (menuphoto[idx] && menuphoto[idx].new_filename) ? '/photo/' + menuphoto[idx].new_filename : '사진 없음';
+        var photo = (menuphoto[idx] && menuphoto[idx].new_filename) ? 'photo/' + menuphoto[idx].new_filename : '사진 없음';
         
         content += '<td>';
         if (photo === '사진 없음') {

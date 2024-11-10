@@ -40,11 +40,11 @@
         font-weight: bolder;
     }
    .container .wrapper {
-      width: 803px;
+      	width: 803px;
         height: auto;
         margin: 0 auto;
-      background-color: #e98d1c;
-      border-radius: 8px;
+      	background-color: #e98d1c;
+      	border-radius: 8px;
         text-align: center;
    }
     .wrapper{
@@ -91,12 +91,17 @@
     }
     .table{
     	margin-left: 28%;
+    	
     }
     table, th, td{
     	color: white;
     	text-align: center;
 		padding: 1%;
 		width: 400px;
+    }
+    table{
+    	width: 120%;
+    	margin-left: -147px;
     }
 </style>
 <body>
@@ -124,9 +129,10 @@
 			        <table>
 			        	<thead>
 			        		<tr>
+			        			<th>카테고리</th>
 			        			<th>메뉴 사진</th>
 			        			<th>메뉴 이름</th>
-			        			<th rowspan="3">가격</th>
+			        			<th rowspan="4">가격</th>
 			        		</tr>
 			        	</thead>
 			        	<tbody id="list">
@@ -136,86 +142,123 @@
             </div>
         </div>
     </form>
-    <button type="button" id="main" onclick="location.href='./mainPage.go'">메인 페이지로 돌아가기</button>
+    <button type="button" id="main" onclick="checkMenuBeforeSignup(); return false;">회원 가입</button>
 </body>
 <script>
-@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+function checkMenuBeforeSignup() {
+    if ($('#list').children().length === 0) {
+        alert("메뉴 등록은 필수입니다.");
+    } else {
+    	alert("회원가입에 성공하였습니다.");
+        location.href = './login.go';
+    }
+}
+$(document).ready(function() {
+    $('#menu_go').click(function() {
+        var menuImage = $('#menuImage')[0].files.length;
+        if (menuImage === 0) {
+            alert("사진을 넣어주세요.");
+            return; // 사진이 없으면 실행 멈춤
+        }
+        var formData = new FormData($('#menu.go')[0]);
 
+        // 추가적인 데이터 설정
+        var menuName = $('input[name="menu_name"]').val();
+        var menuPrice = $('input[name="menu_price"]').val();
+        var menuCategory = $('#category').val();
+        var storeIdx = ${store_idx}; // JSP에서 store_idx 가져오기
+        console.log("storeIdx from JSP:", storeIdx);
 
-font-family: "Yeon Sung", system-ui;
-	$(document).ready(function() {
-	    $('#menu_go').click(function() {
-	    	var menuImage = $('#menuImage')[0].files.length;
-	        if (menuImage === 0) {
-	            alert("사진을 넣어주세요.");
-	            return; // 사진이 없으면 실행 멈춤
-	        }
-	        var formData = new FormData($('#menu.go')[0]); // 올바른 ID 사용
-	
-	        // 추가적인 데이터 설정
-	        var menuName = $('input[name="menu_name"]').val();
-	        var menuPrice = $('input[name="menu_price"]').val();
-	        var menuCategory = $('#category').val();
-	        var storeIdx = ${store_idx}; // JSP에서 store_idx 가져오기
-	        console.log("storeIdx from JSP:", storeIdx);
-	        
-	        // FormData에 추가 데이터 append
-	        formData.append('menu_name', menuName);
-	        formData.append('menu_price', menuPrice);
-	        formData.append('menu_category', menuCategory);
-	        formData.append('store_idx', storeIdx);
-	        formData.append('file', $('input[name="file"]')[0].files[0]); // 파일 이름 수정
-	
-	        // AJAX 요청
-	        
-	        $.ajax({
-	            url: 'menu.do', // 요청 URL
-	            type: 'POST',
-	            data: formData,
-	            contentType: false, // multipart/form-data를 전송할 때 필요
-	            processData: false, // 데이터를 쿼리 문자열로 변환하지 않도록 설정
-	            success: function(response) {
-	                if (response.success) {
-	                    fetchMenuList(); // 메뉴 목록 업데이트
-	                } else {
-	                    alert(response.message);
-	                }
-	            },
-	            error: function() {
-	                alert('오류가 발생했습니다.');
-	            }
-	        });
-	    });
-	    fetchMenuList();
-	});
-	
-	function fetchMenuList() {
-	    var storeIdx = ${store_idx}; // JSP에서 store_idx 가져오기
-	    $.ajax({
-	        url: 'menulist', // 등록된 메뉴 목록을 가져오는 URL
-	        type: 'GET',
-	        data: {store_idx: storeIdx},
-	        success: function(data) {
-	            $('#list').empty(); // 기존 목록 비우기
+        // FormData에 추가 데이터 append
+        formData.append('menu_name', menuName);
+        formData.append('menu_price', menuPrice);
+        formData.append('menu_category', menuCategory);
+        formData.append('store_idx', storeIdx);
+        formData.append('file', $('input[name="file"]')[0].files[0]);
 
-	            // 메뉴 목록을 tbody에 추가
-	            data.menulist.forEach(function(menu, index) {
-	            	var photo = data.menuphoto[index];
-	                $('#list').append('<tr>' +
-	                    '<td><img src="/photo/' + photo.new_filename + '" alt="사진" style="width:50px; height:50px; border-radius: 8px;" /></td>' +
-	                    '<td>' +
-	                    '<input type="text" name="menu_name" value="' + menu.menu_name + '" style="width:100px;" readonly/>' +
-	                    '</td>' +
-	                    '<td>' +
-	                    '<input type="text" name="menu_name" value="' + menu.menu_price + '" style="width:100px;" readonly/>' +
-	                    '</td>' +
-	                    '</tr>');
-	            });
-	        },
-	        error: function() {
-	            alert('메뉴 목록을 가져오는 데 오류가 발생했습니다.');
-	        }
-	    });
-	}
+        // AJAX 요청
+        $.ajax({
+            url: 'menu.ajax', // 요청 URL
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response.success) {
+                    fetchMenuList(); // 메뉴 목록 업데이트
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function() {
+                alert('오류가 발생했습니다.');
+            }
+        });
+    });
+
+    // 초기 메뉴 리스트 로드
+    fetchMenuList();
+
+    // 카테고리가 변경될 때마다 메뉴 리스트 업데이트
+    $('#category').on('change', function() {
+        fetchMenuList();
+    });
+});
+
+function fetchMenuList() {
+    var storeIdx = ${store_idx}; // JSP에서 store_idx 가져오기
+    var menuCategory = $('#category').val();
+
+    $.ajax({
+        url: 'menulist.ajax', // 등록된 메뉴 목록을 가져오는 URL
+        type: 'GET',
+        data: {
+            store_idx: storeIdx,
+            menu_category: menuCategory
+        },
+        dataType:'JSON',
+        success: function(data) {
+        	listPrint(data.storeM, data.storeMP, data.storeD, data.storeDP);
+        },
+        error: function(e) {
+			console.error(e);
+		}
+    });
+}
+function listPrint(storeM, storeMP, storeD, storeDP) {
+    var content = '';
+    var combinedList = storeM.concat(storeD);
+
+    combinedList.forEach(function(item) {
+        // 현재 항목이 주류인지 확인
+        var isAlcohol = storeD.includes(item);
+        var photo; // 사진 객체
+        var category; // 카테고리 설정
+
+        if (isAlcohol) {
+            photo = storeDP[item.menu_idx]; 
+            category = "주류";
+        } else {
+            photo = storeMP[item.menu_idx]; 
+            category = "안주";
+        }
+
+        content += '<tr>';
+        content += '<td>' + category + '</td>'; 
+        content += '<td>';
+        if (photo && photo.new_filename) {
+            content += '<img src="photo/' + photo.new_filename + '" alt="Menu Photo" style="width:50px; height:50px; border-radius: 8px; display: inline;">';
+        } else {
+            content += '<span>사진 없음</span>';
+        }
+
+        content += '</td>';
+        content += '<td><input type="text" name="menu_name" value="' + item.menu_name + '" style="width:100px;" readonly/></td>';
+        content += '<td><input type="text" name="menu_price" value="' + item.menu_price + '" style="width:100px;" readonly/></td>';
+        content += '</tr>';
+    });
+
+    $('#list').html(content);
+}
 </script>
 </html>

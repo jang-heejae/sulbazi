@@ -96,6 +96,7 @@ public class StoreController {
 		}
 		return "redirect:/main.go";
     }
+
 	
 	
 	@RequestMapping(value="/menu.do")
@@ -284,21 +285,20 @@ public class StoreController {
 	@RequestMapping(value="/storeMyPage.go")
 	public String storemypage(Model model, HttpSession session) {
 		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
-//		logger.info("store_idx:{}",store_idx);
-		model.addAttribute("store_idx", store_idx);
-		List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);//활성화된 카테고리
-//		logger.info("options: {}",options);
-		model.addAttribute("options", options);
-		StoreDTO storedto = store_ser.mystore(store_idx); 
-		logger.info("storedto: {}", storedto);
-	    List<Integer> selectedValues = store_ser.mystoreopt(store_idx);
-	    PhotoDTO mystorebestphoto = photo_ser.mystorebestphoto(store_idx);
-	    List<PhotoDTO> mystorephoto = photo_ser.mystorephoto(store_idx);
-	    logger.info("selectedValues:{}",selectedValues);
-	    model.addAttribute("mystorebestphoto", mystorebestphoto);
-	    model.addAttribute("mystorephoto", mystorephoto);
-	    model.addAttribute("selectedValues", selectedValues);
-	    model.addAttribute("storedto", storedto);
+		StoreDTO storeDetail = store_ser.getStoreDetail(store_idx);
+		model.addAttribute("storedto", storeDetail);
+
+		PhotoDTO file= store_ser.getStorePhoto(store_idx);
+		model.addAttribute("mystorebestphoto", file);
+        
+		List<PhotoDTO> files= store_ser.getStorePhotos(store_idx);
+		model.addAttribute("mystorephoto", files);
+		
+		List<Integer> selectedValues = store_ser.mystoreopt(store_idx);
+		model.addAttribute("selectedValues",selectedValues);
+        
+		List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);
+        model.addAttribute("options",options);
 		return "store/storeMyPage";
 	}
 	
@@ -307,35 +307,71 @@ public class StoreController {
 	@RequestMapping(value="/mystoreUpdate.go")
 	public String mystoreupdatego(Model model, String idx, HttpSession session) {
 		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
-		logger.info("store_idx:{}",store_idx);
-		model.addAttribute("store_idx", store_idx);
-		List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);//활성화된 카테고리
-		logger.info("options: {}",options);
-		model.addAttribute("options", options);
-		StoreDTO storedto = store_ser.mystore(store_idx); 
-		logger.info("storedto: {}", storedto);
-	    List<Integer> selectedValues = store_ser.mystoreopt(store_idx);
-	    PhotoDTO mystorebestphoto = photo_ser.mystorebestphoto(store_idx);
-	    List<PhotoDTO> mystorephoto = photo_ser.mystorephoto(store_idx);
-	    logger.info("selectedValues:{}",selectedValues);
-	    model.addAttribute("mystorebestphoto", mystorebestphoto);
-	    model.addAttribute("mystorephoto", mystorephoto);
-	    model.addAttribute("selectedValues", selectedValues);
-	    model.addAttribute("storedto", storedto);
+		StoreDTO storeDetail = store_ser.getStoreDetail(store_idx);
+		model.addAttribute("storedto", storeDetail);
+
+		PhotoDTO file= store_ser.getStorePhoto(store_idx);
+		model.addAttribute("mystorebestphoto", file);
+        
+		List<PhotoDTO> files= store_ser.getStorePhotos(store_idx);
+		model.addAttribute("mystorephoto", files);
+		
+		List<Integer> selectedValues = store_ser.mystoreopt(store_idx);
+		model.addAttribute("selectedValues",selectedValues);
+        
+		List<CategoryOptDTO> options = store_ser.OptionsCategoryState(1);
+        model.addAttribute("options",options);
 		return "store/storeMyPageUpdate";	
 	}
-	
+
 	@PostMapping(value="/mystoreUpdate.do")
-	public String mystoreupdatedo(MultipartFile[] bestmystore, MultipartFile[] newmystoreinout, @RequestParam Map<String, String> params,Model model, HttpSession session) throws IOException {
-		int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
-		logger.info("store_idx:{}",store_idx);
-		logger.info("params:{}",params);
-		store_ser.mystoreupdate(params, store_idx);
-		category_ser.mystoreoptupdate(params, store_idx);
-		photo_ser.mystorebestphotoupdate(bestmystore, store_idx);
-		photo_ser.mystoreinoutUpdate(newmystoreinout, store_idx);
-		return "redirect:/storeMyPage.go";
+	@ResponseBody
+	public Map<String, Object> mystoreUpdateInfo(@RequestParam Map<String, String> params, HttpSession session) {
+	    int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
+	    logger.info("store_idx: {}", store_idx);
+	    logger.info("params: {}", params);
+
+	    Map<String, Object> result = new HashMap<>();
+	    store_ser.mystoreupdate(params, store_idx);
+	    category_ser.mystoreoptupdate(params, store_idx);
+	    
+	    result.put("link", "store/storeMyPage.go");
+	    result.put("success", true);
+	    return result;
 	}
+	
+	@PostMapping(value="/mystoreBestPhotoUpdate.do")
+	@ResponseBody
+	public Map<String, Object> mystoreBestPhotoUpdate(@RequestParam("bestmystore") MultipartFile bestmystore, HttpSession session) throws IOException {
+	    int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
+	    logger.info("store_idx: {}", store_idx);
+
+	    Map<String, Object> result = new HashMap<>();
+	    photo_ser.mystorebestphotoupdate(new MultipartFile[]{bestmystore}, store_idx);
+
+	    result.put("success", true);
+	    return result;
+	}
+	
+	@PostMapping(value="/mystoreInoutUpdate.do")
+	@ResponseBody
+	public Map<String, Object> mystoreInoutUpdate(@RequestParam("newmystoreinout") MultipartFile newmystoreinout, HttpSession session) throws IOException {
+	    int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
+	    logger.info("store_idx: {}", store_idx);
+
+	    Map<String, Object> result = new HashMap<>();
+	    photo_ser.mystoreinoutUpdate(new MultipartFile[]{newmystoreinout}, store_idx);
+
+	    result.put("success", true);
+	    return result;
+	}
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value="/storeMyReview.go")
 	public String storemyreply(Model model, HttpSession session) {
 	    int store_idx = store_ser.storeidx((String) session.getAttribute("loginId"));
@@ -350,37 +386,6 @@ public class StoreController {
 		int cnt_ = Integer.parseInt(cnt);
 		return store_ser.storeMyReview(store_idx_, cnt_, page_);
 	}
-	/*
-	 * @RequestMapping(value="/storeMyReview.go") public String storemyreply(Model
-	 * model, HttpSession session) { int store_idx = store_ser.storeidx((String)
-	 * session.getAttribute("loginId")); List<Map<String, Object>> reviews =
-	 * review_ser.storelookreview(store_idx); List<Map<String, Object>> replies =
-	 * review_ser.storelookreply(store_idx);
-	 * 
-	 * List<Map<String, Object>> totalReviews = new ArrayList<>();
-	 * 
-	 * for (Map<String, Object> review : reviews) { Map<String, Object> reviewData =
-	 * new HashMap<>(); reviewData.put("review_content",
-	 * review.get("review_content")); // 리뷰 내용 reviewData.put("review_date",
-	 * review.get("review_date")); // 리뷰 날짜 reviewData.put("user_id",
-	 * review.get("user_id")); // 리뷰 유저 reviewData.put("review_idx",
-	 * review.get("review_idx")); // 리뷰 idx
-	 * 
-	 * // 해당 리뷰에 대한 댓글 리스트 List<Map<String, Object>> associatedReplies = new
-	 * ArrayList<>(); for (Map<String, Object> reply : replies) { if
-	 * (review.get("review_idx").equals(reply.get("review_idx"))) {
-	 * associatedReplies.add(reply); // 리뷰에 해당하는 댓글 추가 } }
-	 * 
-	 * // 댓글이 없는 경우 기본 메시지 추가 if (associatedReplies.isEmpty()) { Map<String, Object>
-	 * noReply = new HashMap<>(); noReply.put("comm_content", "댓글이 없습니다");
-	 * noReply.put("comm_date", ""); associatedReplies.add(noReply); }
-	 * 
-	 * reviewData.put("replies", associatedReplies); // 댓글 리스트 추가
-	 * totalReviews.add(reviewData); // 전체 리뷰 리스트에 추가 }
-	 * 
-	 * model.addAttribute("totalReviews", totalReviews); // 전체 리뷰 리스트 모델에 추가 return
-	 * "store/storeReview"; }
-	 */
 
 
 

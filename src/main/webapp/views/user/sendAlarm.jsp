@@ -31,6 +31,7 @@ if (typeof loggedInUserId === 'undefined') {
 
 if (typeof notificationsList === 'undefined') {
 	var notificationsList = [];
+	var notificationsList2 = [];
 }
 
 

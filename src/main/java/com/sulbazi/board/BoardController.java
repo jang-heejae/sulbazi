@@ -95,14 +95,7 @@ public class BoardController {
 		map.put("list", limitedBoardList);
 		return map;
 	}
-	
-	/*
-	 * @GetMapping(value="/board_search.ajax")
-	 * 
-	 * @ResponseBody public {
-	 * 
-	 * }
-	 */
+
 	
 	@RequestMapping(value="/delete.go")
 	public String del(String board_idx, Model model) {

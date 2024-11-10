@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -303,37 +304,44 @@
 <jsp:include page="../main/storeMain.jsp"/>
     <section class="chatBox2">
         <div class="chatitems2">
-        <form action="mystoreUpdate.do" method="post" id="storeForm" enctype="multipart/form-data">
-<div class="all"> 
-	<div class="store_name">
-		<div id="store_name" style="font-size: 36px; font-weight: bold; margin-bottom: 30px; color:rgb(255, 140, 9);">
-		${storedto.store_name}</div> 
-		<div class="store_bookmark">
-			<i class="fas fa-star" style="color: yellow;"></i>
-			${storedto.star_average}&nbsp;(<span class="span">${storedto.review_total}</span>)
-			<img class="likeIcon" src="resources/img/userLike.png"/>
+        <form id="storeForm" enctype="multipart/form-data">
+			<div class="all"> 
+				<div class="store_name">
+					<div id="store_name" style="font-size: 36px; font-weight: bold; margin-bottom: 30px; color:rgb(255, 140, 9);">
+						${storedto.store_name}</div> 
+					<div class="store_bookmark">
+						<i class="fas fa-star" style="color: yellow;"></i>
+						${storedto.star_average}&nbsp;(<span class="span">${storedto.review_total}</span>)
+						<img class="likeIcon" src="resources/img/userLike.png"/>
 			${storedto.bookmark_user}
 		</div>	
 	</div>
 	<div class="form-group">
 	    <label style="color: #041d03;">매장 대표 사진</label>
 	        <div style="margin-top: 10px;">
-				<img id="mainPhoto" class="mainPhoto" src="/photo/${mystorebestphoto.new_filename}"><br/>
+				<img id="mainPhoto" class="mainPhoto" src="/photo/${mystorebestphoto.new_filename}" name="mystorebestphoto"><br/>
 	        </div>
 	</div><br/>
-	<input type="file" name="bestmystore" multiple="multiple" id="fileInput" style="display: none;"/>
+	<input type="file" name="bestmystore" accept="image/*" multiple="multiple" id="fileInput" style="display: none;"/>
 	<div class="form-group2">
-    <label style="margin-bottom:10px;">매장 내외부 사진</label>
-    <div class="form-group3">
-        <c:forEach items="${mystorephoto}" var="mystoreinout" varStatus="status">
-            <div>
-                <img id="storePhoto${status.index}" class="storePhoto" src="/photo/${mystoreinout.new_filename}">
-                <input type="file" name="newmystoreinout" multiple="multiple" id="fileInput${status.index}" class="fileInput" style="display: none;" data-index="${status.index}"/>
-            </div>
-            <br/>
-        </c:forEach>
-    </div>
-</div><br/>
+    	<label style="margin-bottom:10px;">매장 내외부 사진</label>
+   	 		<div class="form-group3">
+        		<c:forEach items="${mystorephoto}" var="mystoreinout" varStatus="status">
+            		<c:if test="${status.index < 5}">
+                		<div class="photo-item" id="photoItem${status.index}">
+                    		<img id="storePhoto${status.index}" name="mystoreinout" class="storePhoto" src="/photo/${mystoreinout.new_filename}" />
+                    		<input type="file" name="newmystoreinout" multiple="multiple" accept="image/*" id="fileInput${status.index}" class="fileInput" style="display: none;" data-index="${status.index}" />
+                		</div>
+            		</c:if>
+        		</c:forEach>
+        		<c:forEach begin="${fn:length(mystorephoto)}" end="4" var="i">
+            		<div class="photo-item" id="photoItem${i}">
+                		<img id="storePhoto${i}" class="storePhoto" src="" />
+                		<input type="file" name="newmystoreinout" id="fileInput${i}" class="fileInput" style="display: none;" data-index="${i}" />
+            		</div>
+        		</c:forEach>
+    		</div>
+	</div>
 	<div class="storeinfo">
 	<div class="table">
 		<ul>
@@ -435,10 +443,10 @@ $(document).ready(function() {
 var container = document.getElementById('map');
 var storeLatitude = '${storedto.store_latitude}';
 var storeLongitude = '${storedto.store_longitude}';
-	 
+ 
 var options = {
-	center: new kakao.maps.LatLng(storeLatitude, storeLongitude),
-	level: 3
+    center: new kakao.maps.LatLng(storeLatitude, storeLongitude),
+    level: 3
 };
 
 var map = new kakao.maps.Map(container, options);
@@ -452,131 +460,167 @@ var marker = new kakao.maps.Marker({
 });
 marker.setMap(map);
 
-
 // 이미지 클릭 시 파일 입력 창 열기 - 이벤트 위임 방식 사용
 $(document).ready(function() {
 
-	var originalMainPhotoSrc = $('#mainPhoto').attr('src');
-    $('.storePhoto').each(function() {
-        var index = $(this).attr('id').replace('storePhoto', '');
-        $(this).data('original', $(this).attr('src'));
-    });
-
-    // 대표 사진 클릭 시 파일 입력 창 열기
-    $(document).on('click', '#mainPhoto', function() {
-        $('#fileInput').click();  // 여기에서 fileInput의 ID가 정확히 매핑되어야 합니다.
+    $(document).on('click', '#mainPhoto', function () {
+        $('#fileInput').click();
     });
 
     // 매장 내외부 사진 클릭 시 파일 입력 창 열기
-    $(document).on('click', '.storePhoto', function() {
+    $(document).on('click', '.storePhoto', function () {
         var index = $(this).attr('id').replace('storePhoto', '');
-        $('#fileInput' + index).click();  // 각 사진과 맞는 파일 입력 창이 열리도록 수정합니다.
+        $('#fileInput' + index).click();
     });
 
-    // 대표 사진 파일 선택 시 미리보기 업데이트
-    $('#fileInput').on('change', function(event) {
+    // 대표 사진 파일 선택 시 미리보기 업데이트 및 AJAX 업로드
+    $('#fileInput').on('change', function (event) {
         var files = event.target.files;
         if (files.length > 0 && files[0].type.startsWith('image/')) {
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 $('#mainPhoto').attr('src', e.target.result);
             };
             reader.readAsDataURL(files[0]);
-        } else {
-            $('#mainPhoto').attr('src', originalMainPhotoSrc);
+
+            // 대표 사진 업로드 AJAX 요청
+            var formData = new FormData();
+            formData.append('bestmystore', files[0]);
+
+            $.ajax({
+                url: 'mystoreBestPhotoUpdate.do',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                	if (!response.success) {
+                        console.error('대표 사진 업로드 중 오류가 발생했습니다.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('대표 사진 업로드 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    console.error(error);
+                }
+            });
         }
     });
 
-    // 매장 내외부 사진 파일 선택 시 미리보기 업데이트
-    $('.fileInput').on('change', function(event) {
+    // 매장 내외부 사진 파일 선택 시 미리보기 업데이트 및 AJAX 업로드
+    $('.fileInput').on('change', function (event) {
         var index = $(this).data('index');
         var files = event.target.files;
         var $previewImage = $('#storePhoto' + index);
         if (files.length > 0 && files[0].type.startsWith('image/')) {
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 $previewImage.attr('src', e.target.result);
             };
             reader.readAsDataURL(files[0]);
-        } else {
-            $previewImage.attr('src', $previewImage.data('original'));
+
+            // 내외부 사진 업로드 AJAX 요청
+            var formData = new FormData();
+            formData.append('newmystoreinout', files[0]);
+
+            $.ajax({
+                url: 'mystoreInoutUpdate.do',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                	if (!response.success) {
+                        console.error('대표 사진 업로드 중 오류가 발생했습니다.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('내외부 사진 업로드 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    console.error(error);
+                }
+            });
         }
     });
 
-function checkPasswordMatch() {
-    var password = $('#store_pw').val();
-    var passwordCheck = $('#store_pwCheck').val();
-    var message = $('#pwCheckMessage');
-
-    if (passwordCheck.length === 0) {
-        // 비밀번호 확인란이 비어 있을 경우 메시지 초기화
-        message.text('');
-    } else if (password === passwordCheck) {
-        // 비밀번호가 일치할 때
-        message.text('비밀번호가 맞습니다.').css('color', '#20290E');
-    } else {
-        // 비밀번호가 일치하지 않을 때
-        message.text('비밀번호가 다릅니다.').css('color', 'rgb(255, 140, 9)');
-    }
-}
-
-// 비밀번호와 비밀번호 확인 필드에서 keyup 이벤트 발생 시 호출
-$('#store_pw, #store_pwCheck').on('keyup', checkPasswordMatch);
-
- // 수정하기 버튼 클릭 이벤트
-$('#upBtn').on('click', function() {
-    $('#confirmationMessage2').text('수정하시겠습니까?');
-    $('#confirmationModal2').show();
-
-    // 확인 버튼 클릭 이벤트 설정 (수정 작업 수행)
-    $('#confirmAction2').off('click').on('click', function() {
+    function checkPasswordMatch() {
         var password = $('#store_pw').val();
         var passwordCheck = $('#store_pwCheck').val();
+        var message = $('#pwCheckMessage');
 
-        // 비밀번호 일치 여부 확인
-        if (password !== passwordCheck) {
-            alert('비밀번호가 일치하지 않습니다. 수정이 불가능합니다.');
-            $('#confirmationModal2').hide();
-            return;
+        if (passwordCheck.length === 0) {
+            // 비밀번호 확인란이 비어 있을 경우 메시지 초기화
+            message.text('');
+        } else if (password === passwordCheck) {
+            // 비밀번호가 일치할 때
+            message.text('비밀번호가 맞습니다.').css('color', '#20290E');
+        } else {
+            // 비밀번호가 일치하지 않을 때
+            message.text('비밀번호가 다릅니다.').css('color', 'rgb(255, 140, 9)');
         }
+    }
 
-        // 모든 조건을 만족하면 폼 제출
-        $('#storeForm').submit();
-        $('#confirmationModal2').hide();
+    // 비밀번호와 비밀번호 확인 필드에서 keyup 이벤트 발생 시 호출
+    $('#store_pw, #store_pwCheck').on('keyup', checkPasswordMatch);
+
+    // 수정하기 버튼 클릭 이벤트 (AJAX 사용)
+    $('#upBtn').on('click', function () {
+        $('#confirmationMessage2').text('수정하시겠습니까?');
+        $('#confirmationModal2').show();
+
+        // 확인 버튼 클릭 이벤트 설정 (수정 작업 수행)
+        $('#confirmAction2').off('click').on('click', function () {
+            var formData = new FormData($('#storeForm')[0]);
+            $.ajax({
+                url: 'mystoreUpdate.do',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success) {
+                        $('#confirmationModal2').hide();
+                        location.href = response.link;
+                    } else {
+                        alert('수정 중 오류가 발생했습니다.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('수정 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    console.error(error);
+                }
+            });
+        });
+
+        // 취소 버튼 클릭 시 모달 닫기
+        $('#cancelAction2').off('click').on('click', function () {
+            $('#confirmationModal2').hide();
+        });
+
+        // 모달 닫기 버튼 클릭 시 모달 닫기
+        $('#closeModal2').off('click').on('click', function () {
+            $('#confirmationModal2').hide();
+        });
     });
 
-    // 취소 버튼 클릭 시 모달 닫기 (확인 버튼과 이벤트 겹치지 않도록 함)
-    $('#cancelAction2').off('click').on('click', function() {
-        $('#confirmationModal').hide();
+    // 취소하기 버튼 클릭 이벤트
+    $('#ccBtn').on('click', function () {
+        $('#confirmationMessage2').text('취소하시겠습니까?');
+        $('#confirmationModal2').show();
+
+        // 확인 버튼 클릭 이벤트 설정 (취소 작업 수행)
+        $('#confirmAction2').off('click').on('click', function () {
+            location.href = 'storeMyPage.go';
+        });
+
+        // 취소 버튼 클릭 시 모달 닫기
+        $('#cancelAction2').off('click').on('click', function () {
+            $('#confirmationModal2').hide();
+        });
+
+        // 모달 닫기 버튼 클릭 시 모달 닫기
+        $('#closeModal2').off('click').on('click', function () {
+            $('#confirmationModal2').hide();
+        });
     });
-
-    // 모달 닫기 버튼 클릭 시 모달 닫기
-    $('#closeModal2').off('click').on('click', function() {
-        $('#confirmationModal2').hide();
-    }); 
-});
-
-// 취소하기 버튼 클릭 이벤트
-$('#ccBtn').on('click', function() {
-    $('#confirmationMessage2').text('취소하시겠습니까?');
-    $('#confirmationModal2').show();
-
-    // 확인 버튼 클릭 이벤트 설정 (취소 작업 수행)
-    $('#confirmAction2').off('click').on('click', function() {
-        // 취소 확인 시 페이지 이동
-        location.href = 'storeMyPage.go';
-    });
-
-    // 취소 버튼 클릭 시 모달 닫기 (확인 버튼과 이벤트 겹치지 않도록 함)
-    $('#cancelAction2').off('click').on('click', function() {
-        $('#confirmationModal2').hide();
-    });
-
-    // 모달 닫기 버튼 클릭 시 모달 닫기
-    $('#closeModal2').off('click').on('click', function() {
-        $('#confirmationModal2').hide();
-    });
-});
 });
 </script>
 </html>

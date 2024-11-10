@@ -72,8 +72,11 @@
 			VALUES(#{store_idx}, #{board_subject}, #{board_content}, #{board_category})
 	</insert>
 	
+	<select id="storedto" parameterType="com.sulbazi.member.StoreDTO">
+		SELECT store_idx, store_id, store_name FROM store WHERE store_idx = #{param1}
+	</select>
 	<select id="selectidx" resultType="String">
-		SELECT store_id FROM store WHERE store_idx = #{param1}
+		SELECT store_idx, store_id, store_name FROM store WHERE store_idx = #{param1}
 	</select>
 	
 	<update id="updateajax" parameterType="com.sulbazi.board.BoardDTO">

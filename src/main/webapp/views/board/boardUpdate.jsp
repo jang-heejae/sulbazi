@@ -116,7 +116,6 @@ border-radius: 8px;
 </style>
 </head>
 <body>
-<c:import url="../main/main.jsp"/>
 <c:choose>
     <c:when test="${sessionScope.opt == 'admin_log'}">
         <jsp:include page="../main/adminMain.jsp" />
@@ -217,65 +216,7 @@ function cancelEdit() {
     }
     // 취소를 누르면 아무 것도 하지 않음
   }
-// mypage 클릭 이벤트
-document.querySelectorAll('.mypage').forEach(function(mypage) {
-    mypage.addEventListener('click', function() {
-        var full2Element = document.querySelector('.full2');
-        var displayfull2 = window.getComputedStyle(full2Element).display;
 
-        if (displayfull2 === 'none') {
-            // .full, .sub_, .sub_1 숨기기
-            document.querySelectorAll('.full, .sub_, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .full2 클래스 요소를 flex로 설정
-            full2Element.style.display = 'flex';
-        } else {
-            // .full2 클래스 요소 숨기기
-            full2Element.style.display = 'none';
-        }
-    });
-});
-
-// fa-message 클릭 이벤트
-document.querySelectorAll('.fa-message').forEach(function(message) {
-    message.addEventListener('click', function() {
-        var sub1Element = document.querySelector('.sub_1');
-        var displaysub_1 = window.getComputedStyle(sub1Element).display;
-
-        if (displaysub_1 === 'none') {
-            // .full, .full2, .sub_ 숨기기
-            document.querySelectorAll('.full, .full2, .sub_').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .sub_1 클래스 요소 보이기
-            sub1Element.style.display = 'block';
-        } else {
-            // .sub_1 클래스 요소 숨기기
-            sub1Element.style.display = 'none';
-        }
-    });
-});
-
-// fa-bell 클릭 이벤트
-document.querySelectorAll('.fa-bell').forEach(function(bell) {
-    bell.addEventListener('click', function() {
-        var subElement = document.querySelector('.sub_');
-        var displaysub = window.getComputedStyle(subElement).display;
-
-        if (displaysub === 'none') {
-            // .full, .full2, .sub_1 숨기기
-            document.querySelectorAll('.full, .full2, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .sub_ 클래스 요소 보이기
-            subElement.style.display = 'block';
-        } else {
-            // .sub_ 클래스 요소 숨기기
-            subElement.style.display = 'none';
-        }
-    });
-});
 document.getElementById('file').addEventListener('change', function(event) {
     const file = event.target.files[0]; // 선택된 파일 가져오기
     const contentPhoto = document.querySelector('.contentphoto'); // 이미지가 나타날 요소 가져오기

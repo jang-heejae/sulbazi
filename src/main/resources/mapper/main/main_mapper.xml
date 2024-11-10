@@ -16,6 +16,6 @@
 		SELECT store_idx, board_subject, board_category, board_idx, like_count, board_bHit, board_date  FROM board WHERE board_state = 1 ORDER BY board_date DESC LIMIT 4 
 	</select>
 	<select id="storeInfo" parameterType="int" resultType="com.sulbazi.member.StoreDTO">
-    	SELECT store_name FROM store WHERE store_idx = #{store_idx}
+    	SELECT store_idx, store_name, star_average, review_total FROM store WHERE store_idx = #{store_idx}
 	</select>
 </mapper>  

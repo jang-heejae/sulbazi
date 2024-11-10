@@ -96,7 +96,18 @@ $(document).ready(function() {
             }
         });
     }
-
+    function formatDate(dateString) {
+        // Date 객체 생성
+        const date = new Date(dateString);
+        const today = new Date(); // 오늘 날짜 객체 생성
+        if (date.toDateString() === today.toDateString()) {
+            // 오늘이면 시간만 표시
+            return date.toLocaleTimeString('en-GB'); // 'HH:mm:ss' 형식
+        } else {
+            // 오늘이 아니면 날짜만 표시
+            return date.toLocaleDateString('en-CA'); // 'YYYY-MM-DD' 형식
+        }
+    }
     function renderStores(storeList, map) {
         var content = '';
         storeList.forEach(function(store) {
@@ -124,7 +135,7 @@ $(document).ready(function() {
             content += '<div class="count">' + chat.current_people + ' / ' + chat.max_people + '</div>';
             content += '</div>';
             content += '<div class="Parti">';
-            content += '<div class="Parti2">' + chat.userchat_date + '</div>';
+            content += '<div class="Parti2">' + formatDate(chat.userchat_date) + '</div>';
             content += '</div></div>';
         });
         $('#bestChat').html(content);
@@ -143,7 +154,7 @@ $(document).ready(function() {
             content += '<span class="bIcon" style="color:pink; width:10%;"><img src="resources/img/이종원 좋아요전.png" style="width:25px; height:25px;"/>' + board.like_count + '</span>';
             content += '<span class="bIcon2" style="color:#041d03; width:10%;"><i class="fas fa-eye"></i>' + board.board_bHit + '</span>';
             content += '<span style="width:10%;">' + storeIn.store_name + '</span>';
-            content += '<span style="width:10%;">' + board.board_date + '</span>';
+            content += '<span style="width:10%;">' + formatDate(board.board_date) + '</span>';
             content += '</li></ul></div>';
         });
         $('#bestBoard').html(content);
@@ -185,7 +196,7 @@ $(document).on('click', '.store, .chatList, .board', function(event) {
             var keyword = document.getElementById("mainSearch").value;
             var category1 = encodeURIComponent(category);
             var keyword1 = encodeURIComponent(keyword);
-            window.location.href = '/SULBAZI/storeList.go?category=' + category1 + '&keyword=' + keyword1;
+            window.location.href = 'storeList.go?category=' + category1 + '&keyword=' + keyword1;
         } else {
             // 로그인되지 않은 경우 로그인 모달 표시
             $('#loginModal').show();
@@ -200,7 +211,7 @@ $(document).on('click', '.store, .chatList, .board', function(event) {
                var keyword = document.getElementById("mainSearch").value;
                var category1 = encodeURIComponent(category);
                var keyword1 = encodeURIComponent(keyword);
-               window.location.href = '/SULBAZI/storeList.go?category=' + category1 + '&keyword=' + keyword1;
+               window.location.href = 'storeList.go?category=' + category1 + '&keyword=' + keyword1;
            } else {
                // 로그인되지 않은 경우 로그인 모달 표시
                $('#loginModal').show();

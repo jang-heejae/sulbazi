@@ -11,41 +11,46 @@
 </head>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+	.chatBox2 {
+    	display: flex;
+    	justify-content: center;
+    	align-items: flex-start; /* 시작점에서부터 정렬 */
+    	width: 100%;
+    	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
+	}
+	.chatitems2 {
+		margin-top: 150px;
+    	width: 940px;
+    	min-height: 650px; /* 초기 최소 높이 설정 */
+    	height: auto; /* 내용에 따라 높이 자동 조절 */
+    	display: flex;
+    	flex-wrap: wrap;
+    	justify-content: space-between;
+    	align-items: center;
+    	align-content: center;
+    	background-color: #73734F;
+    	border-radius: 20px;
+    	padding: 20px; /* 내부 여백 추가 */
+    	margin-top: 140px; 
+    	font-family: "Yeon Sung", system-ui;
+    	border: 2px solid rgb(255, 140, 9);
+    	    flex-direction: column;
+	}
     .boardlist{
-        position: relative;
-        width: 1200px;
-        height: 700px;
-        background-color: rgb(255, 140, 9);
         border-radius: 10px;
-        margin-top: 10%;
-        left: 20%;
         padding: 3% 10% 3% 10%;
         box-sizing: border-box;
         font-family: "Yeon Sung", system-ui;
+            display: flex;
+    flex-direction: column;
+    align-items: center;
     }
-    .bboard{
-		background-color: #73734F;
-		display: flex;
-		justify-content: center; 
-		align-items: center;    
-		flex-direction: column;   
-		border-radius: 8px;
-		font-family: "Yeon Sung", system-ui;
-    }
-    th{
-       width: 100px;
-       font-family: "Yeon Sung", system-ui;
-    }
-   .what{
-      height: 60px;
-      font-family: "Yeon Sung", system-ui;
-   }
+	#boardForm{
+    height: 100%;
+    width:  100%;
+	}
    .category{
       font-size: 20px;
-      font-family: "Yeon Sung", system-ui;
-   }
-   .date{
-      font-size: 16px;
       font-family: "Yeon Sung", system-ui;
    }
    .subject{
@@ -56,60 +61,69 @@
       font-family: "Yeon Sung", system-ui;
    }
 
-   .alxwnf{
-     width: 750px;
-     margin-left: 1%;
-     background-color: gray;
-     height: 2px;
-     font-family: "Yeon Sung", system-ui;
-  }
   textarea{
         width: 100%;
         height: 250px;
         border-radius: 8px;
         resize: none;
         font-family: "Yeon Sung", system-ui;
+        padding: 5px;
     }
 	.content{
 		width: 763px;
 		font-family: "Yeon Sung", system-ui;
 	}
 	.contentphoto img {
-    max-height: auto; /* 최대 높이를 100%로 설정 */
-    max-width: auto; /* 최대 너비를 100%로 설정 */
-}
-.contentphoto {
-    height: 200px; /* 높이 설정 */
-    width: 100%; /* 너비를 100%로 설정 */
-    overflow: hidden; /* 넘치는 부분 숨기기 */
-    position: relative; /* 자식 요소의 위치 설정을 위해 relative로 설정 */
-    background-color: gray;
-    border-radius: 8px;
-}
-
-.contentphoto img {
-    position: absolute; /* 절대 위치 설정 */
-    top: 50%; /* 수직 중앙 */
-    left: 50%; /* 수평 중앙 */
-    width: 100%; /* 너비 100%로 설정 */
-    height: 100%; /* 높이 100%로 설정 */
-    transform: translate(-50%, -50%); /* 중앙으로 이동 */
-}
-	button {
-	width: 50px;
-	font-family: "Yeon Sung", system-ui;
-}
-#board_category{
-	font-family: "Yeon Sung", system-ui;
-}
-input[type="button"]{
-width: 50px;
-font-family: "Yeon Sung", system-ui;
-}
+   		max-height: auto; /* 최대 높이를 100%로 설정 */
+    	max-width: auto; /* 최대 너비를 100%로 설정 */
+	}
+	.contentphoto {
+    	height: 200px; /* 높이 설정 */
+    	width: 100%; /* 너비를 100%로 설정 */
+    	overflow: hidden; /* 넘치는 부분 숨기기 */
+    	position: relative; /* 자식 요소의 위치 설정을 위해 relative로 설정 */
+    	background-color: gray;
+    	border-radius: 8px;
+	}
+	.contentphoto img {
+    	width: 100%; /* 너비 100%로 설정 */
+    	height: 100%; /* 높이 100%로 설정 */
+    	transform: translate(-50%, -50%); /* 중앙으로 이동 */
+	}
+	.bdBtn {
+		background-color: rgb(255, 140, 9);
+		color: #041d03;
+		padding: 5px;
+		border-radius: 5px;
+		font-size: 14;
+		font-family: "Yeon Sung", system-ui;
+		width: 46px;
+	}
+	#bsub ul{
+	    display: flex;
+    	flex-direction: row;
+	}
+	.bsub {
+		width: 100%;
+	    margin-top: 25px;
+	}
+	#board_category{
+		width: 95px;
+		text-align: center;
+	}
+	#board_category, input{
+		padding: 3px;
+		border-radius: 10px;
+	}
+	#file{
+	    width: 618px;
+	}
+	.btnUl{
+		display: flex;
+	}
 </style>
 </head>
 <body>
-<c:import url="../main/main.jsp"/>
 <c:choose>
     <c:when test="${sessionScope.opt == 'admin_log'}">
         <jsp:include page="../main/adminMain.jsp" />
@@ -121,55 +135,57 @@ font-family: "Yeon Sung", system-ui;
         <jsp:include page="../main/storeMain.jsp" />
     </c:when>
 </c:choose>
-    <div class="boardlist">
-       <div class="bboard">
-       <form id="boardForm" method="post" enctype="multipart/form-data">
-         <table class="table">
-            <tr class="what">
-               <th>
-               		<select name="board_category" id="board_category">
-	                    <option value="이벤트">이벤트</option>
-	                    <option value="홍보">홍보</option>
-	                    <option value="신메뉴">신메뉴</option>
-	                    <option value="신규오픈">신규오픈</option>
-                  	</select>
-               </th>
-               <th>제목</th>
-               <th><input class="subject" type="text" name="board_subject" value=""></th>
-            </tr>
-            <tr>
-            	<th class="contentphoto" colspan="3"><img id="previewImage" src="/photo/기본이미지.png" alt="기본 이미지"></th>
-            </tr>
-         </table>
-         <hr class="alxwnf">
-         <table>
-         	<tr>
-         		<th colspan="3" class="content">
-         			<textarea name="board_content"></textarea>
-         		</th>
-         	</tr>
-         	<tr>
-         	
-         		<th>
-         		<input type="file" id="file" name="file" multiple="multiple" onchange="previewFile()">
-         		</th>
-         		<th></th>
-         		<th>
-				  <button type="button" onclick="cancelPost()">취소</button>&nbsp;&nbsp;&nbsp;&nbsp;
-				  <input type="button" value="등록" onclick="confirmPost(event)"/>
-				</th>
-         	</tr>
-         </table>
-         <input type="hidden" id="store_id" value="'${sessionScope.loginId}'">
-       </form>
-       </div>
+<section class="chatBox2">
+	<div class="chatitems2">
+    	<form id="boardForm" method="post" enctype="multipart/form-data">
+       	<input type="hidden" id="store_id" value="'${sessionScope.loginId}'">
+    		<div class="boardlist">
+				<div id="bsub">
+					<ul>
+						<li>
+               				<select name="board_category" id="board_category">
+	                    		<option value="이벤트">이벤트</option>
+	                    		<option value="홍보">홍보</option>
+	                    		<option value="신메뉴">신메뉴</option>
+	                    		<option value="신규오픈">신규오픈</option>
+                  			</select>
+                  		</li>
+                  		<li>
+							<span>제목</span>
+               				<input class="subject" type="text" name="board_subject" value="">
+              			</li>
+               		</ul>
+               </div>
+               <div class="bsub">
+               		<ul>
+						<li>
+							<div class="contentphoto">
+								<img id="previewImage" src="/photo/기본이미지.png" alt="기본 이미지">
+							</div>
+						</li>
+						<li><textarea name="board_content"></textarea></li>
+					</ul>
+				</div>
+				<div>
+					<ul class="btnUl">				
+         				<li><input type="file" id="file" name="file" multiple="multiple" onchange="previewFile()"></li>
+				  		<li><button type="button" class="bdBtn" onclick="cancelPost()">취소</button></li>
+				  		<li><button type="button" class="bdBtn" onclick="confirmPost(event)"> 등록</button></li>
+    				</ul>
+    			</div>
+    		</div>
+     	</form>
     </div>
+</section>
 </body>
 <script>
-@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+$(document).ready(function() {
+    var textarea = $('#textarea');
 
-
-font-family: "Yeon Sung", system-ui;
+    // textarea 내용의 줄 수를 세어 rows 속성 설정
+    var lines = (textarea.val().split("\n").length) + 1; // \n의 개수를 세어 줄 수 계산
+    textarea.attr('rows', lines);
+});
 var loginId = '${sessionScope.loginId}'
 console.log(loginId);
 document.getElementById("store_id").value = loginId;
@@ -249,65 +265,6 @@ function cancelPost() {
     // 취소를 누르면 아무 것도 하지 않음
   }
 
-// mypage 클릭 이벤트
-document.querySelectorAll('.mypage').forEach(function(mypage) {
-    mypage.addEventListener('click', function() {
-        var full2Element = document.querySelector('.full2');
-        var displayfull2 = window.getComputedStyle(full2Element).display;
-
-        if (displayfull2 === 'none') {
-            // .full, .sub_, .sub_1 숨기기
-            document.querySelectorAll('.full, .sub_, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .full2 클래스 요소를 flex로 설정
-            full2Element.style.display = 'flex';
-        } else {
-            // .full2 클래스 요소 숨기기
-            full2Element.style.display = 'none';
-        }
-    });
-});
-
-// fa-message 클릭 이벤트
-document.querySelectorAll('.fa-message').forEach(function(message) {
-    message.addEventListener('click', function() {
-        var sub1Element = document.querySelector('.sub_1');
-        var displaysub_1 = window.getComputedStyle(sub1Element).display;
-
-        if (displaysub_1 === 'none') {
-            // .full, .full2, .sub_ 숨기기
-            document.querySelectorAll('.full, .full2, .sub_').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .sub_1 클래스 요소 보이기
-            sub1Element.style.display = 'block';
-        } else {
-            // .sub_1 클래스 요소 숨기기
-            sub1Element.style.display = 'none';
-        }
-    });
-});
-
-// fa-bell 클릭 이벤트
-document.querySelectorAll('.fa-bell').forEach(function(bell) {
-    bell.addEventListener('click', function() {
-        var subElement = document.querySelector('.sub_');
-        var displaysub = window.getComputedStyle(subElement).display;
-
-        if (displaysub === 'none') {
-            // .full, .full2, .sub_1 숨기기
-            document.querySelectorAll('.full, .full2, .sub_1').forEach(function(element) {
-                element.style.display = 'none';
-            });
-            // .sub_ 클래스 요소 보이기
-            subElement.style.display = 'block';
-        } else {
-            // .sub_ 클래스 요소 숨기기
-            subElement.style.display = 'none';
-        }
-    });
-});
 document.getElementById('file').addEventListener('change', function(event) {
     const file = event.target.files[0]; // 선택된 파일 가져오기
     const contentPhoto = document.querySelector('.contentphoto'); // 이미지가 나타날 요소 가져오기

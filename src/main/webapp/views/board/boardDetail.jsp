@@ -10,10 +10,32 @@
 </head>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
+	.chatBox2 {
+    	display: flex;
+    	justify-content: center;
+    	align-items: flex-start; /* 시작점에서부터 정렬 */
+    	width: 100%;
+    	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
+	}
+	.chatitems2 {
+		margin-top: 150px;
+    	width: 940px;
+    	min-height: 650px; /* 초기 최소 높이 설정 */
+    	height: auto; /* 내용에 따라 높이 자동 조절 */
+    	display: flex;
+    	flex-wrap: wrap;
+    	justify-content: space-between;
+    	align-items: center;
+    	align-content: center;
+    	background-color: #73734F;
+    	border-radius: 20px;
+    	padding: 20px; /* 내부 여백 추가 */
+    	margin-top: 140px; 
+    	font-family: "Yeon Sung", system-ui;
+    	border: 2px solid rgb(255, 140, 9);
+	}
     .boardlist{
-        position: relative;
-        width: 1200px;
-        height: 0 auto;
+    	width: 100%;
         background-color: rgb(255, 140, 9);
         border-radius: 10px;
         margin-top: 10%;
@@ -122,8 +144,6 @@
 </style>
 </head>
 <body>
-
-<c:import url="../main/main.jsp"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:choose>
     <c:when test="${sessionScope.opt == 'admin_log'}">
@@ -136,6 +156,8 @@
         <jsp:include page="../main/storeMain.jsp" />
     </c:when>
 </c:choose>
+	<section class="chatBox2">
+        <div class="chatitems2">
     <div class="boardlist">
        <div class="bboard">
        <input type="hidden" id="board_idx" value="${info.board_idx}">
@@ -151,7 +173,7 @@
             </tr>
             <tr class="what">
                <th></th>
-               <th>${store}</th>
+               <th>${store.store_name}</th>
                <th></th>
                <th></th>
                <th></th>
@@ -163,7 +185,7 @@
          </table>
                <c:if test="${not empty files}">
                    <c:forEach var="photo" items="${files}">
-                       <img src="/photo/${photo}" alt="사진" class="photo1"/>
+                       <img src="photo/${photo}" alt="사진" class="photo1"/>
                    </c:forEach>
                </c:if>
                <c:if test="${empty files}">
@@ -175,7 +197,7 @@
                      <th class="subject">
                   <c:if test="${not empty files4}">
                          <c:forEach var="photo" items="${files4}">
-                             <img src="/photo/${photo}" alt="사진" class="photo4"/>
+                             <img src="photo/${photo}" alt="사진" class="photo4"/>
                          </c:forEach>
                         </c:if>
                         <c:if test="${empty files4}">
@@ -209,7 +231,7 @@
                      </c:if>
                   </th>
                  	<th>
-					   <c:if test="${sessionScope.loginId == store || sessionScope.opt == 'admin_log'}">
+					   <c:if test="${sessionScope.loginId == store.store_id || sessionScope.opt == 'admin_log'}">
 					      <a href="javascript:void(0);" class="buttonn" onclick="confirmDelete('${info.board_idx}')">삭제</a>
 					   </c:if>
 					</th>
@@ -217,13 +239,15 @@
                     <a href="boardList.go" class="buttonnn">목록</a>
                     </th>
                     <th>
-					   <c:if test="${sessionScope.loginId == store}">
+					   <c:if test="${sessionScope.loginId == store.store_id}">
 					      <a href="javascript:void(0);" class="button" onclick="confirmUpdate('${info.board_idx}')">수정</a>
 					   </c:if>
 					</th>
               </tr>
            </table>
     </div>
+    </div>
+    </section>
 </body>
 <script>
 function like(){
@@ -239,7 +263,6 @@ function like(){
       dataType : 'JSON',
       success : function(data) {
          if(data.success) {
-            alert('좋아요 성공');
             $('#likeCount').text(data.like);
             $('#likeCount2').text(data.like);
             if (data.Check) {

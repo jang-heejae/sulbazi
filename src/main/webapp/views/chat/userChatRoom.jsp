@@ -777,9 +777,11 @@ $.ajax({
  */
 </script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
    *{
         margin: 0;
         padding: 0;
+        font-family: "Yeon Sung", system-ui;
     }
     a{
         text-decoration: none;
@@ -1116,70 +1118,6 @@ $.ajax({
     }
 
 
-/*   종원   */
-/* 유저프로필 상세보기 종원 */
-/* 유저 프로필 드로우 */
-/* 유저 프로필 모달 */
-/* .hide{
-	display: none;
-}
-.user_profile {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 380px;
-    height: auto;
-    background-color: #fefefe;
-    padding: 20px;
-    border: 1px solid #888;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px #2ac323;
-    color: #041d03;
-    text-align: center;
-    font-family: "Yeon Sung", system-ui;
-}
-.close_madal {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: -38px -28px 1px 1px;
-}
-.close_madal:hover,
-.close_madal:focus {
-    color: black;
-}
-.btn_madal {
-    background-color: rgb(255, 140, 9);
-    color: #041d03;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    margin: 10px;
-    font-family: "Yeon Sung", system-ui;
-}
-.btn_madal:hover {
-    background-color: #20290E;
-    color: white;
-}
-.user-details {
-    position: relative;
-    border: 1px solid #ccc;
-    padding: 15px;
-    background-color: rgb(255, 140, 9);
-    color: white;
-    border-radius: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: 300px; /* 원하는 너비로 조정 */
-    height: auto; /* 높이는 자동으로 조정 */
-    
-}
 .close-button {
     cursor: pointer;
     color: black;

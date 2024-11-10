@@ -48,7 +48,7 @@
 	#category{
 		position: absolute;
 		width: 880px;
-		top: 163px;
+		top: 231px;
 		left: 520px;
 	}
 	#categoryInsert{

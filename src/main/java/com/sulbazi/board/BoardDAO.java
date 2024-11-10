@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.sulbazi.member.StoreDTO;
+
 @Mapper
 public interface BoardDAO {
 
@@ -46,5 +48,7 @@ public interface BoardDAO {
 	int boardCount(int board_idx);
 
 	void boardLikeUpDate(int row, int board_idx);
+
+	StoreDTO storedto(int store_idx);
 
 }

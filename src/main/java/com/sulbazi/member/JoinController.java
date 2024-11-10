@@ -1,5 +1,7 @@
 package com.sulbazi.member;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,8 @@ public class JoinController {
 	@Autowired PhotoService photo_ser;
 	@Autowired CategoryService category_ser;
 	@Autowired CategoryDAO category_dao;
+	@Autowired StoreDAO store_dao;
+	@Autowired StoreService store_ser;
 	
   	Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -156,15 +160,14 @@ public class JoinController {
 		return "member/menu";
 	}
 
-	@PostMapping(value="/menu.do")
+	@PostMapping(value="/menu.ajax")
 	@ResponseBody
 	public Map<String, Object> menudo(
 			MultipartFile file,
 			@RequestParam("menu_name") String menu_name,
             @RequestParam("menu_price") String menu_price,
             @RequestParam("menu_category") String menu_category,
-            @RequestParam(value = "store_idx", required = false) Integer store_idx){
-		logger.info("메뉴이름:"+menu_name+", 메뉴가격:"+menu_price+", 메뉴카테고리:"+menu_category+", store_idx:"+store_idx);
+            @RequestParam(value = "store_idx", required = false) Integer store_idx) throws IOException{
 		StoreMenuDTO menuDTO = new StoreMenuDTO();
 		menuDTO.setMenu_category(menu_category);
 		menuDTO.setMenu_price(menu_price);
@@ -176,16 +179,28 @@ public class JoinController {
 		return response;
 	}
 	
-	@GetMapping(value="/menulist")
+	@GetMapping(value="/menulist.ajax")
 	@ResponseBody
-	public Map<String, Object> menulist(@RequestParam(value = "store_idx", required = false) Integer store_idx){
-		logger.info("idx 값:{} ",store_idx);	
-		List<PhotoDTO> photodto = photo_ser.menulist(store_idx, 2);
-		List<StoreMenuDTO> menudto = join_ser.menulist(store_idx);
-		Map<String, Object> map = new HashMap<>();
-		map.put("menulist", menudto);
-		map.put("menuphoto", photodto);
-		return map;
+	public Map<String, Object> menulist(Integer store_idx, String menu_category){
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<StoreMenuDTO> storeMenu = store_ser.getStoreMenuById(store_idx);
+        Map<Integer, PhotoDTO> storeMenuPho = new HashMap<Integer, PhotoDTO>();
+			for(StoreMenuDTO smd : storeMenu){
+				PhotoDTO menufiles= photo_ser.menuPhoto(store_idx, smd.getMenu_idx());
+        		storeMenuPho.put(smd.getMenu_idx(), menufiles);
+			}
+		map.put("storeM", storeMenu);
+		map.put("storeMP", storeMenuPho);
+        
+        List<StoreMenuDTO> storeAlcohol = store_ser.getStoreAlcohol(store_idx);    
+        Map<Integer, PhotoDTO> storeAlPho = new HashMap<Integer, PhotoDTO>();
+        	for (StoreMenuDTO sad : storeAlcohol) {
+				PhotoDTO drinkfiles= photo_ser.drinkPhoto(store_idx, sad.getMenu_idx());
+				storeAlPho.put(sad.getMenu_idx(), drinkfiles);
+        	}
+        map.put("storeD", storeAlcohol);
+        map.put("storeDP", storeAlPho);
+	    return map;
 	}
-	
 }

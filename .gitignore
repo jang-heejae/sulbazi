@@ -35,3 +35,4 @@ mvnw
 mvnw.cmd
 src/test/
 src/main/webapp/views/store/storeMyMenu.jsp.rej
+src/main/webapp/views/admin/process.jsp

@@ -13,43 +13,31 @@
 </head>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap');
-    .boardlist{
-        position: absolute;
-        width: 1200px;
-        height: auto;
-        background-color: rgb(255, 140, 9);
-        border-radius: 10px;
-        margin-top: 10%;
-        left: 20%;
-        padding: 20px;
-        box-sizing: border-box;
-        top: 80px;
-        font-family: "Yeon Sung", system-ui;
-    }
-    td{
-        padding: 1%;
-        border: 1px solid #aaa;
-        width: 150px;
-        border-radius: 6px;
-        background-color: whitesmoke;
-        font-weight: 700;
-    }
-    .like, .view{
-        width: 100px;
-    }
-    .time{
-        width: 200px;
-    }
-    .subject{
-       width: 500px;
-    }
-    .writebutton{
-       position: absolute;
-       top: 216px;
-       right: 327px;
-       font-family: "Yeon Sung", system-ui;
-    }
-    .pagination {
+	.chatBox2 {
+    	display: flex;
+    	justify-content: center;
+    	align-items: flex-start; /* 시작점에서부터 정렬 */
+    	width: 100%;
+    	height: auto; /* 높이를 자동으로 조절하여 자식 요소에 따라 늘어남 */
+	}
+	.chatitems2 {
+		margin-top: 150px;
+    	width: 940px;
+    	min-height: 650px; /* 초기 최소 높이 설정 */
+    	height: auto; /* 내용에 따라 높이 자동 조절 */
+    	display: flex;
+    	flex-wrap: wrap;
+    	justify-content: space-between;
+    	align-items: center;
+    	align-content: center;
+    	background-color: #73734F;
+    	border-radius: 20px;
+    	padding: 20px; /* 내부 여백 추가 */
+    	margin-top: 140px; 
+    	font-family: "Yeon Sung", system-ui;
+    	border: 2px solid rgb(255, 140, 9);
+	}
+	    .pagination {
        display: flex; /* Flexbox로 설정 */
        justify-content: center; /* 중앙 정렬 */
        margin-top: 10px; /* 테이블과의 간격 */
@@ -93,14 +81,12 @@
        cursor: auto;
        background-color: rgb(255, 140, 9);
        border-color: rgb(255, 140, 9);
-       }
-   .catego{
-  	position: absolute;
-  	top: 235px;
-  	left: 392px;
-	color: white;
-	font-size: 21px;
-	font-weight: 700;
+   }
+    .catego{
+		color: white;
+		font-size: 21px;
+		font-weight: 700;
+		margin-bottom: -16px;
    }
     #reportList input[type="radio"] {
         display: none;
@@ -117,19 +103,52 @@
         background-color: rgb(255, 140, 9);
         color: white;
     }
+       
+       
+    .boardlist{
+    	color: #041d03;
+        height: auto;
+        background-color: rgb(255, 140, 9);
+        border-radius: 10px;
+        padding: 20px;
+        font-family: "Yeon Sung", system-ui;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    #boardlist{
+    	width: 100%;
+    	    text-align: center;
+    }
+    #list td{
+    	color: #041d03;
+        padding: 5px;
+        border-bottom: 1px solid #041d03;
+        background-color: whitesmoke;
+    }
     #sear{
-    	position: absolute;
-    	top: 154px;
-    	left: 835px;
+	    margin-left: 305px;
     }
     .boar{
     	width: 240px;
     	border-radius: 15px;
     	height: 40px;
     }
+    .dkahffk{
+    	    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;	
+	}
+	#store-name{
+		white-space: nowrap;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    	max-width: 54%;
+    	display: inline-block;
+	}
 </style>
 <body>
-<c:import url="../main/main.jsp"/>
 <c:choose>
     <c:when test="${sessionScope.opt == 'admin_log'}">
         <jsp:include page="../main/adminMain.jsp" />
@@ -141,6 +160,13 @@
         <jsp:include page="../main/storeMain.jsp" />
     </c:when>
 </c:choose>
+	<section class="chatBox2">
+        <div class="chatitems2">
+        <div class="sear" id="sear">
+   				<input type="text" id="searchInput" name="board_search" class="boar" value=""/>
+                <i class="fas fa-search" id="searchIcon" style="color:rgb(255, 140, 9);"></i>
+   </div>
+   <div class="dkahffk">
     <div id="reportList" class="catego">
 	    <input type="radio" name="board_category" id="category_all" value="all" checked>
 	    <label for="category_all" class="category">전체 보기</label>&nbsp;&nbsp;
@@ -157,9 +183,6 @@
 	    <input type="radio" name="board_category" id="category_newopen" value="신규오픈">
 	    <label for="category_newopen" class="category">신규오픈</label>
 	</div>
-   <div class="sear" id="sear">
-	    <input type="text" id="searchInput" name="board_search" value="" class="boar" />
-   </div>
     <div class="writebutton" style="text-align: right; margin: 10px;">
        <c:if test="${not empty sessionScope.opt && sessionScope.opt == 'store_log'}">
            <a href="boardWrite.go" style="padding: 10px 20px; background-color: rgb(255, 140, 9); color: white; text-decoration: none; border-radius: 5px;">
@@ -167,8 +190,9 @@
            </a>
        </c:if>
     </div>
+    </div>
     <div class="boardlist">
-        <table>
+        <table id="boardlist">
             <tbody id="list">
             </tbody>
         </table>
@@ -179,6 +203,8 @@
       </div>
     </div>
     <div class="si"></div>
+    </div>
+    </section>
 </body>
 <script>
 var showPage = 1;
@@ -201,6 +227,10 @@ pageCall(showPage);
                      startPage: page,
                        totalPages: data.totalPages,
                        visiblePages: 5,
+                       first: '<<',
+                       prev: '<',
+                       next: '>',
+                       last: '>>',
                        onPageClick: function(evt, page) {
                            console.log('Page:', page);
                            pageCall(page); 
@@ -216,7 +246,18 @@ pageCall(showPage);
           }
       });
    }
-
+   function formatDate(dateString) {
+	    // Date 객체 생성
+	    const date = new Date(dateString);
+	    const today = new Date(); // 오늘 날짜 객체 생성
+	    if (date.toDateString() === today.toDateString()) {
+	        // 오늘이면 시간만 표시
+	        return date.toLocaleTimeString('en-GB'); // 'HH:mm:ss' 형식
+	    } else {
+	        // 오늘이 아니면 날짜만 표시
+	        return date.toLocaleDateString('en-CA'); // 'YYYY-MM-DD' 형식
+	    }
+	}
 function drawList(list) {
     var content = '';
     list.forEach(function(item) {
@@ -224,7 +265,7 @@ function drawList(list) {
         if (item.board_state) {
             content += '<tr>';
             content += '<td>' + item.board_category + '</td>';
-            content += '<td class="subject"><a href="boardDetail.go?board_idx=' + item.board_idx + '" style="color: blue;">' + item.board_subject + '</a></td>';
+            content += '<td class="subject"><a href="boardDetail.go?board_idx=' + item.board_idx + '" style="color: #041d03; width: 60%;">' + item.board_subject + '</a></td>';
             content += '<td class="like">' +
                 '<i class="fa-solid fa-heart" style="color: red; margin-right: 5px;"></i>' + 
                 item.like_count + 
@@ -233,8 +274,8 @@ function drawList(list) {
                 '<i class="fa-solid fa-eye" style="color: #999999; margin-right: 5px;"></i>' + 
                 item.board_bHit + 
                 '</td>';
-            content += '<td>' + item.store_name + '</td>'; // store_id가 포함되어 있어야 함
-            content += '<td>' + formatDateTime(item.board_date) + '</td>';
+            content += '<td><span id="store-name">' + item.store_name + '</span></td>'; // store_id가 포함되어 있어야 함
+            content += '<td>' + formatDate(item.board_date) + '</td>';
             content += '<td style="display: none;">' + item.board_state + '</td>'; // 숨김 처리
             content += '</tr>';
         }
@@ -276,18 +317,6 @@ function board_filter(action) {
       }
    });
 }
-function formatDateTime(date) {
-    var d = new Date(date); // Date 객체로 변환
-    var options = {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-    };
-    return d.toLocaleString('ko-KR', options); // 한국 시간대 형식으로 출력
-}
+
 </script>
 </html>

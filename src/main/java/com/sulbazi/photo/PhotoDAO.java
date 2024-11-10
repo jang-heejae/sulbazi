@@ -48,6 +48,14 @@ public interface PhotoDAO {
 
 	List<PhotoDTO> photoexist(int i, int reviewidx);
 
+	PhotoDTO getPhotoByMenuIdx(int menu_idx, int photo_category_idx);
+
+	List<PhotoDTO> menulist(int menu_idx, int photo_category_idx);
+
+	PhotoDTO menuPhoto(Integer store_idx, int menu_idx);
+
+	PhotoDTO drinkPhoto(Integer store_idx, int menu_idx);
+
 
 
 }

@@ -392,7 +392,7 @@ $(document).ready(function() {
             result += '</ul>';
             result += '</div>';
             result += '<button type="submit" class="gobtn" ';
-            result += 'data-user-id="' + ${sessionScope.loginId} + '" ';
+            result += 'data-user-id="' + user_id + '" ';
             result += 'data-chatroom-idx="' + userchat.userchat_idx + '">';
             result += '참가 상태 확인 중...';
             result += '</button>';

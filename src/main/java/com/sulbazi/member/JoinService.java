@@ -64,7 +64,7 @@ public class JoinService {
 			 if(store_idx > 0 && row >0) {
 				 try {
 					photo_ser.filesaveone(fileone, store_idx, 1);
-					photo_ser.fileSave(files, store_idx, 7);
+					photo_ser.savestoreinsert(files, store_idx, 7);
 					StoreCategoryDTO storecategorydto = new StoreCategoryDTO();
 					int category1 = Integer.parseInt(param.get("category1"));
 					int category2 = Integer.parseInt(param.get("category2"));
@@ -72,7 +72,7 @@ public class JoinService {
 					int category4 = Integer.parseInt(param.get("category4"));
 					storecategorydto.setStore_idx(store_idx);
 					category_ser.storejoin(store_idx, category1, category2, category3, category4);
-				 } catch (IOException e) {
+				 } catch (Exception e) {
 					e.printStackTrace();
 				} 
 			 }
@@ -145,7 +145,12 @@ public class JoinService {
 
 		public void menudo(MultipartFile file, StoreMenuDTO menuDTO) {
 			join_dao.menudo(menuDTO);
-			photo_ser.menufile(file, menuDTO.getStore_idx(), 2);
+			int menu_idx = menuDTO.getMenu_idx();
+			if(menuDTO.getMenu_category().equals("안주")) {
+				photo_ser.menufile(file, menu_idx, 2);				
+			}else {
+				photo_ser.menufile(file, menu_idx, 6);								
+			}
 		}
 
 		public List<StoreMenuDTO> menulist(int store_idx) {

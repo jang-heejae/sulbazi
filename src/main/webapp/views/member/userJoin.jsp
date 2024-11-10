@@ -281,7 +281,7 @@
 		                    data: { user_email: userEmail },
 		                    success: function(response) {
 		                        if (response.exists) {
-		                            $('#emailCheckMessage').text("이미 있는 이메일입니다.").css("color", "red");
+		                            $('#emailCheckMessage').text("사용중인 이메일입니다.").css("color", "red");
 		                        } else {
 		                            $('#emailCheckMessage').text("사용 가능한 이메일입니다.").css("color", "blue");
 		                        }

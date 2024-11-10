@@ -80,7 +80,7 @@
     font-family: "Yeon Sung", system-ui;
 }
 
-.modal-content_madal2 {
+.modal-content_madal3 {
     padding: 20px;
     text-align: center;
     color: #041d03;
@@ -148,7 +148,7 @@
 	</form>
 </body>
 <div id="confirmationModal2" class="modal_madal2">
-    <div class="modal-content_madal2">
+    <div class="modal-content_madal3">
         <span class="close_modal2" id="closeModal2">&times;</span>
         <p id="confirmationMessage2"></p>
         <button type="button" class="btn_madal2" id="confirmAction2">확인</button>

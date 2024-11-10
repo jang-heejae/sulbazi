@@ -109,7 +109,7 @@ public class PhotoService {
 		photo_dao.fileSave(photodto);
 	}
 	
-	public void menufile(MultipartFile file, int store_idx, int i) {
+	public void menufile(MultipartFile file, int menu_idx, int i) {
 		String photo = "";
 		try {
 			String ori = file.getOriginalFilename();
@@ -125,7 +125,7 @@ public class PhotoService {
 		}
 		PhotoDTO photodto = new PhotoDTO();
 		photodto.setNew_filename(photo);
-		photodto.setPhoto_folder_idx(store_idx);
+		photodto.setPhoto_folder_idx(menu_idx);
 		photodto.setPhoto_category_idx(i);
 		photo_dao.menufile(photodto);
 	}
@@ -177,7 +177,7 @@ public class PhotoService {
 		storeupdatephoto(files,store_idx, photo_category_idx);
 	};
 	
-	 private void savestoreinsert(MultipartFile[] files, int photo_folder_idx, int photo_category_idx) { 
+	 public void savestoreinsert(MultipartFile[] files, int photo_folder_idx, int photo_category_idx) { 
 		 try { 
 			 logger.info("file length : {}",files.length); 
 		 	for(MultipartFile file : files) { 
@@ -244,59 +244,6 @@ public class PhotoService {
 			return success;
 		}
 
-		
-/*		public void menuphotoFile(MultipartFile[] files, int photofolderidx, Map<String, String> params) {
-		    try {
-		        if (files == null || params == null) {
-		            logger.error("Files or params are null. Cannot proceed with photo upload.");
-		            return;  // 예외를 방지하고 메서드를 종료합니다.
-		        }
-		        
-		        logger.info("file length : {}", files.length);
-		        for (MultipartFile file : files) {
-		            if (file == null || file.isEmpty()) {
-		                logger.warn("File is null or empty. Skipping file upload.");
-		                continue;
-		            }
-
-		            String ori_filename = file.getOriginalFilename();
-		            logger.info("파일명 : " + ori_filename);
-		            int pos = ori_filename != null ? ori_filename.lastIndexOf(".") : -1;
-
-		            if (pos >= 0) {
-		                String ext = ori_filename.substring(pos);
-		                String newFileName = UUID.randomUUID().toString() + ext;
-		                byte[] menuarr = file.getBytes();
-		                Path path = Paths.get("C:/upload/" + newFileName);
-		                Files.write(path, menuarr);
-
-		                int photocategory = 0;
-		                if ("안주".equals(params.get("menu_category"))) {
-		                    photocategory = 2;
-		                } else if ("술".equals(params.get("menu_category"))) {
-		                    photocategory = 6;
-		                }
-
-		                logger.info(newFileName);
-		                logger.info("photocategory: " + photocategory);
-		                logger.info("photofolderidx: " + photofolderidx);
-
-		                logger.info("photocategory: " + photocategory);
-		                logger.info("newFileName: " + newFileName);
-		                logger.info("photofolderidx: " + photofolderidx);
-		                // DB에 값 삽입
-		                PhotoDTO photo = new PhotoDTO();
-		                photo.setPhoto_category_idx(photocategory);
-		                photo.setNew_filename(newFileName);
-		                photo.setPhoto_folder_idx(photofolderidx);
-		                photo_dao.menuphotoinsert(photo);
-		            }
-		        }
-		    } catch (IOException e) {
-		        logger.error("File upload failed", e);
-		    }*/
-		//}
-
 		public List<PhotoDTO> detail1(int store_idx, int photo_category_idx) {
 			return photo_dao.detail1(store_idx, photo_category_idx);
 		}
@@ -305,8 +252,8 @@ public class PhotoService {
 			return photo_dao.detail4(store_idx, photo_category_idx);
 		}
 
-		public List<PhotoDTO> menulist(int store_idx, int i) {
-			return detail1(store_idx, i);
+		public List<PhotoDTO> menulist(int menu_idx, int photo_category_idx) {
+			return photo_dao.menulist(menu_idx, photo_category_idx);
 		}
 		
 		// 게시판 게시글 사진 저장하는 메서드
@@ -370,6 +317,18 @@ public class PhotoService {
 			} 
 			return photo;
 			
+		}
+
+		public PhotoDTO getPhotoByMenuIdx(int menu_idx, int photo_category_idx) {
+			return photo_dao.getPhotoByMenuIdx(menu_idx, photo_category_idx);
+		}
+
+		public PhotoDTO menuPhoto(Integer store_idx, int menu_idx) {
+			return photo_dao.menuPhoto(store_idx, menu_idx);
+		}
+
+		public PhotoDTO drinkPhoto(Integer store_idx, int menu_idx) {
+			return photo_dao.drinkPhoto(store_idx, menu_idx);
 		}
 
 

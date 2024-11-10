@@ -224,6 +224,7 @@
 	label {
 		font-size:  20px;
 	}
+
 </style>
 </head>
 <body>
@@ -244,14 +245,14 @@
 	<div class="form-group">
 	    <label style="color: #041d03;">매장 대표 사진</label>
 	        <div style="margin-top: 10px;">
-				<img id="mainPhoto" src="/photo/${mystorebestphoto.new_filename}"><br/>
+				<img src="photo/${mystorebestphoto.new_filename}" alt="Store Photo" id="mainPhoto"><br/>
 	        </div>
 	</div><br/>
 	<div class="form-group2">
 		<label style="margin-bottom:10px;">매장 내외부 사진</label>
 			<div class="form-group3">
 				<c:forEach items="${mystorephoto}" var="mystoreinout">
-					<div><img id="storePhoto" src="/photo/${mystoreinout.new_filename}"></div><br/>
+					<div><img src="photo/${mystoreinout.new_filename}" alt="Store Photo" id="storePhoto"></div><br/>
 				</c:forEach>
 			</div>
 	</div><br/>
@@ -322,14 +323,13 @@
 			</li>
 		</ul>
 	</div>
-	<br/>
 	<div id="store_menu">
 		<ul style="width: 100%">
 			<li class="store_menu2"><label>안주</label></li>
-			<c:if test="${files.size() > 0 && storeMenu.size() > 0}">
-				<li><c:forEach var="file" items="${files}" varStatus="status">
+			<c:if test="${menuphoto.size() > 0 && storeMenu.size() > 0}">
+				<li><c:forEach var="menufile" items="${menuphoto}" varStatus="status">
 					    <div class="menu-content">
-					    <img src="/photo/${file.new_filename}" alt="Store Photo" id="imgview" />
+					    <img src="photo/${menufile.new_filename}" alt="Store Photo" id="imgview" />
 					    <span>-------------------------------------------------</span>
 					   	<div class="menu-details">
                             <span>${storeMenu[status.index].menu_name}</span>
@@ -339,10 +339,10 @@
 				</c:forEach></li>
             </c:if>
             <li class="store_menu2"><label>주류</label></li>
-            <c:if test="${files.size() > 0 && storeAlcohol.size() > 0}">
-				<li><c:forEach var="file" items="${files}" varStatus="status">
+            <c:if test="${drinkphoto.size() > 0 && storeAlcohol.size() > 0}">
+				<li><c:forEach var="drinkfile" items="${drinkphoto}" varStatus="status">
 					    <div class="menu-content">
-					    <img src="/photo/${file.new_filename}" alt="Store Photo" id="imgview" />
+					    <img src="photo/${drinkfile.new_filename}" alt="Store Photo" id="imgview" />
 					    <span>-------------------------------------------------</span>
 					 	<div class="menu-details">
                             <span>${storeAlcohol[status.index].menu_name}</span>

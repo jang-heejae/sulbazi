@@ -44,11 +44,11 @@
 	</select>
 	
 	<select id="getStoreMenuById" parameterType="int" resultType="com.sulbazi.member.StoreMenuDTO">
-		select menu_name,menu_price from store_menu where store_idx=#{param1} and menu_category='안주' ORDER BY menu_idx ASC
+		select menu_idx, menu_category, menu_name, menu_price from store_menu where store_idx=#{param1} and menu_category='안주' ORDER BY menu_idx ASC
 	</select>
 	
 	<select id="getStoreAlcohol" parameterType="int" resultType="com.sulbazi.member.StoreMenuDTO">
-		select menu_name,menu_price from store_menu where store_idx=#{param1} and menu_category='술' ORDER BY menu_idx ASC
+		select menu_idx, menu_category, menu_name, menu_price from store_menu where store_idx=#{param1} and menu_category='술' ORDER BY menu_idx ASC
 	</select>
 	
 	<select id="getBoard" parameterType="int" resultType="com.sulbazi.board.BoardDTO">
