@@ -91,7 +91,7 @@ $(document).ready(function() {
         eventSourceKick.addEventListener('kick', function(event) {
             if (event && event.data) {
                 alert(event.data);
-                alert("강퇴 당해찌~");
+                alert("강퇴 되었습니다.");
                 window.location.href = 'userchatlist.go';
                 
                 
@@ -313,7 +313,7 @@ $(document).ready(function() {
        console.log("아작스 신고할 메세지 번호 "+reported_idx);
        console.log("아작스 신고할사용자 닉 :"+reported_nick);
        
-		if (confirm("신고 할거야?")) {
+		if (confirm("신고 하시겠습니까?")) {
 			$('.popup').remove();
 			var display = $('.reportuserform').css('display');
 	        if (display == 'none'){
@@ -421,7 +421,7 @@ $(document).ready(function() {
     	    });
     	}
        
-       if (confirm(reported_nick+"를 내보낼거야?")) {
+       if (confirm(reported_nick+"를 퇴장시키겠습니까?")) {
           $.ajax({
               url: 'kickuser.ajax',
               type: 'POST',
@@ -431,7 +431,7 @@ $(document).ready(function() {
               },
 				success: function(response) {
                   
-                alert(reported_nick +' 아웃');
+                alert(reported_nick +' 님이 퇴장되셨습니다.');
                 $('.popup').remove();
                 $('.popup2').remove();
                 roomout();
